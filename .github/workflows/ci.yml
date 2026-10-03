@@ -17,6 +17,8 @@ jobs:
       - run: ruff check src tests
       - run: pytest -q
       - run: PYTHONPATH=src python -m pop_sim run --quick --out /tmp/results --figures /tmp/figures
+      - run: PYTHONPATH=src python -m pop_sim run-v2 --quick --out /tmp/results/v2 --figures /tmp/figures/v2
+      - run: PYTHONPATH=src python -m pop_sim bench config/benchmark.json --out /tmp/results/bench.json
       - uses: actions/upload-artifact@v4
         with:
           name: quick-run-py${{ matrix.python-version }}

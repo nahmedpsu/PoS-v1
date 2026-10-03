@@ -18,7 +18,7 @@ from .consensus.pop import PoPServer, verify_election
 from .consensus.pow1 import solve_pow1
 from .consensus.pow2 import mine_pow2
 from .entities import PKI, PMCloud, PrivacyManager
-from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
+from .shuffle import ITSConfig, ITSSimulation
 
 # Puzzles of Figure 7 / 8 in the manuscript.
 PAPER_PUZZLES = ["0a", "0ab", "0abc", "0abcd", "00a", "00ab", "00abc", "00gf", "00gfs", "00upha"]
@@ -188,7 +188,7 @@ def exp_scalability(node_counts=(10, 20, 50, 100, 200, 500, 1000), rounds: int =
 # ------------------------------------------------------ end-to-end protocol
 def exp_protocol(rounds: int = 5, n_pm: int = 2, rsus_per_pm: int = 3, vehicles_per_rsu: int = 5,
                  pseudonyms_per_vehicle: int = 3, pow_difficulty: int = 3, seed: int = 1,
-                 consensus_kinds=CONSENSUS_KINDS) -> dict:
+                 consensus_kinds=("pop", "poet", "pow2", "pokw")) -> dict:
     """Run Algorithms 4 and 5 for ``rounds`` shuffle rounds under each consensus."""
     out = {"experiment": "protocol", "rounds": rounds, "runs": {}}
     for kind in consensus_kinds:

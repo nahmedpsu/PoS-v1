@@ -147,7 +147,7 @@ def fig_protocol(res: dict, path: Path) -> Path:
     runs = res["runs"]
     kinds = list(runs)
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-    colors = {"pop": C_POP, "poet": C_POET, "pow2": C_POW, "pokw": C_POW1}
+    colors = {"pop": C_POP, "poet": C_POET, "pow2": C_POW, "pokw": C_POW1, "popv2": "#2A7F62"}
     axes[0].bar(kinds, [runs[k]["mean_pm_consensus_cpu"] for k in kinds], color=[colors[k] for k in kinds])
     axes[0].set_title("Mean PM-chain consensus time per shuffle round")
     axes[0].set_ylabel("Seconds")
