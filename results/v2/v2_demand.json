@@ -1,0 +1,127 @@
+{
+ "experiment": "v2_demand",
+ "density_per_km": 8.0,
+ "rounds": 6,
+ "rows": [
+  {
+   "round_seconds": 20,
+   "safety_stock": 0.0,
+   "vehicles": 65,
+   "stockouts": 26,
+   "pids_issued": 195,
+   "stock_per_vehicle": 3.0,
+   "linking_success": 0.7137367915465899,
+   "mean_pm_consensus": 0.17839189533338262
+  },
+  {
+   "round_seconds": 20,
+   "safety_stock": 0.1,
+   "vehicles": 65,
+   "stockouts": 6,
+   "pids_issued": 225,
+   "stock_per_vehicle": 3.4615384615384617,
+   "linking_success": 0.7593778591033852,
+   "mean_pm_consensus": 0.15338707933338205
+  },
+  {
+   "round_seconds": 20,
+   "safety_stock": 0.25,
+   "vehicles": 65,
+   "stockouts": 0,
+   "pids_issued": 252,
+   "stock_per_vehicle": 3.876923076923077,
+   "linking_success": 0.7656108597285067,
+   "mean_pm_consensus": 0.1767126909999297
+  },
+  {
+   "round_seconds": 20,
+   "safety_stock": 0.5,
+   "vehicles": 65,
+   "stockouts": 0,
+   "pids_issued": 297,
+   "stock_per_vehicle": 4.569230769230769,
+   "linking_success": 0.8407239819004525,
+   "mean_pm_consensus": 0.18338431916664982
+  },
+  {
+   "round_seconds": 40,
+   "safety_stock": 0.0,
+   "vehicles": 65,
+   "stockouts": 41,
+   "pids_issued": 195,
+   "stock_per_vehicle": 3.0,
+   "linking_success": 0.8108374384236453,
+   "mean_pm_consensus": 0.1317111343333166
+  },
+  {
+   "round_seconds": 40,
+   "safety_stock": 0.1,
+   "vehicles": 65,
+   "stockouts": 13,
+   "pids_issued": 225,
+   "stock_per_vehicle": 3.4615384615384617,
+   "linking_success": 0.812037037037037,
+   "mean_pm_consensus": 0.1333828108333137
+  },
+  {
+   "round_seconds": 40,
+   "safety_stock": 0.25,
+   "vehicles": 65,
+   "stockouts": 5,
+   "pids_issued": 251,
+   "stock_per_vehicle": 3.8615384615384616,
+   "linking_success": 0.8412408759124088,
+   "mean_pm_consensus": 0.07838471483326279
+  },
+  {
+   "round_seconds": 40,
+   "safety_stock": 0.5,
+   "vehicles": 65,
+   "stockouts": 0,
+   "pids_issued": 296,
+   "stock_per_vehicle": 4.553846153846154,
+   "linking_success": 0.860633484162896,
+   "mean_pm_consensus": 0.18339522566666347
+  },
+  {
+   "round_seconds": 80,
+   "safety_stock": 0.0,
+   "vehicles": 65,
+   "stockouts": 39,
+   "pids_issued": 195,
+   "stock_per_vehicle": 3.0,
+   "linking_success": 0.8316733067729084,
+   "mean_pm_consensus": 0.13506256183333637
+  },
+  {
+   "round_seconds": 80,
+   "safety_stock": 0.1,
+   "vehicles": 65,
+   "stockouts": 17,
+   "pids_issued": 225,
+   "stock_per_vehicle": 3.4615384615384617,
+   "linking_success": 0.8490566037735849,
+   "mean_pm_consensus": 0.18505357200003195
+  },
+  {
+   "round_seconds": 80,
+   "safety_stock": 0.25,
+   "vehicles": 65,
+   "stockouts": 10,
+   "pids_issued": 252,
+   "stock_per_vehicle": 3.876923076923077,
+   "linking_success": 0.8430826369545033,
+   "mean_pm_consensus": 0.09171781083330946
+  },
+  {
+   "round_seconds": 80,
+   "safety_stock": 0.5,
+   "vehicles": 65,
+   "stockouts": 2,
+   "pids_issued": 297,
+   "stock_per_vehicle": 4.569230769230769,
+   "linking_success": 0.8655767484105359,
+   "mean_pm_consensus": 0.16338862833337164
+  }
+ ]
+}

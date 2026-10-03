@@ -1,0 +1,56 @@
+{
+ "experiment": "v2_anchoring",
+ "txs_per_block": 5,
+ "rows": [
+  {
+   "rsu_blocks": 10,
+   "proof_bytes": 1173,
+   "verify_seconds": 1.1207120001017757e-05,
+   "build_seconds": 0.002281412000002092,
+   "tx_path_len": 3,
+   "anchor_path_len": 4,
+   "clean_chain_ok": true,
+   "tamper_detected": true
+  },
+  {
+   "rsu_blocks": 50,
+   "proof_bytes": 1325,
+   "verify_seconds": 2.0730219998768006e-05,
+   "build_seconds": 0.01369711000006646,
+   "tx_path_len": 3,
+   "anchor_path_len": 6,
+   "clean_chain_ok": true,
+   "tamper_detected": true
+  },
+  {
+   "rsu_blocks": 100,
+   "proof_bytes": 1400,
+   "verify_seconds": 1.2048539997522311e-05,
+   "build_seconds": 0.02630450199990264,
+   "tx_path_len": 3,
+   "anchor_path_len": 7,
+   "clean_chain_ok": true,
+   "tamper_detected": true
+  },
+  {
+   "rsu_blocks": 500,
+   "proof_bytes": 1551,
+   "verify_seconds": 1.3874200003556326e-05,
+   "build_seconds": 0.1284268490001068,
+   "tx_path_len": 3,
+   "anchor_path_len": 9,
+   "clean_chain_ok": true,
+   "tamper_detected": true
+  },
+  {
+   "rsu_blocks": 1000,
+   "proof_bytes": 1626,
+   "verify_seconds": 1.586666000093828e-05,
+   "build_seconds": 0.2550434999998288,
+   "tx_path_len": 3,
+   "anchor_path_len": 10,
+   "clean_chain_ok": true,
+   "tamper_detected": true
+  }
+ ]
+}

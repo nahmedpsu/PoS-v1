@@ -1,0 +1,222 @@
+{
+ "experiment": "v2_sybil",
+ "rounds": 2000,
+ "series": {
+  "10": [
+   {
+    "n_honest": 10,
+    "k_sybil": 0,
+    "v1_honest": 0.0,
+    "v1_lying": 0.0,
+    "v2_vrf": 0.0,
+    "v2_pki_bound": 0.0,
+    "analytic": 0.0,
+    "analytic_lying": 0.0
+   },
+   {
+    "n_honest": 10,
+    "k_sybil": 1,
+    "v1_honest": 0.0975,
+    "v1_lying": 0.524,
+    "v2_vrf": 0.089,
+    "v2_pki_bound": 0.089,
+    "analytic": 0.09090909090909091,
+    "analytic_lying": 0.5
+   },
+   {
+    "n_honest": 10,
+    "k_sybil": 2,
+    "v1_honest": 0.1775,
+    "v1_lying": 0.7475,
+    "v2_vrf": 0.1785,
+    "v2_pki_bound": 0.106,
+    "analytic": 0.16666666666666666,
+    "analytic_lying": 0.75
+   },
+   {
+    "n_honest": 10,
+    "k_sybil": 5,
+    "v1_honest": 0.333,
+    "v1_lying": 0.971,
+    "v2_vrf": 0.3375,
+    "v2_pki_bound": 0.089,
+    "analytic": 0.3333333333333333,
+    "analytic_lying": 0.96875
+   },
+   {
+    "n_honest": 10,
+    "k_sybil": 10,
+    "v1_honest": 0.513,
+    "v1_lying": 0.9995,
+    "v2_vrf": 0.4915,
+    "v2_pki_bound": 0.09,
+    "analytic": 0.5,
+    "analytic_lying": 0.9990234375
+   },
+   {
+    "n_honest": 10,
+    "k_sybil": 20,
+    "v1_honest": 0.663,
+    "v1_lying": 1.0,
+    "v2_vrf": 0.6615,
+    "v2_pki_bound": 0.0845,
+    "analytic": 0.6666666666666666,
+    "analytic_lying": 0.9999990463256836
+   },
+   {
+    "n_honest": 10,
+    "k_sybil": 50,
+    "v1_honest": 0.8185,
+    "v1_lying": 1.0,
+    "v2_vrf": 0.8255,
+    "v2_pki_bound": 0.089,
+    "analytic": 0.8333333333333334,
+    "analytic_lying": 0.9999999999999991
+   }
+  ],
+  "20": [
+   {
+    "n_honest": 20,
+    "k_sybil": 0,
+    "v1_honest": 0.0,
+    "v1_lying": 0.0,
+    "v2_vrf": 0.0,
+    "v2_pki_bound": 0.0,
+    "analytic": 0.0,
+    "analytic_lying": 0.0
+   },
+   {
+    "n_honest": 20,
+    "k_sybil": 1,
+    "v1_honest": 0.041,
+    "v1_lying": 0.4965,
+    "v2_vrf": 0.047,
+    "v2_pki_bound": 0.047,
+    "analytic": 0.047619047619047616,
+    "analytic_lying": 0.5
+   },
+   {
+    "n_honest": 20,
+    "k_sybil": 2,
+    "v1_honest": 0.094,
+    "v1_lying": 0.7485,
+    "v2_vrf": 0.093,
+    "v2_pki_bound": 0.0435,
+    "analytic": 0.09090909090909091,
+    "analytic_lying": 0.75
+   },
+   {
+    "n_honest": 20,
+    "k_sybil": 5,
+    "v1_honest": 0.2,
+    "v1_lying": 0.966,
+    "v2_vrf": 0.203,
+    "v2_pki_bound": 0.051,
+    "analytic": 0.2,
+    "analytic_lying": 0.96875
+   },
+   {
+    "n_honest": 20,
+    "k_sybil": 10,
+    "v1_honest": 0.3135,
+    "v1_lying": 0.999,
+    "v2_vrf": 0.325,
+    "v2_pki_bound": 0.0395,
+    "analytic": 0.3333333333333333,
+    "analytic_lying": 0.9990234375
+   },
+   {
+    "n_honest": 20,
+    "k_sybil": 20,
+    "v1_honest": 0.495,
+    "v1_lying": 1.0,
+    "v2_vrf": 0.497,
+    "v2_pki_bound": 0.047,
+    "analytic": 0.5,
+    "analytic_lying": 0.9999990463256836
+   },
+   {
+    "n_honest": 20,
+    "k_sybil": 50,
+    "v1_honest": 0.7065,
+    "v1_lying": 1.0,
+    "v2_vrf": 0.722,
+    "v2_pki_bound": 0.0515,
+    "analytic": 0.7142857142857143,
+    "analytic_lying": 0.9999999999999991
+   }
+  ],
+  "50": [
+   {
+    "n_honest": 50,
+    "k_sybil": 0,
+    "v1_honest": 0.0,
+    "v1_lying": 0.0,
+    "v2_vrf": 0.0,
+    "v2_pki_bound": 0.0,
+    "analytic": 0.0,
+    "analytic_lying": 0.0
+   },
+   {
+    "n_honest": 50,
+    "k_sybil": 1,
+    "v1_honest": 0.0225,
+    "v1_lying": 0.4935,
+    "v2_vrf": 0.0205,
+    "v2_pki_bound": 0.0205,
+    "analytic": 0.0196078431372549,
+    "analytic_lying": 0.5
+   },
+   {
+    "n_honest": 50,
+    "k_sybil": 2,
+    "v1_honest": 0.035,
+    "v1_lying": 0.739,
+    "v2_vrf": 0.038,
+    "v2_pki_bound": 0.0185,
+    "analytic": 0.038461538461538464,
+    "analytic_lying": 0.75
+   },
+   {
+    "n_honest": 50,
+    "k_sybil": 5,
+    "v1_honest": 0.0905,
+    "v1_lying": 0.967,
+    "v2_vrf": 0.0905,
+    "v2_pki_bound": 0.021,
+    "analytic": 0.09090909090909091,
+    "analytic_lying": 0.96875
+   },
+   {
+    "n_honest": 50,
+    "k_sybil": 10,
+    "v1_honest": 0.1695,
+    "v1_lying": 0.9985,
+    "v2_vrf": 0.172,
+    "v2_pki_bound": 0.021,
+    "analytic": 0.16666666666666666,
+    "analytic_lying": 0.9990234375
+   },
+   {
+    "n_honest": 50,
+    "k_sybil": 20,
+    "v1_honest": 0.2745,
+    "v1_lying": 1.0,
+    "v2_vrf": 0.2865,
+    "v2_pki_bound": 0.0205,
+    "analytic": 0.2857142857142857,
+    "analytic_lying": 0.9999990463256836
+   },
+   {
+    "n_honest": 50,
+    "k_sybil": 50,
+    "v1_honest": 0.4935,
+    "v1_lying": 1.0,
+    "v2_vrf": 0.493,
+    "v2_pki_bound": 0.0175,
+    "analytic": 0.5,
+    "analytic_lying": 0.9999999999999991
+   }
+  ]
+ }
+}
