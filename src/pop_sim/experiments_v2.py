@@ -17,8 +17,14 @@ from .consensus.pow2 import mine_pow2
 from .shuffle import ITSConfig, ITSSimulation
 from .v2 import network as nw
 from .v2.adversary import TrackingAdversary
-from .v2.anchoring import (anchors_to_proof, build_allotment_proof, detect_rsu_tamper, make_anchor,
-                           proof_size_bytes, time_verify)
+from .v2.anchoring import (
+    anchors_to_proof,
+    build_allotment_proof,
+    detect_rsu_tamper,
+    make_anchor,
+    proof_size_bytes,
+    time_verify,
+)
 from .v2.mobility import Beacon, Road, RoadConfig
 from .v2.sybil import simulate_sybil
 

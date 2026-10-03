@@ -8,8 +8,16 @@ from pop_sim.consensus.popv2 import V2Node, fork_rule, popv2_elect, verify_popv2
 from pop_sim.shuffle import ITSConfig, ITSSimulation
 from pop_sim.v2 import network as nw
 from pop_sim.v2.adversary import TrackingAdversary
-from pop_sim.v2.anchoring import (anchors_to_proof, build_allotment_proof, detect_rsu_tamper, make_anchor,
-                                  merkle_path, merkle_root, merkle_verify, verify_allotment_proof)
+from pop_sim.v2.anchoring import (
+    anchors_to_proof,
+    build_allotment_proof,
+    detect_rsu_tamper,
+    make_anchor,
+    merkle_path,
+    merkle_root,
+    merkle_verify,
+    verify_allotment_proof,
+)
 from pop_sim.v2.mobility import Road, RoadConfig
 from pop_sim.v2.sybil import analytic_win_probability, simulate_sybil
 
