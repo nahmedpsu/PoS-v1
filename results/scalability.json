@@ -1,0 +1,55 @@
+{
+ "experiment": "scalability",
+ "rounds": 20,
+ "rows": [
+  {
+   "nodes": 10,
+   "poet_cpu_mean": 7.471000026271213e-06,
+   "pop_cpu_mean": 4.749359999323133e-05,
+   "pop_race_mean": 3.171600019413745e-06,
+   "pop_miners_mean": 5
+  },
+  {
+   "nodes": 20,
+   "poet_cpu_mean": 1.0806100010540832e-05,
+   "pop_cpu_mean": 5.3484350007693135e-05,
+   "pop_race_mean": 5.739899972923013e-06,
+   "pop_miners_mean": 10
+  },
+  {
+   "nodes": 50,
+   "poet_cpu_mean": 2.4067000003924478e-05,
+   "pop_cpu_mean": 7.204040001624889e-05,
+   "pop_race_mean": 1.2639550004678312e-05,
+   "pop_miners_mean": 25
+  },
+  {
+   "nodes": 100,
+   "poet_cpu_mean": 4.2337349998433635e-05,
+   "pop_cpu_mean": 8.797430000413442e-05,
+   "pop_race_mean": 2.2839150005893316e-05,
+   "pop_miners_mean": 50
+  },
+  {
+   "nodes": 200,
+   "poet_cpu_mean": 8.49330500045653e-05,
+   "pop_cpu_mean": 0.00015168145000643563,
+   "pop_race_mean": 4.642709999416184e-05,
+   "pop_miners_mean": 100
+  },
+  {
+   "nodes": 500,
+   "poet_cpu_mean": 0.00021337109997148217,
+   "pop_cpu_mean": 0.00031781914999555737,
+   "pop_race_mean": 0.00011657679998506864,
+   "pop_miners_mean": 250
+  },
+  {
+   "nodes": 1000,
+   "poet_cpu_mean": 0.00040653585000427483,
+   "pop_cpu_mean": 0.0005591101000163689,
+   "pop_race_mean": 0.0002114232500161961,
+   "pop_miners_mean": 500
+  }
+ ]
+}

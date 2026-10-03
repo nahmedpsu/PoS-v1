@@ -1,0 +1,186 @@
+{
+ "experiment": "poet",
+ "nodes": 10,
+ "rows": [
+  {
+   "round": 1,
+   "winner": "Node 10",
+   "winner_time": 0.02,
+   "cpu_seconds": 2.2429999944506562e-05,
+   "times": {
+    "Node 1": 0.04,
+    "Node 2": 0.21,
+    "Node 3": 0.19,
+    "Node 4": 0.07,
+    "Node 5": 0.13,
+    "Node 6": 0.12,
+    "Node 7": 0.17,
+    "Node 8": 0.2,
+    "Node 9": 0.03,
+    "Node 10": 0.02
+   }
+  },
+  {
+   "round": 2,
+   "winner": "Node 4",
+   "winner_time": 0.01,
+   "cpu_seconds": 6.383000027199159e-06,
+   "times": {
+    "Node 1": 0.21,
+    "Node 2": 0.11,
+    "Node 3": 0.19,
+    "Node 4": 0.01,
+    "Node 5": 0.12,
+    "Node 6": 0.18,
+    "Node 7": 0.06,
+    "Node 8": 0.24,
+    "Node 9": 0.23,
+    "Node 10": 0.02
+   }
+  },
+  {
+   "round": 3,
+   "winner": "Node 1",
+   "winner_time": 0.02,
+   "cpu_seconds": 5.346999842004152e-06,
+   "times": {
+    "Node 1": 0.02,
+    "Node 2": 0.14,
+    "Node 3": 0.24,
+    "Node 4": 0.1,
+    "Node 5": 0.06,
+    "Node 6": 0.11,
+    "Node 7": 0.02,
+    "Node 8": 0.06,
+    "Node 9": 0.12,
+    "Node 10": 0.13
+   }
+  },
+  {
+   "round": 4,
+   "winner": "Node 6",
+   "winner_time": 0.02,
+   "cpu_seconds": 5.4279998948914e-06,
+   "times": {
+    "Node 1": 0.07,
+    "Node 2": 0.07,
+    "Node 3": 0.06,
+    "Node 4": 0.12,
+    "Node 5": 0.08,
+    "Node 6": 0.02,
+    "Node 7": 0.21,
+    "Node 8": 0.14,
+    "Node 9": 0.16,
+    "Node 10": 0.05
+   }
+  },
+  {
+   "round": 5,
+   "winner": "Node 3",
+   "winner_time": 0.04,
+   "cpu_seconds": 4.673999910664861e-06,
+   "times": {
+    "Node 1": 0.25,
+    "Node 2": 0.22,
+    "Node 3": 0.04,
+    "Node 4": 0.09,
+    "Node 5": 0.18,
+    "Node 6": 0.18,
+    "Node 7": 0.23,
+    "Node 8": 0.11,
+    "Node 9": 0.21,
+    "Node 10": 0.17
+   }
+  },
+  {
+   "round": 6,
+   "winner": "Node 7",
+   "winner_time": 0.02,
+   "cpu_seconds": 4.923000005874201e-06,
+   "times": {
+    "Node 1": 0.08,
+    "Node 2": 0.15,
+    "Node 3": 0.22,
+    "Node 4": 0.21,
+    "Node 5": 0.13,
+    "Node 6": 0.15,
+    "Node 7": 0.02,
+    "Node 8": 0.07,
+    "Node 9": 0.2,
+    "Node 10": 0.11
+   }
+  },
+  {
+   "round": 7,
+   "winner": "Node 1",
+   "winner_time": 0.05,
+   "cpu_seconds": 4.931999910695595e-06,
+   "times": {
+    "Node 1": 0.05,
+    "Node 2": 0.14,
+    "Node 3": 0.18,
+    "Node 4": 0.17,
+    "Node 5": 0.1,
+    "Node 6": 0.12,
+    "Node 7": 0.13,
+    "Node 8": 0.2,
+    "Node 9": 0.14,
+    "Node 10": 0.1
+   }
+  },
+  {
+   "round": 8,
+   "winner": "Node 2",
+   "winner_time": 0.02,
+   "cpu_seconds": 4.779999926540768e-06,
+   "times": {
+    "Node 1": 0.13,
+    "Node 2": 0.02,
+    "Node 3": 0.02,
+    "Node 4": 0.18,
+    "Node 5": 0.25,
+    "Node 6": 0.15,
+    "Node 7": 0.1,
+    "Node 8": 0.05,
+    "Node 9": 0.13,
+    "Node 10": 0.25
+   }
+  },
+  {
+   "round": 9,
+   "winner": "Node 4",
+   "winner_time": 0.07,
+   "cpu_seconds": 4.440999873622786e-06,
+   "times": {
+    "Node 1": 0.19,
+    "Node 2": 0.14,
+    "Node 3": 0.22,
+    "Node 4": 0.07,
+    "Node 5": 0.13,
+    "Node 6": 0.24,
+    "Node 7": 0.15,
+    "Node 8": 0.12,
+    "Node 9": 0.07,
+    "Node 10": 0.14
+   }
+  },
+  {
+   "round": 10,
+   "winner": "Node 2",
+   "winner_time": 0.01,
+   "cpu_seconds": 4.682000053435331e-06,
+   "times": {
+    "Node 1": 0.24,
+    "Node 2": 0.01,
+    "Node 3": 0.2,
+    "Node 4": 0.21,
+    "Node 5": 0.22,
+    "Node 6": 0.19,
+    "Node 7": 0.2,
+    "Node 8": 0.13,
+    "Node 9": 0.14,
+    "Node 10": 0.11
+   }
+  }
+ ]
+}

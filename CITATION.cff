@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this simulation, please cite the manuscript it implements."
+title: "PoS v1: simulation of Proof of Pseudonym"
+version: 1.0.0
+date-released: 2026-10-03
+authors:
+  - family-names: Ahmad
+    given-names: N.
+references:
+  - type: article
+    title: "Proof of Pseudonym: Blockchain-Based Privacy Preserving Protocol for Intelligent Transport System"
+    authors:
+      - family-names: Johar
+        given-names: S.
+      - family-names: Ahmad
+        given-names: N.
+      - family-names: Durrani
+        given-names: A.
+      - family-names: Ali
+        given-names: G.
+    journal: IEEE Access
+    volume: 9
+    start: 163625
+    end: 163639
+    year: 2021
+    doi: 10.1109/ACCESS.2021.3133423

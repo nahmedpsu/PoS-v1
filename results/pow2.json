@@ -1,0 +1,119 @@
+{
+ "experiment": "pow2",
+ "difficulties": [
+  3,
+  4
+ ],
+ "series": {
+  "3": [
+   {
+    "transactions": 100,
+    "cpu_seconds": 0.33743723599991426,
+    "hashes": 393031
+   },
+   {
+    "transactions": 200,
+    "cpu_seconds": 0.5423794319999615,
+    "hashes": 837387
+   },
+   {
+    "transactions": 300,
+    "cpu_seconds": 0.9479488059998857,
+    "hashes": 1270477
+   },
+   {
+    "transactions": 400,
+    "cpu_seconds": 1.1218417430000045,
+    "hashes": 1629208
+   },
+   {
+    "transactions": 500,
+    "cpu_seconds": 1.3058798509998724,
+    "hashes": 2088698
+   },
+   {
+    "transactions": 600,
+    "cpu_seconds": 1.8980369299999893,
+    "hashes": 2718563
+   },
+   {
+    "transactions": 700,
+    "cpu_seconds": 1.9711705140000504,
+    "hashes": 3080488
+   },
+   {
+    "transactions": 800,
+    "cpu_seconds": 2.0020098820000385,
+    "hashes": 3139543
+   },
+   {
+    "transactions": 900,
+    "cpu_seconds": 2.821968613999843,
+    "hashes": 3668265
+   },
+   {
+    "transactions": 1000,
+    "cpu_seconds": 2.694051371000114,
+    "hashes": 4038144
+   }
+  ],
+  "4": [
+   {
+    "transactions": 100,
+    "cpu_seconds": 5.126468672999863,
+    "hashes": 7714324
+   },
+   {
+    "transactions": 200,
+    "cpu_seconds": 7.424110386999928,
+    "hashes": 11580877
+   },
+   {
+    "transactions": 300,
+    "cpu_seconds": 12.857134350000024,
+    "hashes": 19953887
+   },
+   {
+    "transactions": 400,
+    "cpu_seconds": 16.98742274999995,
+    "hashes": 25837429
+   },
+   {
+    "transactions": 500,
+    "cpu_seconds": 22.35947656999997,
+    "hashes": 34120013
+   },
+   {
+    "transactions": 600,
+    "cpu_seconds": 26.464643984000077,
+    "hashes": 39540780
+   },
+   {
+    "transactions": 700,
+    "cpu_seconds": 32.74442130700004,
+    "hashes": 49309572
+   },
+   {
+    "transactions": 800,
+    "cpu_seconds": 35.33801697099989,
+    "hashes": 54084895
+   },
+   {
+    "transactions": 900,
+    "cpu_seconds": 38.45104906200004,
+    "hashes": 56154427
+   },
+   {
+    "transactions": 1000,
+    "cpu_seconds": 44.27417771299997,
+    "hashes": 65087107
+   }
+  ]
+ },
+ "machine": {
+  "python": "3.11.15",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "system": "Linux"
+ }
+}

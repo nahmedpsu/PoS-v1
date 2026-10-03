@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check src tests
+      - run: pytest -q
+      - run: PYTHONPATH=src python -m pop_sim run --quick --out /tmp/results --figures /tmp/figures
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quick-run-py${{ matrix.python-version }}
+          path: |
+            /tmp/results
+            /tmp/figures

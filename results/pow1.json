@@ -1,0 +1,122 @@
+{
+ "experiment": "pow1",
+ "max_guesses": 25000000,
+ "rows": [
+  {
+   "puzzle": "0a",
+   "length": 2,
+   "found": true,
+   "guesses": 3667,
+   "measured_seconds": 0.003492808000146397,
+   "cpu_seconds": 0.003492808000146397,
+   "extrapolated": false,
+   "search_space": 4900,
+   "peak_memory_kb": 1.1484375
+  },
+  {
+   "puzzle": "0ab",
+   "length": 3,
+   "found": true,
+   "guesses": 256648,
+   "measured_seconds": 0.2812813829998504,
+   "cpu_seconds": 0.2812813829998504,
+   "extrapolated": false,
+   "search_space": 343000,
+   "peak_memory_kb": 1.171875
+  },
+  {
+   "puzzle": "0abc",
+   "length": 4,
+   "found": true,
+   "guesses": 17965319,
+   "measured_seconds": 20.46239896100019,
+   "cpu_seconds": 20.46239896100019,
+   "extrapolated": false,
+   "search_space": 24010000,
+   "peak_memory_kb": 1.171875
+  },
+  {
+   "puzzle": "0abcd",
+   "length": 5,
+   "found": false,
+   "guesses": 25000000,
+   "measured_seconds": 27.360049919000176,
+   "cpu_seconds": 1376.2896252460546,
+   "extrapolated": true,
+   "search_space": 1680700000,
+   "peak_memory_kb": 0.810546875
+  },
+  {
+   "puzzle": "00a",
+   "length": 3,
+   "found": true,
+   "guesses": 258467,
+   "measured_seconds": 0.2810097679998762,
+   "cpu_seconds": 0.2810097679998762,
+   "extrapolated": false,
+   "search_space": 343000,
+   "peak_memory_kb": 1.1484375
+  },
+  {
+   "puzzle": "00ab",
+   "length": 4,
+   "found": true,
+   "guesses": 18092648,
+   "measured_seconds": 20.27203649099988,
+   "cpu_seconds": 20.27203649099988,
+   "extrapolated": false,
+   "search_space": 24010000,
+   "peak_memory_kb": 1.1484375
+  },
+  {
+   "puzzle": "00abc",
+   "length": 5,
+   "found": false,
+   "guesses": 25000000,
+   "measured_seconds": 27.23364466499993,
+   "cpu_seconds": 1379.6404460434035,
+   "extrapolated": true,
+   "search_space": 1680700000,
+   "peak_memory_kb": 0.810546875
+  },
+  {
+   "puzzle": "00gf",
+   "length": 4,
+   "found": true,
+   "guesses": 18093072,
+   "measured_seconds": 19.62423350500012,
+   "cpu_seconds": 19.62423350500012,
+   "extrapolated": false,
+   "search_space": 24010000,
+   "peak_memory_kb": 1.125
+  },
+  {
+   "puzzle": "00gfs",
+   "length": 5,
+   "found": false,
+   "guesses": 25000000,
+   "measured_seconds": 27.922955580000007,
+   "cpu_seconds": 1414.5937002099217,
+   "extrapolated": true,
+   "search_space": 1680700000,
+   "peak_memory_kb": 0.810546875
+  },
+  {
+   "puzzle": "00upha",
+   "length": 6,
+   "found": false,
+   "guesses": 25000000,
+   "measured_seconds": 28.72906633299999,
+   "cpu_seconds": 101885.79651125336,
+   "extrapolated": true,
+   "search_space": 117649000000,
+   "peak_memory_kb": 0.8193359375
+  }
+ ],
+ "machine": {
+  "python": "3.11.15",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "system": "Linux"
+ }
+}

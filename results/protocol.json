@@ -1,0 +1,498 @@
+{
+ "experiment": "protocol",
+ "rounds": 5,
+ "runs": {
+  "pop": {
+   "config": {
+    "n_pm": 2,
+    "rsus_per_pm": 3,
+    "vehicles_per_rsu": 5,
+    "pseudonyms_per_vehicle": 3,
+    "consensus": "pop",
+    "pow_difficulty": 3,
+    "seed": 1,
+    "malicious_vehicles": 1,
+    "avoid_previous_holder": true
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "messages": 91,
+     "rejected_messages": 0,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.030045982000074217,
+     "rsu_consensus_cpu": 0.32021187000015744,
+     "pm_winner": "PM-1",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.02246791800007486
+    },
+    {
+     "round": 2,
+     "messages": 91,
+     "rejected_messages": 1,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.02008348300002581,
+     "rsu_consensus_cpu": 0.3302000540000608,
+     "pm_winner": "PM-2",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.021780061000072237
+    },
+    {
+     "round": 3,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.08004640199995265,
+     "rsu_consensus_cpu": 0.4602377060000072,
+     "pm_winner": "PM-2",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.020542427999998836
+    },
+    {
+     "round": 4,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0900420739997935,
+     "rsu_consensus_cpu": 0.19019542499990166,
+     "pm_winner": "PM-1",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.02005198599999858
+    },
+    {
+     "round": 5,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.020056710000080785,
+     "rsu_consensus_cpu": 0.3002147050001895,
+     "pm_winner": "PM-2",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.02099331399995208
+    }
+   ],
+   "pm_chain_blocks": 6,
+   "pm_chain_valid": true,
+   "rsu_chains_valid": true,
+   "rsu_chain_blocks": {
+    "PM-1": 12,
+    "PM-2": 12
+   },
+   "linkability": {
+    "messages_observed": 441,
+    "pid_reused_by_same_vehicle": 0,
+    "pids_issued": 90,
+    "pids_held_by_more_than_one_vehicle": 90,
+    "vehicles": 30,
+    "revoked_vehicles": 1,
+    "flagged_messages": 1,
+    "pki_accesses": 31
+   },
+   "revocations": [
+    {
+     "vehicle": "VEH-00009-fe175330",
+     "pid": "PID-843fb1eedaff",
+     "rsu": "RSU-1.2",
+     "reason": "pseudonym-held-by-another-vehicle"
+    }
+   ],
+   "total_wall_seconds": 0.1173468850001882,
+   "mean_pm_consensus_cpu": 0.04805493019998539,
+   "mean_rsu_consensus_cpu": 0.3202119520000633
+  },
+  "poet": {
+   "config": {
+    "n_pm": 2,
+    "rsus_per_pm": 3,
+    "vehicles_per_rsu": 5,
+    "pseudonyms_per_vehicle": 3,
+    "consensus": "poet",
+    "pow_difficulty": 3,
+    "seed": 1,
+    "malicious_vehicles": 1,
+    "avoid_previous_holder": true
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "messages": 91,
+     "rejected_messages": 0,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0700086200000169,
+     "rsu_consensus_cpu": 0.24003399399997763,
+     "pm_winner": "PM-1",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.023178341999937402
+    },
+    {
+     "round": 2,
+     "messages": 91,
+     "rejected_messages": 1,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.15000458900012745,
+     "rsu_consensus_cpu": 0.3500299860000723,
+     "pm_winner": "PM-2",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.0223129969999718
+    },
+    {
+     "round": 3,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.07000743600003262,
+     "rsu_consensus_cpu": 0.39003115500021523,
+     "pm_winner": "PM-2",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.019450867999921684
+    },
+    {
+     "round": 4,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.1700070269998105,
+     "rsu_consensus_cpu": 0.22003357500008863,
+     "pm_winner": "PM-1",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.020023367000021608
+    },
+    {
+     "round": 5,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.020004520999937086,
+     "rsu_consensus_cpu": 0.17002670700018824,
+     "pm_winner": "PM-1",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.019882899000094767
+    }
+   ],
+   "pm_chain_blocks": 6,
+   "pm_chain_valid": true,
+   "rsu_chains_valid": true,
+   "rsu_chain_blocks": {
+    "PM-1": 12,
+    "PM-2": 12
+   },
+   "linkability": {
+    "messages_observed": 441,
+    "pid_reused_by_same_vehicle": 0,
+    "pids_issued": 90,
+    "pids_held_by_more_than_one_vehicle": 90,
+    "vehicles": 30,
+    "revoked_vehicles": 1,
+    "flagged_messages": 1,
+    "pki_accesses": 31
+   },
+   "revocations": [
+    {
+     "vehicle": "VEH-00009-fe175330",
+     "pid": "PID-843fb1eedaff",
+     "rsu": "RSU-1.2",
+     "reason": "pseudonym-held-by-another-vehicle"
+    }
+   ],
+   "total_wall_seconds": 0.11639435100005358,
+   "mean_pm_consensus_cpu": 0.09600643859998491,
+   "mean_rsu_consensus_cpu": 0.2740310834001084
+  },
+  "pow2": {
+   "config": {
+    "n_pm": 2,
+    "rsus_per_pm": 3,
+    "vehicles_per_rsu": 5,
+    "pseudonyms_per_vehicle": 3,
+    "consensus": "pow2",
+    "pow_difficulty": 3,
+    "seed": 1,
+    "malicious_vehicles": 1,
+    "avoid_previous_holder": true
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "messages": 91,
+     "rejected_messages": 0,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0013509400000657479,
+     "rsu_consensus_cpu": 0.030796648999967147,
+     "pm_winner": "PM-1",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.05668069200009995
+    },
+    {
+     "round": 2,
+     "messages": 91,
+     "rejected_messages": 1,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0026024600001619547,
+     "rsu_consensus_cpu": 0.0329330409999784,
+     "pm_winner": "PM-2",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.0576639990001695
+    },
+    {
+     "round": 3,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.008185123999965072,
+     "rsu_consensus_cpu": 0.031222142999922653,
+     "pm_winner": "PM-2",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.05981784699997661
+    },
+    {
+     "round": 4,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.007991368999910264,
+     "rsu_consensus_cpu": 0.02267382600007295,
+     "pm_winner": "PM-1",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.05191318700008196
+    },
+    {
+     "round": 5,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0017579630000454927,
+     "rsu_consensus_cpu": 0.029779534000226704,
+     "pm_winner": "PM-1",
+     "pm_miners": 2,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.05325108699980774
+    }
+   ],
+   "pm_chain_blocks": 6,
+   "pm_chain_valid": true,
+   "rsu_chains_valid": true,
+   "rsu_chain_blocks": {
+    "PM-1": 12,
+    "PM-2": 12
+   },
+   "linkability": {
+    "messages_observed": 441,
+    "pid_reused_by_same_vehicle": 0,
+    "pids_issued": 90,
+    "pids_held_by_more_than_one_vehicle": 90,
+    "vehicles": 30,
+    "revoked_vehicles": 1,
+    "flagged_messages": 1,
+    "pki_accesses": 31
+   },
+   "revocations": [
+    {
+     "vehicle": "VEH-00009-fe175330",
+     "pid": "PID-b805090b20bb",
+     "rsu": "RSU-1.2",
+     "reason": "pseudonym-held-by-another-vehicle"
+    }
+   ],
+   "total_wall_seconds": 0.2909732900000108,
+   "mean_pm_consensus_cpu": 0.004377571200029707,
+   "mean_rsu_consensus_cpu": 0.029481038600033573
+  },
+  "pokw": {
+   "config": {
+    "n_pm": 2,
+    "rsus_per_pm": 3,
+    "vehicles_per_rsu": 5,
+    "pseudonyms_per_vehicle": 3,
+    "consensus": "pokw",
+    "pow_difficulty": 3,
+    "seed": 1,
+    "malicious_vehicles": 1,
+    "avoid_previous_holder": true
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "messages": 91,
+     "rejected_messages": 0,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.005082851999986815,
+     "rsu_consensus_cpu": 0.012977819999832718,
+     "pm_winner": "PM-1",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.040548530000023675
+    },
+    {
+     "round": 2,
+     "messages": 91,
+     "rejected_messages": 1,
+     "used_collected": 90,
+     "shuffled": 90,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.006482999000127165,
+     "rsu_consensus_cpu": 0.0023750059999656514,
+     "pm_winner": "PM-2",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.029212893000021722
+    },
+    {
+     "round": 3,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0009442240000225866,
+     "rsu_consensus_cpu": 0.01669208500015884,
+     "pm_winner": "PM-1",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.03788871000006111
+    },
+    {
+     "round": 4,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0010528080001677154,
+     "rsu_consensus_cpu": 0.004889324000032502,
+     "pm_winner": "PM-2",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.02602505499999097
+    },
+    {
+     "round": 5,
+     "messages": 87,
+     "rejected_messages": 0,
+     "used_collected": 87,
+     "shuffled": 87,
+     "rsu_blocks": 4,
+     "rsu_txs": 12,
+     "pm_block_txs": 4,
+     "pm_consensus_cpu": 0.0011421159999827069,
+     "rsu_consensus_cpu": 0.009715632999814261,
+     "pm_winner": "PM-1",
+     "pm_miners": 1,
+     "reassigned_to_previous_holder": 0,
+     "wall_seconds": 0.03284999300012714
+    }
+   ],
+   "pm_chain_blocks": 6,
+   "pm_chain_valid": true,
+   "rsu_chains_valid": true,
+   "rsu_chain_blocks": {
+    "PM-1": 12,
+    "PM-2": 12
+   },
+   "linkability": {
+    "messages_observed": 441,
+    "pid_reused_by_same_vehicle": 0,
+    "pids_issued": 90,
+    "pids_held_by_more_than_one_vehicle": 90,
+    "vehicles": 30,
+    "revoked_vehicles": 1,
+    "flagged_messages": 1,
+    "pki_accesses": 31
+   },
+   "revocations": [
+    {
+     "vehicle": "VEH-00009-fe175330",
+     "pid": "PID-b805090b20bb",
+     "rsu": "RSU-1.2",
+     "reason": "pseudonym-held-by-another-vehicle"
+    }
+   ],
+   "total_wall_seconds": 0.17806865900001867,
+   "mean_pm_consensus_cpu": 0.0029409998000573976,
+   "mean_rsu_consensus_cpu": 0.009329973599960795
+  }
+ }
+}

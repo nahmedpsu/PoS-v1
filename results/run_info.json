@@ -1,0 +1,11 @@
+{
+ "version": "1.0.0",
+ "quick": false,
+ "machine": {
+  "python": "3.11.15",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "system": "Linux"
+ },
+ "wall_seconds": 432.688678323
+}
