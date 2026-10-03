@@ -49,3 +49,9 @@ IEEE Access, vol. 9, pp. 163625-163639, Dec. 2021, doi:10.1109/ACCESS.2021.31334
   known position of the puzzle in the enumeration. The manuscript's absolute
   numbers for these puzzles come from a different enumeration order that the
   text does not specify.
+
+## PoP v2
+
+The extensions that go beyond the manuscript (verifiable election, measured
+linkability, demand-aware distribution, anchoring, network model, Sybil
+analysis, benchmark packaging) are documented in `pop_v2.md`.

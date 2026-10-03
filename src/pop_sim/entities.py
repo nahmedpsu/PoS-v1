@@ -9,6 +9,7 @@ twice: at initial registration and on revocation.
 from __future__ import annotations
 
 import json
+import math
 import random
 import time
 from dataclasses import dataclass
@@ -131,6 +132,13 @@ class PKI:
         signature = crypto.sign(self.keys.sk, ciphertext)
         return ciphertext, signature
 
+    # PoP v2: PKI binds a node's VRF key to its identity (Sybil resistance) --
+    def certify_vrf_key(self, node_id: str, vrf_pk_hex: str) -> str:
+        return crypto.sign(self.keys.sk, f"vrf:{node_id}:{vrf_pk_hex}".encode()).hex()
+
+    def verify_vrf_cert(self, node_id: str, vrf_pk_hex: str, cert: str) -> bool:
+        return crypto.verify(self.keys.pk, f"vrf:{node_id}:{vrf_pk_hex}".encode(), bytes.fromhex(cert))
+
     # Revocation (second and last PKI access in the vehicle lifecycle) ----
     def revoke(self, cert: str) -> None:
         self.accesses += 1
@@ -211,6 +219,8 @@ class Vehicle:
         self.malicious = False
         self.revoked = False
         self._kept_copy: Pseudonym | None = None       # a malicious OBU keeps a used credential
+        self.current: Pseudonym | None = None          # mobility mode: pseudonym in use for beacons
+        self.changes = 0
 
     @property
     def vehicle_id(self) -> str:
@@ -231,6 +241,30 @@ class Vehicle:
         self.history.append(p.pid)
         if self.malicious and self._kept_copy is None:
             self._kept_copy = p
+        return msg
+
+    def switch_pseudonym(self) -> Pseudonym | None:
+        """Mobility mode: retire the current pseudonym and take the next one."""
+        if self.current is not None:
+            self.used.append(self.current)
+            self.history.append(self.current.pid)
+            if self.malicious and self._kept_copy is None:
+                self._kept_copy = self.current
+            self.current = None
+        if self.pseudonyms:
+            self.current = self.pseudonyms.pop(0)
+            self.changes += 1
+        return self.current
+
+    def beacon(self, x: float, v: float, direction: int) -> SafetyMessage | None:
+        """Mobility mode: sign a CAM with the current pseudonym (no rotation)."""
+        if self.current is None:
+            return None
+        self.position = (x, 0.0)
+        self.speed = v
+        self.direction = float(direction)
+        msg = SafetyMessage(self.current.pid, self.position, v, float(direction), time.time())
+        msg.signature = crypto.sign(self.current.keys.sk, msg.body()).hex()
         return msg
 
     def replay_used(self) -> SafetyMessage | None:
@@ -268,10 +302,25 @@ class RSU:
         self.ledger = pm.ledger                       # view of the RSU-level blockchain
         self.observed: list[SafetyMessage] = []
         self.flagged: list[tuple[str, str]] = []
+        self.forecast: float | None = None
+        self.safety_stock: float = 0.0
+        self.stockouts = 0                            # vehicles that got fewer sets than needed
+
+    def active_vehicles(self) -> int:
+        return sum(1 for v in self.vehicles if not v.revoked)
 
     def demand(self, per_vehicle: int) -> int:
-        """Traffic need reported to the PM: active vehicles under coverage."""
-        return sum(1 for v in self.vehicles if not v.revoked) * per_vehicle
+        """Traffic need reported to the PM: active vehicles under coverage,
+        or the forecast when one is maintained (mobility mode)."""
+        if self.forecast is not None:
+            return int(math.ceil(self.forecast * (1 + self.safety_stock))) * per_vehicle
+        return self.active_vehicles() * per_vehicle
+
+    def update_forecast(self, alpha: float, safety_stock: float) -> None:
+        """Exponential moving average of the vehicles seen under coverage."""
+        n = self.active_vehicles()
+        self.forecast = n if self.forecast is None else alpha * n + (1 - alpha) * self.forecast
+        self.safety_stock = safety_stock
 
     def receive_sets(self, pseudonyms: list[Pseudonym]) -> None:
         self.shuffled_sets.extend(pseudonyms)
@@ -318,6 +367,8 @@ class RSU:
         assigned = 0
         for v in active:
             take = plan.get(v.index, [])
+            if len(take) < per_vehicle:
+                self.stockouts += 1
             if not take:
                 continue
             v.receive_pseudonyms(take)

@@ -8,8 +8,9 @@ import sys
 import time
 from pathlib import Path
 
-from . import __version__, experiments as ex, plots
+from . import __version__, experiments as ex, experiments_v2 as ex2, plots, plots_v2
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
+from .v2.mobility import RoadConfig
 
 
 def _dump(obj: dict, path: Path) -> None:
@@ -76,10 +77,89 @@ def cmd_run(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_run_v2(args: argparse.Namespace) -> int:
+    out = Path(args.out)
+    figs = Path(args.figures)
+    quick = args.quick
+    t0 = time.perf_counter()
+    log = lambda m: print(f"[{time.perf_counter() - t0:7.1f}s] {m}", flush=True)  # noqa: E731
+
+    log("1. verifiable election cost")
+    r = ex2.exp_v2_election_cost(node_counts=(10, 50) if quick else (10, 20, 50, 100, 200), rounds=3 if quick else 10)
+    _dump(r, out / "v2_election_cost.json")
+    plots_v2.fig_v2_election_cost(r, figs / "v2_election_cost.png")
+
+    log("5. forks under propagation delay")
+    r = ex2.exp_v2_forks(rounds=60 if quick else 300)
+    _dump(r, out / "v2_forks.json")
+    plots_v2.fig_v2_forks(r, figs / "v2_forks.png")
+
+    log("5/7. consensus latency incl. PBFT and Raft")
+    r = ex2.exp_v2_latency(rounds=10 if quick else 50, pow2_difficulty=2 if quick else 3)
+    _dump(r, out / "v2_latency.json")
+    plots_v2.fig_v2_latency(r, figs / "v2_latency.png")
+
+    log("2. measured linkability")
+    r = ex2.exp_v2_linkability(densities=(2, 10, 40) if quick else (2, 5, 10, 20, 40, 80),
+                               seconds=90 if quick else 300)
+    _dump(r, out / "v2_linkability.json")
+    plots_v2.fig_v2_linkability(r, figs / "v2_linkability.png")
+
+    log("3. demand-aware distribution")
+    r = ex2.exp_v2_demand(safety_stocks=(0.0, 0.25) if quick else (0.0, 0.1, 0.25, 0.5),
+                          round_seconds=(20, 80) if quick else (20, 40, 80), rounds=3 if quick else 6)
+    _dump(r, out / "v2_demand.json")
+    plots_v2.fig_v2_demand(r, figs / "v2_demand.png")
+
+    log("4. chain anchoring")
+    r = ex2.exp_v2_anchoring(rsu_blocks=(10, 100) if quick else (10, 50, 100, 500, 1000))
+    _dump(r, out / "v2_anchoring.json")
+    plots_v2.fig_v2_anchoring(r, figs / "v2_anchoring.png")
+
+    log("6. Sybil analysis")
+    r = ex2.exp_v2_sybil(rounds=300 if quick else 2000)
+    _dump(r, out / "v2_sybil.json")
+    plots_v2.fig_v2_sybil(r, figs / "v2_sybil.png")
+
+    log("end-to-end PoP v2 protocol")
+    r = ex2.exp_v2_protocol(rounds=2 if quick else 5)
+    _dump(r, out / "v2_protocol.json")
+    plots_v2.fig_v2_protocol(r, figs / "v2_protocol.png")
+
+    _dump({"version": __version__, "quick": quick, "machine": ex.machine_info(),
+           "wall_seconds": time.perf_counter() - t0}, out / "v2_run_info.json")
+    log("done")
+    return 0
+
+
+def cmd_bench(args: argparse.Namespace) -> int:
+    """Run the protocol from a JSON configuration (any ITSConfig field)."""
+    spec = json.loads(Path(args.config).read_text())
+    spec = {k: v for k, v in spec.items() if not k.startswith("_")}
+    rounds = spec.pop("rounds", 5)
+    if "road" in spec and spec["road"] is not None:
+        spec["road"] = RoadConfig(**spec["road"])
+    cfg = ITSConfig(**spec)
+    sim = ITSSimulation(cfg)
+    t0 = time.perf_counter()
+    sim.run(rounds)
+    s = sim.summary()
+    s["wall_seconds"] = time.perf_counter() - t0
+    s["vehicles"] = len(sim.vehicles)
+    text = json.dumps(s, indent=1, default=str)
+    if args.out:
+        Path(args.out).write_text(text)
+        print(f"wrote {args.out}")
+    else:
+        print(text)
+    return 0
+
+
 def cmd_demo(args: argparse.Namespace) -> int:
     cfg = ITSConfig(n_pm=args.pms, rsus_per_pm=args.rsus, vehicles_per_rsu=args.vehicles,
                     pseudonyms_per_vehicle=args.pseudonyms, consensus=args.consensus,
-                    malicious_vehicles=args.malicious, seed=args.seed)
+                    malicious_vehicles=args.malicious, seed=args.seed, mobility=args.mobility,
+                    silent_period=3.0 if args.mobility else 0.0, position_noise_m=3.0 if args.mobility else 0.0)
     sim = ITSSimulation(cfg)
     print(f"ITS domain: {len(sim.pms)} PMs, {len(sim.rsus)} RSUs, {len(sim.vehicles)} vehicles, "
           f"{len(sim.pki.issued_pids)} pseudonyms, consensus={cfg.consensus}")
@@ -90,6 +170,9 @@ def cmd_demo(args: argparse.Namespace) -> int:
               f"({r.pm_miners}/{len(sim.pms)} mining, {r.pm_consensus_cpu*1e3:.1f} ms), "
               f"{r.rsu_blocks} RSU blocks, {r.reassigned_to_previous_holder} returned to a previous holder")
     s = sim.summary()
+    if s["tracking"]:
+        print("tracker:", json.dumps(s["tracking"]))
+        print("stockouts:", s["stockouts"], "anchoring:", json.dumps(s["anchoring"]))
     print("PM chain:", s["pm_chain_blocks"], "blocks, valid =", s["pm_chain_valid"])
     print("RSU chains:", s["rsu_chain_blocks"], "valid =", s["rsu_chains_valid"])
     print("linkability:", json.dumps(s["linkability"]))
@@ -107,6 +190,15 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--out", default="results")
     r.add_argument("--figures", default="figures")
     r.set_defaults(func=cmd_run)
+    r2 = sub.add_parser("run-v2", help="run the PoP v2 experiments and write results/v2 and figures/v2")
+    r2.add_argument("--quick", action="store_true")
+    r2.add_argument("--out", default="results/v2")
+    r2.add_argument("--figures", default="figures/v2")
+    r2.set_defaults(func=cmd_run_v2)
+    b = sub.add_parser("bench", help="run the protocol from a JSON configuration file")
+    b.add_argument("config")
+    b.add_argument("--out", default=None, help="write the summary JSON here instead of stdout")
+    b.set_defaults(func=cmd_bench)
     d = sub.add_parser("demo", help="trace a few shuffle rounds of the protocol")
     d.add_argument("--consensus", choices=CONSENSUS_KINDS, default="pop")
     d.add_argument("--pms", type=int, default=2)
@@ -116,6 +208,7 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--rounds", type=int, default=3)
     d.add_argument("--malicious", type=int, default=1)
     d.add_argument("--seed", type=int, default=1)
+    d.add_argument("--mobility", action="store_true", help="vehicles drive on a ring road (PoP v2 mode)")
     d.set_defaults(func=cmd_demo)
     args = p.parse_args(argv)
     return args.func(args)

@@ -1,0 +1,17 @@
+{
+  "_comment": "Configuration for `pop-sim bench`. Any ITSConfig field can be set; `road` holds RoadConfig fields.",
+  "rounds": 5,
+  "consensus": "popv2",
+  "n_pm": 2,
+  "rsus_per_pm": 3,
+  "pseudonyms_per_vehicle": 3,
+  "mobility": true,
+  "road": {"length_m": 5000, "density_per_km": 8, "speed_mean": 14, "speed_sd": 3},
+  "round_seconds": 30,
+  "silent_period": 3,
+  "position_noise_m": 3,
+  "safety_stock": 0.25,
+  "malicious_vehicles": 1,
+  "anchoring": true,
+  "seed": 1
+}

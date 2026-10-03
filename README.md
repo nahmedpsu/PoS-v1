@@ -1,4 +1,4 @@
-# PoS v1: Proof of Pseudonym simulation
+# PoS: Proof of Pseudonym simulation (v1 reproduction and v2 extensions)
 
 A simulation of the protocol proposed in
 
@@ -18,6 +18,13 @@ Elapsed Time.
 
 This repository implements all of that in Python and re-runs the paper's
 experiments (Figures 7 to 14, Table 2) and its security analysis (Section VI).
+That is **PoP v1**, the manuscript as published. On top of it, **PoP v2** adds
+what the v1 simulation showed was missing: a verifiable serverless election, a
+measured (not asserted) unlinkability, demand-aware distribution, anchored
+blockchains with cross-PM proofs, a network model with fork analysis and PBFT/Raft
+baselines, a Sybil analysis, and a configurable benchmark. See
+[docs/pop_v2.md](docs/pop_v2.md) for the design and the "PoP v2 results" section
+below for the numbers.
 
 ## What is in the box
 
@@ -32,15 +39,26 @@ src/pop_sim/
     pokw.py          Proof of Kernel Work
     poet.py          Algorithm 3  - Proof of Elapsed Time
     pop.py           Algorithm 6  - Proof of Pseudonym (server, handshake, >= 50 % selection, signed election)
-  shuffle.py         Algorithm 4 (shuffling over the PM cloud) and Algorithm 5 (RSU distribution)
+    popv2.py         PoP v2 - serverless election on a VRF, PKI-bound keys, fork rule
+  vrf.py             RSA-FDH-VRF of RFC 9381 (pure Python, CRT)
+  shuffle.py         Algorithm 4 (shuffling over the PM cloud) and Algorithm 5 (RSU distribution),
+                     plus the v2 options: mobility, forecasting, anchoring, adversary
   block_time.py      tB = nT*tV + 2*tP + tprep + tM*N
-  experiments.py     Figures 7-14, scalability, end-to-end protocol runs, security scenarios
-  plots.py           the figures
-  cli.py             `pop-sim run` and `pop-sim demo`
-tests/               23 tests: crypto, chain integrity, every consensus, protocol invariants, attacks
-results/             JSON produced by the full run on the reference machine
-figures/             PNG figures produced by the same run
+  v2/
+    network.py       latency/loss model, fork analysis, latency models for 6 consensus algorithms
+    mobility.py      ring road, Poisson traffic, CAM beacons
+    adversary.py     kinematic tracker across pseudonym changes
+    anchoring.py     Merkle roots, RSU-chain anchors in PM blocks, allotment proofs
+    sybil.py         Sybil / collusion analysis
+  experiments.py     v1: Figures 7-14, scalability, end-to-end protocol runs, security scenarios
+  experiments_v2.py  v2: the seven experiments of docs/pop_v2.md
+  plots.py, plots_v2.py
+  cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
+tests/               36 tests: crypto, chain integrity, every consensus, protocol invariants, attacks, v2
+results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
+config/benchmark.json  example configuration for `pop-sim bench`
 docs/paper_mapping.md  section-by-section mapping from the manuscript to the code, and the deviations
+docs/pop_v2.md         what v2 changes, why, and how each change is measured
 ```
 
 ## Quick start
@@ -48,10 +66,14 @@ docs/paper_mapping.md  section-by-section mapping from the manuscript to the cod
 ```bash
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # 23 tests
-PYTHONPATH=src python -m pop_sim demo       # trace three shuffle rounds
-PYTHONPATH=src python -m pop_sim run --quick   # all experiments, small budgets (~15 s)
-PYTHONPATH=src python -m pop_sim run           # full budgets (~10 min), writes results/ and figures/
+pytest -q                                   # 36 tests
+PYTHONPATH=src python -m pop_sim demo       # trace three shuffle rounds (v1)
+PYTHONPATH=src python -m pop_sim demo --mobility --consensus popv2   # v2: vehicles drive, VRF election
+PYTHONPATH=src python -m pop_sim run --quick     # v1 experiments, small budgets (~15 s)
+PYTHONPATH=src python -m pop_sim run             # v1 full budgets (~7 min), writes results/ and figures/
+PYTHONPATH=src python -m pop_sim run-v2 --quick  # v2 experiments, small budgets (~20 s)
+PYTHONPATH=src python -m pop_sim run-v2          # v2 full budgets (~10 min), writes results/v2 and figures/v2
+PYTHONPATH=src python -m pop_sim bench config/benchmark.json   # the protocol from a JSON configuration
 ```
 
 `pip install -e .` installs the `pop-sim` command so the `PYTHONPATH=src` prefix is not needed.
@@ -105,7 +127,7 @@ Every shuffle round (`run_round`) then does:
 The consensus is pluggable (`pop`, `poet`, `pow2`, `pokw`) so the same protocol run
 can be compared across algorithms.
 
-## Results
+## PoP v1 results (the manuscript reproduced)
 
 Numbers below are from `results/` and `figures/`, produced by the full run on the
 reference machine recorded in `results/run_info.json` (Python 3.11, x86_64, cloud
@@ -254,6 +276,10 @@ mechanically; `tests/test_protocol.py` asserts them all.
   that the manuscript implies but does not spell out (no-return-to-previous-holder
   allotment and the signed election record) are documented in `docs/paper_mapping.md`
   and can be switched off.
+
+## PoP v2 results
+
+V2_RESULTS_PLACEHOLDER
 
 ## License
 

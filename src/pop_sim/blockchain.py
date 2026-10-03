@@ -72,20 +72,31 @@ class Block:
     nonce: int = 0
     hash: str = ""
 
+    def tx_root(self) -> str:
+        """Merkle root of the transaction hashes (see ``v2.anchoring``)."""
+        from .v2.anchoring import merkle_root  # local import: anchoring imports this module
+
+        return merkle_root([t.hash() for t in self.transactions])
+
+    def header_fields(self) -> dict:
+        return {
+            "index": self.index,
+            "previous_hash": self.previous_hash,
+            "timestamp": self.timestamp,
+            "tx_root": self.tx_root(),
+            "tx_count": len(self.transactions),
+            "miner": self.miner,
+            "consensus": self.consensus,
+            "proof": self.proof,
+            "nonce": self.nonce,
+        }
+
+    @staticmethod
+    def hash_of_fields(fields: dict) -> str:
+        return crypto.sha256_hex(json.dumps(fields, sort_keys=True).encode())
+
     def header_bytes(self) -> bytes:
-        return json.dumps(
-            {
-                "index": self.index,
-                "previous_hash": self.previous_hash,
-                "timestamp": self.timestamp,
-                "tx_hashes": [t.hash() for t in self.transactions],
-                "miner": self.miner,
-                "consensus": self.consensus,
-                "proof": self.proof,
-                "nonce": self.nonce,
-            },
-            sort_keys=True,
-        ).encode()
+        return json.dumps(self.header_fields(), sort_keys=True).encode()
 
     def compute_hash(self) -> str:
         return crypto.sha256_hex(self.header_bytes())

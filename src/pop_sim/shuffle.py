@@ -17,10 +17,15 @@ from .blockchain import Blockchain, Transaction
 from .consensus.poet import poet_elect
 from .consensus.pokw import pokw_mine
 from .consensus.pop import PoPServer, verify_election
+from .consensus.popv2 import V2Node, popv2_elect, verify_popv2_proof
 from .consensus.pow2 import mine_pow2
+from .v2.adversary import TrackingAdversary
+from .v2.anchoring import anchors_to_proof, build_allotment_proof, detect_rsu_tamper, make_anchor, proof_size_bytes, time_verify
+from .v2.mobility import Beacon, Road, RoadConfig
+from .vrf import generate_vrf_keypair
 from .entities import PKI, PMCloud, Manufacturer, PrivacyManager, Pseudonym, PseudonymLedger, RSU, Vehicle
 
-CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw")
+CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw", "popv2")
 
 
 @dataclass
@@ -34,6 +39,17 @@ class ITSConfig:
     seed: int = 1
     malicious_vehicles: int = 0
     avoid_previous_holder: bool = True   # RSU never hands a pseudonym back to a vehicle that used it
+    # ---- PoP v2 options ----
+    anchoring: bool = True               # commit RSU-chain block hashes into every PM block
+    vrf_bits: int = 2048                 # RSA-FDH-VRF key size for consensus "popv2"
+    mobility: bool = False               # vehicles drive on a ring road and beacon every second
+    road: RoadConfig | None = None       # mobility parameters (n_rsu is forced to n_pm * rsus_per_pm)
+    round_seconds: int = 30              # simulated seconds per shuffle round in mobility mode
+    silent_period: float = 0.0           # seconds without beacons after a pseudonym change
+    position_noise_m: float = 0.0        # GPS error added to what the eavesdropper sees
+    forecast_alpha: float = 0.5          # EMA weight of the RSU demand forecast
+    safety_stock: float = 0.0            # extra fraction of sets an RSU asks for above its forecast
+    adversary_gate_m: float = 8.0        # tracking adversary's matching gate
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
@@ -115,6 +131,11 @@ class ITSSimulation:
         self.rounds: list[RoundStats] = []
         self.holder_history: dict[str, set[str]] = {}       # pid -> vehicles that held it
         self.revocations: list[dict] = []
+        self.v2nodes: dict[str, V2Node] = {}                # PoP v2 election keys, PKI-certified
+        self.road: Road | None = None
+        self.adversary: TrackingAdversary | None = None
+        self.true_changes = 0
+        self.sim_time = 0.0
         self._build()
 
     # ------------------------------------------------------------------
@@ -124,17 +145,36 @@ class ITSSimulation:
         for i in range(cfg.n_pm):
             pm = PrivacyManager(f"PM-{i+1}", self.cloud, self.rng, self.ledger)
             pm.rsu_chain.validator = self.validate_block
+            pm.anchored_upto = 0
             self.pms.append(pm)
             for j in range(cfg.rsus_per_pm):
                 rsu = RSU(f"RSU-{i+1}.{j+1}", pm, self.rng)
                 pm.rsus.append(rsu)
                 self.rsus.append(rsu)
-                for _ in range(cfg.vehicles_per_rsu):
-                    vidx += 1
-                    v = Vehicle(vidx, self.rng)
-                    self.manufacturer.provision(v)            # Alg. 4 steps 1-3
-                    rsu.vehicles.append(v)
-                    self.vehicles.append(v)
+                if not cfg.mobility:
+                    for _ in range(cfg.vehicles_per_rsu):
+                        vidx += 1
+                        v = Vehicle(vidx, self.rng)
+                        self.manufacturer.provision(v)            # Alg. 4 steps 1-3
+                        rsu.vehicles.append(v)
+                        self.vehicles.append(v)
+        if cfg.mobility:
+            road_cfg = cfg.road or RoadConfig(seed=cfg.seed)
+            road_cfg.n_rsu = cfg.n_pm * cfg.rsus_per_pm
+            self.road = Road(road_cfg)
+            self.adversary = TrackingAdversary(road_cfg.length_m, cfg.adversary_gate_m, 1.0)
+            for mv in self.road.vehicles:
+                v = Vehicle(mv.vid, self.rng)
+                self.manufacturer.provision(v)
+                self.vehicles.append(v)
+            self._place_vehicles()
+            for rsu in self.rsus:
+                rsu.update_forecast(cfg.forecast_alpha, cfg.safety_stock)
+        if cfg.consensus == "popv2":
+            for node_id in [pm.pm_id for pm in self.pms] + [r.rsu_id for r in self.rsus]:
+                node = V2Node(node_id, generate_vrf_keypair(cfg.vrf_bits))
+                node.cert = self.pki.certify_vrf_key(node_id, node.pk.to_hex())
+                self.v2nodes[node_id] = node
         for v in self.rng.sample(self.vehicles, cfg.malicious_vehicles):
             v.malicious = True
 
@@ -155,19 +195,44 @@ class ITSSimulation:
         if block.consensus == "pop":
             return verify_election(block.proof, self.pop_server.keys.pk_hex) and \
                 block.miner == block.proof.get("winner")
+        if block.consensus == "popv2":
+            node = self.v2nodes.get(block.miner)
+            if node is None or not self.pki.verify_vrf_cert(node.node_id, node.pk.to_hex(), node.cert):
+                return False
+            return verify_popv2_proof(block.proof, block.previous_hash, block.index, block.miner,
+                                      certified_pk=node.pk.to_hex())
         return True
+
+    def _place_vehicles(self) -> None:
+        """Mobility mode: RSU membership follows the vehicles' positions."""
+        for rsu in self.rsus:
+            rsu.vehicles = []
+        by_vid = {v.index: v for v in self.vehicles}
+        for mv in self.road.vehicles:
+            self.rsus[mv.rsu].vehicles.append(by_vid[mv.vid])
 
     def _node_ids(self, nodes) -> list[str]:
         return [getattr(n, "pm_id", None) or n.rsu_id for n in nodes]
 
-    def _mine(self, chain: Blockchain, nodes, txs: list[Transaction]) -> tuple[ConsensusOutcome, int]:
+    def _mine(self, chain: Blockchain, nodes, txs: list[Transaction],
+              extra_proof: dict | None = None) -> tuple[ConsensusOutcome, int]:
         """Elect a publisher among ``nodes`` and append a block of ``txs``."""
         ids = self._node_ids(nodes)
         data_hash = crypto.sha256_hex("".join(t.hash() for t in txs) + chain.last.hash)
-        outcome = run_consensus(self.cfg.consensus, ids, data_hash, self.rng,
-                                self.cfg.pow_difficulty, self.pop_server)
-        block = chain.new_block(txs, miner=outcome.winner, consensus=outcome.kind,
-                                proof={**outcome.proof, "miners": outcome.miners})
+        if self.cfg.consensus == "popv2":
+            v2 = [self.v2nodes[i] for i in ids]
+            res, pi = popv2_elect(v2, chain.last.hash, len(chain.chain))
+            wnode = self.v2nodes[res.winner]
+            outcome = ConsensusOutcome("popv2", res.winner, res.nodes, len(res.miners),
+                                       res.prove_seconds_mean + res.race_seconds + res.verify_seconds,
+                                       res.proof(wnode, pi))
+        else:
+            outcome = run_consensus(self.cfg.consensus, ids, data_hash, self.rng,
+                                    self.cfg.pow_difficulty, self.pop_server)
+        proof = {**outcome.proof, "miners": outcome.miners}
+        if extra_proof:
+            proof.update(extra_proof)
+        block = chain.new_block(txs, miner=outcome.winner, consensus=outcome.kind, proof=proof)
         chain.add_block(block)
         return outcome, len(txs)
 
@@ -179,6 +244,10 @@ class ITSSimulation:
         blocks = 0
         txs_total = 0
         reassigned = 0
+        if self.cfg.mobility and not initial:
+            self._place_vehicles()
+            for rsu in self.rsus:
+                rsu.update_forecast(self.cfg.forecast_alpha, self.cfg.safety_stock)
         for pm in self.pms:
             pm.serve_rsus(per_vehicle)
             txs = []
@@ -207,7 +276,9 @@ class ITSSimulation:
 
         # 1. Vehicles broadcast safety messages signed with pseudonyms.
         messages = rejected = 0
-        for rsu in self.rsus:
+        if self.cfg.mobility:
+            messages, rejected = self._drive_round()
+        for rsu in (self.rsus if not self.cfg.mobility else []):
             for v in rsu.vehicles:
                 if v.revoked:
                     continue
@@ -264,7 +335,14 @@ class ITSSimulation:
                 src = pm_by_id[origin]
                 txs.append(src.make_tx("shuffle", pm_by_id[dst_id].keys.pk,
                                        {"from": origin, "to": dst_id, "pids": [p.pid for p in group]}))
-        outcome, pm_txs = self._mine(self.pm_chain, self.pms, txs)
+        extra = None
+        if self.cfg.anchoring:
+            anchors = []
+            for pm in self.pms:
+                anchors.append(make_anchor(pm.rsu_chain, pm.pm_id, pm.anchored_upto))
+                pm.anchored_upto = len(pm.rsu_chain.chain)
+            extra = anchors_to_proof(anchors)
+        outcome, pm_txs = self._mine(self.pm_chain, self.pms, txs, extra_proof=extra)
 
         # 5. Algorithm 4 line 21: PMs retrieve the new sets; Algorithm 5 again.
         for dst_id, ps in relocated.items():
@@ -280,6 +358,56 @@ class ITSSimulation:
         )
         self.rounds.append(stats)
         return stats
+
+    def _drive_round(self) -> tuple[int, int]:
+        """Mobility mode: ``round_seconds`` seconds of driving.  Vehicles switch
+        pseudonym ``pseudonyms_per_vehicle`` times per round, keep silent for
+        ``silent_period`` seconds after each switch, beacon once a second
+        otherwise, and the eavesdropper sees every beacon (with GPS noise)."""
+        cfg = self.cfg
+        road = self.road
+        by_vid = {v.index: v for v in self.vehicles}
+        period = max(1, cfg.round_seconds // cfg.pseudonyms_per_vehicle)
+        silent_until: dict[int, float] = {}
+        messages = rejected = 0
+        for step in range(cfg.round_seconds):
+            road.step(1.0)
+            self.sim_time += 1.0
+            beacons: list[Beacon] = []
+            for mv in road.vehicles:
+                v = by_vid[mv.vid]
+                if v.revoked:
+                    continue
+                if step % period == 0:
+                    if v.switch_pseudonym() is not None:
+                        self.true_changes += 1 if step > 0 or v.changes > 1 else 0
+                        silent_until[mv.vid] = self.sim_time + cfg.silent_period
+                if self.sim_time < silent_until.get(mv.vid, 0.0):
+                    continue
+                msg = v.beacon(mv.x, mv.v, mv.direction)
+                if msg is None:
+                    continue
+                messages += 1
+                rsu = self.rsus[mv.rsu]
+                if not rsu.receive_message(v, msg):
+                    rejected += 1
+                x_seen = (mv.x + self.rng.gauss(0, cfg.position_noise_m)) % road.cfg.length_m \
+                    if cfg.position_noise_m else mv.x
+                beacons.append(Beacon(self.sim_time, msg.pid, x_seen, mv.v, mv.direction, mv.rsu, mv.vid))
+                if v.malicious and step == period - 1:
+                    replay = v.replay_used()
+                    if replay is not None:
+                        messages += 1
+                        if not rsu.receive_message(v, replay):
+                            rejected += 1
+            self.adversary.observe(beacons)
+        # retire the pseudonym in use so it is returned with the others
+        for v in self.vehicles:
+            if v.current is not None:
+                v.used.append(v.current)
+                v.history.append(v.current.pid)
+                v.current = None
+        return messages, rejected
 
     def _process_reports(self) -> None:
         """PM -> CA: a vehicle caught reusing a pseudonym has its certificate revoked."""
@@ -318,8 +446,36 @@ class ITSSimulation:
             "pki_accesses": self.pki.accesses,
         }
 
+    def anchoring_report(self) -> dict:
+        """Tamper detection from the PM level and the cost of one allotment proof."""
+        if not self.cfg.anchoring:
+            return {"enabled": False}
+        pm = self.pms[0]
+        proof = None
+        # a pseudonym allotted in an RSU block that a PM block already anchors
+        for b in pm.rsu_chain.chain[1: pm.anchored_upto]:
+            for tx in b.transactions:
+                if tx.kind == "allot":
+                    pids = tx.open(pm.keys).get("pids", [])
+                    if pids:
+                        proof = build_allotment_proof(pm.rsu_chain, self.pm_chain, pm.pm_id, pids[0], pm.keys)
+                        break
+            if proof:
+                break
+        return {
+            "enabled": True,
+            "tamper_detected_on_clean_chains": any(detect_rsu_tamper(p.rsu_chain, self.pm_chain, p.pm_id) for p in self.pms),
+            "proof_bytes": proof_size_bytes(proof) if proof else None,
+            "proof_verify_seconds": time_verify(proof, self.pm_chain) if proof else None,
+            "rsu_blocks_anchored": {p.pm_id: p.anchored_upto for p in self.pms},
+        }
+
     def summary(self) -> dict:
         return {
+            "stockouts": sum(r.stockouts for r in self.rsus),
+            "tracking": self.adversary.report(self.true_changes).to_dict() if self.adversary else None,
+            "anchoring": self.anchoring_report(),
+            "sim_seconds": self.sim_time,
             "config": asdict(self.cfg),
             "rounds": [asdict(r) for r in self.rounds],
             "pm_chain_blocks": len(self.pm_chain),
