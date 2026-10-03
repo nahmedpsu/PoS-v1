@@ -1,3 +1,6 @@
+import pytest
+from cryptography.exceptions import InvalidTag
+
 from pop_sim import crypto
 from pop_sim.blockchain import Blockchain, Transaction
 
@@ -15,11 +18,8 @@ def test_encrypt_only_recipient_can_decrypt():
     a, b = crypto.generate_keypair(), crypto.generate_keypair()
     blob = crypto.encrypt(a.pk, b"secret")
     assert crypto.decrypt(a.sk, blob) == b"secret"
-    try:
+    with pytest.raises(InvalidTag):
         crypto.decrypt(b.sk, blob)
-        assert False, "decryption with the wrong key must fail"
-    except Exception:
-        pass
 
 
 def test_transaction_is_signed_and_encrypted_for_receiver():
@@ -46,8 +46,5 @@ def test_chain_rejects_unlinked_block():
     bc = Blockchain()
     blk = bc.new_block([], miner="x", consensus="pop")
     blk.previous_hash = "0" * 64
-    try:
+    with pytest.raises(ValueError):
         bc.add_block(blk)
-        assert False
-    except ValueError:
-        pass

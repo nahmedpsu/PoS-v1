@@ -8,7 +8,8 @@ import sys
 import time
 from pathlib import Path
 
-from . import __version__, experiments as ex, plots
+from . import __version__, plots
+from . import experiments as ex
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
 
 

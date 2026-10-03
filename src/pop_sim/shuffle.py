@@ -18,7 +18,7 @@ from .consensus.poet import poet_elect
 from .consensus.pokw import pokw_mine
 from .consensus.pop import PoPServer, verify_election
 from .consensus.pow2 import mine_pow2
-from .entities import PKI, PMCloud, Manufacturer, PrivacyManager, Pseudonym, PseudonymLedger, RSU, Vehicle
+from .entities import PKI, RSU, Manufacturer, PMCloud, PrivacyManager, Pseudonym, PseudonymLedger, Vehicle
 
 CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw")
 
