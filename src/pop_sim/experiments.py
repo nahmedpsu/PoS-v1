@@ -9,13 +9,15 @@ import statistics
 import time
 import tracemalloc
 
+from cryptography.exceptions import InvalidTag
+
 from . import crypto
 from .block_time import BlockTimeParams, block_time, measure_tprep, measure_tv
 from .consensus.poet import poet_elect
 from .consensus.pop import PoPServer, verify_election
 from .consensus.pow1 import solve_pow1
 from .consensus.pow2 import mine_pow2
-from .entities import PKI, PrivacyManager, PMCloud
+from .entities import PKI, PMCloud, PrivacyManager
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
 
 # Puzzles of Figure 7 / 8 in the manuscript.
@@ -240,7 +242,7 @@ def exp_security(seed: int = 7) -> dict:
     try:
         tx.open(rsu.keys)
         results["curious_rsu_cannot_read_transactions"] = False
-    except Exception:
+    except InvalidTag:
         results["curious_rsu_cannot_read_transactions"] = True
     results["pm_can_read_its_transactions"] = "used" in tx.open(sim.pms[0].keys) or "pids" in tx.open(sim.pms[0].keys)
 

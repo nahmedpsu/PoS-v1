@@ -8,7 +8,9 @@ import sys
 import time
 from pathlib import Path
 
-from . import __version__, experiments as ex, experiments_v2 as ex2, plots, plots_v2
+from . import __version__, plots, plots_v2
+from . import experiments as ex
+from . import experiments_v2 as ex2
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
 from .v2.mobility import RoadConfig
 

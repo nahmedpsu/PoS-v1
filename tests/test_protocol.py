@@ -1,3 +1,5 @@
+import random
+
 import pytest
 
 from pop_sim import crypto
@@ -5,7 +7,6 @@ from pop_sim.block_time import BlockTimeParams, block_time
 from pop_sim.entities import PKI, PMCloud, PrivacyManager
 from pop_sim.experiments import exp_security
 from pop_sim.shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
-import random
 
 
 def test_block_time_formula():

@@ -27,3 +27,7 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 120
 target-version = "py310"
+
+[tool.ruff.lint]
+# Pin the rule set so that CI results do not depend on the ruff release's defaults.
+select = ["E4", "E7", "E9", "F", "I", "BLE"]
