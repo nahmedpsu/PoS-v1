@@ -220,7 +220,7 @@ def fig_usecases(res: dict, path: Path) -> Path:
     colors = [C_V2 if v < 0.35 else (C_POET if v < 0.7 else C_REF) for v in link]
     axes[0].bar(names, link, color=colors)
     axes[0].set_ylim(0, 1)
-    axes[0].set_title("Tracker's linking success (green = adequate, red = insufficient)")
+    axes[0].set_title("Tracker linking success")
     axes[0].tick_params(axis="x", labelsize=7)
     axes[1].bar(names, [r["metrics"].get("vehicles", 0) for r in rows], color=C_POW)
     axes[1].set_title("Vehicles simulated")
