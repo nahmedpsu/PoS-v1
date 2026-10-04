@@ -16,7 +16,9 @@
     "malicious_vehicles": 0,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 20,
     "silent_period": 5,
@@ -39,24 +41,24 @@
    "metrics": {
     "vehicles": 237,
     "rounds": 4,
-    "wall_seconds_per_round": 0.586001290750005,
-    "linking_success": 0.4014466546112116,
-    "mean_correct_track_s": 11.652046783625732,
+    "wall_seconds_per_round": 0.5243764747499995,
+    "linking_success": 0.34900542495479203,
+    "mean_correct_track_s": 11.1455525606469,
     "stockouts": 0,
     "pseudonyms_issued": 596,
     "pseudonyms_per_vehicle": 2.5147679324894514,
-    "pm_election_ms": 8.466128249978055,
-    "rsu_elections_ms": 16.964929937465456,
+    "pm_election_ms": 0.401048749893107,
+    "rsu_elections_ms": 0.7730144375557302,
     "messages_per_round": 2370,
     "rejected_messages": 0,
     "pm_blocks": 4,
     "chains_valid": true,
     "revoked": 0,
-    "allotment_proof_bytes": 2235
+    "allotment_proof_bytes": 1438
    },
-   "verdict": "privacy partial; 0 stock-outs; 0.6 s per round for 237 vehicles",
+   "verdict": "privacy adequate; 0 stock-outs; 0.5 s per round for 237 vehicles",
    "extra": {},
-   "seconds": 3.0171339179998995
+   "seconds": 2.306800487999908
   },
   {
    "scenario": "highway",
@@ -72,7 +74,9 @@
     "malicious_vehicles": 0,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 60,
     "silent_period": 3,
@@ -95,24 +99,24 @@
    "metrics": {
     "vehicles": 72,
     "rounds": 4,
-    "wall_seconds_per_round": 0.8162377925000044,
-    "linking_success": 0.8271446862996159,
-    "mean_correct_track_s": 86.9349593495935,
+    "wall_seconds_per_round": 0.7366466404999983,
+    "linking_success": 0.7810499359795134,
+    "mean_correct_track_s": 72.88505747126437,
     "stockouts": 8,
     "pseudonyms_issued": 272,
     "pseudonyms_per_vehicle": 3.7777777777777777,
-    "pm_election_ms": 8.171765624993554,
-    "rsu_elections_ms": 32.67321316674081,
+    "pm_election_ms": 0.37701050001714975,
+    "rsu_elections_ms": 1.4812560000715773,
     "messages_per_round": 3625.25,
     "rejected_messages": 0,
     "pm_blocks": 4,
     "chains_valid": true,
     "revoked": 0,
-    "allotment_proof_bytes": 2303
+    "allotment_proof_bytes": 1504
    },
    "verdict": "privacy insufficient: at this density a tracker follows most vehicles; shuffling must be paired with longer silence at entries/exits",
    "extra": {},
-   "seconds": 3.9673244360000126
+   "seconds": 3.031038354999964
   },
   {
    "scenario": "rural_night",
@@ -128,7 +132,9 @@
     "malicious_vehicles": 0,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 60,
     "silent_period": 10,
@@ -151,24 +157,24 @@
    "metrics": {
     "vehicles": 11,
     "rounds": 4,
-    "wall_seconds_per_round": 0.15345150699999976,
-    "linking_success": 0.6493506493506493,
-    "mean_correct_track_s": 59.0,
+    "wall_seconds_per_round": 0.09475458975003903,
+    "linking_success": 0.6103896103896104,
+    "mean_correct_track_s": 50.0,
     "stockouts": 0,
     "pseudonyms_issued": 34,
     "pseudonyms_per_vehicle": 3.090909090909091,
-    "pm_election_ms": 8.062314000000015,
-    "rsu_elections_ms": 16.82819566670446,
+    "pm_election_ms": 0.38738174993113716,
+    "rsu_elections_ms": 0.7444317500168532,
     "messages_per_round": 440,
     "rejected_messages": 0,
     "pm_blocks": 4,
     "chains_valid": true,
     "revoked": 0,
-    "allotment_proof_bytes": 2237
+    "allotment_proof_bytes": 1440
    },
    "verdict": "privacy partial: pseudonym change cannot hide a lone vehicle; do not rely on shuffling here",
    "extra": {},
-   "seconds": 0.8736506879999979
+   "seconds": 0.39269432799983406
   },
   {
    "scenario": "cross_pm_roaming",
@@ -184,7 +190,9 @@
     "malicious_vehicles": 0,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 30,
     "silent_period": 3,
@@ -210,15 +218,15 @@
     "pm_crossings": 42,
     "proofs_verified": 36,
     "proofs_unavailable_or_failed": 6,
-    "mean_proof_bytes": 2246.3333333333335,
-    "mean_verify_us": 23.940194441567858,
-    "wall_seconds_per_round": 0.4479718967500048,
+    "mean_proof_bytes": 1447.2222222222222,
+    "mean_verify_us": 18.894250002985142,
+    "wall_seconds_per_round": 0.3261485569999536,
     "chains_valid": true,
-    "linking_success": 0.8248730964467005
+    "linking_success": 0.8083756345177665
    },
-   "verdict": "42 crossings, 36 proofs verified (2246 B, 24 us each); 6 vehicles crossed before their allotment was anchored and fall back to the ledger",
+   "verdict": "42 crossings, 36 proofs verified (1447 B, 19 us each); 6 vehicles crossed before their allotment was anchored and fall back to the ledger",
    "extra": {},
-   "seconds": 2.3658455080000067
+   "seconds": 1.4079019800001333
   },
   {
    "scenario": "toll_service_access",
@@ -234,7 +242,9 @@
     "malicious_vehicles": 2,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 20,
     "silent_period": 0,
@@ -261,13 +271,13 @@
     "rejection_reasons": {
      "revoked-no-pseudonyms": 2
     },
-    "mean_check_us": 131.22609524298386,
+    "mean_check_us": 137.489301583368,
     "permanent_ids_exposed": 0,
     "revoked_vehicles": 2
    },
-   "verdict": "63 accepted, 2 rejected in 131 us each; 0 permanent identities exposed",
+   "verdict": "63 accepted, 2 rejected in 137 us each; 0 permanent identities exposed",
    "extra": {},
-   "seconds": 1.063469982000015
+   "seconds": 0.5836023110000497
   },
   {
    "scenario": "incident_revocation",
@@ -283,7 +293,9 @@
     "malicious_vehicles": 3,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 30,
     "silent_period": 3,
@@ -321,7 +333,7 @@
    },
    "verdict": "3/3 revoked after 2 rounds on average, 0 honest vehicles affected",
    "extra": {},
-   "seconds": 2.4840287299999773
+   "seconds": 1.4865927670000474
   },
   {
    "scenario": "city_scale",
@@ -337,7 +349,9 @@
     "malicious_vehicles": 0,
     "avoid_previous_holder": true,
     "anchoring": true,
+    "vrf_scheme": null,
     "vrf_bits": 2048,
+    "tracker": "kalman",
     "mobility": true,
     "round_seconds": 30,
     "silent_period": 5,
@@ -360,26 +374,26 @@
    "metrics": {
     "vehicles": 784,
     "rounds": 3,
-    "wall_seconds_per_round": 3.089980082000011,
-    "linking_success": 0.6973852040816326,
-    "mean_correct_track_s": 19.425942156003504,
+    "wall_seconds_per_round": 2.6691786306666927,
+    "linking_success": 0.7020089285714286,
+    "mean_correct_track_s": 19.197574893009985,
     "stockouts": 1,
     "pseudonyms_issued": 2951,
     "pseudonyms_per_vehicle": 3.764030612244898,
-    "pm_election_ms": 8.098634333388569,
-    "rsu_elections_ms": 66.07074193329179,
+    "pm_election_ms": 0.35249483333169945,
+    "rsu_elections_ms": 3.051540266278607,
     "messages_per_round": 11760,
     "rejected_messages": 0,
     "pm_blocks": 3,
     "chains_valid": true,
     "revoked": 0,
-    "allotment_proof_bytes": 2313,
+    "allotment_proof_bytes": 1514,
     "signatures_per_round": 11760
    },
-   "verdict": "784 vehicles, 3.1 s per 30 s round on one core (11760 signed CAMs/round); PM election 8 ms",
+   "verdict": "784 vehicles, 2.7 s per 30 s round on one core (11760 signed CAMs/round); PM election 0 ms",
    "extra": {},
-   "seconds": 11.490018627999916
+   "seconds": 8.894838833999984
   }
  ],
- "wall_seconds": 25.261487493000004
+ "wall_seconds": 18.103486899000018
 }

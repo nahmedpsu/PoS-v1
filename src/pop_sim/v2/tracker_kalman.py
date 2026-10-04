@@ -176,26 +176,19 @@ class KalmanTrackingAdversary:
         rows = [t for t in tracks if t.track_id not in matched_t]
         cols = [i for i in range(len(beacons)) if i not in used_b]
         if rows and cols:
-            cost = []
-            for t in rows:
-                row = []
-                for i in cols:
-                    b = beacons[i]
-                    d2 = self._mahalanobis2(t, b, preds[t.track_id]) if b.direction == t.direction else math.inf
-                    row.append(d2 if d2 <= self.gate2 else 1e9)
-                cost.append(row)
-            for r, c in hungarian(cost):
-                if cost[r][c] >= 1e9:
-                    continue
-                t, b = rows[r], beacons[cols[c]]
-                self.changes += 1
-                if b.truth_vid == t.truth[-1]:
-                    self.correct += 1
-                else:
-                    self.wrong += 1
-                self._extend(t, b, preds[t.track_id])
-                matched_t.add(t.track_id)
-                used_b.add(cols[c])
+            for comp_rows, comp_cols, cost in self._components(rows, cols, beacons, preds):
+                for r, c in hungarian(cost):
+                    if cost[r][c] >= 1e9:
+                        continue
+                    t, b = comp_rows[r], beacons[comp_cols[c]]
+                    self.changes += 1
+                    if b.truth_vid == t.truth[-1]:
+                        self.correct += 1
+                    else:
+                        self.wrong += 1
+                    self._extend(t, b, preds[t.track_id])
+                    matched_t.add(t.track_id)
+                    used_b.add(comp_cols[c])
 
         # 3. coast or close unmatched tracks; start tracks for unmatched beacons
         for t in rows:
@@ -206,6 +199,61 @@ class KalmanTrackingAdversary:
         for i, b in enumerate(beacons):
             if i not in used_b:
                 self._start(b)
+
+    def _components(self, rows, cols, beacons, preds):
+        """Gated candidate pairs split into connected components, so that
+        the assignment is solved on many small matrices instead of one
+        n x n matrix (the gate makes the problem sparse: only vehicles
+        near a track's prediction can be its continuation)."""
+        # coarse spatial bucketing of beacons for the candidate search
+        bucket = max(50.0, 4 * math.sqrt(self.gate2 * (self.r_pos + 50.0)))
+        by_cell: dict[int, list[int]] = {}
+        for i in cols:
+            by_cell.setdefault(int(beacons[i].x // bucket), []).append(i)
+        n_cells = int(self.length_m // bucket) + 1
+        pairs: dict[int, dict[int, float]] = {}
+        for ri, t in enumerate(rows):
+            x_pred = preds[t.track_id][0]
+            cell = int(x_pred // bucket)
+            cand = []
+            for dc in (-1, 0, 1):
+                cand.extend(by_cell.get((cell + dc) % n_cells, []))
+                cand.extend(by_cell.get(cell + dc, []))
+            for i in set(cand):
+                b = beacons[i]
+                if b.direction != t.direction:
+                    continue
+                d2 = self._mahalanobis2(t, b, preds[t.track_id])
+                if d2 <= self.gate2:
+                    pairs.setdefault(ri, {})[i] = d2
+        # union-find over rows and columns
+        parent: dict[tuple[str, int], tuple[str, int]] = {}
+
+        def find(a):
+            while parent.setdefault(a, a) != a:
+                parent[a] = parent[parent[a]]
+                a = parent[a]
+            return a
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+
+        for ri, cands in pairs.items():
+            for i in cands:
+                union(("r", ri), ("c", i))
+        groups: dict[tuple[str, int], tuple[list[int], list[int]]] = {}
+        for ri in pairs:
+            groups.setdefault(find(("r", ri)), ([], []))[0].append(ri)
+        for ri, cands in pairs.items():
+            g = groups[find(("r", ri))]
+            for i in cands:
+                if i not in g[1]:
+                    g[1].append(i)
+        for r_idx, c_idx in groups.values():
+            cost = [[pairs[ri].get(i, 1e9) for i in c_idx] for ri in r_idx]
+            yield [rows[ri] for ri in r_idx], c_idx, cost
 
     def _extend(self, t: KTrack, b: Beacon, pred) -> None:
         self._update(t, b, pred)

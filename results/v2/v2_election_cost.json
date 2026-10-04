@@ -1,52 +1,79 @@
 {
  "experiment": "v2_election_cost",
+ "schemes": [
+  "ecvrf",
+  "rsa-fdh"
+ ],
  "vrf_bits": 2048,
- "vrf_keygen_seconds": 0.04614072697500091,
+ "vrf_keygen_seconds": {
+  "ecvrf": 1.918044999911217e-06,
+  "rsa-fdh": 0.05011656456999987
+ },
  "rows": [
   {
    "nodes": 10,
-   "poet_total": 2.418510002826224e-05,
-   "pop_v1_total": 0.0004943358000218723,
-   "pop_v1_race": 5.7028999890462725e-06,
-   "pop_v2_per_node": 0.007351358830017034,
-   "pop_v2_race": 1.5766399974381785e-05,
-   "pop_v2_sequential_total": 0.07192326659994705
+   "poet_total": 2.5841100011803064e-05,
+   "pop_v1_total": 0.0007231195000031221,
+   "pop_v1_race": 6.499599999187922e-06,
+   "pop_v2_per_node": 0.0003739306799803899,
+   "pop_v2_race": 6.1774999949193445e-06,
+   "pop_v2_sequential_total": 0.0017058074999908967,
+   "pop_v2_per_node_ecvrf": 0.0003739306799803899,
+   "pop_v2_verify_ecvrf": 0.0002300690999845756,
+   "pop_v2_per_node_rsa-fdh": 0.008296817209989059,
+   "pop_v2_verify_rsa-fdh": 0.0002328447999900618
   },
   {
    "nodes": 20,
-   "poet_total": 2.9511000002457875e-05,
-   "pop_v1_total": 0.00022427449998758676,
-   "pop_v1_race": 8.283700026368024e-06,
-   "pop_v2_per_node": 0.007284676525022178,
-   "pop_v2_race": 1.8731499994828483e-05,
-   "pop_v2_sequential_total": 0.14208866750000199
+   "poet_total": 3.0438199985383108e-05,
+   "pop_v1_total": 0.00024068309998597214,
+   "pop_v1_race": 8.621500001027016e-06,
+   "pop_v2_per_node": 0.0003627198549895638,
+   "pop_v2_race": 6.217200018454605e-06,
+   "pop_v2_sequential_total": 0.0031570115000079113,
+   "pop_v2_per_node_ecvrf": 0.0003627198549895638,
+   "pop_v2_verify_ecvrf": 0.0002187969999909001,
+   "pop_v2_per_node_rsa-fdh": 0.008359679769991999,
+   "pop_v2_verify_rsa-fdh": 0.00022090819999220912
   },
   {
    "nodes": 50,
-   "poet_total": 4.7754300044289264e-05,
-   "pop_v1_total": 0.0002357884000048216,
-   "pop_v1_race": 1.4915199949427916e-05,
-   "pop_v2_per_node": 0.007392412424045233,
-   "pop_v2_race": 2.172439994865272e-05,
-   "pop_v2_sequential_total": 0.3587260155999729
+   "poet_total": 5.550860000198554e-05,
+   "pop_v1_total": 0.00025696750000179234,
+   "pop_v1_race": 1.72887999951854e-05,
+   "pop_v2_per_node": 0.00036996808999651873,
+   "pop_v2_race": 8.480799999688316e-06,
+   "pop_v2_sequential_total": 0.0071681449000095656,
+   "pop_v2_per_node_ecvrf": 0.00036996808999651873,
+   "pop_v2_verify_ecvrf": 0.00023409559999549857,
+   "pop_v2_per_node_rsa-fdh": 0.008529399401988257,
+   "pop_v2_verify_rsa-fdh": 0.00023915529998816965
   },
   {
    "nodes": 100,
-   "poet_total": 6.69642000048043e-05,
-   "pop_v1_total": 0.0002797913999756929,
-   "pop_v1_race": 2.4953199977062467e-05,
-   "pop_v2_per_node": 0.007324703142024418,
-   "pop_v2_race": 2.8942800008735502e-05,
-   "pop_v2_sequential_total": 0.7141223350000245
+   "poet_total": 7.962929998939217e-05,
+   "pop_v1_total": 0.0002930891999881169,
+   "pop_v1_race": 3.388939999808827e-05,
+   "pop_v2_per_node": 0.0003490652220019115,
+   "pop_v2_race": 1.1498200007054037e-05,
+   "pop_v2_sequential_total": 0.013852058300005864,
+   "pop_v2_per_node_ecvrf": 0.0003490652220019115,
+   "pop_v2_verify_ecvrf": 0.00021537900000225818,
+   "pop_v2_per_node_rsa-fdh": 0.008313728902001912,
+   "pop_v2_verify_rsa-fdh": 0.00022738260000210175
   },
   {
    "nodes": 200,
-   "poet_total": 0.00010735580001437483,
-   "pop_v1_total": 0.00031400219997976817,
-   "pop_v1_race": 4.790509999565984e-05,
-   "pop_v2_per_node": 0.007221947525007636,
-   "pop_v2_race": 3.7889600025664547e-05,
-   "pop_v2_sequential_total": 1.4074937944000339
+   "poet_total": 0.00012320230000000264,
+   "pop_v1_total": 0.0003890359000024546,
+   "pop_v1_race": 7.009950000451682e-05,
+   "pop_v2_per_node": 0.00037245129399173036,
+   "pop_v2_race": 2.2098099998402175e-05,
+   "pop_v2_sequential_total": 0.028440371299990375,
+   "pop_v2_per_node_ecvrf": 0.00037245129399173036,
+   "pop_v2_verify_ecvrf": 0.0002341635999925984,
+   "pop_v2_per_node_rsa-fdh": 0.00826395022251853,
+   "pop_v2_verify_rsa-fdh": 0.00022029080001857438
   }
  ]
 }

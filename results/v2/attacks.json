@@ -20,7 +20,7 @@
      "own proof for a seed of own choosing": false
     }
    },
-   "seconds": 0.06919143800007532
+   "seconds": 0.0027975660000265634
   },
   {
    "name": "seed grinding",
@@ -32,20 +32,20 @@
    "metrics": {
     "fair_share": 0.1,
     "share": {
-     "block_hash/budget=1": 0.09333333333333334,
-     "block_hash/budget=4": 0.11333333333333333,
-     "block_hash/budget=16": 0.2733333333333333,
-     "block_hash/budget=64": 0.44666666666666666,
-     "chained_vrf/budget=1": 0.09666666666666666,
-     "chained_vrf/budget=4": 0.09666666666666666,
-     "chained_vrf/budget=16": 0.09666666666666666,
-     "chained_vrf/budget=64": 0.09666666666666666
+     "block_hash/budget=1": 0.12,
+     "block_hash/budget=4": 0.15666666666666668,
+     "block_hash/budget=16": 0.29333333333333333,
+     "block_hash/budget=64": 0.38333333333333336,
+     "chained_vrf/budget=1": 0.11,
+     "chained_vrf/budget=4": 0.11,
+     "chained_vrf/budget=16": 0.11,
+     "chained_vrf/budget=64": 0.11
     },
-    "worst_share_block_hash_seed": 0.44666666666666666,
-    "worst_share_chained_seed": 0.09666666666666666,
+    "worst_share_block_hash_seed": 0.38333333333333336,
+    "worst_share_chained_seed": 0.11,
     "rounds": 300
    },
-   "seconds": 52.867342880000024
+   "seconds": 5.001345705999938
   },
   {
    "name": "block withholding (selfish winner)",
@@ -83,7 +83,7 @@
      }
     }
    },
-   "seconds": 0.04455404500004079
+   "seconds": 0.04034183699991445
   },
   {
    "name": "equivocation (two blocks, one proof)",
@@ -95,10 +95,10 @@
    "metrics": {
     "second_block_accepted": false,
     "reported_equivocators": [
-     "PM-2"
+     "PM-1"
     ]
    },
-   "seconds": 0.11054933200000505
+   "seconds": 0.03153964100010853
   },
   {
    "name": "proof replay",
@@ -110,7 +110,7 @@
    "metrics": {
     "replayed_block_accepted": false
    },
-   "seconds": 0.1159376840000732
+   "seconds": 0.043417535999878965
   },
   {
    "name": "election server denial of service",
@@ -143,7 +143,7 @@
      }
     }
    },
-   "seconds": 0.0003477300000440664
+   "seconds": 0.000339365999934671
   },
   {
    "name": "Sybil election keys",
@@ -156,7 +156,7 @@
     "sybil_keys": 50,
     "blocks_accepted": 0
    },
-   "seconds": 0.6752419089999648
+   "seconds": 0.045335354999906485
   },
   {
    "name": "network partition",
@@ -170,7 +170,7 @@
     "wasted_blocks": 10,
     "share_kept_from_side_a": 0.2
    },
-   "seconds": 7.527699995080184e-05
+   "seconds": 6.705400005557749e-05
   },
   {
    "name": "pseudonym replay (internal tricking adversary)",
@@ -185,7 +185,7 @@
     "honest_revoked": 0,
     "flagged": 2
    },
-   "seconds": 0.18772903699994004
+   "seconds": 0.07696394300000975
   },
   {
    "name": "pseudonym cloning",
@@ -199,7 +199,7 @@
     "clone_far_away": "pseudonym-cloned",
     "clone_other_sender": "pseudonym-held-by-another-vehicle"
    },
-   "seconds": 0.08812596999996458
+   "seconds": 0.01980052999988402
   },
   {
    "name": "forged pseudonym / forged PKI package",
@@ -213,7 +213,7 @@
     "forged_package_accepted_by_pm": false,
     "rsu": "RSU-1.1"
    },
-   "seconds": 0.08937794700000268
+   "seconds": 0.02043161799997506
   },
   {
    "name": "fake-vehicle pseudonym flood",
@@ -236,7 +236,7 @@
      "stockouts": 0
     }
    },
-   "seconds": 0.06375562699997772
+   "seconds": 0.06406124199997976
   },
   {
    "name": "revoked vehicle keeps transmitting",
@@ -251,7 +251,7 @@
     "messages_accepted": 0,
     "new_sets_after_revocation": false
    },
-   "seconds": 0.1944003739999971
+   "seconds": 0.08160914400014008
   },
   {
    "name": "compromised RSU rewrites its chain",
@@ -264,7 +264,7 @@
     "rsu_chain_valid_locally_after_rewrite": false,
     "detected_from_pm_level": true
    },
-   "seconds": 0.17838027400000556
+   "seconds": 0.06073311799991643
   },
   {
    "name": "curious RSU reads the ledger",
@@ -277,26 +277,26 @@
     "transactions": 6,
     "opened_by_rsu": 0
    },
-   "seconds": 0.11190258399994946
+   "seconds": 0.04034342399995694
   },
   {
    "name": "location tracking across pseudonym changes",
    "category": "privacy",
-   "description": "An eavesdropper links beacons by position and speed through every pseudonym change.",
+   "description": "A Kalman/GNN tracker links beacons by position and speed through every pseudonym change.",
    "target": "both",
    "outcome": "mitigated",
    "defense": "Shuffle in dense traffic with synchronized changes and a silent period; sparse roads stay linkable.",
    "metrics": {
-    "sparse_road_no_silence": 0.9057971014492754,
-    "dense_sync_10s_silence": 0.3462401795735129,
-    "dense_unsync_10s_silence": 0.4702581369248036
+    "sparse_road_no_silence": 1.0,
+    "dense_sync_10s_silence": 0.4772727272727273,
+    "dense_unsync_10s_silence": 0.6153198653198653
    },
-   "seconds": 0.7126032549999763
+   "seconds": 118.19675500100016
   }
  ],
  "summary": {
   "defended": 13,
   "mitigated": 3
  },
- "wall_seconds": 55.509551289
+ "wall_seconds": 123.72591385399994
 }

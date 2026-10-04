@@ -4,22 +4,24 @@ Back to the [README](../README.md). Design rationale in [pop_v2.md](pop_v2.md).
 
 
 Numbers from `results/v2/` and `figures/v2/`, produced by `pop-sim run-v2` on the
-same machine as the v1 run (88 s wall time). Each subsection names the item of
+same machine as the v1 run. Each subsection names the item of
 [docs/pop_v2.md](docs/pop_v2.md) it measures.
 
 ### 1. Verifiable election: what one node pays (`v2_election_cost.json`)
 
-| Nodes | PoET, all nodes (us) | PoP v1, server total (us) | PoP v2, one node: own proof + verify winner (us) | PoP v2, race over received values (us) |
-|---|---|---|---|---|
-| 10 | 24 | 494 | 7,351 | 16 |
-| 100 | 67 | 280 | 7,325 | 29 |
-| 200 | 107 | 314 | 7,222 | 38 |
+| Nodes | PoET, all nodes (us) | PoP v1, server total (us) | PoP v2 ECVRF, one node: own proof + verify winner (us) | PoP v2 RSA-FDH, same (us) | PoP v2 race over received values (us) |
+|---|---|---|---|---|---|
+| 10 | 26 | 723 | 374 | 8,297 | 6 |
+| 100 | 80 | 293 | 349 | 8,314 | 11 |
+| 200 | 123 | 389 | 372 | 8,264 | 22 |
 
-PoP v2's per-node cost is flat in the network size: one RSA-2048 FDH proof
-(7.2 ms in pure Python with the CRT; about 1 ms with OpenSSL) and one 0.17 ms
-verification. The race itself stays in the tens of microseconds. What v2 buys for
-those 7 ms is that nobody can lie about or grind the value and no server exists to
-spoof. Key generation is 46 ms per node, once.
+PoP v2's per-node cost is flat in the network size: one VRF proof and one
+verification of the winner's. With the ECVRF on libsecp256k1 (0.15 ms prove,
+0.23 ms verify) a node spends about 0.37 ms per block, in the same range as PoP
+v1's server total and a few times PoET's full scan; the pure-Python RSA-FDH-VRF
+costs 8 ms. The race itself stays in the tens of microseconds. What v2 buys is
+that nobody can lie about or grind the value and no server exists to spoof.
+ECVRF key generation is instantaneous; RSA-2048 takes 50 ms per node, once.
 
 ![Election cost](../figures/v2/v2_election_cost.png)
 
@@ -45,14 +47,14 @@ remain.
 
 ### 5 and 7. Block latency on the same network, six algorithms (`v2_latency.json`)
 
-20 ms links with 1 % loss, measured costs (ECDSA verify 0.11 ms, VRF prove 7.8 ms,
-one difficulty-3 puzzle 2.2 ms), 50 rounds per point:
+20 ms links with 1 % loss, measured costs (ECDSA verify 0.2 ms, ECVRF prove 0.15 ms,
+one difficulty-3 puzzle 2.9 ms), 50 rounds per point:
 
 | Nodes | PoW 2 | PoET | PoP v1 (server) | PoP v2 (VRF) | PBFT | Raft | PBFT messages |
 |---|---|---|---|---|---|---|---|
-| 10 | 58 ms | 77 ms | 259 ms | 100 ms | 93 ms | 107 ms | 189 |
-| 20 | 73 ms | 89 ms | 297 ms | 100 ms | 138 ms | 110 ms | 779 |
-| 100 | 165 ms | 167 ms | 599 ms | 190 ms | 221 ms | 204 ms | 19,899 |
+| 10 | 58 ms | 77 ms | 260 ms | 93 ms | 94 ms | 108 ms | 189 |
+| 20 | 73 ms | 89 ms | 297 ms | 92 ms | 140 ms | 111 ms | 779 |
+| 100 | 166 ms | 168 ms | 599 ms | 183 ms | 232 ms | 208 ms | 19,899 |
 
 PoP v1 is the slowest at every size because of its handshake and selection round
 trips with the server. PoP v2 removes those and lands with PBFT and Raft while
@@ -64,22 +66,26 @@ hardware, the others' do not.
 
 ### 2. Measured unlinkability (`v2_linkability.json`)
 
-Fraction of pseudonym changes a kinematic tracker links correctly (pseudonym change
-every 30 s, 3 m GPS noise, 300 s of traffic, dead reckoning up to 20 s):
+Fraction of pseudonym changes a tracker links correctly (pseudonym change every
+30 s, 3 m GPS noise, 300 s of traffic, dead reckoning up to 20 s). The Kalman/GNN
+tracker (Kalman filter per track, Mahalanobis gating, Hungarian assignment) is the
+default and the conservative bound; the nearest-neighbour baseline is shown for
+the dense synchronized column.
 
-| Vehicles / km / direction | Synchronized, no silence | Synchronized, 3 s silence | Synchronized, 10 s silence | Unsynchronized, 10 s silence |
-|---|---|---|---|---|
-| 2 | 0.92 | 0.88 | 0.82 | 0.91 |
-| 10 | 0.90 | 0.84 | 0.75 | 0.84 |
-| 80 | 0.59 | 0.51 | 0.30 | 0.41 |
+| Vehicles / km / direction | Synchronized, no silence | Synchronized, 3 s silence | Synchronized, 10 s silence (Kalman) | Synchronized, 10 s silence (nearest-neighbour) | Unsynchronized, 10 s silence |
+|---|---|---|---|---|---|
+| 2 | 0.99 | 0.88 | 0.83 | 0.82 | 0.93 |
+| 10 | 1.00 | 0.87 | 0.77 | 0.75 | 0.85 |
+| 80 | 0.96 | 0.76 | 0.48 | 0.30 | 0.59 |
 
-Changing the pseudonym alone buys almost nothing: on a quiet road nine changes in
-ten are linked by position and speed. The scheme protects only where the manuscript
-says shuffling should happen, in dense traffic, and only if the changes are
-synchronized across vehicles (a mix zone) and followed by a silent period. At 80
-vehicles per km with synchronized changes and 10 s of silence the tracker links
-30 % and mis-links another 25 %. This is the quantitative form of the paper's
-unlinkability claim, and its limit.
+Changing the pseudonym alone buys nothing against a competent tracker: without
+a silent period it follows 96 to 100 % of the changes at every density. The scheme
+protects only where the manuscript says shuffling should happen, in dense traffic,
+and only if the changes are synchronized across vehicles (a mix zone) and followed
+by a silent period: at 80 vehicles per km with synchronized changes and 10 s of
+silence the Kalman tracker still links 48 % (the weaker baseline tracker 30 %, which
+is why the stronger tracker is the one to report). This is the quantitative form of
+the paper's unlinkability claim, and its limit.
 
 ![Linkability](../figures/v2/v2_linkability.png)
 
@@ -142,17 +148,18 @@ reference, the v1 election:
 
 | | PoP v2 (VRF) | PoP v1 (server) |
 |---|---|---|
-| PM-chain election per round | 7.2 ms | 150 ms (incl. the winner's wait) |
-| RSU-chain elections per round, both PMs | 30 ms | 390 ms |
+| PM-chain election per round | 0.37 ms (ECVRF) | 150 ms (incl. the winner's wait) |
+| RSU-chain elections per round, both PMs | 1.5 ms | 390 ms |
 | Every PM block verifies against the certified VRF key | yes | n/a |
 | Stock-outs over 5 rounds | 3 | 3 |
-| Pseudonym changes linked by the tracker | 78 % | 77 % |
-| Allotment proof | 2,150 bytes, 20 us | 1,233 bytes, 11 us |
+| Pseudonym changes linked by the Kalman tracker | 75 % | 74 % |
+| Allotment proof | 1,439 bytes, 12 us | 1,231 bytes, 12 us |
 | Malicious vehicle caught and revoked | yes | yes |
 
 The election change does not alter privacy or distribution (same traffic, same
-shuffle); it removes the server and makes every block verifiable at a cost of a few
-milliseconds per node.
+shuffle); it removes the server and makes every block verifiable at a cost of well
+under a millisecond per node. (The 75 % linking figure is for 8 vehicles per km with
+only 3 s of silence; the dense-zone numbers above are the ones that matter.)
 
 ![Protocol](../figures/v2/v2_protocol.png)
 
@@ -160,10 +167,11 @@ milliseconds per node.
 
 * The published PoP is not safe to deploy as described: its timer range forks on
   ordinary links, its server is a trusted party, its random time is unverifiable, and
-  it is not Sybil-resistant. PoP v2 fixes the last three at about 7 ms per node per
+  it is not Sybil-resistant. PoP v2 fixes the last three at about 0.4 ms per node per
   block and makes the first a measured design constraint.
 * Pseudonym shuffling protects location privacy only in dense traffic with
-  synchronized changes and silent periods. The simulation gives the curve.
+  synchronized changes and silent periods, and even there a Kalman tracker keeps
+  about half of the trajectories. The simulation gives the curve.
 * An RSU needs roughly 25 to 50 % more pseudonyms than its forecast to avoid
   stock-outs, depending on the shuffle period.
 * Cross-PM proofs and tamper detection cost a few hundred bytes and microseconds.

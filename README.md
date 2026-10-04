@@ -150,8 +150,8 @@ All numbers come from `results/` and `results/v2/` as produced by the commands a
   random time is self-reported, and k Sybil identities win k/(n+k) of the blocks (a
   lying one wins half).
 * **PoP v2 fixes the election** with a verifiable random function: a serverless,
-  ungrindable, PKI-bound election at 0.16 ms per node per block (ECVRF on
-  libsecp256k1), plus equivocation detection, anchored RSU chains and
+  ungrindable, PKI-bound election at 0.4 ms per node per block (ECVRF on
+  libsecp256k1: 0.15 ms to prove, 0.23 ms to verify), plus equivocation detection, anchored RSU chains and
   certificate-checked allotment. Sixteen executed attacks: 13 defended, 3 bounded,
   0 successful.
 * **Pseudonym shuffling alone does not give location privacy.** Against a

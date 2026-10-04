@@ -3,102 +3,112 @@
  "change_period": 30,
  "position_noise_m": 3.0,
  "seconds": 300,
+ "trackers": [
+  "kalman",
+  "nn"
+ ],
  "rows": [
   {
    "beacons": 4500,
    "pseudonym_changes": 150,
-   "changes_linked_correctly": 138,
-   "changes_linked_wrongly": 0,
-   "changes_lost": 12,
-   "mean_track_length": 166.66666666666666,
-   "longest_correct_run": 166.66666666666666,
+   "changes_linked_correctly": 148,
+   "changes_linked_wrongly": 2,
+   "changes_lost": 0,
+   "mean_track_length": 300.0,
+   "longest_correct_run": 280.1333333333333,
    "vehicles": 15,
-   "linking_success": 0.92,
+   "linking_success": 0.9866666666666667,
    "density_per_km": 2,
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
   },
   {
    "beacons": 14100,
    "pseudonym_changes": 470,
-   "changes_linked_correctly": 429,
-   "changes_linked_wrongly": 14,
-   "changes_lost": 27,
-   "mean_track_length": 190.54054054054055,
-   "longest_correct_run": 181.17567567567568,
+   "changes_linked_correctly": 469,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 1,
+   "mean_track_length": 293.75,
+   "longest_correct_run": 293.75,
    "vehicles": 47,
-   "linking_success": 0.9127659574468086,
+   "linking_success": 0.997872340425532,
    "density_per_km": 5,
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
   },
   {
    "beacons": 22200,
    "pseudonym_changes": 740,
-   "changes_linked_correctly": 669,
-   "changes_linked_wrongly": 21,
-   "changes_lost": 50,
-   "mean_track_length": 179.03225806451613,
-   "longest_correct_run": 169.08064516129033,
+   "changes_linked_correctly": 737,
+   "changes_linked_wrongly": 2,
+   "changes_lost": 1,
+   "mean_track_length": 296.0,
+   "longest_correct_run": 292.82666666666665,
    "vehicles": 74,
-   "linking_success": 0.904054054054054,
+   "linking_success": 0.995945945945946,
    "density_per_km": 10,
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
   },
   {
    "beacons": 58200,
    "pseudonym_changes": 1940,
-   "changes_linked_correctly": 1603,
-   "changes_linked_wrongly": 206,
-   "changes_lost": 131,
-   "mean_track_length": 179.07692307692307,
-   "longest_correct_run": 145.39384615384614,
+   "changes_linked_correctly": 1934,
+   "changes_linked_wrongly": 6,
+   "changes_lost": 0,
+   "mean_track_length": 300.0,
+   "longest_correct_run": 297.22680412371136,
    "vehicles": 194,
-   "linking_success": 0.8262886597938144,
+   "linking_success": 0.9969072164948454,
    "density_per_km": 20,
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
   },
   {
    "beacons": 114600,
    "pseudonym_changes": 3820,
-   "changes_linked_correctly": 2833,
-   "changes_linked_wrongly": 723,
-   "changes_lost": 264,
-   "mean_track_length": 177.39938080495355,
-   "longest_correct_run": 122.73839009287926,
+   "changes_linked_correctly": 3737,
+   "changes_linked_wrongly": 80,
+   "changes_lost": 3,
+   "mean_track_length": 297.6623376623377,
+   "longest_correct_run": 280.9896103896104,
    "vehicles": 382,
-   "linking_success": 0.7416230366492147,
+   "linking_success": 0.9782722513089005,
    "density_per_km": 40,
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
   },
   {
    "beacons": 235200,
    "pseudonym_changes": 7840,
-   "changes_linked_correctly": 4658,
-   "changes_linked_wrongly": 2593,
-   "changes_lost": 589,
-   "mean_track_length": 171.30371449380917,
-   "longest_correct_run": 95.13037144938092,
+   "changes_linked_correctly": 7525,
+   "changes_linked_wrongly": 310,
+   "changes_lost": 5,
+   "mean_track_length": 298.0988593155894,
+   "longest_correct_run": 273.3700887198986,
    "vehicles": 784,
-   "linking_success": 0.5941326530612245,
+   "linking_success": 0.9598214285714286,
    "density_per_km": 80,
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
   },
   {
    "beacons": 4080,
@@ -114,7 +124,620 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 12784,
+   "pseudonym_changes": 470,
+   "changes_linked_correctly": 417,
+   "changes_linked_wrongly": 2,
+   "changes_lost": 51,
+   "mean_track_length": 250.66666666666666,
+   "longest_correct_run": 249.6078431372549,
+   "vehicles": 47,
+   "linking_success": 0.8872340425531915,
+   "density_per_km": 5,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 20128,
+   "pseudonym_changes": 740,
+   "changes_linked_correctly": 642,
+   "changes_linked_wrongly": 18,
+   "changes_lost": 80,
+   "mean_track_length": 251.6,
+   "longest_correct_run": 240.6,
+   "vehicles": 74,
+   "linking_success": 0.8675675675675676,
+   "density_per_km": 10,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 52768,
+   "pseudonym_changes": 1940,
+   "changes_linked_correctly": 1677,
+   "changes_linked_wrongly": 52,
+   "changes_lost": 211,
+   "mean_track_length": 250.08530805687204,
+   "longest_correct_run": 232.218009478673,
+   "vehicles": 194,
+   "linking_success": 0.8644329896907217,
+   "density_per_km": 20,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 103904,
+   "pseudonym_changes": 3820,
+   "changes_linked_correctly": 3152,
+   "changes_linked_wrongly": 267,
+   "changes_lost": 401,
+   "mean_track_length": 259.1122194513716,
+   "longest_correct_run": 218.35411471321694,
+   "vehicles": 382,
+   "linking_success": 0.8251308900523561,
+   "density_per_km": 40,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 213248,
+   "pseudonym_changes": 7840,
+   "changes_linked_correctly": 5991,
+   "changes_linked_wrongly": 1042,
+   "changes_lost": 807,
+   "mean_track_length": 264.24783147459726,
+   "longest_correct_run": 191.99628252788105,
+   "vehicles": 784,
+   "linking_success": 0.7641581632653062,
+   "density_per_km": 80,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 3135,
+   "pseudonym_changes": 150,
+   "changes_linked_correctly": 124,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 26,
+   "mean_track_length": 120.57692307692308,
+   "longest_correct_run": 120.57692307692308,
+   "vehicles": 15,
+   "linking_success": 0.8266666666666667,
+   "density_per_km": 2,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 9823,
+   "pseudonym_changes": 470,
+   "changes_linked_correctly": 341,
+   "changes_linked_wrongly": 42,
+   "changes_lost": 87,
+   "mean_track_length": 112.9080459770115,
+   "longest_correct_run": 93.183908045977,
+   "vehicles": 47,
+   "linking_success": 0.725531914893617,
+   "density_per_km": 5,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 15466,
+   "pseudonym_changes": 740,
+   "changes_linked_correctly": 572,
+   "changes_linked_wrongly": 48,
+   "changes_lost": 120,
+   "mean_track_length": 128.88333333333333,
+   "longest_correct_run": 115.0,
+   "vehicles": 74,
+   "linking_success": 0.772972972972973,
+   "density_per_km": 10,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 40546,
+   "pseudonym_changes": 1940,
+   "changes_linked_correctly": 1314,
+   "changes_linked_wrongly": 331,
+   "changes_lost": 295,
+   "mean_track_length": 137.44406779661017,
+   "longest_correct_run": 97.55254237288136,
+   "vehicles": 194,
+   "linking_success": 0.677319587628866,
+   "density_per_km": 20,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 79838,
+   "pseudonym_changes": 3820,
+   "changes_linked_correctly": 2215,
+   "changes_linked_wrongly": 1116,
+   "changes_lost": 489,
+   "mean_track_length": 163.26789366053168,
+   "longest_correct_run": 91.13905930470348,
+   "vehicles": 382,
+   "linking_success": 0.5798429319371727,
+   "density_per_km": 40,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 163856,
+   "pseudonym_changes": 7840,
+   "changes_linked_correctly": 3786,
+   "changes_linked_wrongly": 3191,
+   "changes_lost": 863,
+   "mean_track_length": 189.86790266512168,
+   "longest_correct_run": 84.28157589803013,
+   "vehicles": 784,
+   "linking_success": 0.4829081632653061,
+   "density_per_km": 80,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 4500,
+   "pseudonym_changes": 150,
+   "changes_linked_correctly": 149,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 1,
+   "mean_track_length": 281.25,
+   "longest_correct_run": 281.25,
+   "vehicles": 15,
+   "linking_success": 0.9933333333333333,
+   "density_per_km": 2,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 14100,
+   "pseudonym_changes": 470,
+   "changes_linked_correctly": 467,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 3,
+   "mean_track_length": 300.0,
+   "longest_correct_run": 300.0,
+   "vehicles": 47,
+   "linking_success": 0.9936170212765958,
+   "density_per_km": 5,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 22200,
+   "pseudonym_changes": 740,
+   "changes_linked_correctly": 735,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 5,
+   "mean_track_length": 300.0,
+   "longest_correct_run": 300.0,
+   "vehicles": 74,
+   "linking_success": 0.9932432432432432,
+   "density_per_km": 10,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 58200,
+   "pseudonym_changes": 1940,
+   "changes_linked_correctly": 1928,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 12,
+   "mean_track_length": 300.0,
+   "longest_correct_run": 300.0,
+   "vehicles": 194,
+   "linking_success": 0.9938144329896907,
+   "density_per_km": 20,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 114600,
+   "pseudonym_changes": 3820,
+   "changes_linked_correctly": 3794,
+   "changes_linked_wrongly": 2,
+   "changes_lost": 24,
+   "mean_track_length": 297.6623376623377,
+   "longest_correct_run": 297.1168831168831,
+   "vehicles": 382,
+   "linking_success": 0.993193717277487,
+   "density_per_km": 40,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 235200,
+   "pseudonym_changes": 7840,
+   "changes_linked_correctly": 7770,
+   "changes_linked_wrongly": 23,
+   "changes_lost": 47,
+   "mean_track_length": 295.8490566037736,
+   "longest_correct_run": 293.84779874213837,
+   "vehicles": 784,
+   "linking_success": 0.9910714285714286,
+   "density_per_km": 80,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 4051,
+   "pseudonym_changes": 150,
+   "changes_linked_correctly": 146,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 4,
+   "mean_track_length": 253.1875,
+   "longest_correct_run": 253.1875,
+   "vehicles": 15,
+   "linking_success": 0.9733333333333334,
+   "density_per_km": 2,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 12695,
+   "pseudonym_changes": 470,
+   "changes_linked_correctly": 457,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 13,
+   "mean_track_length": 248.92156862745097,
+   "longest_correct_run": 248.92156862745097,
+   "vehicles": 47,
+   "linking_success": 0.9723404255319149,
+   "density_per_km": 5,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 19987,
+   "pseudonym_changes": 740,
+   "changes_linked_correctly": 715,
+   "changes_linked_wrongly": 6,
+   "changes_lost": 19,
+   "mean_track_length": 246.7530864197531,
+   "longest_correct_run": 241.45679012345678,
+   "vehicles": 74,
+   "linking_success": 0.9662162162162162,
+   "density_per_km": 10,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 52396,
+   "pseudonym_changes": 1940,
+   "changes_linked_correctly": 1878,
+   "changes_linked_wrongly": 16,
+   "changes_lost": 46,
+   "mean_track_length": 245.9906103286385,
+   "longest_correct_run": 242.23474178403757,
+   "vehicles": 194,
+   "linking_success": 0.9680412371134021,
+   "density_per_km": 20,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 103191,
+   "pseudonym_changes": 3820,
+   "changes_linked_correctly": 3666,
+   "changes_linked_wrongly": 59,
+   "changes_lost": 95,
+   "mean_track_length": 249.85714285714286,
+   "longest_correct_run": 241.8135593220339,
+   "vehicles": 382,
+   "linking_success": 0.9596858638743455,
+   "density_per_km": 40,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 211763,
+   "pseudonym_changes": 7840,
+   "changes_linked_correctly": 7306,
+   "changes_linked_wrongly": 337,
+   "changes_lost": 197,
+   "mean_track_length": 244.2479815455594,
+   "longest_correct_run": 220.86735870818916,
+   "vehicles": 784,
+   "linking_success": 0.9318877551020408,
+   "density_per_km": 80,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 3027,
+   "pseudonym_changes": 150,
+   "changes_linked_correctly": 140,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 10,
+   "mean_track_length": 159.31578947368422,
+   "longest_correct_run": 159.31578947368422,
+   "vehicles": 15,
+   "linking_success": 0.9333333333333333,
+   "density_per_km": 2,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 9460,
+   "pseudonym_changes": 470,
+   "changes_linked_correctly": 422,
+   "changes_linked_wrongly": 3,
+   "changes_lost": 45,
+   "mean_track_length": 122.85714285714286,
+   "longest_correct_run": 120.07792207792208,
+   "vehicles": 47,
+   "linking_success": 0.8978723404255319,
+   "density_per_km": 5,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 14898,
+   "pseudonym_changes": 740,
+   "changes_linked_correctly": 629,
+   "changes_linked_wrongly": 35,
+   "changes_lost": 76,
+   "mean_track_length": 120.14516129032258,
+   "longest_correct_run": 110.21774193548387,
+   "vehicles": 74,
+   "linking_success": 0.85,
+   "density_per_km": 10,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 39015,
+   "pseudonym_changes": 1940,
+   "changes_linked_correctly": 1539,
+   "changes_linked_wrongly": 205,
+   "changes_lost": 196,
+   "mean_track_length": 118.94817073170732,
+   "longest_correct_run": 98.60365853658537,
+   "vehicles": 194,
+   "linking_success": 0.7932989690721649,
+   "density_per_km": 20,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 77007,
+   "pseudonym_changes": 3820,
+   "changes_linked_correctly": 2665,
+   "changes_linked_wrongly": 742,
+   "changes_lost": 413,
+   "mean_track_length": 119.02163833075734,
+   "longest_correct_run": 84.48840803709429,
+   "vehicles": 382,
+   "linking_success": 0.6976439790575916,
+   "density_per_km": 40,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 157943,
+   "pseudonym_changes": 7840,
+   "changes_linked_correctly": 4649,
+   "changes_linked_wrongly": 2493,
+   "changes_lost": 698,
+   "mean_track_length": 131.94903926482874,
+   "longest_correct_run": 76.33667502088555,
+   "vehicles": 784,
+   "linking_success": 0.592984693877551,
+   "density_per_km": 80,
+   "change_period": 30,
+   "silent_period": 10,
+   "position_noise_m": 3.0,
+   "synchronized": false,
+   "tracker": "kalman"
+  },
+  {
+   "beacons": 4500,
+   "pseudonym_changes": 150,
+   "changes_linked_correctly": 138,
+   "changes_linked_wrongly": 0,
+   "changes_lost": 12,
+   "mean_track_length": 166.66666666666666,
+   "longest_correct_run": 166.66666666666666,
+   "vehicles": 15,
+   "linking_success": 0.92,
+   "density_per_km": 2,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
+  },
+  {
+   "beacons": 14100,
+   "pseudonym_changes": 470,
+   "changes_linked_correctly": 429,
+   "changes_linked_wrongly": 14,
+   "changes_lost": 27,
+   "mean_track_length": 190.54054054054055,
+   "longest_correct_run": 181.17567567567568,
+   "vehicles": 47,
+   "linking_success": 0.9127659574468086,
+   "density_per_km": 5,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
+  },
+  {
+   "beacons": 22200,
+   "pseudonym_changes": 740,
+   "changes_linked_correctly": 669,
+   "changes_linked_wrongly": 21,
+   "changes_lost": 50,
+   "mean_track_length": 179.03225806451613,
+   "longest_correct_run": 169.08064516129033,
+   "vehicles": 74,
+   "linking_success": 0.904054054054054,
+   "density_per_km": 10,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
+  },
+  {
+   "beacons": 58200,
+   "pseudonym_changes": 1940,
+   "changes_linked_correctly": 1603,
+   "changes_linked_wrongly": 206,
+   "changes_lost": 131,
+   "mean_track_length": 179.07692307692307,
+   "longest_correct_run": 145.39384615384614,
+   "vehicles": 194,
+   "linking_success": 0.8262886597938144,
+   "density_per_km": 20,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
+  },
+  {
+   "beacons": 114600,
+   "pseudonym_changes": 3820,
+   "changes_linked_correctly": 2833,
+   "changes_linked_wrongly": 723,
+   "changes_lost": 264,
+   "mean_track_length": 177.39938080495355,
+   "longest_correct_run": 122.73839009287926,
+   "vehicles": 382,
+   "linking_success": 0.7416230366492147,
+   "density_per_km": 40,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
+  },
+  {
+   "beacons": 235200,
+   "pseudonym_changes": 7840,
+   "changes_linked_correctly": 4658,
+   "changes_linked_wrongly": 2593,
+   "changes_lost": 589,
+   "mean_track_length": 171.30371449380917,
+   "longest_correct_run": 95.13037144938092,
+   "vehicles": 784,
+   "linking_success": 0.5941326530612245,
+   "density_per_km": 80,
+   "change_period": 30,
+   "silent_period": 0,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
+  },
+  {
+   "beacons": 4080,
+   "pseudonym_changes": 150,
+   "changes_linked_correctly": 132,
+   "changes_linked_wrongly": 2,
+   "changes_lost": 16,
+   "mean_track_length": 255.0,
+   "longest_correct_run": 238.125,
+   "vehicles": 15,
+   "linking_success": 0.88,
+   "density_per_km": 2,
+   "change_period": 30,
+   "silent_period": 3,
+   "position_noise_m": 3.0,
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 12784,
@@ -130,7 +753,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 20128,
@@ -146,7 +770,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 52768,
@@ -162,7 +787,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 103904,
@@ -178,7 +804,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 213248,
@@ -194,7 +821,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 3135,
@@ -210,7 +838,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 9823,
@@ -226,7 +855,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 15466,
@@ -242,7 +872,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 40546,
@@ -258,7 +889,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 79838,
@@ -274,7 +906,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 163856,
@@ -290,7 +923,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": true
+   "synchronized": true,
+   "tracker": "nn"
   },
   {
    "beacons": 4500,
@@ -306,7 +940,8 @@
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 14100,
@@ -322,7 +957,8 @@
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 22200,
@@ -338,7 +974,8 @@
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 58200,
@@ -354,7 +991,8 @@
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 114600,
@@ -370,7 +1008,8 @@
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 235200,
@@ -386,7 +1025,8 @@
    "change_period": 30,
    "silent_period": 0,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 4051,
@@ -402,7 +1042,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 12695,
@@ -418,7 +1059,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 19987,
@@ -434,7 +1076,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 52396,
@@ -450,7 +1093,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 103191,
@@ -466,7 +1110,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 211763,
@@ -482,7 +1127,8 @@
    "change_period": 30,
    "silent_period": 3,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 3027,
@@ -498,7 +1144,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 9460,
@@ -514,7 +1161,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 14898,
@@ -530,7 +1178,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 39015,
@@ -546,7 +1195,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 77007,
@@ -562,7 +1212,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   },
   {
    "beacons": 157943,
@@ -578,7 +1229,8 @@
    "change_period": 30,
    "silent_period": 10,
    "position_noise_m": 3.0,
-   "synchronized": false
+   "synchronized": false,
+   "tracker": "nn"
   }
  ]
 }

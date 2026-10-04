@@ -1,5 +1,5 @@
 {
- "version": "2.0.0",
+ "version": "2.1.0",
  "quick": false,
  "machine": {
   "python": "3.11.15",
@@ -7,5 +7,5 @@
   "processor": "x86_64",
   "system": "Linux"
  },
- "wall_seconds": 88.34097447399995
+ "wall_seconds": 675.0970618819999
 }
