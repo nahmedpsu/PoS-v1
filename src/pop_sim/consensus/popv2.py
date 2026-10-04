@@ -7,6 +7,11 @@ smallest random value publishes) and makes it cheat-proof:
 
 * every node evaluates a VRF on the public seed ``prev_block_hash || index``
   with a key whose public part PKI certified at registration;
+* the seed of block ``i`` is, by default, the VRF *output* of block ``i-1``'s
+  winner (``prev_beta``), not the block hash: a block hash can be ground
+  (the winner re-arranges its block until its own next value is small), a
+  VRF output cannot (``seed_mode="block_hash"`` reproduces the weaker
+  variant for the attack bench);
 * a node is a *miner* for this block when its VRF output, read as a number
   in [0, 1), is below the sortition threshold (0.5 reproduces the paper's
   "not less than 50 percent");
@@ -57,22 +62,27 @@ class PoPv2Result:
 
     def proof(self, winner_node: V2Node, pi: bytes) -> dict:
         return {"seed": self.seed_hex, "winner": self.winner, "vrf_pk": winner_node.pk.to_hex(),
-                "pi": pi.hex(), "value": self.winner_value, "threshold": SORTITION_THRESHOLD,
-                "miners": len(self.miners)}
+                "pi": pi.hex(), "beta": vrf.vrf_proof_to_hash(pi).hex(), "value": self.winner_value,
+                "threshold": SORTITION_THRESHOLD, "miners": len(self.miners)}
 
 
-def election_seed(prev_block_hash: str, index: int) -> bytes:
+def election_seed(prev_block_hash: str, index: int, prev_beta_hex: str | None = None) -> bytes:
+    """Seed of the election for block ``index``: the previous winner's VRF
+    output when known (unforgeable, ungrindable), else the previous hash."""
+    if prev_beta_hex:
+        return f"beta:{prev_beta_hex}:{index}".encode()
     return f"{prev_block_hash}:{index}".encode()
 
 
 def popv2_elect(nodes: list[V2Node], prev_block_hash: str, index: int,
-                threshold: float = SORTITION_THRESHOLD) -> tuple[PoPv2Result, bytes]:
-    """Run the election for block ``index`` on top of ``prev_block_hash``.
-    Returns the result and the winner's proof ``pi``."""
+                threshold: float = SORTITION_THRESHOLD, prev_beta_hex: str | None = None) -> tuple[PoPv2Result, bytes]:
+    """Run the election for block ``index`` on top of ``prev_block_hash``
+    (seeded by ``prev_beta_hex`` when given).  Returns the result and the
+    winner's proof ``pi``."""
     if not nodes:
         raise ValueError("no nodes")
     t0 = time.perf_counter()
-    seed = election_seed(prev_block_hash, index)
+    seed = election_seed(prev_block_hash, index, prev_beta_hex)
     proofs: dict[str, bytes] = {}
     values: dict[str, float] = {}
     prove_times = []
@@ -96,20 +106,22 @@ def popv2_elect(nodes: list[V2Node], prev_block_hash: str, index: int,
 
 
 def verify_popv2_proof(proof: dict, prev_block_hash: str, index: int, miner: str,
-                       certified_pk: str | None = None) -> bool:
+                       certified_pk: str | None = None, prev_beta_hex: str | None = None) -> bool:
     """What every node runs on a received block: the proof must verify under
-    the miner's certified VRF key, for this chain position, and the value
-    must be below the sortition threshold (unless the block says nobody was)."""
+    the miner's certified VRF key, for this chain position and seed, and the
+    value must be below the sortition threshold (unless the block says nobody was)."""
     try:
         if proof["winner"] != miner:
             return False
         if certified_pk is not None and proof["vrf_pk"] != certified_pk:
             return False
-        if proof["seed"] != election_seed(prev_block_hash, index).hex():
+        if proof["seed"] != election_seed(prev_block_hash, index, prev_beta_hex).hex():
             return False
         pk = vrf.VRFPublicKey.from_hex(proof["vrf_pk"])
         beta = vrf.vrf_verify(pk, bytes.fromhex(proof["seed"]), bytes.fromhex(proof["pi"]))
         if beta is None:
+            return False
+        if "beta" in proof and proof["beta"] != beta.hex():
             return False
         value = vrf.beta_to_unit(beta)
         if abs(value - proof["value"]) > 1e-12:
@@ -124,6 +136,25 @@ def fork_rule(candidates: list[dict]) -> dict:
     delivered them within the time limit), the one with the smaller VRF value
     wins; ties are impossible for distinct keys."""
     return min(candidates, key=lambda p: p["value"])
+
+
+class EquivocationDetector:
+    """Two different blocks carrying the same (key, seed) proof is
+    equivocation: the detector records the first block hash seen per proof
+    and reports any second one, so that both are discarded and the node is
+    reported to PKI."""
+
+    def __init__(self):
+        self.seen: dict[tuple[str, str], str] = {}
+        self.equivocators: set[str] = set()
+
+    def observe(self, proof: dict, block_hash: str) -> bool:
+        key = (proof.get("vrf_pk", ""), proof.get("seed", ""))
+        first = self.seen.setdefault(key, block_hash)
+        if first != block_hash:
+            self.equivocators.add(proof.get("winner", ""))
+            return True
+        return False
 
 
 def make_nodes(ids: list[str], bits: int = 2048, rng: random.Random | None = None) -> list[V2Node]:

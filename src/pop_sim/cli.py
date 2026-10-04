@@ -12,6 +12,8 @@ from . import __version__, plots, plots_v2
 from . import experiments as ex
 from . import experiments_v2 as ex2
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
+from .v2 import attacks as atk
+from .v2 import usecases as uc
 from .v2.mobility import RoadConfig
 
 
@@ -134,6 +136,26 @@ def cmd_run_v2(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_attacks(args: argparse.Namespace) -> int:
+    res = atk.run_all(quick=args.quick)
+    _dump(res, Path(args.out) / "attacks.json")
+    plots_v2.fig_attacks(res, Path(args.figures) / "attacks.png")
+    for r in res["results"]:
+        print(f"{r['outcome']:10s} {r['category']:10s} {r['name']}")
+    print("summary:", res["summary"], f"({res['wall_seconds']:.1f} s)")
+    return 0 if res["summary"].get("vulnerable", 0) == 0 else 1
+
+
+def cmd_usecases(args: argparse.Namespace) -> int:
+    res = uc.run_all(quick=args.quick)
+    _dump(res, Path(args.out) / "usecases.json")
+    plots_v2.fig_usecases(res, Path(args.figures) / "usecases.png")
+    for r in res["results"]:
+        print(f"{r['scenario']:22s} {r['verdict']}")
+    print(f"({res['wall_seconds']:.1f} s)")
+    return 0
+
+
 def cmd_bench(args: argparse.Namespace) -> int:
     """Run the protocol from a JSON configuration (any ITSConfig field)."""
     spec = json.loads(Path(args.config).read_text())
@@ -197,6 +219,16 @@ def main(argv: list[str] | None = None) -> int:
     r2.add_argument("--out", default="results/v2")
     r2.add_argument("--figures", default="figures/v2")
     r2.set_defaults(func=cmd_run_v2)
+    a = sub.add_parser("attacks", help="execute the attack bench against PoP v2 (exit 1 if anything is vulnerable)")
+    a.add_argument("--quick", action="store_true")
+    a.add_argument("--out", default="results/v2")
+    a.add_argument("--figures", default="figures/v2")
+    a.set_defaults(func=cmd_attacks)
+    u = sub.add_parser("usecases", help="run the deployment scenarios")
+    u.add_argument("--quick", action="store_true")
+    u.add_argument("--out", default="results/v2")
+    u.add_argument("--figures", default="figures/v2")
+    u.set_defaults(func=cmd_usecases)
     b = sub.add_parser("bench", help="run the protocol from a JSON configuration file")
     b.add_argument("config")
     b.add_argument("--out", default=None, help="write the summary JSON here instead of stdout")

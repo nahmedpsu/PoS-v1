@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.0 - attack bench and deployment scenarios
+
+* `pop-sim attacks`: sixteen attacks executed against PoP v2 (value forgery,
+  seed grinding, withholding, equivocation, proof replay, server DoS, Sybil
+  keys, partition, pseudonym replay/cloning/forgery, fake-vehicle flood,
+  revoked-vehicle persistence, RSU chain rewrite, curious RSU, tracking);
+  exits non-zero if any is vulnerable, so CI runs it.
+* `pop-sim usecases`: seven deployment scenarios (urban intersection, highway,
+  rural night, cross-PM roaming, toll/service access, incident revocation,
+  city scale).
+* Protocol hardening found necessary by the bench: election seed is the
+  previous winner's VRF output (grinding resistance), equivocation detection,
+  certificate-checked allotment, pseudonym clone check in the ledger,
+  immediate retirement of a revoked vehicle's pseudonyms.
+* 53 tests.
+
 ## 2.0.0 - PoP v2
 
 * Verifiable, serverless election (`consensus/popv2.py`) on an RFC 9381

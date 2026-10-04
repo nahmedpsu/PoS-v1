@@ -173,11 +173,14 @@ class PseudonymLedger:
         self.pk: dict[str, str] = {}          # pid -> public key (from the certificate)
         self.used: set[str] = set()           # returned, not yet re-allotted
         self.past_holders: dict[str, set[str]] = {}
+        self.last_seen: dict[str, tuple[float, float]] = {}   # pid -> (x, t) of the last accepted message
+        self.ring_length: float | None = None                  # road length when positions wrap around
 
     def allot(self, p: "Pseudonym", vehicle_id: str) -> None:
         self.holder[p.pid] = vehicle_id
         self.pk[p.pid] = p.keys.pk_hex
         self.used.discard(p.pid)
+        self.last_seen.pop(p.pid, None)
         self.past_holders.setdefault(p.pid, set()).add(vehicle_id)
 
     def held_before(self, pid: str, vehicle_id: str) -> bool:
@@ -186,6 +189,8 @@ class PseudonymLedger:
     def mark_used(self, pid: str) -> None:
         self.holder.pop(pid, None)
         self.used.add(pid)
+
+    MAX_SPEED = 60.0          # m/s plausibility bound for the clone check
 
     def check(self, pid: str, vehicle_id: str, msg: "SafetyMessage") -> tuple[bool, str]:
         """Return (ok, reason) for a safety message carrying ``pid``."""
@@ -199,6 +204,16 @@ class PseudonymLedger:
         if not msg.signature or not crypto.verify(crypto.pk_from_hex(self.pk[pid]), msg.body(),
                                                   bytes.fromhex(msg.signature)):
             return False, "bad-signature"
+        # Clone check: one pseudonym cannot be in two places at once.
+        last = self.last_seen.get(pid)
+        if last is not None:
+            dt = max(1e-6, msg.timestamp - last[1])
+            dx = abs(msg.position[0] - last[0])
+            if self.ring_length:
+                dx = min(dx, self.ring_length - dx)
+            if dx > self.MAX_SPEED * dt + 25.0:
+                return False, "pseudonym-cloned"
+        self.last_seen[pid] = (msg.position[0], msg.timestamp)
         return True, "ok"
 
 
@@ -256,14 +271,15 @@ class Vehicle:
             self.changes += 1
         return self.current
 
-    def beacon(self, x: float, v: float, direction: int) -> SafetyMessage | None:
-        """Mobility mode: sign a CAM with the current pseudonym (no rotation)."""
+    def beacon(self, x: float, v: float, direction: int, t: float | None = None) -> SafetyMessage | None:
+        """Mobility mode: sign a CAM with the current pseudonym (no rotation).
+        ``t`` is the simulated time stamped into the message."""
         if self.current is None:
             return None
         self.position = (x, 0.0)
         self.speed = v
         self.direction = float(direction)
-        msg = SafetyMessage(self.current.pid, self.position, v, float(direction), time.time())
+        msg = SafetyMessage(self.current.pid, self.position, v, float(direction), time.time() if t is None else t)
         msg.signature = crypto.sign(self.current.keys.sk, msg.body()).hex()
         return msg
 
@@ -305,6 +321,7 @@ class RSU:
         self.forecast: float | None = None
         self.safety_stock: float = 0.0
         self.stockouts = 0                            # vehicles that got fewer sets than needed
+        self.rejected_uncertified = 0                 # allotment requests without a valid certificate
 
     def active_vehicles(self) -> int:
         return sum(1 for v in self.vehicles if not v.revoked)
@@ -325,7 +342,7 @@ class RSU:
     def receive_sets(self, pseudonyms: list[Pseudonym]) -> None:
         self.shuffled_sets.extend(pseudonyms)
 
-    def distribute(self, per_vehicle: int, avoid_previous: bool = True, attempts: int = 25) -> int:
+    def distribute(self, per_vehicle: int, avoid_previous: bool = True, attempts: int = 25, pki: "PKI | None" = None) -> int:
         """Assign pseudonyms to vehicles under coverage; returns number assigned.
 
         With ``avoid_previous`` the RSU looks for an assignment in which no
@@ -334,6 +351,16 @@ class RSU:
         by greedy allotment over up to ``attempts`` random orderings of the
         set; the ordering with the fewest violations is used."""
         active = [v for v in self.vehicles if not v.revoked]
+        if pki is not None:                       # PoP v2: a set is handed only to a certified vehicle
+            checked = []
+            for v in active:
+                c = v.credential
+                if c is None or pki.is_revoked(c.cert) or \
+                        not crypto.verify(pki.keys.pk, c.credential_bytes(), bytes.fromhex(c.cert)):
+                    self.rejected_uncertified += 1
+                    continue
+                checked.append(v)
+            active = checked
         if not active or not self.shuffled_sets:
             return 0
         best = None

@@ -254,6 +254,6 @@ def exp_v2_protocol(rounds: int = 5, density: float = 8.0, consensus_kinds=("pop
         s["vehicles"] = len(sim.vehicles)
         s["mean_pm_consensus_cpu"] = statistics.mean(r["pm_consensus_cpu"] for r in s["rounds"])
         s["mean_rsu_consensus_cpu"] = statistics.mean(r["rsu_consensus_cpu"] for r in s["rounds"])
-        s["all_pm_blocks_verify"] = all(sim.validate_block(b) for b in sim.pm_chain.chain[1:])
+        s["all_pm_blocks_verify"] = all(sim.validate_block(b, sim.pm_chain) for b in sim.pm_chain.chain[1:])
         out["runs"][kind] = s
     return out

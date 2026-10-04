@@ -17,7 +17,7 @@ from .blockchain import Blockchain, Transaction
 from .consensus.poet import poet_elect
 from .consensus.pokw import pokw_mine
 from .consensus.pop import PoPServer, verify_election
-from .consensus.popv2 import V2Node, popv2_elect, verify_popv2_proof
+from .consensus.popv2 import EquivocationDetector, V2Node, popv2_elect, verify_popv2_proof
 from .consensus.pow2 import mine_pow2
 from .entities import PKI, RSU, Manufacturer, PMCloud, PrivacyManager, Pseudonym, PseudonymLedger, Vehicle
 from .v2.adversary import TrackingAdversary
@@ -57,6 +57,7 @@ class ITSConfig:
     forecast_alpha: float = 0.5          # EMA weight of the RSU demand forecast
     safety_stock: float = 0.0            # extra fraction of sets an RSU asks for above its forecast
     adversary_gate_m: float = 8.0        # tracking adversary's matching gate
+    verify_vehicle_certs: bool = True    # RSU allots only to vehicles with a valid, unrevoked PKI certificate
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
@@ -139,6 +140,7 @@ class ITSSimulation:
         self.holder_history: dict[str, set[str]] = {}       # pid -> vehicles that held it
         self.revocations: list[dict] = []
         self.v2nodes: dict[str, V2Node] = {}                # PoP v2 election keys, PKI-certified
+        self.equivocation = EquivocationDetector()
         self.road: Road | None = None
         self.adversary: TrackingAdversary | None = None
         self.true_changes = 0
@@ -169,6 +171,7 @@ class ITSSimulation:
             road_cfg = cfg.road or RoadConfig(seed=cfg.seed)
             road_cfg.n_rsu = cfg.n_pm * cfg.rsus_per_pm
             self.road = Road(road_cfg)
+            self.ledger.ring_length = road_cfg.length_m
             self.adversary = TrackingAdversary(road_cfg.length_m, cfg.adversary_gate_m, 1.0)
             for mv in self.road.vehicles:
                 v = Vehicle(mv.vid, self.rng)
@@ -195,10 +198,21 @@ class ITSSimulation:
         self._allot_and_distribute(initial=True)
 
     # ------------------------------------------------------------------
-    def validate_block(self, block) -> bool:
+    def _previous_block(self, block, chain=None):
+        chains = [chain] if chain is not None else [self.pm_chain] + [pm.rsu_chain for pm in self.pms]
+        for c in chains:
+            for b in c.chain:
+                if b.hash == block.previous_hash:
+                    return b
+        return None
+
+    def validate_block(self, block, chain=None) -> bool:
         """Nodes accept a block only from the node the consensus elected.  Under
-        PoP the election record is signed by the server, so a spoofed PM that
-        was not selected cannot publish (Section VI-B-3)."""
+        PoP v1 the election record is signed by the server, so a spoofed PM that
+        was not selected cannot publish (Section VI-B-3).  Under PoP v2 the
+        block's VRF proof must verify under the miner's PKI-certified key for
+        this position and the chained seed, and a second block with the same
+        proof (equivocation) is rejected."""
         if block.consensus == "pop":
             return verify_election(block.proof, self.pop_server.keys.pk_hex) and \
                 block.miner == block.proof.get("winner")
@@ -206,8 +220,12 @@ class ITSSimulation:
             node = self.v2nodes.get(block.miner)
             if node is None or not self.pki.verify_vrf_cert(node.node_id, node.pk.to_hex(), node.cert):
                 return False
-            return verify_popv2_proof(block.proof, block.previous_hash, block.index, block.miner,
-                                      certified_pk=node.pk.to_hex())
+            prev = self._previous_block(block, chain)
+            prev_beta = prev.proof.get("beta") if prev is not None else None
+            if not verify_popv2_proof(block.proof, block.previous_hash, block.index, block.miner,
+                                      certified_pk=node.pk.to_hex(), prev_beta_hex=prev_beta):
+                return False
+            return not self.equivocation.observe(block.proof, block.hash or block.compute_hash())
         return True
 
     def _place_vehicles(self) -> None:
@@ -228,7 +246,7 @@ class ITSSimulation:
         data_hash = crypto.sha256_hex("".join(t.hash() for t in txs) + chain.last.hash)
         if self.cfg.consensus == "popv2":
             v2 = [self.v2nodes[i] for i in ids]
-            res, pi = popv2_elect(v2, chain.last.hash, len(chain.chain))
+            res, pi = popv2_elect(v2, chain.last.hash, len(chain.chain), prev_beta_hex=chain.last.proof.get("beta"))
             wnode = self.v2nodes[res.winner]
             outcome = ConsensusOutcome("popv2", res.winner, res.nodes, len(res.miners),
                                        res.prove_seconds_mean + res.race_seconds + res.verify_seconds,
@@ -266,7 +284,8 @@ class ITSSimulation:
             blocks += 1
             txs_total += n
             for rsu in pm.rsus:
-                rsu.distribute(per_vehicle, avoid_previous=self.cfg.avoid_previous_holder)
+                rsu.distribute(per_vehicle, avoid_previous=self.cfg.avoid_previous_holder,
+                               pki=self.pki if self.cfg.verify_vehicle_certs else None)
                 for v in rsu.vehicles:
                     for p in v.pseudonyms:
                         holders = self.holder_history.setdefault(p.pid, set())
@@ -391,7 +410,7 @@ class ITSSimulation:
                         silent_until[mv.vid] = self.sim_time + cfg.silent_period
                 if self.sim_time < silent_until.get(mv.vid, 0.0):
                     continue
-                msg = v.beacon(mv.x, mv.v, mv.direction)
+                msg = v.beacon(mv.x, mv.v, mv.direction, self.sim_time)
                 if msg is None:
                     continue
                 messages += 1
@@ -426,6 +445,9 @@ class ITSSimulation:
                     self.pki.revoke(v.credential.cert)
                     v.revoked = True
                     self.revocations.append(rep)
+                    # its remaining pseudonyms are retired in the ledger at once
+                    for p in v.pseudonyms + ([v.current] if v.current else []):
+                        self.ledger.mark_used(p.pid)
 
     def run(self, rounds: int) -> list[RoundStats]:
         for _ in range(rounds):

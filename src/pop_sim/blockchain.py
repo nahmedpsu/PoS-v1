@@ -114,8 +114,8 @@ class Blockchain:
     """Append-only chain with full validation (hash links and tx signatures)."""
 
     def __init__(self, name: str = "chain", validator=None):
-        """``validator(block) -> bool`` is consulted before a block is appended
-        (e.g. to check the consensus proof names the block's miner)."""
+        """``validator(block, chain) -> bool`` is consulted before a block is
+        appended (e.g. to check the consensus proof names the block's miner)."""
         self.name = name
         self.validator = validator
         genesis = Block(0, "0" * 64, time.time(), [], miner="genesis", consensus="none").seal()
@@ -151,7 +151,7 @@ class Blockchain:
             block.seal()
         elif block.hash != block.compute_hash():
             raise ValueError("block hash does not match its contents")
-        if self.validator is not None and not self.validator(block):
+        if self.validator is not None and not self.validator(block, self):
             raise ValueError(f"block from {block.miner} rejected by consensus validation")
         self.chain.append(block)
         return block

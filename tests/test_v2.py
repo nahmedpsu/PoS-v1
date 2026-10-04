@@ -66,7 +66,7 @@ def test_protocol_under_popv2_validates_and_rejects_impostor():
     sim.run(2)
     s = sim.summary()
     assert s["pm_chain_valid"] and s["rsu_chains_valid"]
-    assert all(sim.validate_block(b) for b in sim.pm_chain.chain[1:])
+    assert all(sim.validate_block(b, sim.pm_chain) for b in sim.pm_chain.chain[1:])
     last = sim.pm_chain.last
     impostor = next(p for p in sim.pms if p.pm_id != last.miner)
     fake = sim.pm_chain.new_block([], miner=impostor.pm_id, consensus="popv2", proof=dict(last.proof))

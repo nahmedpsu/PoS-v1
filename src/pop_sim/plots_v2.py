@@ -164,3 +164,69 @@ def fig_v2_protocol(res: dict, path: Path) -> Path:
     axes[2].set_title("Stock-outs")
     fig.suptitle(f"End-to-end PoP v2 protocol, {res['rounds']} rounds, {runs[kinds[0]]['vehicles']} vehicles")
     return _save(fig, path)
+
+
+# ------------------------------------------------------------ attacks / use cases
+def fig_attacks(res: dict, path: Path) -> Path:
+    by = {r["name"]: r for r in res["results"]}
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    g = by["seed grinding"]["metrics"]
+    budgets = sorted({int(k.split("=")[1]) for k in g["share"]})
+    for mode, color, label in (("block_hash", C_REF, "seed = block hash (grindable)"), ("chained_vrf", C_V2, "seed = previous VRF output (v2)")):
+        axes[0][0].plot(budgets, [g["share"][f"{mode}/budget={b}"] for b in budgets], marker="o", color=color, label=label)
+    axes[0][0].axhline(g["fair_share"], linestyle=":", color="black", label="fair share 1/(n+1)")
+    axes[0][0].set_xscale("log", base=2)
+    axes[0][0].set_xlabel("Grinding budget (block variants tried)")
+    axes[0][0].set_ylabel("Attacker's share of blocks")
+    axes[0][0].set_title("Seed grinding")
+    axes[0][0].legend(fontsize=8)
+    w = by["block withholding (selfish winner)"]["metrics"]["by_attacker_fraction"]
+    fr = sorted(w, key=float)
+    axes[0][1].bar(fr, [w[f]["mean_block_delay"] * 1e3 for f in fr], color=C_V2)
+    axes[0][1].set_xlabel("Fraction of nodes withholding their blocks")
+    axes[0][1].set_ylabel("Mean block delay (ms)")
+    axes[0][1].set_title("Block withholding: liveness cost")
+    d = by["election server denial of service"]["metrics"]["availability"]
+    ps = sorted(d, key=float)
+    x = range(len(ps))
+    axes[1][0].bar([i - 0.2 for i in x], [d[p]["v1_blocks"] for p in ps], width=0.4, color=C_POP, label="PoP v1 (server)")
+    axes[1][0].bar([i + 0.2 for i in x], [d[p]["v2_blocks"] for p in ps], width=0.4, color=C_V2, label="PoP v2 (serverless)")
+    axes[1][0].set_xticks(list(x))
+    axes[1][0].set_xticklabels([f"{float(p)*100:.0f} %" for p in ps])
+    axes[1][0].set_xlabel("Server downtime")
+    axes[1][0].set_ylabel("Blocks produced (fraction of rounds)")
+    axes[1][0].set_title("Election server denial of service")
+    axes[1][0].legend(fontsize=8)
+    f = by["fake-vehicle pseudonym flood"]["metrics"]
+    cats = ["honest vehicles short", "fake vehicles served"]
+    axes[1][1].bar([0 - 0.2, 1 - 0.2], [f["without_cert_check"]["honest_vehicles_short"], f["without_cert_check"]["fake_vehicles_served"]], width=0.4, color=C_REF, label="no certificate check")
+    axes[1][1].bar([0 + 0.2, 1 + 0.2], [f["with_cert_check"]["honest_vehicles_short"], f["with_cert_check"]["fake_vehicles_served"]], width=0.4, color=C_V2, label="v2: certificate check")
+    axes[1][1].set_xticks([0, 1])
+    axes[1][1].set_xticklabels(cats)
+    axes[1][1].set_title("Fake-vehicle pseudonym flood")
+    axes[1][1].legend(fontsize=8)
+    n_def = res["summary"].get("defended", 0)
+    n_mit = res["summary"].get("mitigated", 0)
+    n_vul = res["summary"].get("vulnerable", 0)
+    fig.suptitle(f"Attack bench against PoP v2: {n_def} defended, {n_mit} mitigated, {n_vul} vulnerable")
+    return _save(fig, path)
+
+
+def fig_usecases(res: dict, path: Path) -> Path:
+    rows = res["results"]
+    names = [r["scenario"].replace("_", "\n") for r in rows]
+    fig, axes = plt.subplots(1, 3, figsize=(14, 4.4))
+    link = [r["metrics"].get("linking_success") or 0 for r in rows]
+    colors = [C_V2 if v < 0.35 else (C_POET if v < 0.7 else C_REF) for v in link]
+    axes[0].bar(names, link, color=colors)
+    axes[0].set_ylim(0, 1)
+    axes[0].set_title("Tracker's linking success (green = adequate, red = insufficient)")
+    axes[0].tick_params(axis="x", labelsize=7)
+    axes[1].bar(names, [r["metrics"].get("vehicles", 0) for r in rows], color=C_POW)
+    axes[1].set_title("Vehicles simulated")
+    axes[1].tick_params(axis="x", labelsize=7)
+    axes[2].bar(names, [r["metrics"].get("wall_seconds_per_round", 0) for r in rows], color=C_POW1)
+    axes[2].set_title("Wall time per shuffle round (s, one core)")
+    axes[2].tick_params(axis="x", labelsize=7)
+    fig.suptitle("PoP v2 deployment scenarios")
+    return _save(fig, path)
