@@ -12,9 +12,12 @@ node's self-reported random short time. A node that always reports the smallest
 value wins every round it is selected for, and the server is a single point of
 trust in a protocol whose stated goal is to have none.
 
-**Change.** Every node holds an RSA key whose public half PKI certifies at
-registration. For block `i` on top of hash `h`, the node evaluates the
-RSA-FDH-VRF of RFC 9381 on `h || i`. The output, read as a number in [0, 1), is
+**Change.** Every node holds a VRF key whose public half PKI certifies at
+registration: by default an ECVRF over secp256k1 (RFC 9381 Section 5
+construction on libsecp256k1, 0.16 ms per proof), with the pure-Python
+RSA-FDH-VRF of RFC 9381 Section 4 as a fallback. For block `i` the node
+evaluates the VRF on the previous winner's output and `i` (the block hash
+is used only for the first block after genesis). The output, read as a number in [0, 1), is
 the node's "random short time": it is unique for that key and input, so it can
 be neither chosen nor ground, and the proof travels in the block for everyone to
 verify. Nodes with an output below 0.5 are this block's miners (the paper's
@@ -32,10 +35,13 @@ speed and heading in every CAM.
 
 **Change.** Vehicles drive on a two-direction ring road with Poisson traffic
 density, beacon once a second with GPS noise, and change pseudonym on a
-schedule, optionally keeping silent for a few seconds after each change. A
-Global Passive Adversary continues trajectories across pseudonym changes with
-constant-velocity prediction, a distance gate that widens during silence, and
-dead reckoning for up to 20 s. Its success is scored against ground truth.
+schedule, optionally keeping silent for a few seconds after each change. Two
+Global Passive Adversaries continue trajectories across pseudonym changes and
+are scored against ground truth: a nearest-neighbour baseline (constant
+velocity, fixed gate widening during silence) and, the default, a Kalman
+filter per track with Mahalanobis gating and global assignment by the
+Hungarian algorithm (the GNN tracker of the tracking literature). The Kalman
+tracker links more, so its numbers are the conservative bound.
 
 **Measured.** `exp_v2_linkability`: fraction of pseudonym changes the tracker
 links correctly versus traffic density, for silent periods of 0, 3 and 10 s and
@@ -111,8 +117,9 @@ single difficulty-3 puzzle per block is cheaper than PoP's random wait.
 
 * Nodes still run in one process; the network model is sampled, not emulated.
   Running the PMs as separate processes or on devices is the next step.
-* The RSA-FDH-VRF is implemented in pure Python big integers (with the CRT).
-  An OpenSSL-backed RSA or an ECVRF would be 10 to 20 times faster.
+* The ECVRF is on secp256k1 rather than P-256 because that is the curve the
+  fast library exposes point operations for; the construction is otherwise
+  that of ECVRF-P256-SHA256-TAI.
 * The road is a ring with two directions and no intersections. Intersections
   and lane changes would weaken the tracker further; the ring is the harder
   case for privacy.

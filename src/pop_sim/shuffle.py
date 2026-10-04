@@ -20,7 +20,6 @@ from .consensus.pop import PoPServer, verify_election
 from .consensus.popv2 import EquivocationDetector, V2Node, popv2_elect, verify_popv2_proof
 from .consensus.pow2 import mine_pow2
 from .entities import PKI, RSU, Manufacturer, PMCloud, PrivacyManager, Pseudonym, PseudonymLedger, Vehicle
-from .v2.adversary import TrackingAdversary
 from .v2.anchoring import (
     anchors_to_proof,
     build_allotment_proof,
@@ -30,6 +29,7 @@ from .v2.anchoring import (
     time_verify,
 )
 from .v2.mobility import Beacon, Road, RoadConfig
+from .v2.tracker_kalman import make_tracker
 from .vrf import generate_vrf_keypair
 
 CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw", "popv2")
@@ -48,7 +48,9 @@ class ITSConfig:
     avoid_previous_holder: bool = True   # RSU never hands a pseudonym back to a vehicle that used it
     # ---- PoP v2 options ----
     anchoring: bool = True               # commit RSU-chain block hashes into every PM block
-    vrf_bits: int = 2048                 # RSA-FDH-VRF key size for consensus "popv2"
+    vrf_scheme: str | None = None        # "ecvrf" (default when coincurve is installed) or "rsa-fdh"
+    vrf_bits: int = 2048                 # RSA-FDH-VRF key size when that scheme is used
+    tracker: str = "kalman"              # eavesdropper model: "kalman" (GNN tracker) or "nn" (baseline)
     mobility: bool = False               # vehicles drive on a ring road and beacon every second
     road: RoadConfig | None = None       # mobility parameters (n_rsu is forced to n_pm * rsus_per_pm)
     round_seconds: int = 30              # simulated seconds per shuffle round in mobility mode
@@ -142,7 +144,7 @@ class ITSSimulation:
         self.v2nodes: dict[str, V2Node] = {}                # PoP v2 election keys, PKI-certified
         self.equivocation = EquivocationDetector()
         self.road: Road | None = None
-        self.adversary: TrackingAdversary | None = None
+        self.adversary = None
         self.true_changes = 0
         self.sim_time = 0.0
         self._build()
@@ -172,7 +174,7 @@ class ITSSimulation:
             road_cfg.n_rsu = cfg.n_pm * cfg.rsus_per_pm
             self.road = Road(road_cfg)
             self.ledger.ring_length = road_cfg.length_m
-            self.adversary = TrackingAdversary(road_cfg.length_m, cfg.adversary_gate_m, 1.0)
+            self.adversary = make_tracker(cfg.tracker, road_cfg.length_m, cfg.adversary_gate_m, 1.0)
             for mv in self.road.vehicles:
                 v = Vehicle(mv.vid, self.rng)
                 self.manufacturer.provision(v)
@@ -182,7 +184,7 @@ class ITSSimulation:
                 rsu.update_forecast(cfg.forecast_alpha, cfg.safety_stock)
         if cfg.consensus == "popv2":
             for node_id in [pm.pm_id for pm in self.pms] + [r.rsu_id for r in self.rsus]:
-                node = V2Node(node_id, generate_vrf_keypair(cfg.vrf_bits))
+                node = V2Node(node_id, generate_vrf_keypair(cfg.vrf_bits, cfg.vrf_scheme))
                 node.cert = self.pki.certify_vrf_key(node_id, node.pk.to_hex())
                 self.v2nodes[node_id] = node
         for v in self.rng.sample(self.vehicles, cfg.malicious_vehicles):

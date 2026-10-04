@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.2.0 - fast ECVRF and a stronger tracker
+
+* `ecvrf.py`: ECVRF (RFC 9381 Section 5 construction, try-and-increment
+  hash-to-curve, SHA-256) over secp256k1 on libsecp256k1 via `coincurve`.
+  Proof 0.16 ms, verification 0.17 ms, against 7 ms / 0.2 ms for the pure
+  Python RSA-FDH-VRF, which remains available (`vrf_scheme="rsa-fdh"`).
+  `vrf.py` dispatches on the scheme; election-cost experiment measures both.
+* `v2/tracker_kalman.py`: Kalman-filter (constant velocity) tracker with
+  Mahalanobis gating and global assignment by the Hungarian algorithm. It is
+  the default eavesdropper (`tracker="kalman"`); the nearest-neighbour
+  baseline stays as `"nn"`. Linkability sweep, attack bench and scenarios
+  report the stronger tracker, so the privacy numbers are conservative.
+* Dockerfile for reproducible runs; README split into a short landing page
+  with the results moved to `docs/`.
+* 59 tests.
+
 ## 2.1.0 - attack bench and deployment scenarios
 
 * `pop-sim attacks`: sixteen attacks executed against PoP v2 (value forgery,

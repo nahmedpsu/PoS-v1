@@ -39,11 +39,11 @@ SORTITION_THRESHOLD = 0.5
 @dataclass
 class V2Node:
     node_id: str
-    keys: vrf.VRFKeyPair
+    keys: object                    # vrf.VRFKeyPair (RSA-FDH) or ecvrf.ECVRFKeyPair
     cert: str = ""                  # PKI signature over (node_id, vrf pk), hex
 
     @property
-    def pk(self) -> vrf.VRFPublicKey:
+    def pk(self):
         return self.keys.public
 
 
@@ -157,5 +157,6 @@ class EquivocationDetector:
         return False
 
 
-def make_nodes(ids: list[str], bits: int = 2048, rng: random.Random | None = None) -> list[V2Node]:
-    return [V2Node(i, vrf.generate_vrf_keypair(bits)) for i in ids]
+def make_nodes(ids: list[str], bits: int = 2048, rng: random.Random | None = None,
+               scheme: str | None = None) -> list[V2Node]:
+    return [V2Node(i, vrf.generate_vrf_keypair(bits, scheme)) for i in ids]

@@ -453,12 +453,12 @@ def attack_curious_rsu(seed: int = 12) -> AttackResult:
 def attack_tracking(seed: int = 13, seconds: int = 180) -> AttackResult:
     """Global passive adversary with kinematic tracking, two deployments."""
     from ..experiments_v2 import _track_run
-    sparse = _track_run(2.0, 30, 0.0, 3.0, seconds, True, seed)
-    dense = _track_run(60.0, 30, 10.0, 3.0, seconds, True, seed)
-    unsync = _track_run(60.0, 30, 10.0, 3.0, seconds, False, seed)
+    sparse = _track_run(2.0, 30, 0.0, 3.0, seconds, True, seed, tracker="kalman")
+    dense = _track_run(60.0, 30, 10.0, 3.0, seconds, True, seed, tracker="kalman")
+    unsync = _track_run(60.0, 30, 10.0, 3.0, seconds, False, seed, tracker="kalman")
     return AttackResult(
         "location tracking across pseudonym changes", "privacy",
-        "An eavesdropper links beacons by position and speed through every pseudonym change.",
+        "A Kalman/GNN tracker links beacons by position and speed through every pseudonym change.",
         "both", "mitigated",
         "Shuffle in dense traffic with synchronized changes and a silent period; sparse roads stay linkable.",
         {"sparse_road_no_silence": sparse["linking_success"], "dense_sync_10s_silence": dense["linking_success"],

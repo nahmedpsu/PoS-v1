@@ -25,13 +25,19 @@ def fig_v2_election_cost(res: dict, path: Path) -> Path:
     fig, ax = plt.subplots(figsize=(7.5, 4.2))
     ax.plot(x, [r["poet_total"] * 1e3 for r in rows], marker="o", color=C_POET, label="PoET, all nodes")
     ax.plot(x, [r["pop_v1_total"] * 1e3 for r in rows], marker="^", color=C_POP, label="PoP v1, server total")
-    ax.plot(x, [r["pop_v2_per_node"] * 1e3 for r in rows], marker="s", color=C_V2, label="PoP v2, one node (prove + verify winner)")
+    for sc, style in (("ecvrf", "-"), ("rsa-fdh", "--")):
+        key = f"pop_v2_per_node_{sc}"
+        if key in rows[0]:
+            ax.plot(x, [r[key] * 1e3 for r in rows], marker="s", linestyle=style, color=C_V2,
+                    label=f"PoP v2 ({sc}), one node: prove + verify winner")
+    if "pop_v2_per_node_ecvrf" not in rows[0] and "pop_v2_per_node_rsa-fdh" not in rows[0]:
+        ax.plot(x, [r["pop_v2_per_node"] * 1e3 for r in rows], marker="s", color=C_V2, label="PoP v2, one node (prove + verify winner)")
     ax.plot(x, [r["pop_v2_race"] * 1e3 for r in rows], marker="v", linestyle="--", color=C_V2, label="PoP v2, race over received values")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlabel("Nodes")
     ax.set_ylabel("Time per block (ms, log)")
-    ax.set_title(f"Election cost vs network size (RSA-FDH-VRF {res['vrf_bits']} bit)")
+    ax.set_title("Election cost vs network size")
     ax.legend(fontsize=8)
     return _save(fig, path)
 
@@ -77,13 +83,19 @@ def fig_v2_latency(res: dict, path: Path) -> Path:
 def fig_v2_linkability(res: dict, path: Path) -> Path:
     rows = res["rows"]
     silents = sorted({r["silent_period"] for r in rows})
+    trackers = res.get("trackers", ["nn"])
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), sharey=True)
     for ax, sync in zip(axes, (True, False)):
         for i, s in enumerate(silents):
-            sub = sorted([r for r in rows if r["synchronized"] == sync and r["silent_period"] == s],
-                         key=lambda r: r["density_per_km"])
-            ax.plot([r["density_per_km"] for r in sub], [r["linking_success"] for r in sub], marker="o",
-                    label=f"silent period {s:.0f} s")
+            for tracker in trackers:
+                sub = sorted([r for r in rows if r["synchronized"] == sync and r["silent_period"] == s
+                              and r.get("tracker", "nn") == tracker], key=lambda r: r["density_per_km"])
+                if not sub:
+                    continue
+                ax.plot([r["density_per_km"] for r in sub], [r["linking_success"] for r in sub],
+                        marker="o" if tracker == trackers[0] else "x",
+                        linestyle="-" if tracker == trackers[0] else ":", color=f"C{i}",
+                        label=f"silent {s:.0f} s, {tracker} tracker")
         ax.set_xscale("log")
         ax.set_xlabel("Traffic density (vehicles / km / direction)")
         ax.set_title("Synchronized changes (mix zone)" if sync else "Unsynchronized changes")

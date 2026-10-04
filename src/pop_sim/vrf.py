@@ -1,4 +1,11 @@
-"""RSA-FDH-VRF (RFC 9381, Section 4) with the RSA-FDH-VRF-SHA256 ciphersuite.
+"""Verifiable random functions: RSA-FDH-VRF (RFC 9381, Section 4) in pure
+Python, and the ECVRF of ``ecvrf.py`` on libsecp256k1 when available.
+
+``generate_vrf_keypair``, ``vrf_prove``, ``vrf_verify`` and
+``VRFPublicKey.from_hex`` dispatch on the scheme, so the rest of the code
+does not care which one a node uses.  ``DEFAULT_SCHEME`` is ``"ecvrf"``
+when ``coincurve`` is installed (0.16 ms per proof) and ``"rsa-fdh"``
+otherwise (7 ms).
 
 A Verifiable Random Function lets a node derive a pseudo-random value
 ``beta`` from an input ``alpha`` with its secret key, together with a proof
@@ -16,6 +23,11 @@ import hashlib
 from dataclasses import dataclass
 
 from cryptography.hazmat.primitives.asymmetric import rsa
+
+from . import ecvrf
+
+SCHEMES = ("rsa-fdh", "ecvrf")
+DEFAULT_SCHEME = "ecvrf" if ecvrf.AVAILABLE else "rsa-fdh"
 
 SUITE_STRING = b"\x01"          # RSA-FDH-VRF-SHA256
 _ONE = b"\x01"
@@ -49,10 +61,15 @@ class VRFPublicKey:
         return (self.n.bit_length() + 7) // 8
 
     def to_hex(self) -> str:
-        return f"{self.e:x}:{self.n:x}"
+        return f"rsa:{self.e:x}:{self.n:x}"
 
     @classmethod
-    def from_hex(cls, s: str) -> "VRFPublicKey":
+    def from_hex(cls, s: str):
+        """Parse any scheme's public key from its hex form."""
+        if s.startswith("ec:"):
+            return ecvrf.ECVRFPublicKey.from_hex(s)
+        if s.startswith("rsa:"):
+            s = s[4:]
         e, n = s.split(":")
         return cls(int(n, 16), int(e, 16))
 
@@ -82,7 +99,16 @@ class VRFKeyPair:
         return m2 + h * self.q
 
 
-def generate_vrf_keypair(bits: int = 2048) -> VRFKeyPair:
+def generate_vrf_keypair(bits: int = 2048, scheme: str | None = None):
+    """Key pair for ``scheme`` (``"ecvrf"`` or ``"rsa-fdh"``; default: the
+    fastest available).  ``bits`` applies to RSA only."""
+    scheme = scheme or DEFAULT_SCHEME
+    if scheme == "ecvrf":
+        if not ecvrf.AVAILABLE:
+            raise RuntimeError("ECVRF needs the coincurve package")
+        return ecvrf.generate_keypair()
+    if scheme != "rsa-fdh":
+        raise ValueError(f"unknown VRF scheme {scheme}")
     key = rsa.generate_private_key(public_exponent=65537, key_size=bits)
     priv = key.private_numbers()
     pub = priv.public_numbers
@@ -95,20 +121,27 @@ def _encode(pk: VRFPublicKey, alpha: bytes) -> int:
     return os2ip(em)
 
 
-def vrf_prove(sk: VRFKeyPair, alpha: bytes) -> bytes:
-    """Return the proof ``pi`` (an RSA-FDH signature over ``alpha``)."""
+def vrf_prove(sk, alpha: bytes) -> bytes:
+    """Return the proof ``pi`` for ``alpha`` under either scheme."""
+    if isinstance(sk, ecvrf.ECVRFKeyPair):
+        return ecvrf.prove(sk, alpha)
     m = _encode(sk.public, alpha)
     s = sk.rsasp1(m)
     return i2osp(s, sk.public.k)
 
 
 def vrf_proof_to_hash(pi: bytes) -> bytes:
-    """``beta = SHA-256(suite || 0x02 || pi)``, the VRF output."""
+    """The VRF output ``beta`` for a proof of either scheme (an ECVRF proof
+    is 81 bytes; an RSA-FDH proof is the modulus size, 128 bytes or more)."""
+    if len(pi) == ecvrf.PT_LEN + ecvrf.C_LEN + ecvrf.Q_LEN:
+        return ecvrf.proof_to_hash(pi)
     return hashlib.sha256(SUITE_STRING + _TWO + pi).digest()
 
 
-def vrf_verify(pk: VRFPublicKey, alpha: bytes, pi: bytes) -> bytes | None:
+def vrf_verify(pk, alpha: bytes, pi: bytes) -> bytes | None:
     """Return ``beta`` if ``pi`` is a valid proof for ``alpha`` under ``pk``, else ``None``."""
+    if isinstance(pk, ecvrf.ECVRFPublicKey):
+        return ecvrf.verify(pk, alpha, pi)
     if len(pi) != pk.k:
         return None
     s = os2ip(pi)

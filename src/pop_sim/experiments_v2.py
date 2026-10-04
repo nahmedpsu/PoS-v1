@@ -16,7 +16,6 @@ from .consensus.popv2 import V2Node, popv2_elect
 from .consensus.pow2 import mine_pow2
 from .shuffle import ITSConfig, ITSSimulation
 from .v2 import network as nw
-from .v2.adversary import TrackingAdversary
 from .v2.anchoring import (
     anchors_to_proof,
     build_allotment_proof,
@@ -27,27 +26,33 @@ from .v2.anchoring import (
 )
 from .v2.mobility import Beacon, Road, RoadConfig
 from .v2.sybil import simulate_sybil
+from .v2.tracker_kalman import make_tracker
 
 
 # ------------------------------------------------------------ item 1
-def exp_v2_election_cost(node_counts=(10, 20, 50, 100, 200), rounds: int = 10, bits: int = 2048, seed: int = 1) -> dict:
+def exp_v2_election_cost(node_counts=(10, 20, 50, 100, 200), rounds: int = 10, bits: int = 2048, seed: int = 1,
+                         schemes=("ecvrf", "rsa-fdh")) -> dict:
     """Per-block cost of PoET, PoP v1 and PoP v2 as the network grows.
 
     For PoP v2 the figure that matters is what *one node* spends: its own
     VRF proof plus verifying the winner's, independent of ``n``; the
     sequential total (every node proving in turn) is also reported for an
-    honest comparison with the single-process v1 numbers."""
+    honest comparison with the single-process v1 numbers.  Both VRF
+    schemes are measured when available."""
     rng = random.Random(seed)
-    t0 = time.perf_counter()
-    keys = [vrf.generate_vrf_keypair(bits) for _ in range(max(node_counts))]
-    keygen = (time.perf_counter() - t0) / len(keys)
+    schemes = [sc for sc in schemes if sc != "ecvrf" or vrf.ecvrf.AVAILABLE]
+    keys = {}
+    keygen = {}
+    for sc in schemes:
+        t0 = time.perf_counter()
+        keys[sc] = [vrf.generate_vrf_keypair(bits, sc) for _ in range(max(node_counts))]
+        keygen[sc] = (time.perf_counter() - t0) / len(keys[sc])
     rows = []
     for n in node_counts:
         ids = [f"N{i}" for i in range(n)]
-        nodes = [V2Node(i, k) for i, k in zip(ids, keys)]
-        poet, v1, v2_node, v2_total, v2_race, v1_race = [], [], [], [], [], []
+        poet, v1, v1_race = [], [], []
+        per_scheme = {sc: {"node": [], "total": [], "race": [], "verify": []} for sc in schemes}
         server = PoPServer(rng=rng)
-        prev = "0" * 64
         for r in range(rounds):
             poet.append(poet_elect(ids, rng=rng).cpu_seconds)
             server.disconnect_all()
@@ -56,15 +61,24 @@ def exp_v2_election_cost(node_counts=(10, 20, 50, 100, 200), rounds: int = 10, b
             res1 = server.elect()
             v1.append(res1.cpu_seconds)
             v1_race.append(res1.race_seconds)
-            res2, _ = popv2_elect(nodes, prev, r + 1)
-            v2_node.append(res2.prove_seconds_mean + res2.verify_seconds)
-            v2_total.append(res2.cpu_seconds)
-            v2_race.append(res2.race_seconds)
-            prev = crypto.sha256_hex(prev + res2.winner)
-        rows.append({"nodes": n, "poet_total": statistics.mean(poet), "pop_v1_total": statistics.mean(v1),
-                     "pop_v1_race": statistics.mean(v1_race), "pop_v2_per_node": statistics.mean(v2_node),
-                     "pop_v2_race": statistics.mean(v2_race), "pop_v2_sequential_total": statistics.mean(v2_total)})
-    return {"experiment": "v2_election_cost", "vrf_bits": bits, "vrf_keygen_seconds": keygen, "rows": rows}
+            for sc in schemes:
+                nodes = [V2Node(i, k) for i, k in zip(ids, keys[sc])]
+                res2, _ = popv2_elect(nodes, crypto.sha256_hex(f"{sc}{r}"), r + 1)
+                per_scheme[sc]["node"].append(res2.prove_seconds_mean + res2.verify_seconds)
+                per_scheme[sc]["total"].append(res2.cpu_seconds)
+                per_scheme[sc]["race"].append(res2.race_seconds)
+                per_scheme[sc]["verify"].append(res2.verify_seconds)
+        row = {"nodes": n, "poet_total": statistics.mean(poet), "pop_v1_total": statistics.mean(v1),
+               "pop_v1_race": statistics.mean(v1_race)}
+        primary = schemes[0]
+        row.update({"pop_v2_per_node": statistics.mean(per_scheme[primary]["node"]),
+                    "pop_v2_race": statistics.mean(per_scheme[primary]["race"]),
+                    "pop_v2_sequential_total": statistics.mean(per_scheme[primary]["total"])})
+        for sc in schemes:
+            row[f"pop_v2_per_node_{sc}"] = statistics.mean(per_scheme[sc]["node"])
+            row[f"pop_v2_verify_{sc}"] = statistics.mean(per_scheme[sc]["verify"])
+        rows.append(row)
+    return {"experiment": "v2_election_cost", "schemes": schemes, "vrf_bits": bits, "vrf_keygen_seconds": keygen, "rows": rows}
 
 
 # ------------------------------------------------------------ item 5
@@ -126,11 +140,11 @@ def exp_v2_latency(node_counts=(4, 7, 10, 20, 50, 100), mean_latency: float = 0.
 
 # ------------------------------------------------------------ item 2
 def _track_run(density: float, change_period: int, silent: float, noise_m: float, seconds: int,
-               synchronized: bool, seed: int, gate_m: float = 8.0) -> dict:
+               synchronized: bool, seed: int, gate_m: float = 8.0, tracker: str = "kalman") -> dict:
     cfg = RoadConfig(density_per_km=density, seed=seed)
     road = Road(cfg)
     rng = random.Random(seed + 1)
-    adv = TrackingAdversary(cfg.length_m, gate_m, 1.0)
+    adv = make_tracker(tracker, cfg.length_m, gate_m, 1.0)
     pid = {v.vid: f"P{v.vid}-0" for v in road.vehicles}
     offset = {v.vid: 0 if synchronized else rng.randrange(change_period) for v in road.vehicles}
     silent_until = {v.vid: 0.0 for v in road.vehicles}
@@ -150,22 +164,25 @@ def _track_run(density: float, change_period: int, silent: float, noise_m: float
         adv.observe(beacons)
     rep = adv.report(changes).to_dict()
     rep.update({"density_per_km": density, "change_period": change_period, "silent_period": silent,
-                "position_noise_m": noise_m, "synchronized": synchronized, "vehicles": len(road.vehicles)})
+                "position_noise_m": noise_m, "synchronized": synchronized, "vehicles": len(road.vehicles),
+                "tracker": tracker})
     return rep
 
 
 def exp_v2_linkability(densities=(2, 5, 10, 20, 40, 80), silent_periods=(0, 3, 10), change_period: int = 30,
-                       noise_m: float = 3.0, seconds: int = 300, seed: int = 1) -> dict:
+                       noise_m: float = 3.0, seconds: int = 300, seed: int = 1, trackers=("kalman", "nn")) -> dict:
     """What a kinematic tracker achieves across pseudonym changes, as a
     function of traffic density and of a silent period after each change,
-    for synchronized (mix-zone style) and unsynchronized changes."""
+    for synchronized (mix-zone style) and unsynchronized changes, under the
+    Kalman/GNN tracker (conservative) and the nearest-neighbour baseline."""
     rows = []
-    for sync in (True, False):
-        for silent in silent_periods:
-            for d in densities:
-                rows.append(_track_run(d, change_period, silent, noise_m, seconds, sync, seed))
+    for tracker in trackers:
+        for sync in (True, False):
+            for silent in silent_periods:
+                for d in densities:
+                    rows.append(_track_run(d, change_period, silent, noise_m, seconds, sync, seed, tracker=tracker))
     return {"experiment": "v2_linkability", "change_period": change_period, "position_noise_m": noise_m,
-            "seconds": seconds, "rows": rows}
+            "seconds": seconds, "trackers": list(trackers), "rows": rows}
 
 
 # ------------------------------------------------------------ item 3

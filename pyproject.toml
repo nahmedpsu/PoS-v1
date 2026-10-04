@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pop-sim"
-version = "2.1.0"
+version = "2.2.0"
 description = "PoS v1: simulation of Proof of Pseudonym, a blockchain-based privacy-preserving pseudonym shuffling protocol for ITS"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-dependencies = ["cryptography>=41", "matplotlib>=3.7", "numpy>=1.24"]
+dependencies = ["cryptography>=41", "matplotlib>=3.7", "numpy>=1.24", "coincurve>=19"]
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "ruff>=0.4"]
