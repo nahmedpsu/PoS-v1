@@ -27,7 +27,8 @@ def test_transaction_is_signed_and_encrypted_for_receiver():
     tx = Transaction.create("shuffle", s, r.pk, {"pids": ["a", "b"]})
     assert tx.verify_signature()
     assert tx.open(r) == {"pids": ["a", "b"]}
-    tx.ciphertext = tx.ciphertext[:-2] + "ff"
+    last = int(tx.ciphertext[-2:], 16) ^ 0x01          # flip one bit: always a real change
+    tx.ciphertext = tx.ciphertext[:-2] + f"{last:02x}"
     assert not tx.verify_signature()
 
 
