@@ -8,10 +8,9 @@ encrypted for the receiver and the sender's signature (Section IV-D).
 from __future__ import annotations
 
 import json
-import time
 from dataclasses import asdict, dataclass, field
 
-from . import crypto
+from . import clock, crypto
 
 
 @dataclass
@@ -50,7 +49,7 @@ class Transaction:
             kind=kind,
             sender_pk=sender.pk_hex,
             receiver_pk=crypto.pk_to_hex(receiver_pk),
-            timestamp=time.time(),
+            timestamp=clock.now(),
             ciphertext=ct.hex(),
         )
         tx.signature = crypto.sign(sender.sk, tx.signing_bytes()).hex()
@@ -118,7 +117,7 @@ class Blockchain:
         appended (e.g. to check the consensus proof names the block's miner)."""
         self.name = name
         self.validator = validator
-        genesis = Block(0, "0" * 64, time.time(), [], miner="genesis", consensus="none").seal()
+        genesis = Block(0, "0" * 64, clock.now(), [], miner="genesis", consensus="none").seal()
         self.chain: list[Block] = [genesis]
 
     @property
@@ -132,7 +131,7 @@ class Blockchain:
         return Block(
             index=len(self.chain),
             previous_hash=self.last.hash,
-            timestamp=time.time(),
+            timestamp=clock.now(),
             transactions=list(transactions),
             miner=miner,
             consensus=consensus,
@@ -156,7 +155,9 @@ class Blockchain:
         self.chain.append(block)
         return block
 
-    def is_valid(self) -> bool:
+    def is_valid(self, recheck_consensus: bool = True) -> bool:
+        """Hash links, transaction signatures and, when a validator is set,
+        every block's consensus proof again."""
         for i in range(1, len(self.chain)):
             cur, prev = self.chain[i], self.chain[i - 1]
             if cur.previous_hash != prev.hash:
@@ -164,6 +165,8 @@ class Blockchain:
             if cur.hash != cur.compute_hash():
                 return False
             if any(not tx.verify_signature() for tx in cur.transactions):
+                return False
+            if recheck_consensus and self.validator is not None and not self.validator(cur, self):
                 return False
         return True
 

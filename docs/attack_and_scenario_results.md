@@ -4,19 +4,21 @@ Back to the [README](../README.md). Mechanisms in [attacks_and_usecases.md](atta
 
 ## Attack bench
 
-`pop-sim attacks` executes sixteen attacks against the implementation and reads
+`pop-sim attacks` executes eighteen attacks against the implementation and reads
 the outcome from what honest nodes accept. It exits non-zero if any attack
 succeeds, so CI runs it on every push. Full table and mechanisms in
 [attacks_and_usecases.md](attacks_and_usecases.md); raw output in
-`results/v2/attacks.json`. Result of the full run: **13 defended, 3 mitigated,
+`results/v2/attacks.json`. Result of the full run: **14 defended, 4 mitigated,
 0 vulnerable**.
 
 | Attack | What was tried | Measured outcome |
 |---|---|---|
 | Value forgery / proof theft | Claim a smaller value, reuse the winner's proof, use an uncertified key, choose the seed | 0 of 4 accepted, honest block accepted |
-| Seed grinding | Previous winner tries 1 to 64 block variants to lower its next value | Block-hash seed: share rises from 0.12 to 0.38. Chained VRF seed (v2): stays at 0.11 (fair share 0.10) |
+| Sortition threshold tampering | A node with value 0.94 writes `threshold: 1.0`, `miners: 0`, or claims a no-miner round with or without evidence | 0 of 4 accepted, honest block accepted (an earlier verifier accepted the first two: review finding, fixed in 2.2.1) |
+| Seed grinding | Previous winner tries 1 to 64 block variants to lower its next value | Block-hash seed: share rises from 0.08 to 0.44. Chained VRF seed (v2): stays at 0.12 (fair share 0.10) |
+| Multi-key seed choice | Attacker with 1 to 5 certified keys picks which winning key publishes to steer the next seed | Share 0.06 / 0.12 / 0.16 / 0.18 for k = 1 / 2 / 3 / 5 against fair 0.05 / 0.10 / 0.14 / 0.21; no measurable gain over honest play |
 | Block withholding | 0 to 50 % of nodes never publish when they win | 0 attacker blocks; mean block delay 46 ms to 95 ms; no round without a block |
-| Equivocation | Two blocks, one proof | Second block rejected, node reported |
+| Equivocation | Two blocks, one proof | First block stands, second rejected, node reported |
 | Proof replay | Old proof at a new height | Rejected |
 | Election server DoS | Server down 10 to 90 % of the time | v1 produces 89 % to 11 % of its blocks; v2 100 % |
 | Sybil election keys | 50 self-generated keys publish blocks | 0 accepted |
@@ -32,9 +34,11 @@ succeeds, so CI runs it on every push. Full table and mechanisms in
 
 ![Attacks](../figures/v2/attacks.png)
 
-Four of these defences did not exist before the bench was written and were added
+Five of these defences did not exist before the bench was written and were added
 because it found them necessary: the chained VRF seed (grinding), equivocation
-detection, the certificate check at allotment (flood), and the ledger clone check.
+detection, the certificate check at allotment (flood), the ledger clone check, and
+the constant threshold with fallback evidence (found by an external review of the
+code, the only one that was a real hole in a shipped version).
 
 ## Deployment scenarios
 

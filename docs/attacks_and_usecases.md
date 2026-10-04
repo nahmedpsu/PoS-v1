@@ -1,6 +1,6 @@
 # Attack bench and deployment scenarios for PoP v2
 
-`pop-sim attacks` executes sixteen attacks against the implementation and
+`pop-sim attacks` executes eighteen attacks against the implementation and
 reads the outcome from what honest nodes accept. `pop-sim usecases` runs the
 protocol in seven concrete settings. Both write JSON to `results/v2/` and a
 figure to `figures/v2/`; the measured numbers are in the README.
@@ -10,9 +10,11 @@ figure to `figures/v2/`; the measured numbers are in the README.
 | # | Attack | Category | What the attacker does | Defence in v2 | Outcome |
 |---|---|---|---|---|---|
 | 1 | Value forgery / proof theft | consensus | Claims a smaller value, reuses the winner's proof, uses an uncertified key, picks its own seed | VRF proof bound to the certified key, chain position and seed; value recomputed from the proof | defended |
+| 1b | Sortition threshold tampering | consensus | A node above the threshold edits the threshold or miner-count field, or claims a no-miner round | Threshold is a protocol constant; a no-miner claim needs every certified node's proof | defended (was vulnerable before 2.2.1) |
 | 2 | Seed grinding | consensus | As previous winner, tries many block variants so its next VRF value is small | Seed = previous winner's VRF output, not the block hash | defended (block-hash seed is shown vulnerable) |
+| 2b | Multi-key seed choice | consensus | Attacker with k certified keys picks which winning key publishes to steer the next seed | Bounded by k/(n+k); PKI issuance limits k | mitigated (gain measured) |
 | 3 | Block withholding | consensus | Attacker-controlled winners stay silent | Independent timers: the next-smallest value publishes | mitigated (delay only) |
-| 4 | Equivocation | consensus | Two blocks for one height with the same proof | (key, seed) -> hash memory; second block rejected, node reported | defended |
+| 4 | Equivocation | consensus | Two blocks for one height with the same proof | (key, seed) -> hash memory; first block stands, second rejected, node reported | defended |
 | 5 | Proof replay | consensus | An old valid proof at a new height | Seed includes the height and the previous output | defended |
 | 6 | Election server DoS | consensus | Takes the v1 server down | v2 has no server | defended (v1 loses blocks) |
 | 7 | Sybil election keys | consensus | 50 self-generated VRF keys | Only PKI-certified keys may publish | defended |

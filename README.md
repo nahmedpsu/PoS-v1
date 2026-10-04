@@ -1,5 +1,8 @@
 # PoS: Proof of Pseudonym simulation (v1 reproduction and v2 extensions)
 
+*"PoS" here abbreviates Proof of pSeudonym, the manuscript's protocol; it is not
+Proof of Stake.*
+
 A simulation of the protocol proposed in
 
 > S. Johar, N. Ahmad, A. Durrani and G. Ali, "Proof of Pseudonym: Blockchain-Based
@@ -152,7 +155,7 @@ All numbers come from `results/` and `results/v2/` as produced by the commands a
 * **PoP v2 fixes the election** with a verifiable random function: a serverless,
   ungrindable, PKI-bound election at 0.4 ms per node per block (ECVRF on
   libsecp256k1: 0.15 ms to prove, 0.23 ms to verify), plus equivocation detection, anchored RSU chains and
-  certificate-checked allotment. Sixteen executed attacks: 13 defended, 3 bounded,
+  certificate-checked allotment. Eighteen executed attacks: 14 defended, 4 bounded,
   0 successful.
 * **Pseudonym shuffling alone does not give location privacy.** Against a
   Kalman-filter tracker a lone vehicle is followed through every change; only dense

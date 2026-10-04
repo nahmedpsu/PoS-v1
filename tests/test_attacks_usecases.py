@@ -57,3 +57,17 @@ def test_usecases_quick_run_and_report():
     assert roam["proofs_verified"] > 0
     # privacy ordering: the lone rural vehicle is easier to track than the intersection crowd
     assert by["rural_night"]["metrics"]["linking_success"] > by["urban_intersection"]["metrics"]["linking_success"]
+
+
+def test_threshold_and_miner_count_are_not_sender_controlled():
+    r = attacks.attack_threshold_tampering()
+    assert r.outcome == "defended", r.metrics
+    assert r.metrics["accepted"] == 0 and r.metrics["honest_block_accepted"]
+
+
+def test_multi_key_seed_choice_is_bounded():
+    r = attacks.attack_multi_key_seed_choice(rounds=120, k_values=(1, 3))
+    by = r.metrics["by_k"]
+    for k, v in by.items():
+        assert v["strategic_share"] < v["fair_share"] + 0.12
+    assert r.metrics["max_gain_over_naive"] < 0.1

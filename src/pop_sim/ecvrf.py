@@ -60,9 +60,9 @@ class ECVRFKeyPair:
         return ECVRFPublicKey(PublicKey.from_secret(self.secret).format(compressed=True))
 
 
-def generate_keypair() -> ECVRFKeyPair:
+def generate_keypair(rng=None) -> ECVRFKeyPair:
     while True:
-        s = os.urandom(32)
+        s = rng.getrandbits(256).to_bytes(32, "big") if rng is not None else os.urandom(32)
         if 0 < _os2ip(s) < ORDER:
             return ECVRFKeyPair(s)
 

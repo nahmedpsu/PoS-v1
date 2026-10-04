@@ -10,8 +10,9 @@ honest nodes accept.  Each function returns an ``AttackResult`` whose
 * ``vulnerable`` - the attack succeeds (kept in the bench for the v1 or
                    weakened variants, to show what the v2 defence buys).
 
-Consensus attacks (1-8) target the election; protocol attacks (9-17)
-target pseudonyms, RSUs and vehicles.
+Consensus attacks target the election; protocol attacks target
+pseudonyms, RSUs and vehicles; one privacy attack measures tracking.
+``ATTACKS`` lists them all; ``run_all`` executes the bench.
 """
 
 from __future__ import annotations
@@ -187,7 +188,7 @@ def attack_equivocation(seed: int = 3) -> AttackResult:
         "equivocation (two blocks, one proof)", "consensus",
         "The winner signs two conflicting blocks for the same height.",
         "v2", "defended" if not accepted and last.miner in sim.equivocation.equivocators else "vulnerable",
-        "Nodes remember (key, seed) -> block hash; a second hash is rejected and the node is reported.",
+        "Nodes remember (key, seed) -> block hash; the first block seen stands, a second one is rejected and the node is reported for revocation.",
         {"second_block_accepted": accepted, "reported_equivocators": sorted(sim.equivocation.equivocators)})
 
 
@@ -465,8 +466,90 @@ def attack_tracking(seed: int = 13, seconds: int = 180) -> AttackResult:
          "dense_unsync_10s_silence": unsync["linking_success"]})
 
 
+def attack_threshold_tampering(seed: int = 14) -> AttackResult:
+    """A node whose value is above the sortition threshold edits the
+    threshold and miner-count fields of its proof, or claims that nobody was
+    below the threshold (with and without evidence)."""
+    rng = random.Random(seed)
+    nodes = [V2Node(f"N{i}", vrf.generate_vrf_keypair(rng=rng)) for i in range(6)]
+    certs = {n.node_id: n.pk.to_hex() for n in nodes}
+    prev = crypto.sha256_hex(str(rng.random()))
+    res, pi = popv2_elect(nodes, prev, 3)
+    loser = max(res.values, key=res.values.get)
+    lnode = next(n for n in nodes if n.node_id == loser)
+    seed_b = election_seed(prev, 3)
+    lpi = vrf.vrf_prove(lnode.keys, seed_b)
+    base = {"seed": seed_b.hex(), "winner": loser, "vrf_pk": lnode.pk.to_hex(), "pi": lpi.hex(),
+            "beta": vrf.vrf_proof_to_hash(lpi).hex(), "value": res.values[loser], "threshold": 0.5, "miners": 3}
+    forged_fallback = {n.node_id: {"vrf_pk": n.pk.to_hex(), "pi": vrf.vrf_prove(n.keys, seed_b).hex()} for n in nodes}
+    attempts = {
+        "threshold field set to 1.0": {**base, "threshold": 1.0},
+        "miners field set to 0": {**base, "miners": 0},
+        "claim no-miner round without evidence": {**base, "miners": 0, "fallback_proofs": {}},
+        "claim no-miner round with everyone's real proofs": {**base, "miners": 0, "fallback_proofs": forged_fallback},
+    }
+    accepted = {k: verify_popv2_proof(v, prev, 3, loser, certified_pk=lnode.pk.to_hex(), certified_pks=certs)
+                for k, v in attempts.items()}
+    w = next(n for n in nodes if n.node_id == res.winner)
+    honest = verify_popv2_proof(res.proof(w, pi), prev, 3, res.winner, certified_pk=w.pk.to_hex(), certified_pks=certs)
+    return AttackResult(
+        "sortition threshold tampering", "consensus",
+        "A node above the threshold edits the threshold / miner-count fields or claims a no-miner round.",
+        "v2", "defended" if honest and not any(accepted.values()) else "vulnerable",
+        "The threshold is a protocol constant; a no-miner claim needs every certified node's proof, all above threshold, with the miner's value the minimum.",
+        {"loser_value": res.values[loser], "attempts": len(attempts), "accepted": sum(accepted.values()),
+         "per_attempt": accepted, "honest_block_accepted": honest})
+
+
+def attack_multi_key_seed_choice(n_honest: int = 19, k_values=(1, 2, 3, 5), rounds: int = 400, seed: int = 15) -> AttackResult:
+    """An attacker holding k certified keys: when two or more of its keys
+    beat every honest node, it can choose which one publishes, and so
+    which seed the next election uses (or withhold).  The chained seed stops
+    single-key grinding; this measures what k keys still buy."""
+    rng = random.Random(seed)
+    honest = [vrf.generate_vrf_keypair(rng=rng) for _ in range(n_honest)]
+    out = {}
+    for k in k_values:
+        att = [vrf.generate_vrf_keypair(rng=rng) for _ in range(k)]
+        wins = {"strategic": 0, "naive": 0}
+        for strategy in ("strategic", "naive"):
+            prev_hash, prev_beta = crypto.sha256_hex("g"), None
+            for i in range(1, rounds + 1):
+                s = election_seed(prev_hash, i, prev_beta)
+                hv = [vrf.beta_to_unit(vrf.vrf_proof_to_hash(vrf.vrf_prove(kp, s))) for kp in honest]
+                ap = [vrf.vrf_prove(kp, s) for kp in att]
+                av = [vrf.beta_to_unit(vrf.vrf_proof_to_hash(p)) for p in ap]
+                h_best = min(hv)
+                winners = [j for j, v in enumerate(av) if v < h_best]
+                if winners:
+                    wins[strategy] += 1
+                    if strategy == "strategic" and len(winners) > 1:
+                        # pick the key whose output gives the attacker the best next round
+                        def next_score(j):
+                            s2 = election_seed("x", i + 1, vrf.vrf_proof_to_hash(ap[j]).hex())
+                            return min(vrf.beta_to_unit(vrf.vrf_proof_to_hash(vrf.vrf_prove(kp, s2))) for kp in att)
+                        j = min(winners, key=next_score)
+                    else:
+                        j = min(winners, key=lambda j: av[j])
+                    prev_beta = vrf.vrf_proof_to_hash(ap[j]).hex()
+                else:
+                    j = hv.index(h_best)
+                    prev_beta = vrf.vrf_proof_to_hash(vrf.vrf_prove(honest[j], s)).hex()
+                prev_hash = "x"
+        out[str(k)] = {"naive_share": wins["naive"] / rounds, "strategic_share": wins["strategic"] / rounds,
+                       "fair_share": k / (n_honest + k)}
+    gain = max(v["strategic_share"] - v["naive_share"] for v in out.values())
+    return AttackResult(
+        "multi-key seed choice", "consensus",
+        "An attacker with k certified keys chooses which of its winning keys publishes to steer the next seed.",
+        "v2", "mitigated",
+        "Bounded by the k/(n+k) share of k certificates; the gain over honest play is measured here. PKI issuance limits k.",
+        {"n_honest": n_honest, "rounds": rounds, "by_k": out, "max_gain_over_naive": gain})
+
+
 ATTACKS = [
-    attack_value_forgery, attack_seed_grinding, attack_withholding, attack_equivocation, attack_replay_proof,
+    attack_value_forgery, attack_threshold_tampering, attack_seed_grinding, attack_multi_key_seed_choice,
+    attack_withholding, attack_equivocation, attack_replay_proof,
     attack_server_dos, attack_sybil_keys, attack_partition,
     attack_pseudonym_replay, attack_pseudonym_clone, attack_forged_pseudonym, attack_fake_vehicle_flood,
     attack_revoked_vehicle_persists, attack_tamper_rsu_chain, attack_curious_rsu, attack_tracking,
@@ -480,6 +563,8 @@ def run_all(quick: bool = False) -> dict:
         t = time.perf_counter()
         if fn is attack_seed_grinding and quick:
             r = fn(rounds=60, budgets=(1, 16))
+        elif fn is attack_multi_key_seed_choice and quick:
+            r = fn(rounds=60, k_values=(1, 3))
         elif fn is attack_withholding and quick:
             r = fn(rounds=300)
         elif fn is attack_tracking and quick:

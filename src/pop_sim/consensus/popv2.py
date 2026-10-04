@@ -13,12 +13,21 @@ smallest random value publishes) and makes it cheat-proof:
   VRF output cannot (``seed_mode="block_hash"`` reproduces the weaker
   variant for the attack bench);
 * a node is a *miner* for this block when its VRF output, read as a number
-  in [0, 1), is below the sortition threshold (0.5 reproduces the paper's
-  "not less than 50 percent");
+  in [0, 1), is below the sortition threshold ``SORTITION_THRESHOLD`` (0.5
+  reproduces the paper's "not less than 50 percent").  The threshold is a
+  protocol constant: verifiers never read it from the block;
 * among the miners the smallest VRF output wins, and the proof travels in
   the block so that every node can verify it, including nodes that were not
-  selected.  No node can lie about or grind its value, and there is nothing
-  for a spoofed server to decide.
+  selected.  Since the smallest output overall is below the threshold with
+  overwhelming probability, the sortition does not change *who* wins: it
+  halves the number of nodes that must publish or wait, which is what the
+  O(n/2) of the paper's Table 2 amounts to;
+* in the rare event that no node is below the threshold (probability
+  2^-n), the winner is the smallest value overall and the block must carry
+  every certified node's proof as evidence; verifiers check them all.
+  No node can lie about or grind its value (single-key grinding; a node
+  with several certified keys has a bounded choice, see the attack bench),
+  and there is nothing for a spoofed server to decide.
 
 Cost per node per block: one VRF proof (its own) and one VRF verification
 (the winner's).  The ``n`` comparisons of the race are over received values
@@ -60,10 +69,15 @@ class PoPv2Result:
     race_seconds: float = 0.0           # the comparison over received values
     cpu_seconds: float = 0.0            # whole election, all nodes, sequential
 
+    fallback_proofs: dict[str, dict] = field(default_factory=dict)   # all proofs when nobody was below threshold
+
     def proof(self, winner_node: V2Node, pi: bytes) -> dict:
-        return {"seed": self.seed_hex, "winner": self.winner, "vrf_pk": winner_node.pk.to_hex(),
-                "pi": pi.hex(), "beta": vrf.vrf_proof_to_hash(pi).hex(), "value": self.winner_value,
-                "threshold": SORTITION_THRESHOLD, "miners": len(self.miners)}
+        out = {"seed": self.seed_hex, "winner": self.winner, "vrf_pk": winner_node.pk.to_hex(),
+               "pi": pi.hex(), "beta": vrf.vrf_proof_to_hash(pi).hex(), "value": self.winner_value,
+               "threshold": SORTITION_THRESHOLD, "miners": len(self.miners)}
+        if self.fallback_proofs:
+            out["fallback_proofs"] = dict(self.fallback_proofs)
+        return out
 
 
 def election_seed(prev_block_hash: str, index: int, prev_beta_hex: str | None = None) -> bytes:
@@ -102,23 +116,34 @@ def popv2_elect(nodes: list[V2Node], prev_block_hash: str, index: int,
     t3 = time.perf_counter()
     res = PoPv2Result(seed.hex(), len(nodes), miners, winner, values[winner], values,
                       sum(prove_times) / len(prove_times), t3 - t2, t2 - t1, t3 - t0)
+    if not miners:                                       # evidence that nobody was below the threshold
+        res.fallback_proofs = {n.node_id: {"vrf_pk": n.pk.to_hex(), "pi": proofs[n.node_id].hex()} for n in nodes}
     return res, proofs[winner]
 
 
 def verify_popv2_proof(proof: dict, prev_block_hash: str, index: int, miner: str,
-                       certified_pk: str | None = None, prev_beta_hex: str | None = None) -> bool:
+                       certified_pk: str | None = None, prev_beta_hex: str | None = None,
+                       certified_pks: dict[str, str] | None = None) -> bool:
     """What every node runs on a received block: the proof must verify under
     the miner's certified VRF key, for this chain position and seed, and the
-    value must be below the sortition threshold (unless the block says nobody was)."""
+    value must be below the protocol's sortition threshold.  The threshold
+    and the miner count are never taken from the block.
+
+    If the block claims that no node was below the threshold, it must carry
+    a proof for every certified node (``certified_pks``: node id -> key);
+    each must verify, none may be below the threshold, and the miner's
+    value must be the smallest.  Without the certified key set such a
+    block cannot be checked and is rejected."""
     try:
         if proof["winner"] != miner:
             return False
         if certified_pk is not None and proof["vrf_pk"] != certified_pk:
             return False
-        if proof["seed"] != election_seed(prev_block_hash, index, prev_beta_hex).hex():
+        seed = election_seed(prev_block_hash, index, prev_beta_hex)
+        if proof["seed"] != seed.hex():
             return False
         pk = vrf.VRFPublicKey.from_hex(proof["vrf_pk"])
-        beta = vrf.vrf_verify(pk, bytes.fromhex(proof["seed"]), bytes.fromhex(proof["pi"]))
+        beta = vrf.vrf_verify(pk, seed, bytes.fromhex(proof["pi"]))
         if beta is None:
             return False
         if "beta" in proof and proof["beta"] != beta.hex():
@@ -126,7 +151,22 @@ def verify_popv2_proof(proof: dict, prev_block_hash: str, index: int, miner: str
         value = vrf.beta_to_unit(beta)
         if abs(value - proof["value"]) > 1e-12:
             return False
-        return value < proof["threshold"] or proof.get("miners", 1) == 0
+        if value < SORTITION_THRESHOLD:
+            return True
+        # Fallback: only with evidence from every certified node.
+        fallback = proof.get("fallback_proofs")
+        if not fallback or certified_pks is None or set(fallback) != set(certified_pks):
+            return False
+        for nid, fp in fallback.items():
+            if fp["vrf_pk"] != certified_pks[nid]:
+                return False
+            b = vrf.vrf_verify(vrf.VRFPublicKey.from_hex(fp["vrf_pk"]), seed, bytes.fromhex(fp["pi"]))
+            if b is None:
+                return False
+            v = vrf.beta_to_unit(b)
+            if v < SORTITION_THRESHOLD or v < value:
+                return False
+        return fallback[miner]["pi"] == proof["pi"]
     except (KeyError, ValueError, TypeError):
         return False
 

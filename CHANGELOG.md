@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.2.1 - review fixes
+
+* Security fix: the PoP v2 verifier read the sortition threshold and the
+  miner count from the block, so a node above the threshold could get its
+  block accepted by writing `threshold: 1.0` or `miners: 0`. The threshold is
+  now a protocol constant and a no-miner round must carry every certified
+  node's proof as evidence. Added to the attack bench ("sortition threshold
+  tampering").
+* New bench entry "multi-key seed choice": what an attacker with k certified
+  keys gains by choosing which winning key publishes (measured, bounded).
+* Docs now say what the code does: equivocation keeps the first block and
+  rejects the second; sortition halves messages but does not change who wins
+  (the O(n/2) claim); the chained seed covers single-key grinding; the ECVRF
+  uses a private suite byte so no RFC test vectors apply.
+* Seeded runs are byte-identical: P-256 and ECVRF keys derive from the seed,
+  transactions and blocks are stamped from a virtual clock.
+* `Blockchain.is_valid` re-checks every block's consensus proof.
+* 64 tests.
+
 ## 2.2.0 - fast ECVRF and a stronger tracker
 
 * `ecvrf.py`: ECVRF (RFC 9381 Section 5 construction, try-and-increment

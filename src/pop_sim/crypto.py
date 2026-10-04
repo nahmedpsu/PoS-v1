@@ -24,6 +24,19 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
 CURVE = ec.SECP256R1()
+P256_ORDER = 0xFFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551
+_key_rng = None
+
+
+def seed_keys(rng) -> None:
+    """Derive all further key pairs from ``rng`` (a ``random.Random``) so a
+    seeded simulation is reproducible; ``None`` restores OS randomness."""
+    global _key_rng
+    _key_rng = rng
+
+
+def key_rng():
+    return _key_rng
 
 
 @dataclass(frozen=True)
@@ -39,7 +52,10 @@ class KeyPair:
 
 
 def generate_keypair() -> KeyPair:
-    sk = ec.generate_private_key(CURVE)
+    if _key_rng is not None:
+        sk = ec.derive_private_key(_key_rng.randrange(1, P256_ORDER), CURVE)
+    else:
+        sk = ec.generate_private_key(CURVE)
     return KeyPair(sk=sk, pk=sk.public_key())
 
 
@@ -61,8 +77,23 @@ def pk_from_hex(data: str) -> ec.EllipticCurvePublicKey:
     return pk_from_bytes(bytes.fromhex(data))
 
 
+def _signature_algorithm():
+    """RFC 6979 deterministic ECDSA when the library supports it (so seeded
+    runs are byte-identical), randomized ECDSA otherwise."""
+    try:
+        return ec.ECDSA(hashes.SHA256(), deterministic_signing=True)
+    except TypeError:  # older cryptography releases
+        return ec.ECDSA(hashes.SHA256())
+
+
+_SIGN_ALG = _signature_algorithm()
+
+
 def sign(sk: ec.EllipticCurvePrivateKey, data: bytes) -> bytes:
-    return sk.sign(data, ec.ECDSA(hashes.SHA256()))
+    try:
+        return sk.sign(data, _SIGN_ALG)
+    except Exception:  # noqa: BLE001 - OpenSSL builds without RFC 6979 support
+        return sk.sign(data, ec.ECDSA(hashes.SHA256()))
 
 
 def verify(pk: ec.EllipticCurvePublicKey, data: bytes, signature: bytes) -> bool:
@@ -82,9 +113,13 @@ def _derive_key(shared: bytes, salt: bytes) -> bytes:
 def encrypt(recipient_pk: ec.EllipticCurvePublicKey, plaintext: bytes) -> bytes:
     """Encrypt ``plaintext`` so that only the holder of the matching secret key
     can read it.  Output layout: ``eph_pk(33) || nonce(12) || ciphertext``."""
-    eph = ec.generate_private_key(CURVE)
+    if _key_rng is not None:
+        eph = ec.derive_private_key(_key_rng.randrange(1, P256_ORDER), CURVE)
+        nonce = _key_rng.getrandbits(96).to_bytes(12, "big")
+    else:
+        eph = ec.generate_private_key(CURVE)
+        nonce = os.urandom(12)
     shared = eph.exchange(ec.ECDH(), recipient_pk)
-    nonce = os.urandom(12)
     key = _derive_key(shared, nonce)
     ct = AESGCM(key).encrypt(nonce, plaintext, None)
     return pk_to_bytes(eph.public_key()) + nonce + ct

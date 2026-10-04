@@ -11,12 +11,11 @@ from __future__ import annotations
 import json
 import math
 import random
-import time
 from dataclasses import dataclass
 
 from cryptography.hazmat.primitives.asymmetric import ec
 
-from . import crypto
+from . import clock, crypto
 from .blockchain import Blockchain, Transaction
 from .crypto import KeyPair
 
@@ -119,7 +118,7 @@ class PKI:
             self._pid_counter += 1
             keys = crypto.generate_keypair()
             pid = f"PID-{self.rng.getrandbits(48):012x}"
-            p = Pseudonym(pid, keys, "", time.time() + self.lifetime, self.keys.pk_hex)
+            p = Pseudonym(pid, keys, "", clock.now() + self.lifetime, self.keys.pk_hex)
             p.cert = crypto.sign(self.keys.sk, p.credential_bytes()).hex()
             self.issued_pids.add(pid)
             out.append(p)
@@ -250,7 +249,7 @@ class Vehicle:
             return None
         p = self.pseudonyms.pop(0)
         self.position = (self.position[0] + self.speed, self.position[1])
-        msg = SafetyMessage(p.pid, self.position, self.speed, self.direction, time.time())
+        msg = SafetyMessage(p.pid, self.position, self.speed, self.direction, clock.now())
         msg.signature = crypto.sign(p.keys.sk, msg.body()).hex()
         self.used.append(p)
         self.history.append(p.pid)
@@ -279,7 +278,7 @@ class Vehicle:
         self.position = (x, 0.0)
         self.speed = v
         self.direction = float(direction)
-        msg = SafetyMessage(self.current.pid, self.position, v, float(direction), time.time() if t is None else t)
+        msg = SafetyMessage(self.current.pid, self.position, v, float(direction), clock.now() if t is None else t)
         msg.signature = crypto.sign(self.current.keys.sk, msg.body()).hex()
         return msg
 
@@ -290,7 +289,7 @@ class Vehicle:
         p = self._kept_copy
         if p is None:
             return None
-        msg = SafetyMessage(p.pid, self.position, self.speed, self.direction, time.time())
+        msg = SafetyMessage(p.pid, self.position, self.speed, self.direction, clock.now())
         msg.signature = crypto.sign(p.keys.sk, msg.body()).hex()
         return msg
 

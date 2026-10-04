@@ -179,3 +179,50 @@ def test_sybil_numbers():
     assert r10.v1_lying > 0.95                      # a lying attacker owns v1
     assert abs(r10.v2_vrf - r10.analytic) < 0.1     # v2 is bounded by k/(n+k)
     assert r10.v2_pki_bound < 0.15                  # and one certificate is one identity
+
+
+def test_no_miner_fallback_needs_everyones_evidence():
+    import itertools
+
+    from pop_sim import vrf as vrfmod
+    nodes = [V2Node(f"N{i}", vrfmod.generate_vrf_keypair(scheme="ecvrf")) for i in range(5)]
+    certs = {n.node_id: n.pk.to_hex() for n in nodes}
+    for i in itertools.count(1):
+        res, pi = popv2_elect(nodes, "cd" * 32, i)
+        if not res.miners:
+            break
+    w = next(n for n in nodes if n.node_id == res.winner)
+    proof = res.proof(w, pi)
+    assert len(proof["fallback_proofs"]) == 5
+    assert verify_popv2_proof(proof, "cd" * 32, i, res.winner, certified_pk=w.pk.to_hex(), certified_pks=certs)
+    stripped = {k: v for k, v in proof.items() if k != "fallback_proofs"}
+    assert not verify_popv2_proof(stripped, "cd" * 32, i, res.winner, certified_pk=w.pk.to_hex(), certified_pks=certs)
+    partial = {**proof, "fallback_proofs": dict(list(proof["fallback_proofs"].items())[:3])}
+    assert not verify_popv2_proof(partial, "cd" * 32, i, res.winner, certified_pk=w.pk.to_hex(), certified_pks=certs)
+    assert not verify_popv2_proof(proof, "cd" * 32, i, res.winner, certified_pk=w.pk.to_hex())   # no key set: unverifiable
+
+
+def test_seeded_runs_are_byte_identical():
+    a = ITSSimulation(ITSConfig(n_pm=2, rsus_per_pm=2, vehicles_per_rsu=3, consensus="popv2", seed=21))
+    a.run(2)
+    b = ITSSimulation(ITSConfig(n_pm=2, rsus_per_pm=2, vehicles_per_rsu=3, consensus="popv2", seed=21))
+    b.run(2)
+    assert [blk.hash for blk in a.pm_chain.chain] == [blk.hash for blk in b.pm_chain.chain]
+    assert [blk.hash for blk in a.pms[0].rsu_chain.chain] == [blk.hash for blk in b.pms[0].rsu_chain.chain]
+    c = ITSSimulation(ITSConfig(n_pm=2, rsus_per_pm=2, vehicles_per_rsu=3, consensus="popv2", seed=22))
+    c.run(2)
+    assert a.pm_chain.last.hash != c.pm_chain.last.hash
+
+
+def test_is_valid_rechecks_consensus_proofs():
+    sim = ITSSimulation(ITSConfig(n_pm=3, rsus_per_pm=1, vehicles_per_rsu=2, consensus="popv2", seed=23))
+    sim.run(2)
+    assert sim.pm_chain.is_valid()
+    blk = sim.pm_chain.chain[1]
+    blk.proof["value"] = 0.0          # a consensus field edited after the fact
+    blk.seal()
+    for later in sim.pm_chain.chain[2:]:
+        later.previous_hash = sim.pm_chain.chain[later.index - 1].hash
+        later.seal()
+    assert not sim.pm_chain.is_valid()
+    assert sim.pm_chain.is_valid(recheck_consensus=False) is True

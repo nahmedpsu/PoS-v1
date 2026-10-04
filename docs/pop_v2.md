@@ -24,6 +24,31 @@ verify. Nodes with an output below 0.5 are this block's miners (the paper's
 "not less than 50 percent"), the smallest output wins, and if two valid blocks
 reach a node the smaller output wins (`fork_rule`). There is no server.
 
+Three details the attack bench forced into the open:
+
+* The threshold is a protocol constant. Verifiers never read it, or the miner
+  count, from the block: a first version did, and a node with value 0.58 got its
+  block accepted by writing `threshold: 1.0`. In the rare round where nobody is
+  below the threshold (probability 2^-n) the smallest value overall wins, and the
+  block must carry every certified node's proof as evidence, all above the
+  threshold, with the winner's the smallest. Without that evidence the block is
+  rejected.
+* The sortition does not change who wins. The smallest output of all nodes is
+  below 0.5 with overwhelming probability, so filtering to the nodes below 0.5
+  only halves how many nodes must publish, wait or be listened to. That is what
+  the manuscript's O(n/2) amounts to, and it is a message-count saving, not a
+  change of the winner distribution.
+* Equivocation (two blocks for one height with the same proof): the first block
+  a node sees stands, the second is rejected, and the node is reported to PKI for
+  revocation. Discarding both would stall the height for nothing.
+
+The chained seed stops *single-key* grinding. An attacker holding k certified
+keys can, when two or more of them beat every honest node, choose which one
+publishes and so which output seeds the next round. The bench measures this
+("multi-key seed choice"): the gain over honest play is within noise at 20 nodes
+and k up to 5, and the share stays bounded by k/(n+k). What limits k is PKI
+issuance.
+
 **Measured.** `exp_v2_election_cost`: what one node spends per block (its own
 proof plus verifying the winner's), against PoET and the v1 server.
 
@@ -119,7 +144,14 @@ single difficulty-3 puzzle per block is cheaper than PoP's random wait.
   Running the PMs as separate processes or on devices is the next step.
 * The ECVRF is on secp256k1 rather than P-256 because that is the curve the
   fast library exposes point operations for; the construction is otherwise
-  that of ECVRF-P256-SHA256-TAI.
+  that of ECVRF-P256-SHA256-TAI, under a private-use suite byte, so the
+  published RFC 9381 test vectors do not apply to it. The implementation is
+  checked by its own tests (uniqueness, binding to key and input, nonce
+  independence of the output), not against external vectors.
+* Seeded runs are byte-identical: key pairs derive from the seed and
+  transaction and block times come from a virtual clock. RSA-FDH keys are the
+  exception (the library's generator cannot be seeded), so the default ECVRF
+  scheme is the one to use for reproducible chains.
 * The road is a ring with two directions and no intersections. Intersections
   and lane changes would weaken the tracker further; the ring is the harder
   case for privacy.

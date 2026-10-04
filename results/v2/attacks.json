@@ -20,7 +20,28 @@
      "own proof for a seed of own choosing": false
     }
    },
-   "seconds": 0.0027975660000265634
+   "seconds": 0.003520503999993707
+  },
+  {
+   "name": "sortition threshold tampering",
+   "category": "consensus",
+   "description": "A node above the threshold edits the threshold / miner-count fields or claims a no-miner round.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "The threshold is a protocol constant; a no-miner claim needs every certified node's proof, all above threshold, with the miner's value the minimum.",
+   "metrics": {
+    "loser_value": 0.9414416911357572,
+    "attempts": 4,
+    "accepted": 0,
+    "per_attempt": {
+     "threshold field set to 1.0": false,
+     "miners field set to 0": false,
+     "claim no-miner round without evidence": false,
+     "claim no-miner round with everyone's real proofs": false
+    },
+    "honest_block_accepted": true
+   },
+   "seconds": 0.00481679800003576
   },
   {
    "name": "seed grinding",
@@ -32,20 +53,56 @@
    "metrics": {
     "fair_share": 0.1,
     "share": {
-     "block_hash/budget=1": 0.12,
-     "block_hash/budget=4": 0.15666666666666668,
-     "block_hash/budget=16": 0.29333333333333333,
-     "block_hash/budget=64": 0.38333333333333336,
-     "chained_vrf/budget=1": 0.11,
-     "chained_vrf/budget=4": 0.11,
-     "chained_vrf/budget=16": 0.11,
-     "chained_vrf/budget=64": 0.11
+     "block_hash/budget=1": 0.08333333333333333,
+     "block_hash/budget=4": 0.09333333333333334,
+     "block_hash/budget=16": 0.24666666666666667,
+     "block_hash/budget=64": 0.44,
+     "chained_vrf/budget=1": 0.12333333333333334,
+     "chained_vrf/budget=4": 0.12333333333333334,
+     "chained_vrf/budget=16": 0.12333333333333334,
+     "chained_vrf/budget=64": 0.12333333333333334
     },
-    "worst_share_block_hash_seed": 0.38333333333333336,
-    "worst_share_chained_seed": 0.11,
+    "worst_share_block_hash_seed": 0.44,
+    "worst_share_chained_seed": 0.12333333333333334,
     "rounds": 300
    },
-   "seconds": 5.001345705999938
+   "seconds": 6.517765919999988
+  },
+  {
+   "name": "multi-key seed choice",
+   "category": "consensus",
+   "description": "An attacker with k certified keys chooses which of its winning keys publishes to steer the next seed.",
+   "target": "v2",
+   "outcome": "mitigated",
+   "defense": "Bounded by the k/(n+k) share of k certificates; the gain over honest play is measured here. PKI issuance limits k.",
+   "metrics": {
+    "n_honest": 19,
+    "rounds": 400,
+    "by_k": {
+     "1": {
+      "naive_share": 0.06,
+      "strategic_share": 0.06,
+      "fair_share": 0.05
+     },
+     "2": {
+      "naive_share": 0.1175,
+      "strategic_share": 0.1175,
+      "fair_share": 0.09523809523809523
+     },
+     "3": {
+      "naive_share": 0.1625,
+      "strategic_share": 0.16,
+      "fair_share": 0.13636363636363635
+     },
+     "5": {
+      "naive_share": 0.21,
+      "strategic_share": 0.18,
+      "fair_share": 0.20833333333333334
+     }
+    },
+    "max_gain_over_naive": 0.0
+   },
+   "seconds": 13.059237230999997
   },
   {
    "name": "block withholding (selfish winner)",
@@ -83,7 +140,7 @@
      }
     }
    },
-   "seconds": 0.04034183699991445
+   "seconds": 0.09961166299996194
   },
   {
    "name": "equivocation (two blocks, one proof)",
@@ -91,14 +148,14 @@
    "description": "The winner signs two conflicting blocks for the same height.",
    "target": "v2",
    "outcome": "defended",
-   "defense": "Nodes remember (key, seed) -> block hash; a second hash is rejected and the node is reported.",
+   "defense": "Nodes remember (key, seed) -> block hash; the first block seen stands, a second one is rejected and the node is reported for revocation.",
    "metrics": {
     "second_block_accepted": false,
     "reported_equivocators": [
      "PM-1"
     ]
    },
-   "seconds": 0.03153964100010853
+   "seconds": 0.06610698599996567
   },
   {
    "name": "proof replay",
@@ -110,7 +167,7 @@
    "metrics": {
     "replayed_block_accepted": false
    },
-   "seconds": 0.043417535999878965
+   "seconds": 0.07251606300002322
   },
   {
    "name": "election server denial of service",
@@ -143,7 +200,7 @@
      }
     }
    },
-   "seconds": 0.000339365999934671
+   "seconds": 0.00044671500000958986
   },
   {
    "name": "Sybil election keys",
@@ -156,7 +213,7 @@
     "sybil_keys": 50,
     "blocks_accepted": 0
    },
-   "seconds": 0.045335354999906485
+   "seconds": 0.06414133999999194
   },
   {
    "name": "network partition",
@@ -170,7 +227,7 @@
     "wasted_blocks": 10,
     "share_kept_from_side_a": 0.2
    },
-   "seconds": 6.705400005557749e-05
+   "seconds": 7.746500000394008e-05
   },
   {
    "name": "pseudonym replay (internal tricking adversary)",
@@ -185,7 +242,7 @@
     "honest_revoked": 0,
     "flagged": 2
    },
-   "seconds": 0.07696394300000975
+   "seconds": 0.11193592400002217
   },
   {
    "name": "pseudonym cloning",
@@ -199,7 +256,7 @@
     "clone_far_away": "pseudonym-cloned",
     "clone_other_sender": "pseudonym-held-by-another-vehicle"
    },
-   "seconds": 0.01980052999988402
+   "seconds": 0.038520559000005505
   },
   {
    "name": "forged pseudonym / forged PKI package",
@@ -213,7 +270,7 @@
     "forged_package_accepted_by_pm": false,
     "rsu": "RSU-1.1"
    },
-   "seconds": 0.02043161799997506
+   "seconds": 0.03276470999998082
   },
   {
    "name": "fake-vehicle pseudonym flood",
@@ -236,7 +293,7 @@
      "stockouts": 0
     }
    },
-   "seconds": 0.06406124199997976
+   "seconds": 0.09082770399999163
   },
   {
    "name": "revoked vehicle keeps transmitting",
@@ -251,7 +308,7 @@
     "messages_accepted": 0,
     "new_sets_after_revocation": false
    },
-   "seconds": 0.08160914400014008
+   "seconds": 0.10925245399999994
   },
   {
    "name": "compromised RSU rewrites its chain",
@@ -264,7 +321,7 @@
     "rsu_chain_valid_locally_after_rewrite": false,
     "detected_from_pm_level": true
    },
-   "seconds": 0.06073311799991643
+   "seconds": 0.07983161800001426
   },
   {
    "name": "curious RSU reads the ledger",
@@ -277,7 +334,7 @@
     "transactions": 6,
     "opened_by_rsu": 0
    },
-   "seconds": 0.04034342399995694
+   "seconds": 0.05221633200000042
   },
   {
    "name": "location tracking across pseudonym changes",
@@ -291,12 +348,12 @@
     "dense_sync_10s_silence": 0.4772727272727273,
     "dense_unsync_10s_silence": 0.6153198653198653
    },
-   "seconds": 118.19675500100016
+   "seconds": 2.0781686400000012
   }
  ],
  "summary": {
-  "defended": 13,
-  "mitigated": 3
+  "defended": 14,
+  "mitigated": 4
  },
- "wall_seconds": 123.72591385399994
+ "wall_seconds": 22.481800289000034
 }

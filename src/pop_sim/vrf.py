@@ -99,14 +99,15 @@ class VRFKeyPair:
         return m2 + h * self.q
 
 
-def generate_vrf_keypair(bits: int = 2048, scheme: str | None = None):
+def generate_vrf_keypair(bits: int = 2048, scheme: str | None = None, rng=None):
     """Key pair for ``scheme`` (``"ecvrf"`` or ``"rsa-fdh"``; default: the
-    fastest available).  ``bits`` applies to RSA only."""
+    fastest available).  ``bits`` applies to RSA only; ``rng`` (a
+    ``random.Random``) makes ECVRF keys reproducible (RSA keys cannot be)."""
     scheme = scheme or DEFAULT_SCHEME
     if scheme == "ecvrf":
         if not ecvrf.AVAILABLE:
             raise RuntimeError("ECVRF needs the coincurve package")
-        return ecvrf.generate_keypair()
+        return ecvrf.generate_keypair(rng)
     if scheme != "rsa-fdh":
         raise ValueError(f"unknown VRF scheme {scheme}")
     key = rsa.generate_private_key(public_exponent=65537, key_size=bits)

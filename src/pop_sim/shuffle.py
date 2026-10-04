@@ -12,7 +12,7 @@ import random
 import time
 from dataclasses import asdict, dataclass, field
 
-from . import crypto
+from . import clock, crypto
 from .blockchain import Blockchain, Transaction
 from .consensus.poet import poet_elect
 from .consensus.pokw import pokw_mine
@@ -97,7 +97,7 @@ def run_consensus(kind: str, node_ids: list[str], data_hash: str, rng: random.Ra
                                 {"kernel": r.kernel, "nonce": w.nonce, "difficulty": difficulty})
     if kind == "pow2":
         t0 = time.perf_counter()
-        ts = time.time()
+        ts = clock.now()
         results = {nid: mine_pow2(f"{data_hash}{nid}", difficulty, timestamp=ts) for nid in node_ids}
         winner = min(results, key=lambda n: results[n].hashes)
         return ConsensusOutcome(kind, winner, len(node_ids), len(node_ids), time.perf_counter() - t0,
@@ -129,6 +129,8 @@ class ITSSimulation:
     def __init__(self, cfg: ITSConfig):
         self.cfg = cfg
         self.rng = random.Random(cfg.seed)
+        crypto.seed_keys(random.Random(cfg.seed ^ 0x5EED))   # key generation reproducible per seed
+        clock.set_virtual(1_700_000_000.0)                    # transaction and block times from a virtual clock
         self.pki = PKI(self.rng)
         self.manufacturer = Manufacturer(self.pki)
         self.cloud = PMCloud(self.rng)
@@ -184,7 +186,7 @@ class ITSSimulation:
                 rsu.update_forecast(cfg.forecast_alpha, cfg.safety_stock)
         if cfg.consensus == "popv2":
             for node_id in [pm.pm_id for pm in self.pms] + [r.rsu_id for r in self.rsus]:
-                node = V2Node(node_id, generate_vrf_keypair(cfg.vrf_bits, cfg.vrf_scheme))
+                node = V2Node(node_id, generate_vrf_keypair(cfg.vrf_bits, cfg.vrf_scheme, rng=crypto.key_rng()))
                 node.cert = self.pki.certify_vrf_key(node_id, node.pk.to_hex())
                 self.v2nodes[node_id] = node
         for v in self.rng.sample(self.vehicles, cfg.malicious_vehicles):
@@ -200,6 +202,15 @@ class ITSSimulation:
         self._allot_and_distribute(initial=True)
 
     # ------------------------------------------------------------------
+    def _members_of(self, chain) -> set[str]:
+        """The nodes that elect on ``chain``: the PMs on the PM chain, a PM's RSUs on its RSU chain."""
+        if chain is self.pm_chain:
+            return {pm.pm_id for pm in self.pms}
+        for pm in self.pms:
+            if chain is pm.rsu_chain:
+                return {r.rsu_id for r in pm.rsus}
+        return set(self.v2nodes)
+
     def _previous_block(self, block, chain=None):
         chains = [chain] if chain is not None else [self.pm_chain] + [pm.rsu_chain for pm in self.pms]
         for c in chains:
@@ -224,8 +235,13 @@ class ITSSimulation:
                 return False
             prev = self._previous_block(block, chain)
             prev_beta = prev.proof.get("beta") if prev is not None else None
+            members = self._members_of(chain) if chain is not None else None
+            certified = {nid: n.pk.to_hex() for nid, n in self.v2nodes.items()
+                         if (members is None or nid in members)
+                         and self.pki.verify_vrf_cert(n.node_id, n.pk.to_hex(), n.cert)}
             if not verify_popv2_proof(block.proof, block.previous_hash, block.index, block.miner,
-                                      certified_pk=node.pk.to_hex(), prev_beta_hex=prev_beta):
+                                      certified_pk=node.pk.to_hex(), prev_beta_hex=prev_beta,
+                                      certified_pks=certified):
                 return False
             return not self.equivocation.observe(block.proof, block.hash or block.compute_hash())
         return True
@@ -300,6 +316,8 @@ class ITSSimulation:
     def run_round(self) -> RoundStats:
         r = len(self.rounds) + 1
         t0 = time.perf_counter()
+        if not self.cfg.mobility:
+            clock.advance(float(self.cfg.round_seconds))
         per_vehicle = self.cfg.pseudonyms_per_vehicle
 
         # 1. Vehicles broadcast safety messages signed with pseudonyms.
@@ -401,6 +419,7 @@ class ITSSimulation:
         for step in range(cfg.round_seconds):
             road.step(1.0)
             self.sim_time += 1.0
+            clock.advance(1.0)
             beacons: list[Beacon] = []
             for mv in road.vehicles:
                 v = by_vid[mv.vid]
