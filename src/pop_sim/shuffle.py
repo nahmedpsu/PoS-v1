@@ -149,7 +149,10 @@ class RoundStats:
 class ITSSimulation:
     """One ITS domain: a PKI, ``n_pm`` privacy managers, their RSUs and vehicles."""
 
-    def __init__(self, cfg: ITSConfig):
+    def __init__(self, cfg: ITSConfig, road=None):
+        """``road``: an object with the ``Road`` interface (for example a
+        ``v2.mobility_sumo.TraceRoad``) to drive on instead of the synthetic ring."""
+        self._external_road = road
         self.cfg = cfg
         self.rng = random.Random(cfg.seed)
         crypto.seed_keys(random.Random(cfg.seed ^ 0x5EED))   # key generation reproducible per seed
@@ -219,7 +222,8 @@ class ITSSimulation:
         if cfg.mobility:
             road_cfg = cfg.road or RoadConfig(seed=cfg.seed)
             road_cfg.n_rsu = cfg.n_pm * cfg.rsus_per_pm
-            self.road = Road(road_cfg)
+            self.road = self._external_road if self._external_road is not None else Road(road_cfg)
+            road_cfg = self.road.cfg
             self.ledger.ring_length = road_cfg.length_m
             self.adversary = make_tracker(cfg.tracker, road_cfg.length_m, cfg.adversary_gate_m, 1.0)
             for mv in self.road.vehicles:

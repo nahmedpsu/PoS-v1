@@ -175,15 +175,30 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         ("E4 modes", lambda: exr.exp_e4_modes(seeds, rounds, densities=(10,)) if quick else exr.exp_e4_modes(seeds, rounds), plots_recycling.fig_e4, "E4"),
         ("E5 fix", lambda: exr.exp_e5_fix(seeds, rounds, strategies=("S2", "S3")) if quick else exr.exp_e5_fix(seeds, rounds), plots_recycling.fig_e5, "E5"),
     ]
+    if args.only_long:
+        args.long = True
+        for key in ("E1", "E2", "E3", "E4", "E5", "E6"):
+            res[key] = json.loads((out / f"{key}.json").read_text())
+        steps = []
     for name, fn, plot, key in steps:
         log(name)
         r = fn()
         res[key] = r
         _dump(r, out / f"{key}.json")
         plot(r, figs / f"{key}.png")
-    log("E6 bench re-check (oracle vs ledger attribution)")
-    res["E6"] = exr.exp_e6_bench_recheck(quick=quick)
-    _dump(res["E6"], out / "E6.json")
+    if not args.only_long:
+        log("E6 bench re-check (oracle vs ledger attribution)")
+        res["E6"] = exr.exp_e6_bench_recheck(quick=quick)
+        _dump(res["E6"], out / "E6.json")
+    if args.long:
+        log("E1x / E2x: 600 s horizon so certificates expire")
+        res["E1x"] = exr.exp_e1_lifetime_long(seeds, rounds=4 if quick else 20, lifetimes=(300, 3600) if quick else (300, 900, 3600),
+                                              strategies=("S3",) if quick else ("S1", "S2", "S3"))
+        _dump(res["E1x"], out / "E1x.json")
+        plots_recycling.fig_e1x(res["E1x"], figs / "E1x.png")
+        res["E2x"] = exr.exp_e2_long(seeds, rounds=4 if quick else 20, lifetimes=(300, 3600) if quick else (300, 900, 3600))
+        _dump(res["E2x"], out / "E2x.json")
+        plots_recycling.fig_e2(res["E2x"], figs / "E2x.png")
     plots_recycling.fig_summary(res, figs / "summary.png")
     res["wall_seconds"] = time.perf_counter() - t0
     _dump({k: v for k, v in res.items() if k in ("config", "wall_seconds")} | {"E6_changed": res["E6"]["changed"]},
@@ -268,6 +283,8 @@ def main(argv: list[str] | None = None) -> int:
     rc = sub.add_parser("recycling", help="run the pseudonym recycling study (E1-E6)")
     rc.add_argument("--quick", action="store_true")
     rc.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1,2 with --quick)")
+    rc.add_argument("--long", action="store_true", help="also run E1x/E2x over a 600 s horizon (certificates expire)")
+    rc.add_argument("--only-long", action="store_true", help="run only E1x/E2x (E1-E6 results must already exist)")
     rc.add_argument("--out", default="results/recycling")
     rc.add_argument("--figures", default="figures/recycling")
     rc.set_defaults(func=cmd_recycling)

@@ -241,3 +241,53 @@ def run_all(quick: bool = False, seeds=None) -> dict:
     out["config"] = {"seeds": list(seeds), "rounds": rounds, "quick": quick, "base": asdict(_base(10, 1))}
     out["wall_seconds"] = time.perf_counter() - t0
     return out
+
+
+# ------------------------------------------------------- longer horizon (E1x, E2x)
+def exp_e1_lifetime_long(seeds=DEFAULT_SEEDS, rounds: int = 20, lifetimes=(300, 900, 3600), strategies=("S1", "S2", "S3"),
+                         density: float = 10, share: float = 0.05) -> dict:
+    """E1 over a horizon longer than the shortest certificate lifetime
+    (20 rounds of 30 s = 600 s), so that expiry and PKI renewal actually
+    happen.  Plausibility on, ledger attribution."""
+    results = []
+    for st in strategies:
+        for lt in lifetimes:
+            rows = []
+            for seed in seeds:
+                est = int(2 * density * 5)
+                cfg = _base(density, seed, issuance="recycle", former_holders=_attackers(est, share),
+                            former_holder_strategy=st, v2v_plausibility=True, pseudonym_lifetime=float(lt))
+                rows.append(_run(cfg, rounds))
+            results.append({"strategy": st, "lifetime": lt, "seeds": len(rows), "sim_seconds": rounds * 30,
+                            "forged_sent": _agg(rows, ["forgery", "sent"]),
+                            "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"]),
+                            "rsu_rate": _agg(rows, ["forgery", "rsu_rate"]),
+                            "exposure_mean_s": _agg(rows, ["forgery", "exposure", "mean"]),
+                            "exposure_p95_s": _agg(rows, ["forgery", "exposure", "p95"]),
+                            "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
+                            "honest_revoked": _agg(rows, ["revoked"]),
+                            "pki_renewals": _agg(rows, ["load", "steady_state", "pki", "signatures"]),
+                            "v2v_expired_rejections": _agg(rows, ["v2v", "rejected", "certificate-expired"])})
+    return {"experiment": "E1x_lifetime_long", "rounds": rounds, "cells": results}
+
+
+def exp_e2_long(seeds=DEFAULT_SEEDS, rounds: int = 20, lifetimes=(300, 900, 3600), density: float = 10) -> dict:
+    """E2 over 600 s: how long a revoked vehicle keeps being believed when its
+    certificates can expire inside the horizon."""
+    results = []
+    for lt in lifetimes:
+        rows = []
+        for seed in seeds:
+            cfg = _base(density, seed, issuance="recycle", malicious_vehicles=1, revoked_keep_transmitting=True,
+                        pseudonym_lifetime=float(lt), attribution="oracle")
+            r = _run(cfg, rounds)
+            rp = r["revoked_persistence"] or {}
+            acc = [v["accepted_after"] for v in rp.values()]
+            last = [v["seconds_to_last"] for v in rp.values()]
+            rows.append({"revoked": len(rp), "accepted_after": statistics.mean(acc) if acc else 0.0,
+                         "seconds_to_last": statistics.mean(last) if last else 0.0})
+        results.append({"lifetime": lt, "seeds": len(rows), "sim_seconds": rounds * 30,
+                        "revoked_vehicles": _agg(rows, ["revoked"]),
+                        "post_revocation_accepted": _agg(rows, ["accepted_after"]),
+                        "seconds_to_last_accepted": _agg(rows, ["seconds_to_last"])})
+    return {"experiment": "E2x_long", "rounds": rounds, "cells": results}

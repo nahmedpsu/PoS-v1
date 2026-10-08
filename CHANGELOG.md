@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.1.0 - longer horizons and SUMO traces
+
+* `pop-sim recycling --long` / `--only-long`: E1x and E2x over a 600 s horizon,
+  so certificate expiry and PKI renewal happen inside a run (the limitation
+  the 3.0.0 results page stated).
+* `v2/mobility_sumo.py`: SUMO FCD import mapped onto a corridor (lane
+  position along an edge sequence, or an x-y axis projection); a
+  `TraceRoad` drop-in for the synthetic ring, `ITSSimulation(cfg, road=...)`.
+  Tested on synthetic traces only.
+* 83 tests.
+
 ## 3.0.0 - pseudonym recycling study
 
 * Research question: is pseudonym recycling ever worth it compared with fresh

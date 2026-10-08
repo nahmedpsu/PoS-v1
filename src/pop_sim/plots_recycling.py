@@ -45,6 +45,27 @@ def fig_e1(res: dict, path: Path) -> Path:
     return _save(fig, path)
 
 
+def fig_e1x(res: dict, path: Path) -> Path:
+    cells = res["cells"]
+    fig, axes = plt.subplots(1, 3, figsize=(14, 4.2))
+    for st, color in zip(("S1", "S2", "S3"), (C_REF, C_POET, C_POW1)):
+        sub = sorted([c for c in cells if c["strategy"] == st], key=lambda c: c["lifetime"])
+        if not sub:
+            continue
+        x = [c["lifetime"] for c in sub]
+        _ci(axes[0], x, sub, "exposure_mean_s", color=color, label=st)
+        _ci(axes[1], x, sub, "v2v_receiver_rate", color=color, label=st)
+        _ci(axes[2], x, sub, "pki_renewals", color=color, label=st)
+    for ax, t in zip(axes, ("Exposure window per recycled pseudonym (s)", "Forged messages accepted by V2V receivers",
+                            "PKI certificate renewals per run")):
+        ax.set_xscale("log")
+        ax.set_xlabel("Certificate lifetime (s)")
+        ax.set_title(t, fontsize=10)
+    axes[0].legend(fontsize=8)
+    fig.suptitle(f"E1x - impersonation over a {res['rounds'] * 30} s horizon (certificates expire and are renewed)")
+    return _save(fig, path)
+
+
 def fig_e2(res: dict, path: Path) -> Path:
     cells = sorted(res["cells"], key=lambda c: c["lifetime"])
     fig, ax = plt.subplots(figsize=(7, 4.2))

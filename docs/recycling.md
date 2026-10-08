@@ -96,4 +96,26 @@ PYTHONPATH=src python -m pop_sim recycling --seeds 1,2,3,4,5
 ```
 
 Each JSON file names its factors and seeds; every figure is drawn from the JSON
-only. SUMO trace import (the plan's optional step 11) is not implemented.
+only.
+
+`--long` (or `--only-long` when E1-E6 already exist) adds E1x and E2x: the
+impersonation and revocation experiments over a 600 s horizon (20 rounds), long
+enough for 300 s certificates to expire and be renewed inside a run.
+
+## SUMO traces (the plan's optional step 11)
+
+`v2/mobility_sumo.py` reads SUMO floating-car-data output (`sumo --fcd-output`)
+and drives the simulation with it in place of the synthetic ring:
+
+```python
+from pop_sim.v2.mobility_sumo import Corridor, TraceRoad
+road = TraceRoad.from_file("trace.xml", Corridor("lane", ["e0", "e1", "e2"], {"e0": 1000, "e1": 1000, "e2": 1000}), n_rsu=6)
+sim = ITSSimulation(ITSConfig(mobility=True, n_pm=2, rsus_per_pm=3, v2v=True), road=road)
+```
+
+The protocol's road model is one-dimensional, so a trace is mapped onto a corridor:
+the lane position along an ordered edge sequence (a road or a ring), or the
+projection of (x, y) on an axis between two points (a junction-free highway
+section). Only synthetic traces are exercised by the tests; rerunning E1 and E4 on
+real urban and highway scenarios needs the SUMO scenario files, which this
+repository does not ship.

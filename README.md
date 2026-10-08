@@ -66,7 +66,7 @@ src/pop_sim/
   experiments_recycling.py  E1-E6 of the pseudonym recycling study (docs/recycling.md)
   plots.py, plots_v2.py
   cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
-tests/               80 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
+tests/               83 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
 results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
 config/benchmark.json  example configuration for `pop-sim bench`
 Dockerfile           reproducible environment (python:3.12-slim + requirements)
@@ -80,7 +80,7 @@ docs/attacks_and_usecases.md  the attack table and the scenario table
 ```bash
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # 80 tests
+pytest -q                                   # 83 tests
 PYTHONPATH=src python -m pop_sim demo       # trace three shuffle rounds (v1)
 PYTHONPATH=src python -m pop_sim demo --mobility --consensus popv2   # v2: vehicles drive, VRF election
 PYTHONPATH=src python -m pop_sim run --quick     # v1 experiments, small budgets (~15 s)
