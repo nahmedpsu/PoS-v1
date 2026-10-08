@@ -55,13 +55,18 @@ src/pop_sim/
     tracker_kalman.py Kalman-filter tracker with Hungarian assignment (default, conservative)
     anchoring.py     Merkle roots, RSU-chain anchors in PM blocks, allotment proofs
     sybil.py         Sybil / collusion analysis
-    attacks.py       adversarial bench: 16 attacks executed against the implementation
+    attacks.py       adversarial bench: 18 attacks executed against the implementation
+    v2v.py           vehicle-to-vehicle receivers (certificate + signature, no ledger)
+    recycling_attacks.py  former-holder adversary (S1 remote shadow, S2 ghost, S3 gap filler)
+    insider.py       insider linker: RSU / PM / cloud / PKI / tracker evidence, alone and colluding
+    metrics.py       study metrics, bootstrap CI, paired Wilcoxon
     usecases.py      7 deployment scenarios with operator-facing metrics
   experiments.py     v1: Figures 7-14, scalability, end-to-end protocol runs, security scenarios
   experiments_v2.py  v2: the seven experiments of docs/pop_v2.md
+  experiments_recycling.py  E1-E6 of the pseudonym recycling study (docs/recycling.md)
   plots.py, plots_v2.py
   cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
-tests/               59 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker
+tests/               80 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
 results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
 config/benchmark.json  example configuration for `pop-sim bench`
 Dockerfile           reproducible environment (python:3.12-slim + requirements)
@@ -75,7 +80,7 @@ docs/attacks_and_usecases.md  the attack table and the scenario table
 ```bash
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # 59 tests
+pytest -q                                   # 80 tests
 PYTHONPATH=src python -m pop_sim demo       # trace three shuffle rounds (v1)
 PYTHONPATH=src python -m pop_sim demo --mobility --consensus popv2   # v2: vehicles drive, VRF election
 PYTHONPATH=src python -m pop_sim run --quick     # v1 experiments, small budgets (~15 s)
@@ -85,6 +90,7 @@ PYTHONPATH=src python -m pop_sim run-v2          # v2 full budgets (~10 min), wr
 PYTHONPATH=src python -m pop_sim bench config/benchmark.json   # the protocol from a JSON configuration
 PYTHONPATH=src python -m pop_sim attacks  [--quick]  # 16 attacks executed against PoP v2 (exit 1 if any succeeds)
 PYTHONPATH=src python -m pop_sim usecases [--quick]  # 7 deployment scenarios
+PYTHONPATH=src python -m pop_sim recycling [--quick] [--seeds 1,2,3]  # the recycling study, E1-E6
 ```
 
 `pip install -e .` installs the `pop-sim` command so the `PYTHONPATH=src` prefix is not needed.
@@ -138,6 +144,19 @@ Every shuffle round (`run_round`) then does:
 
 The consensus is pluggable (`pop`, `poet`, `pow2`, `pokw`) so the same protocol run
 can be compared across algorithms.
+
+## Pseudonym recycling study (version 3.0.0)
+
+The manuscript's central mechanism is *recycling*: used pseudonyms are shuffled
+through the privacy-manager cloud and handed to other vehicles, so that the PKI is
+touched only at registration. `pop-sim recycling` asks whether that is ever worth
+it. It adds vehicle-to-vehicle receivers (the receivers a real forgery has to
+fool), a former-holder adversary that keeps the keys of every pseudonym it held,
+ledger-based attribution at RSUs, four alternative issuance modes with authority
+load counted at every entity, and an insider linker for RSU, PM, cloud and PKI.
+Design, threat model, metrics and the pre-registered outcome cases are in
+[docs/recycling.md](docs/recycling.md); measured results in
+[docs/recycling_results.md](docs/recycling_results.md).
 
 ## Results at a glance
 
