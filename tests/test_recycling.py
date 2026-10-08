@@ -215,3 +215,55 @@ def test_exposure_windows_and_statistics():
     assert wilcoxon_signed_rank([1, 2], [1, 2])["n"] == 0
     m = cluster_metrics(UnionFind(), {}, {}, {})
     assert m["link_rate"] == 0.0
+
+
+# ------------------------------------------------- review follow-ups (3.2.0)
+def test_wilcoxon_exact_small_samples():
+    from pop_sim.v2.metrics import wilcoxon_signed_rank
+    r = wilcoxon_signed_rank(list(range(1, 11)), [0] * 10)
+    assert r["method"] == "exact"
+    assert abs(r["p"] - 2 / 1024) < 1e-12           # ten pairs, all one way: 2 of 1,024 sign patterns
+    assert r["effect_size"] == 1.0
+    r = wilcoxon_signed_rank([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [0, 0, 0, 0, 0, 0, 0, 0, 0, 11])
+    assert abs(r["p"] - 6 / 1024) < 1e-12           # |diffs| 1 and 1 tie at mid-rank 1.5: W- = 1.5, three sign patterns reach it
+    assert wilcoxon_signed_rank(list(range(40)), [0] * 40)["method"] == "normal"
+    assert wilcoxon_signed_rank([1, 1], [1, 1])["p"] == 1.0
+
+
+def test_revocation_rule_delays_and_reduces_revocations():
+    from pop_sim.shuffle import ITSConfig, ITSSimulation
+    from pop_sim.v2.mobility import RoadConfig
+
+    def run(**kw):
+        cfg = ITSConfig(n_pm=2, rsus_per_pm=3, consensus="pop", mobility=True, road=RoadConfig(density_per_km=10, seed=3),
+                        round_seconds=30, pseudonyms_per_vehicle=3, seed=3, attribution="ledger", v2v=True,
+                        former_holders=5, former_holder_strategy="S1", pseudonym_lifetime=900.0, **kw)
+        sim = ITSSimulation(cfg)
+        sim.run(3)
+        return sim
+
+    first = run()
+    strict = run(revocation_reports=3, revocation_distinct_rsus=2)
+    assert sum(v.revoked for v in first.vehicles) > sum(v.revoked for v in strict.vehicles)
+    # nobody is revoked before the rule is met
+    for vid, t in strict.revoked_at.items():
+        reps = strict.report_tally[vid]
+        assert len(reps) >= 3 and len({r["rsu"] for r in reps}) >= 2
+    import pytest
+    with pytest.raises(ValueError):
+        ITSConfig(revocation_reports=0)
+
+
+def test_trace_road_provisions_vehicles_that_enter_later(tmp_path):
+    from pop_sim.shuffle import ITSConfig, ITSSimulation
+    from pop_sim.v2.mobility_sumo import Corridor, FcdFrame, TraceRoad
+
+    frames = [FcdFrame(float(t), {f"v{i}": (0.0, 0.0, "e0_0", 100.0 * i + 20.0 * t, 20.0)
+                                  for i in range(3 + (t // 10))}) for t in range(60)]
+    road = TraceRoad(frames, Corridor("lane", ["e0"], {"e0": 5000.0}, ring=False), n_rsu=6)
+    assert len(road.vehicles) == 3 and len(road.all_vehicles) == 8 and not road.is_ring
+    sim = ITSSimulation(ITSConfig(n_pm=2, rsus_per_pm=3, mobility=True, v2v=True, seed=1), road=road)
+    assert len(sim.vehicles) == 8
+    assert sim.wrap_m > 1e9                       # a straight corridor never wraps around
+    sim.run(2)
+    assert sim.summary()["rounds"][-1]["messages"] > 0

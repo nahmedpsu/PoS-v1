@@ -96,6 +96,16 @@ class TraceRoad:
         self._ids: dict[str, int] = {}
         self._prev_x: dict[int, float] = {}
         self.vehicles: list[MobileVehicle] = []
+        # every vehicle that ever enters the corridor, at its first position: the
+        # protocol provisions all of them at build time, so that one entering the
+        # corridor mid-run is allotted pseudonyms at the next round
+        self.all_vehicles: list[MobileVehicle] = []
+        for f in frames:
+            for sid, (x, y, lane, pos, speed) in f.vehicles.items():
+                c = corridor.coordinate(x, y, lane, pos)
+                if c is None or sid in self._ids:
+                    continue
+                self.all_vehicles.append(MobileVehicle(self._vid(sid), c, speed, +1))
         self._load_frame(0)
 
     def _vid(self, sumo_id: str) -> int:
@@ -126,8 +136,17 @@ class TraceRoad:
         self.vehicles = new
 
     @property
+    def is_ring(self) -> bool:
+        return self.corridor.ring
+
+    @property
     def all_vehicle_ids(self) -> list[int]:
-        return list(self._ids.values())
+        return [v.vid for v in self.all_vehicles]
+
+    @property
+    def present_share(self) -> float:
+        """Share of the trace's vehicles present in the current frame."""
+        return len(self.vehicles) / max(1, len(self.all_vehicles))
 
     def step(self, dt: float = 1.0) -> None:
         if self._i + 1 < len(self.frames):

@@ -1,5 +1,32 @@
 # Changelog
 
+## 3.2.0 - review follow-ups: the revocation rule, exact tests, real SUMO scenarios
+
+* `revocation_reports` / `revocation_distinct_rsus` (ITSConfig): the PM asks
+  the PKI to revoke a vehicle only after k clone reports from m distinct RSUs
+  (defaults 1/1 reproduce 3.0.0).  `pop-sim recycling --sensitivity` runs E1r
+  over seven rules and reports wrongful revocations, wrongful reports and the
+  time a genuine misbehaver survives under each.
+* `wilcoxon_signed_rank` returns the exact two-sided p-value up to 25 non-zero
+  pairs (enumeration of the sign patterns, ties mid-ranked) instead of the
+  normal approximation; E4's paired tests are re-reported (p = 0.002 for ten
+  pairs all one way, where 3.0.0 printed 0.005).
+* `pop-sim recycling-sumo --trace --corridor --name`: E1 and E4 on a SUMO
+  floating-car trace (`experiments_sumo.py`).  Run on the LuST (Luxembourg)
+  motorway corridor at the morning peak and on a netgenerate motorway;
+  corridor files and the motorway demand are in `config/sumo/`.
+* Trace roads provision every vehicle that ever enters the corridor (one that
+  enters mid-run is allotted pseudonyms at the next round) and a straight
+  corridor never wraps distances around (`ITSSimulation.wrap_m`).
+* Results page: E2 revokes after round 2 (not "the first round") and is the
+  one oracle-attribution experiment, said so; E6 explains why the bench's
+  replay attack stays defended while E1's does not; one wording for the
+  verdict (pre-registered case 2 with case 3 as the headline); the SUMO
+  limitation replaced by the scenario results.
+* Related work check for the fix's framing (Mdee et al. 2023; Salin 2023) in
+  `docs/recycling.md`.
+* 86 tests.
+
 ## 3.1.0 - longer horizons and SUMO traces
 
 * `pop-sim recycling --long` / `--only-long`: E1x and E2x over a 600 s horizon,

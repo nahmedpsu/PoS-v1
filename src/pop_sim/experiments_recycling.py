@@ -11,12 +11,15 @@ import statistics
 import time
 from dataclasses import asdict
 
+from . import clock
 from .shuffle import ISSUANCE_MODES, ITSConfig, ITSSimulation
 from .v2 import attacks as atk
 from .v2.metrics import bootstrap_ci, wilcoxon_signed_rank
 from .v2.mobility import RoadConfig
 
 DEFAULT_SEEDS = tuple(range(1, 11))
+# (clone reports needed, distinct RSUs needed) before the PM asks the PKI to revoke a vehicle
+REVOCATION_RULES = ((1, 1), (2, 1), (3, 1), (5, 1), (2, 2), (3, 2), (3, 3))
 
 
 def _base(density: float, seed: int, **kw) -> ITSConfig:
@@ -291,3 +294,60 @@ def exp_e2_long(seeds=DEFAULT_SEEDS, rounds: int = 20, lifetimes=(300, 900, 3600
                         "post_revocation_accepted": _agg(rows, ["accepted_after"]),
                         "seconds_to_last_accepted": _agg(rows, ["seconds_to_last"])})
     return {"experiment": "E2x_long", "rounds": rounds, "cells": results}
+
+
+# ------------------------------------------------ E1r: the revocation rule
+def exp_e1_revocation_rule(seeds=DEFAULT_SEEDS, rounds: int = 4, long_rounds: int = 20, rules=REVOCATION_RULES,
+                           strategies=("S1", "S2"), density: float = 10, share: float = 0.05,
+                           lifetime: float = 900.0) -> dict:
+    """Sensitivity of the E1 accountability result to the revocation rule.
+    E1 revokes a vehicle on its first clone report.  Here the PM waits for
+    ``k`` reports from at least ``m`` distinct RSUs, for every (k, m) in
+    ``rules``, and three things are measured per rule: how many honest
+    vehicles the former holders still get revoked (120 s and 600 s
+    horizons, ledger attribution), how many wrongful reports are filed, and
+    the price of the stricter rule on a genuine misbehaver (the E2 setting:
+    one vehicle replaying its pseudonyms under oracle attribution): the time
+    until it is revoked and how many of its messages RSUs accept meanwhile."""
+    results = []
+    for k, m in rules:
+        cell = {"reports": k, "distinct_rsus": m, "rule": f"{k} report{'s' if k > 1 else ''} / {m} RSU{'s' if m > 1 else ''}"}
+        for st in strategies:
+            for label, n_rounds in (("short", rounds), ("long", long_rounds)):
+                rows = []
+                for seed in seeds:
+                    est = int(2 * density * 5)
+                    cfg = _base(density, seed, issuance="recycle", former_holders=_attackers(est, share),
+                                former_holder_strategy=st, v2v_plausibility=True, pseudonym_lifetime=lifetime,
+                                revocation_reports=k, revocation_distinct_rsus=m)
+                    r = _run(cfg, n_rounds)
+                    # share of all vehicles: former holders hold recycled pseudonyms too and get blamed like anyone
+                    r["revoked_share"] = r["revoked"] / max(1, r["vehicles"])
+                    rows.append(r)
+                cell[f"{st}_{label}"] = {"sim_seconds": n_rounds * 30, "seeds": len(rows),
+                                         "vehicles": _agg(rows, ["vehicles"]),
+                                         "honest_revoked": _agg(rows, ["revoked"]),
+                                         "revoked_share": _agg(rows, ["revoked_share"]),
+                                         "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
+                                         "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"])}
+        # the genuine misbehaver: how long the stricter rule lets it run
+        rows = []
+        for seed in seeds:
+            cfg = _base(density, seed, issuance="recycle", malicious_vehicles=1, revoked_keep_transmitting=True,
+                        pseudonym_lifetime=lifetime, attribution="oracle", revocation_reports=k, revocation_distinct_rsus=m)
+            sim = ITSSimulation(cfg)
+            t0 = clock.now()
+            sim.run(long_rounds)
+            bad = next(v for v in sim.vehicles if v.malicious)
+            t_rev = sim.revoked_at.get(bad.vehicle_id)
+            reports = len(sim.report_tally.get(bad.vehicle_id, []))
+            rows.append({"revoked": 1.0 if t_rev is not None else 0.0,
+                         "seconds_to_revocation": (t_rev - t0) if t_rev is not None else float(long_rounds * 30),
+                         "reports_against_it": reports})
+        cell["misbehaver"] = {"sim_seconds": long_rounds * 30, "seeds": len(rows),
+                              "revoked_within_horizon": _agg(rows, ["revoked"]),
+                              "seconds_to_revocation": _agg(rows, ["seconds_to_revocation"]),
+                              "reports_against_it": _agg(rows, ["reports_against_it"])}
+        results.append(cell)
+    return {"experiment": "E1r_revocation_rule", "rounds": rounds, "long_rounds": long_rounds,
+            "strategies": list(strategies), "cells": results}

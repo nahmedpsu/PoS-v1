@@ -1,0 +1,15 @@
+{
+ "mode": "xy",
+ "axis": [
+  [
+   0,
+   0
+  ],
+  [
+   6000,
+   0
+  ]
+ ],
+ "ring": false,
+ "note": "netgenerate 6 km three-lane motorway, two carriageways projected on one axis; flows 3000 cars + 400 trucks per hour per direction"
+}

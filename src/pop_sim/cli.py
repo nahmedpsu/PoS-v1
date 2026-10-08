@@ -11,6 +11,7 @@ from pathlib import Path
 from . import __version__, plots, plots_recycling, plots_v2
 from . import experiments as ex
 from . import experiments_recycling as exr
+from . import experiments_sumo as exs
 from . import experiments_v2 as ex2
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
 from .v2 import attacks as atk
@@ -176,7 +177,8 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         ("E5 fix", lambda: exr.exp_e5_fix(seeds, rounds, strategies=("S2", "S3")) if quick else exr.exp_e5_fix(seeds, rounds), plots_recycling.fig_e5, "E5"),
     ]
     if args.only_long:
-        args.long = True
+        if not (args.long or args.sensitivity):
+            args.long = args.sensitivity = True
         for key in ("E1", "E2", "E3", "E4", "E5", "E6"):
             res[key] = json.loads((out / f"{key}.json").read_text())
         steps = []
@@ -199,11 +201,37 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         res["E2x"] = exr.exp_e2_long(seeds, rounds=4 if quick else 20, lifetimes=(300, 3600) if quick else (300, 900, 3600))
         _dump(res["E2x"], out / "E2x.json")
         plots_recycling.fig_e2(res["E2x"], figs / "E2x.png")
+    if args.sensitivity:
+        log("E1r: the revocation rule (k reports from m RSUs)")
+        res["E1r"] = exr.exp_e1_revocation_rule(seeds, rounds=rounds, long_rounds=4 if quick else 20,
+                                                rules=((1, 1), (3, 2)) if quick else exr.REVOCATION_RULES)
+        _dump(res["E1r"], out / "E1r.json")
+        plots_recycling.fig_e1r(res["E1r"], figs / "E1r.png")
     plots_recycling.fig_summary(res, figs / "summary.png")
     res["wall_seconds"] = time.perf_counter() - t0
     _dump({k: v for k, v in res.items() if k in ("config", "wall_seconds")} | {"E6_changed": res["E6"]["changed"]},
           out / "run_info.json")
     log("done")
+    return 0
+
+
+def cmd_recycling_sumo(args: argparse.Namespace) -> int:
+    """E1 and E4 on a SUMO trace."""
+    seeds = tuple(int(x) for x in args.seeds.split(",")) if args.seeds else ((1, 2) if args.quick else exr.DEFAULT_SEEDS)
+    res = exs.exp_sumo(args.trace, args.corridor, args.name, seeds=seeds, rounds=2 if args.quick else args.rounds,
+                       strategies=("S2",) if args.quick else ("S1", "S2", "S3"),
+                       modes=("recycle", "rekey") if args.quick else exs.ISSUANCE_MODES)
+    _dump(res, Path(args.out) / f"SUMO_{args.name}.json")
+    plots_recycling.fig_sumo(res, Path(args.figures) / f"SUMO_{args.name}.png")
+    info = res["trace_info"]
+    print(f"{res['experiment']}: {info['vehicles_total']} vehicles, {info['density_per_km']:.1f} veh/km on "
+          f"{info['corridor_m'] / 1000:.1f} km, {res['wall_seconds']:.0f} s")
+    for c in res["E1"]:
+        print(f"  E1 {c['strategy']}: receivers accept {100 * c['v2v_receiver_rate']['mean']:.1f} %, "
+              f"blamed {c['victims_blamed']['mean']:.0f}, honest revoked {c['honest_revoked']['mean']:.1f}")
+    for c in res["E4"]:
+        print(f"  E4 {c['mode']:9s}: link rate {c['tracker_link_rate']['mean']:.3f}, forged accepted "
+              f"{c['forged_v2v_accepted']['mean']:.0f}, PKI {c['pki_cpu_s_per_1000_veh_h']['mean']:.1f} CPU-s/1000 veh-h")
     return 0
 
 
@@ -284,10 +312,22 @@ def main(argv: list[str] | None = None) -> int:
     rc.add_argument("--quick", action="store_true")
     rc.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1,2 with --quick)")
     rc.add_argument("--long", action="store_true", help="also run E1x/E2x over a 600 s horizon (certificates expire)")
-    rc.add_argument("--only-long", action="store_true", help="run only E1x/E2x (E1-E6 results must already exist)")
+    rc.add_argument("--sensitivity", action="store_true", help="also run E1r: the revocation rule (k reports from m RSUs)")
+    rc.add_argument("--only-long", action="store_true",
+                    help="skip E1-E6 (their results must already exist) and run only --long / --sensitivity (both if neither is set)")
     rc.add_argument("--out", default="results/recycling")
     rc.add_argument("--figures", default="figures/recycling")
     rc.set_defaults(func=cmd_recycling)
+    rs = sub.add_parser("recycling-sumo", help="E1 and E4 of the recycling study on a SUMO FCD trace")
+    rs.add_argument("--trace", required=True, help="SUMO --fcd-output file")
+    rs.add_argument("--corridor", required=True, help="corridor JSON (see experiments_sumo.py)")
+    rs.add_argument("--name", required=True, help="scenario name used in the output file names")
+    rs.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1,2 with --quick)")
+    rs.add_argument("--rounds", type=int, default=4)
+    rs.add_argument("--quick", action="store_true")
+    rs.add_argument("--out", default="results/recycling")
+    rs.add_argument("--figures", default="figures/recycling")
+    rs.set_defaults(func=cmd_recycling_sumo)
     b = sub.add_parser("bench", help="run the protocol from a JSON configuration file")
     b.add_argument("config")
     b.add_argument("--out", default=None, help="write the summary JSON here instead of stdout")

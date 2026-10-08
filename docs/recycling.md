@@ -65,6 +65,9 @@ the current time, and verify the message under the certificate's key.
 | E4 modes | RQ4 | issuance mode, density | every axis, paired Wilcoxon tests against recycle |
 | E5 fix | RQ4 | window vs rekey vs fresh_vgk, strategy | forgeries accepted, added cost |
 | E6 bench re-check | all | the 18-attack bench under oracle vs ledger attribution | outcome changes |
+| E1x / E2x (`--long`) | RQ1, RQ2 | 600 s horizon, certificate lifetime | as E1 and E2, with renewals |
+| E1r (`--sensitivity`) | RQ1 | revocation rule (k reports from m RSUs), strategy, horizon | honest vehicles revoked, wrongful reports, misbehaver's time to revocation |
+| SUMO (`recycling-sumo`) | RQ1, RQ4 | scenario (LuST motorway, netgenerate motorway) | E1 core cell and E4 on a real trace |
 
 Every cell reports the mean with a 95 % bootstrap confidence interval over seeds
 (10 by default, 2 with `--quick`). Modes share the same traffic for a given seed
@@ -105,20 +108,87 @@ re-certifies every pseudonym in circulation (relocated, in PM stock, in RSU stoc
 whose certificate would expire before the next shuffle; it keeps the key, as the
 manuscript's recycling does.
 
-## SUMO traces (the plan's optional step 11)
+## SUMO traces: two real scenarios (version 3.2.0)
 
 `v2/mobility_sumo.py` reads SUMO floating-car-data output (`sumo --fcd-output`)
-and drives the simulation with it in place of the synthetic ring:
+and drives the simulation with it in place of the synthetic ring. The protocol's
+road model is one-dimensional, so a trace is mapped onto a corridor: the lane
+position along an ordered edge sequence (`"mode": "lane"`), or the projection of
+(x, y) on an axis between two points (`"mode": "xy"`, a junction-free motorway
+section). Every vehicle that ever enters the corridor is provisioned at build time
+and is allotted pseudonyms at the first round after it appears; a straight corridor
+never wraps distances around. `pop-sim recycling-sumo` runs E1 (core cell) and E4
+(all modes, paired over seeds) on a trace; the trace fixes the traffic and the seeds
+vary the keys, the choice of former holders and the GPS noise.
 
-```python
-from pop_sim.v2.mobility_sumo import Corridor, TraceRoad
-road = TraceRoad.from_file("trace.xml", Corridor("lane", ["e0", "e1", "e2"], {"e0": 1000, "e1": 1000, "e2": 1000}), n_rsu=6)
-sim = ITSSimulation(ITSConfig(mobility=True, n_pm=2, rsus_per_pm=3, v2v=True), road=road)
+```bash
+PYTHONPATH=src python -m pop_sim recycling-sumo --trace lust_motorway.fcd.xml \
+    --corridor config/sumo/lust_motorway.corridor.json --name lust_motorway
 ```
 
-The protocol's road model is one-dimensional, so a trace is mapped onto a corridor:
-the lane position along an ordered edge sequence (a road or a ring), or the
-projection of (x, y) on an axis between two points (a junction-free highway
-section). Only synthetic traces are exercised by the tests; rerunning E1 and E4 on
-real urban and highway scenarios needs the SUMO scenario files, which this
-repository does not ship.
+Two scenarios are run and reported in [recycling_results.md](recycling_results.md):
+
+* **LuST motorway** (Luxembourg SUMO Traffic scenario, Codeca et al., MIT licence):
+  the longest connected chain of `highway.motorway` edges of `lust.net.xml`, one
+  carriageway, 19.0 km, 33 edges with 3 to 4 lanes, at the morning peak (SUMO time
+  28,800 to 29,519 s, 08:00 to 08:12, after a 600 s warm-up). The scenario files are
+  not shipped (413 MB); `config/sumo/lust_motorway.corridor.json` names the edges,
+  and the trace is reproduced with
+  `sumo -c dua.actuated.sumocfg --begin 28200 --end 29520 --fcd-output trace.xml
+  --device.fcd.begin 28800 --fcd-output.filter-edges.input-file edges.txt`
+  (`edges.txt`: one `edge:<id>` line per corridor edge).
+* **netgenerate motorway**: a 6 km three-lane motorway with two carriageways
+  (`netgenerate --grid --grid.x-number=2 --grid.y-number=1 --grid.x-length=6000
+  --default.lanenumber=3 --default.speed=36.1 --no-turnarounds`), demand of 3,000
+  cars and 400 trucks per hour per direction with speed-factor spread
+  (`config/sumo/motorway.flows.rou.xml`), 900 s of trace after a 600 s warm-up,
+  both carriageways projected on one axis (`config/sumo/motorway.corridor.json`).
+
+Both were produced with Eclipse SUMO 1.28.0 (`pip install eclipse-sumo`).
+
+## The revocation rule (E1r, version 3.2.0)
+
+E1 revokes a vehicle on its first clone report, which is the manuscript's rule
+(Algorithm 5: a clone report goes PM to CA and the certificate is revoked). A
+reviewer will ask whether the wrongful revocations survive a stricter rule.
+`revocation_reports` and `revocation_distinct_rsus` make the PM wait for k reports
+from at least m different RSUs before it asks the PKI to revoke; `pop-sim recycling
+--sensitivity` runs E1r over (k, m) in {1/1, 2/1, 3/1, 5/1, 2/2, 3/2, 3/3} and
+measures, per rule: honest vehicles revoked and wrongful reports filed by S1 and S2
+former holders (120 s and 600 s, ledger attribution), and on the other side of the
+trade the time a genuine misbehaver (the E2 vehicle, oracle attribution) survives
+before the rule is met.
+
+## Related work the fix depends on (go/no-go reading)
+
+The fix the study recommends, re-keying on every transfer (`rekey`), only matters
+as a contribution if the swapping and recycling designs in the literature do not
+already do it. Two 2023 designs were checked.
+
+* **Mdee, Khan, Seo and Kim, "Security Compliant and Cooperative Pseudonyms
+  Swapping for Location Privacy Preservation in VANETs", IEEE TVT 72(8), 2023
+  (DOI 10.1109/TVT.2023.3254660).** Vehicles hold one non-swappable pseudonym and a
+  set of swappable ones; neighbours swap a swappable pseudonym inside a mix-context
+  without RSUs, and both report the new vehicle-to-pseudonym mapping to the authority
+  for accountability. The full text is paywalled; the mechanism is confirmed from the
+  papers that cite it: the short-term pseudonym's *private key is handed over* with
+  the pseudonym (the swap is "multiple interactions" ending with the private key
+  swapped and a confirmation broadcast), and one 2025 paper names that key handover
+  as the security risk its own design avoids. So Mdee et al. do not re-key: the new
+  holder signs with a key the former holder still has, and accountability rests on
+  the authority's record of who holds what, exactly the ledger attribution E1 breaks.
+  **Go**: the former-holder result and the rekey fix apply to it unchanged.
+* **Salin, "Pseudonym Swapping with Secure Accumulators and Double Diffie-Hellman
+  Rounds in Cooperative Intelligent Transport Systems", CRiSIS 2022, LNCS 13857,
+  Springer 2023 (DOI 10.1007/978-3-031-31108-6_17).** Closed access; only the
+  abstract and the citation contexts of later papers were readable, and the author's
+  2025 doctoral thesis lists the paper but excludes its text. The abstract places
+  the signature keys in the hardware security module *and* in a secure accumulator
+  that proves a key is valid, and swaps under two Diffie-Hellman rounds; nothing
+  readable says whether the swapped pseudonym's key is re-derived for the new holder
+  or moved as is. **Unverified**: if the double Diffie-Hellman rounds derive a fresh
+  per-holder key, that paper already has the `rekey` idea for swapping (not for
+  cloud recycling), and the study's claim should be narrowed to "re-keying is
+  missing from recycling designs, and is what the swapping literature's safe variant
+  does"; if they only authenticate the handover, the claim stands as written. The
+  chapter needs to be read in full before submission.

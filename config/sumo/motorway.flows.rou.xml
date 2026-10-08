@@ -1,0 +1,8 @@
+<routes>
+  <vType id="car" accel="2.6" decel="4.5" sigma="0.6" length="4.5" minGap="2.5" maxSpeed="39" speedFactor="normc(1.0,0.12,0.7,1.3)"/>
+  <vType id="truck" accel="1.0" decel="3.5" sigma="0.5" length="14" minGap="3" maxSpeed="25" vClass="truck" speedFactor="normc(0.95,0.05,0.8,1.05)"/>
+  <flow id="east_car" type="car" from="A0B0" to="A0B0" begin="0" end="1500" vehsPerHour="3000" departLane="random" departSpeed="max"/>
+  <flow id="east_truck" type="truck" from="A0B0" to="A0B0" begin="0" end="1500" vehsPerHour="400" departLane="0" departSpeed="max"/>
+  <flow id="west_car" type="car" from="B0A0" to="B0A0" begin="0" end="1500" vehsPerHour="3000" departLane="random" departSpeed="max"/>
+  <flow id="west_truck" type="truck" from="B0A0" to="B0A0" begin="0" end="1500" vehsPerHour="400" departLane="0" departSpeed="max"/>
+</routes>

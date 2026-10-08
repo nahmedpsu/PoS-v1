@@ -180,13 +180,33 @@ def bootstrap_ci(values: list[float], resamples: int = 1000, seed: int = 0, leve
     return {"mean": statistics.mean(vals), "lo": lo, "hi": hi, "n": len(vals)}
 
 
-def wilcoxon_signed_rank(a: list[float], b: list[float]) -> dict:
-    """Paired Wilcoxon signed-rank test (normal approximation with tie
-    correction) and the matched-pairs rank-biserial effect size."""
+def _exact_signed_rank_p(ranks: list[float], w_obs: float) -> float:
+    """Exact two-sided p-value of the Wilcoxon signed-rank statistic: the
+    probability, under the null that every sign is equally likely, that the
+    smaller of W+ and W- is at most ``w_obs``.  Ranks may be half-integers
+    (mid-ranks of ties), so the distribution is built on doubled ranks."""
+    doubled = [int(round(2 * r)) for r in ranks]
+    total = sum(doubled)
+    dist = [1] + [0] * total                      # dist[k] = number of sign patterns with 2*W+ == k
+    for d in doubled:
+        for k in range(total, d - 1, -1):
+            dist[k] += dist[k - d]
+    w2 = int(round(2 * w_obs))
+    n_patterns = 2 ** len(ranks)
+    lower = sum(dist[: w2 + 1]) / n_patterns     # P(W+ <= w_obs)
+    return min(1.0, 2 * lower)
+
+
+def wilcoxon_signed_rank(a: list[float], b: list[float], exact_max_n: int = 25) -> dict:
+    """Paired Wilcoxon signed-rank test and the matched-pairs rank-biserial
+    effect size.  Up to ``exact_max_n`` non-zero differences the two-sided
+    p-value is exact (enumeration of the 2^n sign patterns, ties mid-ranked);
+    beyond that the normal approximation is used.  With ten pairs all in the
+    same direction the exact p is 2/1024 = 0.002."""
     diffs = [float(x) - float(y) for x, y in zip(a, b) if float(x) != float(y)]
     n = len(diffs)
     if n == 0:
-        return {"n": 0, "w_plus": 0.0, "w_minus": 0.0, "z": 0.0, "p": 1.0, "effect_size": 0.0}
+        return {"n": 0, "w_plus": 0.0, "w_minus": 0.0, "z": 0.0, "p": 1.0, "effect_size": 0.0, "method": "none"}
     order = sorted(range(n), key=lambda i: abs(diffs[i]))
     ranks = [0.0] * n
     i = 0
@@ -204,6 +224,11 @@ def wilcoxon_signed_rank(a: list[float], b: list[float]) -> dict:
     mean = total / 2
     var = n * (n + 1) * (2 * n + 1) / 24
     z = (min(w_plus, w_minus) - mean) / math.sqrt(var) if var > 0 else 0.0
-    p = 2 * (1 - 0.5 * (1 + math.erf(abs(z) / math.sqrt(2))))
+    if n <= exact_max_n:
+        p = _exact_signed_rank_p(ranks, min(w_plus, w_minus))
+        method = "exact"
+    else:
+        p = 2 * (1 - 0.5 * (1 + math.erf(abs(z) / math.sqrt(2))))
+        method = "normal"
     return {"n": n, "w_plus": w_plus, "w_minus": w_minus, "z": z, "p": min(1.0, p),
-            "effect_size": (w_plus - w_minus) / total}
+            "effect_size": (w_plus - w_minus) / total, "method": method}

@@ -77,6 +77,8 @@ class ITSConfig:
     pseudonym_lifetime: float = 3600.0   # certificate lifetime in seconds
     revoked_keep_transmitting: bool = False   # a revoked vehicle keeps beaconing under the pseudonyms it holds
     shuffle_before_upload: bool = False  # PM shuffles used sets before uploading (cloud-order leak fix)
+    revocation_reports: int = 1          # clone reports against a vehicle before the PM asks the PKI to revoke it
+    revocation_distinct_rsus: int = 1    # ... and from at least this many different RSUs
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
@@ -87,6 +89,8 @@ class ITSConfig:
             raise ValueError(f"issuance must be one of {ISSUANCE_MODES}")
         if self.former_holder_strategy not in STRATEGIES:
             raise ValueError(f"former_holder_strategy must be one of {STRATEGIES}")
+        if self.revocation_reports < 1 or self.revocation_distinct_rsus < 1:
+            raise ValueError("revocation_reports and revocation_distinct_rsus must be at least 1")
 
 
 @dataclass
@@ -186,6 +190,9 @@ class ITSSimulation:
         self.pm_domains: dict[str, list[tuple[str, str]]] = {}
         self.cloud_uploads: list[list[str]] = []
         self.pki_reports: list[tuple[str, str]] = []
+        self.report_tally: dict[str, list[dict]] = {}        # vehicle -> clone reports received so far (revocation rule)
+        self.present_vehicle_steps = 0                       # sum over driven seconds of vehicles on the road (traces: not all are)
+        self.driven_steps = 0
         self.road: Road | None = None
         self.adversary = None
         self.true_changes = 0
@@ -224,9 +231,11 @@ class ITSSimulation:
             road_cfg.n_rsu = cfg.n_pm * cfg.rsus_per_pm
             self.road = self._external_road if self._external_road is not None else Road(road_cfg)
             road_cfg = self.road.cfg
-            self.ledger.ring_length = road_cfg.length_m
-            self.adversary = make_tracker(cfg.tracker, road_cfg.length_m, cfg.adversary_gate_m, 1.0)
-            for mv in self.road.vehicles:
+            # distances wrap around on the synthetic ring; a straight corridor (a SUMO trace) never wraps
+            self.wrap_m = road_cfg.length_m if getattr(self.road, "is_ring", True) else 1e12
+            self.ledger.ring_length = self.wrap_m
+            self.adversary = make_tracker(cfg.tracker, self.wrap_m, cfg.adversary_gate_m, 1.0)
+            for mv in getattr(self.road, "all_vehicles", self.road.vehicles):   # a trace: every vehicle that ever appears
                 v = Vehicle(mv.vid, self.rng)
                 self.manufacturer.provision(v)
                 self.vehicles.append(v)
@@ -246,7 +255,7 @@ class ITSSimulation:
                 v.former_holder = True
             self.former = FormerHolderAdversary(cfg.former_holder_strategy, cfg.ghost_offset_m, cfg.v2v_range_m)
         if cfg.mobility and cfg.v2v:
-            self.v2v = V2VLayer(self.pki.keys.pk, self.road.cfg.length_m, cfg.v2v_range_m, cfg.v2v_plausibility,
+            self.v2v = V2VLayer(self.pki.keys.pk, self.wrap_m, cfg.v2v_range_m, cfg.v2v_plausibility,
                                 mode="holder" if cfg.issuance in ("rekey", "window") else "pki",
                                 pm_cert_check=self.pki.verify_pm_cert)
 
@@ -561,6 +570,8 @@ class ITSSimulation:
             self.sim_time += 1.0
             clock.advance(1.0)
             now = clock.now()                     # one time base for messages, certificates and receivers
+            self.present_vehicle_steps += len(road.vehicles)
+            self.driven_steps += 1
             beacons: list[Beacon] = []
             positions = {mv.vid: mv.x for mv in road.vehicles}
             holder_x: dict[str, float] = {}
@@ -595,7 +606,7 @@ class ITSSimulation:
                     acc, _ = self.v2v.deliver(msg, mv.x, positions, now, exclude=mv.vid)
                     if v.revoked and acc:
                         self.revoked_accepted.setdefault(v.vehicle_id, []).append(now)
-                x_seen = (mv.x + self.noise_rng.gauss(0, cfg.position_noise_m)) % road.cfg.length_m \
+                x_seen = (mv.x + self.noise_rng.gauss(0, cfg.position_noise_m)) % self.wrap_m \
                     if cfg.position_noise_m else mv.x
                 beacons.append(Beacon(self.sim_time, msg.pid, x_seen, mv.v, mv.direction, mv.rsu, mv.vid, node))
                 if v.malicious and step == period - 1:
@@ -633,7 +644,7 @@ class ITSSimulation:
             if not a.former_holder or a.revoked:
                 continue
             for p in list(a.kept_keys):
-                fm = self.former.forge(a, mv.x, p, self.ledger, road.cfg.length_m, holder_x, now,
+                fm = self.former.forge(a, mv.x, p, self.ledger, self.wrap_m, holder_x, now,
                                        mv.v, mv.direction, self.ledger.holder_cert.get(p.pid))
                 if fm is None:
                     continue
@@ -650,13 +661,23 @@ class ITSSimulation:
                 self.former.record(fm, acc, rx, rsu_ok, now)
         return sent
 
+    def _revocation_due(self, vid: str) -> bool:
+        """The revocation rule: at least ``revocation_reports`` clone reports
+        against the vehicle, from at least ``revocation_distinct_rsus``
+        different RSUs (defaults 1 and 1: the first report revokes)."""
+        reps = self.report_tally.get(vid, [])
+        return (len(reps) >= self.cfg.revocation_reports and
+                len({r["rsu"] for r in reps}) >= self.cfg.revocation_distinct_rsus)
+
     def _process_reports(self) -> None:
-        """PM -> CA: a vehicle caught reusing a pseudonym has its certificate revoked."""
+        """PM -> CA: a vehicle caught reusing a pseudonym has its certificate
+        revoked once the revocation rule is met."""
         for pm in self.pms:
             while pm.misbehaviour_reports:
                 rep = pm.misbehaviour_reports.pop()
                 v = next(v for v in self.vehicles if v.vehicle_id == rep["vehicle"])
-                if not v.revoked:
+                self.report_tally.setdefault(v.vehicle_id, []).append(rep)
+                if not v.revoked and self._revocation_due(v.vehicle_id):
                     self.pki.revoke(v.credential.cert)
                     v.revoked = True
                     self.revocations.append(rep)
@@ -724,7 +745,9 @@ class ITSSimulation:
 
     def load_report(self, costs: OpCosts | None = None) -> dict:
         costs = costs or OpCosts()
-        n = len(self.vehicles)
+        # per-vehicle figures are normalised by the vehicles actually on the road: on
+        # the synthetic ring that is every vehicle; on a trace, the mean present per second
+        n = self.present_vehicle_steps / self.driven_steps if self.driven_steps else len(self.vehicles)
         secs = max(self.sim_time, 1.0)
         pki = self.pki.load.to_dict()
         pm = {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications")}

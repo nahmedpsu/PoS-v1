@@ -6,6 +6,8 @@ produced by `pop-sim recycling` with ten seeds per cell and four rounds of 30 s
 (two PMs, six RSUs, 5 km ring road, three pseudonyms per vehicle, 3 s silence after
 each change, 3 m GPS noise, ledger attribution, vehicle-to-vehicle receivers within
 300 m). Every cell is the mean over seeds with a 95 % bootstrap confidence interval.
+The one exception to ledger attribution is E2 (and the misbehaver half of E1r), which
+tells the RSU the true sender so that the right vehicle is revoked; it is marked there.
 
 The horizon matters for two results and is stated where it does: 120 s of traffic is
 shorter than every certificate lifetime tested, so no certificate expires inside a run.
@@ -31,7 +33,10 @@ under those pseudonyms after recycling. Ten vehicles per km unless stated.
 * That is the accountability failure: under ledger attribution the RSU reports the
   current holder for every clone it detects. S1 produces 223 reports against innocent
   vehicles per run and gets 33 of about 100 honest vehicles revoked; S2 gets 6
-  revoked. The attacker itself is never named.
+  revoked. The attacker itself is never named. These counts are under the
+  manuscript's rule, revocation on the first clone report; E1r below varies the rule
+  (up to three reports from three distinct RSUs) and the revocations are delayed, not
+  prevented.
 * Certificate lifetime (300, 900, 3600 s) does not change any of this within the
   horizon: the exposure window is set by the recycling period (how long a pseudonym
   sits with, or between, holders), not by the certificate.
@@ -41,13 +46,64 @@ under those pseudonyms after recycling. Ten vehicles per km unless stated.
 
 ![E1](../figures/recycling/E1.png)
 
+## E1r. A stricter revocation rule delays the wrongful revocations, it does not prevent them
+
+E1 revokes on the first clone report. `pop-sim recycling --sensitivity` makes the PM
+wait for k reports from at least m distinct RSUs before it asks the PKI to revoke
+(`revocation_reports`, `revocation_distinct_rsus`), for seven rules, S1 and S2 at
+5 % former holders, plausibility on, 900 s certificates, ten seeds, over 120 s and
+600 s. The other side of the trade is measured on the E2 vehicle (a genuine
+misbehaver replaying its own pseudonyms, oracle attribution): how long the rule lets
+it run before it is revoked.
+
+| Rule (reports / distinct RSUs) | Honest vehicles revoked by S1, 120 s / 600 s | by S2, 120 s / 600 s | Wrongful reports, S1, 600 s | Genuine misbehaver revoked after (600 s horizon) |
+|---|---|---|---|---|
+| 1 / 1 (E1) | 33 / 94 | 6 / 67 | 634 | 60 s |
+| 2 / 1 | 33 / 94 | 6 / 66 | 634 | 90 s |
+| 3 / 1 | 33 / 94 | 6 / 68 | 634 | 120 s |
+| 5 / 1 | 33 / 92 | 6 / 64 | 597 | 180 s |
+| 2 / 2 | 12 / 88 | 1 / 45 | 1,216 | 126 s (102 to 159) |
+| 3 / 2 | 12 / 88 | 1 / 46 | 1,216 | 138 s (120 to 165) |
+| 3 / 3 | 2 / 88 | 0 / 27 | 2,123 | 198 s (153 to 261) |
+
+Of about 90 vehicles per run (the 600 s S1 figure is 96 % of them).
+
+* Counting reports changes nothing. A shadowed holder is reported on every message
+  the forger sends under its pseudonym, so five reports arrive in the same round as
+  the first; the 120 s and 600 s counts are identical from one to five reports.
+* Requiring distinct RSUs slows it down: three RSUs cut S1's wrongful revocations at
+  120 s from 33 to 2. At 600 s they are back to 88 of about 90, because the victim
+  drives past more RSUs and each one that hears the forger reports it. The rule
+  delays the wrongful revocation by the time it takes to pass two more RSUs.
+* The wrongful reports grow with the stricter rule (634 to 2,123 per run): the
+  victims that are not yet revoked keep being reported.
+* The price on the other side: the genuine misbehaver, revoked 60 s into the run
+  under the first-report rule, runs for 198 s (up to 261 s) under the three-RSU rule,
+  and is still caught within 600 s at every seed. So the strictest rule tested buys a
+  delay for both the victim and the attacker, and nothing else.
+
+The headline numbers of E1 (33 revoked in 120 s, 94 in 600 s) are therefore the
+first-report rule's; under the strictest rule tested they are 2 and 88. The failure
+is in the attribution, not in the threshold: no count of reports naming the wrong
+vehicle makes them name the right one.
+
+![E1r](../figures/recycling/E1r.png)
+
 ## E2. Revocation does not reach other vehicles (RQ2)
 
-One vehicle is caught by an RSU and revoked after the first round. It keeps
-transmitting from the copies it kept. For every lifetime tested, other vehicles accept
-all 60 of its later messages for the remaining 60 s of the run: revocation lives in
-the ledger and the CRL, which V2V receivers never consult, and the certificates it
-holds stay valid until they expire (longer than the run in every cell).
+One vehicle replays the pseudonyms it has already used. The first replay is only
+possible in round 2, so the RSU catches it there and it is revoked after round 2, 60 s
+into the 120 s run. It keeps transmitting from the copies it kept. For every lifetime
+tested, other vehicles accept all 60 of its later messages for the remaining 60 s of
+the run: revocation lives in the ledger and the CRL, which V2V receivers never consult,
+and the certificates it holds stay valid until they expire (longer than the run in
+every cell).
+
+E2 is run under *oracle* attribution (the RSU is told the true sender), unlike the rest
+of the page, so that the misbehaving vehicle itself is the one revoked. Under ledger
+attribution its replay would be attributed to the pseudonym's current holder, which is
+the E1 and E6 failure, and the question E2 asks (does a revocation reach the vehicles?)
+would not even be posed.
 
 ![E2](../figures/recycling/E2.png)
 
@@ -102,11 +158,14 @@ Attacker strategy S2, plausibility on, 900 s certificates, ten paired seeds.
 | Bytes per vehicle per round | 11.9 k | 12.0 k | 12.1 k | 23.9 k | 23.6 k |
 | Stock-outs per run | 0.9 | 1.3 | 0 | 1.5 | 0.9 |
 
-Paired Wilcoxon tests (ten seeds, same traffic in every mode): forged acceptances
-recycle vs fresh, fresh_vgk and rekey, p = 0.005 with effect size 1.0 at both
-densities; PKI load recycle vs fresh and fresh_vgk, p = 0.005; tracker link rate
-recycle vs fresh at 10 veh/km, p = 0.009 with recycle *higher* by 0.9 points, and no
-significant difference at 40 veh/km.
+Paired Wilcoxon signed-rank tests (ten seeds, same traffic in every mode, exact
+two-sided p-values from the 1,024 sign patterns): forged acceptances recycle vs
+fresh, fresh_vgk and rekey, p = 0.002 with effect size 1.0 at both densities (all ten
+pairs one way, the smallest p ten pairs can give); PKI load recycle vs fresh and
+fresh_vgk, p = 0.002; tracker link rate recycle vs fresh at 10 veh/km, p = 0.006 with
+recycle *higher* by 0.9 points (nine of ten pairs), and no significant difference at
+40 veh/km (p = 0.43). Version 3.0.0 reported these with the normal approximation
+(0.005 and 0.009); the cells themselves are unchanged.
 
 Reading it against the pre-registered cases:
 
@@ -173,16 +232,26 @@ keeps transmitting. The other seventeen outcomes are unchanged (13 defended, 4
 mitigated). The bench's default stays oracle so that the v2.2.1 numbers remain
 reproducible, and this finding is reported here rather than hidden by the default.
 
+One of the unchanged outcomes needs a word, or it reads as a contradiction of E1. The
+bench's *pseudonym replay* attack stays defended under ledger attribution only because
+the replay is caught while the attacker still holds the pseudonym: the ledger's holder
+*is* the attacker, so the report names the right vehicle. The replay that matters
+under recycling is the one made after the pseudonym has moved to someone else, and
+that is what E1 measures: there the ledger's holder is the victim, and the report
+names the victim.
+
 ## The answer
 
-Recycling is not worth it on any axis the manuscript claims, and it costs two
-properties the manuscript promises:
+The pre-registered outcome is case 2 with case 3 as the headline (the cases are
+defined in [recycling.md](recycling.md)): recycling wins on one axis, authority load,
+ties on privacy, and costs two properties the manuscript promises:
 
 * **Privacy against an eavesdropper**: no better than fresh issuance (E4; one point
   worse at 10 veh/km).
 * **Security**: a former holder forges accepted messages under every strategy (E1),
   and the ledger-based accountability turns those forgeries into revocations of the
-  innocent current holder (E1, E6). Fresh issuance has nothing to forge.
+  innocent current holder (E1, E6); a stricter revocation rule only delays them (E1r).
+  Fresh issuance has nothing to forge. Both hold on real SUMO traces.
 * **Revocation**: unenforceable at vehicles for as long as the certificates live (E2),
   which is a property of certificate lifetime, not of recycling, but recycling makes
   the key a shared secret so the damage spreads to every past holder.
@@ -225,6 +294,66 @@ gracefully, it collapses.
 
 ![E1x](../figures/recycling/E1x.png)
 
+## E1 and E4 on two SUMO scenarios
+
+`pop-sim recycling-sumo` reruns the E1 core cell (plausibility on, 900 s certificates,
+5 % of the trace's vehicles are former holders) and E4 (all modes, S2, paired over ten
+seeds) on floating-car traces from Eclipse SUMO 1.28.0, mapped onto the corridor
+described in [recycling.md](recycling.md). The trace fixes the traffic; the seeds vary
+the keys, which vehicles are former holders, and the GPS noise. Per-vehicle loads are
+normalised by the vehicles on the corridor each second.
+
+| Scenario | Corridor | Vehicles seen in 120 s (present per second) | Density | Mean speed |
+|---|---|---|---|---|
+| LuST motorway (Luxembourg, 08:00, Codeca et al.) | 19.0 km, one carriageway, 33 edges, 3 to 4 lanes | 439 (283) | 16.1 veh/km | 30.9 m/s |
+| netgenerate motorway, 3,400 veh/h per direction | 6.0 km, two carriageways on one axis | 584 (372) | 61.5 veh/km of corridor | 30.8 m/s |
+
+E1 (61 former holders on LuST, 103 on the motorway):
+
+| Scenario, strategy | Receivers accepting the forgery | RSU accepting | Exposure window, mean / p95 | Innocent holders blamed | Honest vehicles revoked in 120 s |
+|---|---|---|---|---|---|
+| LuST, S1 remote shadow | 99.3 % | 67 % | 28 s / 63 s | 569 | 86 of 439 (78 to 94) |
+| LuST, S2 co-located ghost | 71.8 % | 63 % | 17 s / 21 s | 26 | 4 |
+| LuST, S3 gap filler | 99.8 % | 0 % | 32 s / 58 s | 0 | 0 |
+| Motorway, S1 | 96.6 % | 69 % | 27 s / 57 s | 619 | 102 of 584 (88 to 116) |
+| Motorway, S2 | 76.7 % | 68 % | 9 s / 22 s | 59 | 11 |
+| Motorway, S3 | 99.6 % | 0 % | 28 s / 49 s | 0 | 0 |
+
+E4:
+
+| Scenario, mode | Tracker link rate | Forged messages accepted | Innocent holders blamed | PKI CPU-s per 1,000 veh-h | PM CPU-s per 1,000 veh-h | Bytes per vehicle per round | Allotment stock-outs per run |
+|---|---|---|---|---|---|---|---|
+| LuST, recycle | 0.970 | 70 | 26 | 0 | 0.1 | 10.5 k | 44 |
+| LuST, fresh | 0.950 | 0 | 0 | 53.1 | 0 | 10.8 k | 2 |
+| LuST, fresh_vgk | 0.951 | 0 | 0 | 17.9 | 0 | 10.8 k | 0 |
+| LuST, rekey | 0.970 | 0 | 0 | 0 | 17.2 | 21.3 k | 48 |
+| LuST, window | 0.970 | 70 | 26 | 0 | 17.2 | 21.3 k | 44 |
+| Motorway, recycle | 0.942 | 190 | 59 | 0 | 0.1 | 10.0 k | 124 |
+| Motorway, fresh | 0.920 | 0 | 0 | 54.5 | 0 | 10.6 k | 2 |
+| Motorway, fresh_vgk | 0.920 | 0 | 0 | 18.1 | 0 | 10.6 k | 0 |
+| Motorway, rekey | 0.945 | 0 | 0 | 0 | 16.5 | 20.3 k | 137 |
+| Motorway, window | 0.942 | 190 | 59 | 0 | 16.5 | 20.3 k | 124 |
+
+* The picture is the ring's. Receivers accept 97 to 100 % of S1 and S3 forgeries and
+  72 to 77 % of S2's; the RSU accepts two thirds of S1 and S2; the ledger blames the
+  innocent holder hundreds of times per run and S1 gets a fifth of the vehicles seen
+  revoked in two minutes. Fresh, fresh_vgk and rekey have zero forgeries and zero
+  wrongful reports on both traces (p = 0.002, all ten pairs).
+* The PKI cost of fresh issuance is the same as on the ring once normalised by the
+  vehicles on the road: 53 to 55 CPU-s per 1,000 vehicle-hours, 18 with
+  vehicle-generated keys; `rekey` moves 17 CPU-s to the PMs and doubles the bytes.
+* One difference: on a trace the tracker links recycle two points *better* than
+  fresh (0.970 vs 0.950 and 0.942 vs 0.920, p = 0.002, all ten pairs), where the ring
+  showed one point. The modes that draw on the recycled supply (recycle, rekey,
+  window) run out of stock when vehicles keep entering the corridor (44 to 137
+  allotment requests per run that an RSU could not serve, against 0 to 2 for fresh
+  issuance), and those are the modes with the higher link rate; whether the
+  stock-outs cause the difference was not isolated here. In no case does recycling
+  come out more private than fresh issuance.
+
+![LuST](../figures/recycling/SUMO_lust_motorway.png)
+![Motorway](../figures/recycling/SUMO_motorway.png)
+
 ## Limitations
 
 * E1 to E6 use 120 s horizons, inside which no certificate expires; E1x and E2x
@@ -234,4 +363,9 @@ gracefully, it collapses.
   strong but not optimal; both bias the privacy numbers in the same direction for
   every mode, so the mode comparison stands.
 * One attacker model per run; mixed strategies and adaptive attackers are not run.
-* No SUMO traces (optional step 11 of the plan).
+* Two SUMO scenarios, both motorways (the LuST morning-peak corridor and a
+  netgenerate motorway). No urban scenario: the road model is one-dimensional, so a
+  corridor through intersections would discard the turning traffic; LuST and MoST
+  city centres are not run.
+* The revocation rule is varied (E1r) but the detection side is not: every clone
+  the ledger sees is reported, with no detector noise.

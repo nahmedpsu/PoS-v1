@@ -840,24 +840,27 @@
    "w_plus": 53.0,
    "w_minus": 2.0,
    "z": -2.5992006763318902,
-   "p": 0.009344113002204946,
-   "effect_size": 0.9272727272727272
+   "p": 0.005859375,
+   "effect_size": 0.9272727272727272,
+   "method": "exact"
   },
   "10/tracker_link_rate: recycle vs fresh_vgk": {
    "n": 10,
    "w_plus": 54.0,
    "w_minus": 1.0,
    "z": -2.7011301146194153,
-   "p": 0.006910429807814644,
-   "effect_size": 0.9636363636363636
+   "p": 0.00390625,
+   "effect_size": 0.9636363636363636,
+   "method": "exact"
   },
   "10/tracker_link_rate: recycle vs rekey": {
    "n": 9,
    "w_plus": 31.0,
    "w_minus": 14.0,
    "z": -1.0069930921904569,
-   "p": 0.3139380937749148,
-   "effect_size": 0.37777777777777777
+   "p": 0.359375,
+   "effect_size": 0.37777777777777777,
+   "method": "exact"
   },
   "10/tracker_link_rate: recycle vs window": {
    "n": 0,
@@ -865,23 +868,26 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "10/pki_cpu_s_per_1000_veh_h: recycle vs fresh": {
    "n": 10,
    "w_plus": 0,
    "w_minus": 55.0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": -1.0
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact"
   },
   "10/pki_cpu_s_per_1000_veh_h: recycle vs fresh_vgk": {
    "n": 10,
    "w_plus": 0,
    "w_minus": 55.0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": -1.0
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact"
   },
   "10/pki_cpu_s_per_1000_veh_h: recycle vs rekey": {
    "n": 0,
@@ -889,7 +895,8 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "10/pki_cpu_s_per_1000_veh_h: recycle vs window": {
    "n": 0,
@@ -897,31 +904,35 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "10/forged_v2v_accepted: recycle vs fresh": {
    "n": 10,
    "w_plus": 55.0,
    "w_minus": 0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": 1.0
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact"
   },
   "10/forged_v2v_accepted: recycle vs fresh_vgk": {
    "n": 10,
    "w_plus": 55.0,
    "w_minus": 0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": 1.0
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact"
   },
   "10/forged_v2v_accepted: recycle vs rekey": {
    "n": 10,
    "w_plus": 55.0,
    "w_minus": 0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": 1.0
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact"
   },
   "10/forged_v2v_accepted: recycle vs window": {
    "n": 0,
@@ -929,31 +940,35 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "40/tracker_link_rate: recycle vs fresh": {
    "n": 10,
    "w_plus": 36.0,
    "w_minus": 19.0,
    "z": -0.8664002254439634,
-   "p": 0.3862707203664828,
-   "effect_size": 0.3090909090909091
+   "p": 0.431640625,
+   "effect_size": 0.3090909090909091,
+   "method": "exact"
   },
   "40/tracker_link_rate: recycle vs fresh_vgk": {
    "n": 10,
    "w_plus": 33.0,
    "w_minus": 22.0,
    "z": -0.5606119105813882,
-   "p": 0.5750621301739498,
-   "effect_size": 0.2
+   "p": 0.625,
+   "effect_size": 0.2,
+   "method": "exact"
   },
   "40/tracker_link_rate: recycle vs rekey": {
    "n": 10,
    "w_plus": 13.0,
    "w_minus": 42.0,
    "z": -1.4779768551691141,
-   "p": 0.13941397332153205,
-   "effect_size": -0.5272727272727272
+   "p": 0.16015625,
+   "effect_size": -0.5272727272727272,
+   "method": "exact"
   },
   "40/tracker_link_rate: recycle vs window": {
    "n": 0,
@@ -961,23 +976,26 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "40/pki_cpu_s_per_1000_veh_h: recycle vs fresh": {
    "n": 10,
    "w_plus": 0,
    "w_minus": 55.0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": -1.0
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact"
   },
   "40/pki_cpu_s_per_1000_veh_h: recycle vs fresh_vgk": {
    "n": 10,
    "w_plus": 0,
    "w_minus": 55.0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": -1.0
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact"
   },
   "40/pki_cpu_s_per_1000_veh_h: recycle vs rekey": {
    "n": 0,
@@ -985,7 +1003,8 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "40/pki_cpu_s_per_1000_veh_h: recycle vs window": {
    "n": 0,
@@ -993,31 +1012,35 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   },
   "40/forged_v2v_accepted: recycle vs fresh": {
    "n": 10,
    "w_plus": 55.0,
    "w_minus": 0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": 1.0
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact"
   },
   "40/forged_v2v_accepted: recycle vs fresh_vgk": {
    "n": 10,
    "w_plus": 55.0,
    "w_minus": 0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": 1.0
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact"
   },
   "40/forged_v2v_accepted: recycle vs rekey": {
    "n": 10,
    "w_plus": 55.0,
    "w_minus": 0,
    "z": -2.8030595529069404,
-   "p": 0.00506203212626799,
-   "effect_size": 1.0
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact"
   },
   "40/forged_v2v_accepted: recycle vs window": {
    "n": 0,
@@ -1025,7 +1048,8 @@
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
-   "effect_size": 0.0
+   "effect_size": 0.0,
+   "method": "none"
   }
  }
 }
