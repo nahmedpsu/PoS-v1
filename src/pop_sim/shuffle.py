@@ -501,12 +501,15 @@ class ITSSimulation:
             demands = {pm.pm_id: pm.net_demand(per_vehicle) for pm in self.pms}
             relocated = self.cloud.shuffle_and_relocate(demands, seed=self.rng.getrandbits(64))
             shuffled = sum(len(v) for v in relocated.values())
-            # recycled certificates near expiry are renewed by PKI (counted as its work)
-            horizon = clock.now() + 2 * self.cfg.round_seconds
-            for ps in relocated.values():
-                for _, p in ps:
-                    if p.expiry < horizon:
-                        self.pki.renew(p)
+            # recycled certificates that would expire before the next shuffle are
+            # renewed by PKI (counted as its work)
+            horizon = clock.now() + 2 * self.cfg.round_seconds + 1.0
+            in_circulation = [p for ps in relocated.values() for _, p in ps]
+            in_circulation += [p for pm in self.pms for p in pm.pool]           # stock held back at PMs ...
+            in_circulation += [p for rsu in self.rsus for p in rsu.shuffled_sets]   # ... and at RSUs
+            for p in in_circulation:
+                if p.expiry <= horizon:
+                    self.pki.renew(p)
 
         # 4. Algorithm 4 lines 18-19: shuffle results become transactions of the
         #    PM-level blockchain; the PMs mine with the configured consensus.
