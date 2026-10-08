@@ -65,12 +65,13 @@ def attack_value_forgery(seed: int = 1, bits: int = 1024) -> AttackResult:
             "seed": election_seed("0" * 64, 7).hex(),
             "pi": vrf.vrf_prove(attacker.keys, election_seed("0" * 64, 7)).hex()},
     }
+    certs = {n.node_id: n.pk.to_hex() for n in nodes}
     accepted = {}
     for name, proof in attempts.items():
         miner = proof["winner"]
         certified = next(n for n in nodes if n.node_id == miner).pk.to_hex()
-        accepted[name] = verify_popv2_proof(proof, prev, 7, miner, certified_pk=certified)
-    honest_ok = verify_popv2_proof(good, prev, 7, res.winner, certified_pk=w.pk.to_hex())
+        accepted[name] = verify_popv2_proof(proof, prev, 7, miner, certified_pk=certified, certified_pks=certs)
+    honest_ok = verify_popv2_proof(good, prev, 7, res.winner, certified_pk=w.pk.to_hex(), certified_pks=certs)
     return AttackResult(
         "value forgery / proof theft", "consensus",
         "A non-elected node claims a smaller value, reuses the winner's proof, uses an uncertified key, or picks its own seed.",

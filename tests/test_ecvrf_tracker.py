@@ -56,13 +56,16 @@ def test_vrf_dispatch_and_hex_roundtrip():
 
 
 def test_popv2_runs_on_ecvrf_and_rejects_forgeries():
-    nodes = [V2Node(f"N{i}", vrf.generate_vrf_keypair(scheme="ecvrf")) for i in range(8)]
+    rng = random.Random(7)                                   # deterministic keys: no flaky no-miner rounds
+    nodes = [V2Node(f"N{i}", vrf.generate_vrf_keypair(scheme="ecvrf", rng=rng)) for i in range(8)]
+    certs = {n.node_id: n.pk.to_hex() for n in nodes}
     res, pi = popv2_elect(nodes, "11" * 32, 2)
     w = next(n for n in nodes if n.node_id == res.winner)
     proof = res.proof(w, pi)
-    assert verify_popv2_proof(proof, "11" * 32, 2, res.winner, certified_pk=w.pk.to_hex())
-    assert not verify_popv2_proof({**proof, "value": 0.0}, "11" * 32, 2, res.winner)
-    assert not verify_popv2_proof(proof, "11" * 32, 3, res.winner)
+    # with the certified key set the proof verifies whether or not anyone was below the threshold
+    assert verify_popv2_proof(proof, "11" * 32, 2, res.winner, certified_pk=w.pk.to_hex(), certified_pks=certs)
+    assert not verify_popv2_proof({**proof, "value": 0.0}, "11" * 32, 2, res.winner, certified_pks=certs)
+    assert not verify_popv2_proof(proof, "11" * 32, 3, res.winner, certified_pks=certs)
     assert res.prove_seconds_mean < 0.005
 
 
