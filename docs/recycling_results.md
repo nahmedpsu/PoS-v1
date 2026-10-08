@@ -198,11 +198,38 @@ properties the manuscript promises:
 
 ![Summary](../figures/recycling/summary.png)
 
+## E1x and E2x. The longer horizon: certificates expire, and it changes nothing
+
+`pop-sim recycling --long` reruns E1 (plausibility on, 5 % attackers, 10 veh/km) and
+E2 over 600 s, twenty rounds, so that 300 s certificates expire and are renewed
+inside the run (739 PKI renewals per run at that lifetime; none at 900 or 3,600 s).
+
+| Strategy | Receivers accepting the forgery, lifetime 300 / 900 / 3,600 s | Exposure window, mean / p95 | Innocent holders blamed | Honest vehicles revoked (of about 100) |
+|---|---|---|---|---|
+| S1 remote shadow | 96.4 % / 96.4 % / 96.4 % | 46 s / 101 s | 634 | 94 |
+| S2 co-located ghost | 77.1 % / 77.1 % / 77.1 % | 21 s / 49 s | 437 | 67 |
+| S3 gap filler | 98.1 % / 98.1 % / 98.1 % | 85 s / 177 s | 0 | 0 |
+
+A revoked vehicle is believed by other vehicles for all of the remaining 540 s at
+every lifetime (E2x), and no honest message is rejected for expiry at any lifetime.
+
+The certificate lifetime does not bound the former holder at all. When a recycled
+pseudonym's certificate is renewed, the renewed certificate is public (it rides in
+every message of the current holder) and the key it certifies is the one the former
+holder still has, so renewal re-arms the attacker along with the holder. Shortening
+the lifetime only costs the PKI signatures. The only renewal that would end a former
+holder's access is one bound to a key the former holder does not have, which is the
+`rekey` design of E5. Over the longer horizon S1 gets 94 of about 100 honest vehicles
+revoked per run: ledger-based accountability under recycling does not degrade
+gracefully, it collapses.
+
+![E1x](../figures/recycling/E1x.png)
+
 ## Limitations
 
-* 120 s horizons: certificate expiry and renewal never occur inside a run, so the
-  lifetime axis of E1 is flat and E2's persistence is bounded by the run, not by the
-  certificate. Longer runs are a parameter change (`rounds`), not a code change.
+* E1 to E6 use 120 s horizons, inside which no certificate expires; E1x and E2x
+  (600 s) cover expiry and renewal and show the lifetime axis is flat for a reason,
+  not for lack of horizon.
 * Ring road, no intersections (the tracker's easiest case) and a tracker that is
   strong but not optimal; both bias the privacy numbers in the same direction for
   every mode, so the mode comparison stands.

@@ -100,7 +100,10 @@ only.
 
 `--long` (or `--only-long` when E1-E6 already exist) adds E1x and E2x: the
 impersonation and revocation experiments over a 600 s horizon (20 rounds), long
-enough for 300 s certificates to expire and be renewed inside a run.
+enough for 300 s certificates to expire and be renewed inside a run. Renewal
+re-certifies every pseudonym in circulation (relocated, in PM stock, in RSU stock)
+whose certificate would expire before the next shuffle; it keeps the key, as the
+manuscript's recycling does.
 
 ## SUMO traces (the plan's optional step 11)
 

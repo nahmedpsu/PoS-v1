@@ -15,12 +15,11 @@
   "rounds": 4,
   "quick": false
  },
+ "wall_seconds": 2587.9001682880003,
  "E6_changed": {
   "revoked vehicle keeps transmitting": [
    "defended",
    "vulnerable"
   ]
- },
- "wall_seconds_E1_E4": 7048.1,
- "wall_seconds_E5_E6": 662.8855478839996
+ }
 }
