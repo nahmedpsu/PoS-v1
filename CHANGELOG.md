@@ -1,5 +1,26 @@
 # Changelog
 
+## 3.0.0 - pseudonym recycling study
+
+* Research question: is pseudonym recycling ever worth it compared with fresh
+  issuance?  `pop-sim recycling` runs E1-E6 (`experiments_recycling.py`).
+* Vehicle-to-vehicle receivers (`v2/v2v.py`): certificate + signature checks
+  without a ledger, optional local plausibility, cached cryptography.
+* Former-holder adversary (`v2/recycling_attacks.py`): strategies S1 remote
+  shadow, S2 co-located ghost, S3 gap filler; revoked-vehicle persistence.
+* RSU attribution modes: `oracle` (v2.2.1) and `ledger` (a real RSU).
+* Issuance modes: recycle, fresh, fresh_vgk (vehicle-generated keys), rekey
+  (holder-bound PM-signed certificate with a fresh vehicle key) and its
+  ablation window; load counters at PKI, PMs, RSUs and vehicles.
+* Insider linker (`v2/insider.py`): union-find over holdings for RSU, PM,
+  cloud, PKI and tracker evidence, alone and in collusion; cloud upload-order
+  leak and its fix.
+* Metrics module (`v2/metrics.py`) with bootstrap CIs and paired Wilcoxon.
+* Trackers gate the same-pseudonym rule so a recycled pseudonym on another
+  vehicle starts a new track.
+* `docs/recycling.md` with the pre-registered outcome cases; v2.2.1 tagged and
+  its results archived under `results/archive/v2.2.1/`.
+
 ## 2.2.1 - review fixes
 
 * Security fix: the PoP v2 verifier read the sortition threshold and the

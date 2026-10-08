@@ -8,8 +8,9 @@ import sys
 import time
 from pathlib import Path
 
-from . import __version__, plots, plots_v2
+from . import __version__, plots, plots_recycling, plots_v2
 from . import experiments as ex
+from . import experiments_recycling as exr
 from . import experiments_v2 as ex2
 from .shuffle import CONSENSUS_KINDS, ITSConfig, ITSSimulation
 from .v2 import attacks as atk
@@ -156,6 +157,41 @@ def cmd_usecases(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_recycling(args: argparse.Namespace) -> int:
+    """E1-E6 of the pseudonym recycling study."""
+    out = Path(args.out)
+    figs = Path(args.figures)
+    seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else None
+    t0 = time.perf_counter()
+    log = lambda m: print(f"[{time.perf_counter() - t0:7.1f}s] {m}", flush=True)  # noqa: E731
+    quick = args.quick
+    seeds = tuple(seeds) if seeds else ((1, 2) if quick else exr.DEFAULT_SEEDS)
+    rounds = 2 if quick else 4
+    res = {"config": {"seeds": list(seeds), "rounds": rounds, "quick": quick}}
+    steps = [
+        ("E1 impersonation", lambda: exr.exp_e1_impersonation(seeds, rounds, lifetimes=(300, 3600), extra_density_sweep=(2, 40), extra_share_sweep=(0.05,)) if quick else exr.exp_e1_impersonation(seeds, rounds), plots_recycling.fig_e1, "E1"),
+        ("E2 revocation", lambda: exr.exp_e2_revocation(seeds, rounds, lifetimes=(300, 3600)) if quick else exr.exp_e2_revocation(seeds, rounds), plots_recycling.fig_e2, "E2"),
+        ("E3 insider", lambda: exr.exp_e3_insider(seeds, rounds, densities=(10,)) if quick else exr.exp_e3_insider(seeds, rounds), plots_recycling.fig_e3, "E3"),
+        ("E4 modes", lambda: exr.exp_e4_modes(seeds, rounds, densities=(10,)) if quick else exr.exp_e4_modes(seeds, rounds), plots_recycling.fig_e4, "E4"),
+        ("E5 fix", lambda: exr.exp_e5_fix(seeds, rounds, strategies=("S2", "S3")) if quick else exr.exp_e5_fix(seeds, rounds), plots_recycling.fig_e5, "E5"),
+    ]
+    for name, fn, plot, key in steps:
+        log(name)
+        r = fn()
+        res[key] = r
+        _dump(r, out / f"{key}.json")
+        plot(r, figs / f"{key}.png")
+    log("E6 bench re-check (oracle vs ledger attribution)")
+    res["E6"] = exr.exp_e6_bench_recheck(quick=quick)
+    _dump(res["E6"], out / "E6.json")
+    plots_recycling.fig_summary(res, figs / "summary.png")
+    res["wall_seconds"] = time.perf_counter() - t0
+    _dump({k: v for k, v in res.items() if k in ("config", "wall_seconds")} | {"E6_changed": res["E6"]["changed"]},
+          out / "run_info.json")
+    log("done")
+    return 0
+
+
 def cmd_bench(args: argparse.Namespace) -> int:
     """Run the protocol from a JSON configuration (any ITSConfig field)."""
     spec = json.loads(Path(args.config).read_text())
@@ -229,6 +265,12 @@ def main(argv: list[str] | None = None) -> int:
     u.add_argument("--out", default="results/v2")
     u.add_argument("--figures", default="figures/v2")
     u.set_defaults(func=cmd_usecases)
+    rc = sub.add_parser("recycling", help="run the pseudonym recycling study (E1-E6)")
+    rc.add_argument("--quick", action="store_true")
+    rc.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1,2 with --quick)")
+    rc.add_argument("--out", default="results/recycling")
+    rc.add_argument("--figures", default="figures/recycling")
+    rc.set_defaults(func=cmd_recycling)
     b = sub.add_parser("bench", help="run the protocol from a JSON configuration file")
     b.add_argument("config")
     b.add_argument("--out", default=None, help="write the summary JSON here instead of stdout")

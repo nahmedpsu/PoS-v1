@@ -28,11 +28,16 @@ from .v2.anchoring import (
     proof_size_bytes,
     time_verify,
 )
+from .v2.insider import Evidence, full_table
+from .v2.metrics import OpCosts, cpu_seconds, exposure_windows, forged_acceptance, per_1000_vehicles_per_hour
 from .v2.mobility import Beacon, Road, RoadConfig
+from .v2.recycling_attacks import STRATEGIES, FormerHolderAdversary
 from .v2.tracker_kalman import make_tracker
+from .v2.v2v import V2VLayer
 from .vrf import generate_vrf_keypair
 
 CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw", "popv2")
+ISSUANCE_MODES = ("recycle", "fresh", "fresh_vgk", "rekey", "window")
 
 
 @dataclass
@@ -60,10 +65,28 @@ class ITSConfig:
     safety_stock: float = 0.0            # extra fraction of sets an RSU asks for above its forecast
     adversary_gate_m: float = 8.0        # tracking adversary's matching gate
     verify_vehicle_certs: bool = True    # RSU allots only to vehicles with a valid, unrevoked PKI certificate
+    # ---- pseudonym recycling study (defaults reproduce v2.2.1 exactly) ----
+    attribution: str = "oracle"          # "oracle": RSU knows the true sender; "ledger": attributes by ledger holder
+    v2v: bool = False                    # vehicle-to-vehicle receivers (certificate + signature, no ledger)
+    v2v_range_m: float = 300.0
+    v2v_plausibility: bool = False       # receivers apply the local two-places-at-once rule
+    former_holders: int = 0              # A2 adversaries: vehicles that keep every key they held
+    former_holder_strategy: str = "S1"   # S1 remote shadow, S2 co-located ghost, S3 gap filler
+    ghost_offset_m: float = 40.0
+    issuance: str = "recycle"            # recycle | fresh | fresh_vgk | rekey | window
+    pseudonym_lifetime: float = 3600.0   # certificate lifetime in seconds
+    revoked_keep_transmitting: bool = False   # a revoked vehicle keeps beaconing under the pseudonyms it holds
+    shuffle_before_upload: bool = False  # PM shuffles used sets before uploading (cloud-order leak fix)
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
             raise ValueError(f"consensus must be one of {CONSENSUS_KINDS}")
+        if self.attribution not in ("oracle", "ledger"):
+            raise ValueError("attribution must be 'oracle' or 'ledger'")
+        if self.issuance not in ISSUANCE_MODES:
+            raise ValueError(f"issuance must be one of {ISSUANCE_MODES}")
+        if self.former_holder_strategy not in STRATEGIES:
+            raise ValueError(f"former_holder_strategy must be one of {STRATEGIES}")
 
 
 @dataclass
@@ -131,7 +154,7 @@ class ITSSimulation:
         self.rng = random.Random(cfg.seed)
         crypto.seed_keys(random.Random(cfg.seed ^ 0x5EED))   # key generation reproducible per seed
         clock.set_virtual(1_700_000_000.0)                    # transaction and block times from a virtual clock
-        self.pki = PKI(self.rng)
+        self.pki = PKI(self.rng, pseudonym_lifetime=cfg.pseudonym_lifetime)
         self.manufacturer = Manufacturer(self.pki)
         self.cloud = PMCloud(self.rng)
         self.ledger = PseudonymLedger()                      # shared blockchain view
@@ -145,11 +168,31 @@ class ITSSimulation:
         self.revocations: list[dict] = []
         self.v2nodes: dict[str, V2Node] = {}                # PoP v2 election keys, PKI-certified
         self.equivocation = EquivocationDetector()
+        self.v2v: V2VLayer | None = None
+        self.former: FormerHolderAdversary | None = None
+        self.revoked_at: dict[str, float] = {}               # vehicle -> sim time of revocation
+        self.revoked_accepted: dict[str, list[float]] = {}   # vehicle -> times V2V receivers accepted it after revocation
+        self.pid_seconds: dict[str, float] = {}              # epoch node -> beacon seconds
+        self.epoch_histories: dict[str, list[str]] = {}      # vehicle -> epoch nodes in order of use
+        self.truth_of_node: dict[str, str] = {}
+        self.tracker_nodes: list[tuple[str, str]] = []
+        self._tracker_seen = 0
+        self.last_node_of_pid: dict[str, str] = {}           # pid -> node as of its last beacon
+        self.noise_rng = random.Random(cfg.seed ^ 0x0153)    # GPS noise only: the same traffic in every mode
+        self.rsu_allots: dict[str, list[tuple[str, str]]] = {}
+        self.pm_domains: dict[str, list[tuple[str, str]]] = {}
+        self.cloud_uploads: list[list[str]] = []
+        self.pki_reports: list[tuple[str, str]] = []
         self.road: Road | None = None
         self.adversary = None
         self.true_changes = 0
         self.sim_time = 0.0
         self._build()
+        # work done at set-up (registration, initial sets) is reported separately from steady-state work
+        self.setup_load = {"pki": self.pki.load.to_dict(),
+                           "pm": {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications")},
+                           "rsu": {k: sum(r.load.to_dict()[k] for r in self.rsus) for k in ("signatures", "keygens", "bytes", "verifications")},
+                           "vehicles": {k: sum(v.load.to_dict()[k] for v in self.vehicles) for k in ("signatures", "keygens", "bytes", "verifications")}}
 
     # ------------------------------------------------------------------
     def _build(self) -> None:
@@ -160,8 +203,10 @@ class ITSSimulation:
             pm.rsu_chain.validator = self.validate_block
             pm.anchored_upto = 0
             self.pms.append(pm)
+            pm.pm_cert = self.pki.certify_pm(pm.pm_id, pm.keys.pk_hex)
             for j in range(cfg.rsus_per_pm):
                 rsu = RSU(f"RSU-{i+1}.{j+1}", pm, self.rng)
+                rsu.attribution = cfg.attribution
                 pm.rsus.append(rsu)
                 self.rsus.append(rsu)
                 if not cfg.mobility:
@@ -191,10 +236,21 @@ class ITSSimulation:
                 self.v2nodes[node_id] = node
         for v in self.rng.sample(self.vehicles, cfg.malicious_vehicles):
             v.malicious = True
+        if cfg.former_holders:
+            honest = [v for v in self.vehicles if not v.malicious]
+            for v in self.rng.sample(honest, min(cfg.former_holders, len(honest))):
+                v.former_holder = True
+            self.former = FormerHolderAdversary(cfg.former_holder_strategy, cfg.ghost_offset_m, cfg.v2v_range_m)
+        if cfg.mobility and cfg.v2v:
+            self.v2v = V2VLayer(self.pki.keys.pk, self.road.cfg.length_m, cfg.v2v_range_m, cfg.v2v_plausibility,
+                                mode="holder" if cfg.issuance in ("rekey", "window") else "pki",
+                                pm_cert_check=self.pki.verify_pm_cert)
 
         # Alg. 4 steps 4-6: PKI generates the pseudonym sets and broadcasts them
         # to the PMs, encrypted with the PM's public key and signed by PKI.
         for pm in self.pms:
+            if cfg.issuance == "fresh_vgk":
+                continue                                      # vehicles make their own keys at distribution
             ps = self.pki.generate_pseudonyms(pm.demand(cfg.pseudonyms_per_vehicle))
             ct, sig = self.pki.package_for_pm(pm.keys.pk, ps)
             pm.receive_from_pki(ct, sig, self.pki.keys.pk)
@@ -302,15 +358,69 @@ class ITSSimulation:
             blocks += 1
             txs_total += n
             for rsu in pm.rsus:
-                rsu.distribute(per_vehicle, avoid_previous=self.cfg.avoid_previous_holder,
-                               pki=self.pki if self.cfg.verify_vehicle_certs else None)
+                if self.cfg.issuance == "fresh_vgk":
+                    self._distribute_vehicle_generated(rsu, per_vehicle)
+                else:
+                    rsu.distribute(per_vehicle, avoid_previous=self.cfg.avoid_previous_holder,
+                                   pki=self.pki if self.cfg.verify_vehicle_certs else None)
+                    if self.cfg.issuance in ("rekey", "window"):
+                        self._bind_holders(rsu, pm)
                 for v in rsu.vehicles:
                     for p in v.pseudonyms:
                         holders = self.holder_history.setdefault(p.pid, set())
                         if not initial and v.vehicle_id in holders:
                             reassigned += 1
                         holders.add(v.vehicle_id)
+                        self.rsu_allots.setdefault(rsu.rsu_id, []).append((self._node(p.pid), v.vehicle_id))
+                        self.pm_domains.setdefault(pm.pm_id, []).append((self._node(p.pid), v.vehicle_id))
+                        self.truth_of_node[self._node(p.pid)] = v.vehicle_id
         return cpu, blocks, txs_total, reassigned
+
+    def _node(self, pid: str) -> str:
+        """Identity node of a pseudonym *holding*: a recycled pid is a different
+        node for every holder, so linking metrics are about holdings."""
+        return f"{pid}#{self.ledger.epoch.get(pid, 0)}"
+
+    def _distribute_vehicle_generated(self, rsu, per_vehicle: int) -> None:
+        """fresh_vgk: each vehicle makes its own key pairs and PKI signs the
+        certificates (SCMS style); the private key never leaves the vehicle."""
+        for v in rsu.vehicles:
+            if v.revoked:
+                continue
+            c = v.credential
+            if self.cfg.verify_vehicle_certs and (c is None or self.pki.is_revoked(c.cert) or
+                                                 not crypto.verify(self.pki.keys.pk, c.credential_bytes(), bytes.fromhex(c.cert))):
+                rsu.rejected_uncertified += 1
+                continue
+            keys = [crypto.generate_keypair() for _ in range(per_vehicle)]
+            v.load.keygens += per_vehicle
+            ps = self.pki.certify(keys)
+            v.receive_pseudonyms(ps)
+            for p in ps:
+                self.ledger.allot(p, v.vehicle_id)
+                rsu.allot_log.append((p.pid, v.vehicle_id))
+
+    def _bind_holders(self, rsu, pm) -> None:
+        """rekey / window: replace each vehicle's freshly allotted recycled
+        pseudonym by a holder copy carrying a PM-signed holder certificate.
+        Under rekey the copy has a key the vehicle just generated; under
+        window the key is unchanged (the ablation)."""
+        now = clock.now()
+        t_end = now + self.cfg.round_seconds          # the holder's last message is at now + round_seconds
+        for v in rsu.vehicles:
+            bound = []
+            for p in v.pseudonyms:
+                if self.cfg.issuance == "rekey":
+                    keys = crypto.generate_keypair()
+                    v.load.keygens += 1
+                else:
+                    keys = p.keys
+                hc = pm.sign_holder_cert(p.pid, keys.pk_hex, now, t_end)
+                copy = Pseudonym(p.pid, keys, p.cert, p.expiry, p.issuer_pk, hc, p.cert_pk or p.certified_pk)
+                bound.append(copy)
+                self.ledger.pk[p.pid] = keys.pk_hex
+                self.ledger.holder_cert[p.pid] = hc
+            v.pseudonyms = bound
 
     # ------------------------------------------------------------------
     def run_round(self) -> RoundStats:
@@ -362,17 +472,40 @@ class ITSSimulation:
 
         # 3. Algorithm 4 lines 11-16: PMs collect, package and upload to the
         #    cloud; the cloud shuffles and relocates to destination PMs.
-        for pm in self.pms:
-            pm.collect_from_rsus()
-            pm.upload_to_cloud()
-        demands = {pm.pm_id: pm.net_demand(per_vehicle) for pm in self.pms}
-        relocated = self.cloud.shuffle_and_relocate(demands, seed=self.rng.getrandbits(64))
-        shuffled = sum(len(v) for v in relocated.values())
+        #    Fresh issuance modes retire the used sets instead and ask PKI.
+        pm_by_id = {pm.pm_id: pm for pm in self.pms}
+        txs = []
+        relocated: dict = {}
+        if self.cfg.issuance in ("fresh", "fresh_vgk"):
+            for pm in self.pms:
+                pm.collect_from_rsus()
+                for p, _ in pm.collected:
+                    self.ledger.retire(p.pid)
+                pm.collected = []
+                n = pm.net_demand(per_vehicle) if self.cfg.issuance == "fresh" else 0
+                if n:
+                    ps = self.pki.generate_pseudonyms(n)
+                    ct, sig = self.pki.package_for_pm(pm.keys.pk, ps)
+                    pm.receive_from_pki(ct, sig, self.pki.keys.pk)
+                txs.append(pm.make_tx("issue", pm.keys.pk, {"pm": pm.pm_id, "count": n}))
+            shuffled = 0
+        else:
+            for pm in self.pms:
+                pm.collect_from_rsus()
+                pm.upload_to_cloud(shuffle_first=self.cfg.shuffle_before_upload)
+                self.cloud_uploads.append([self._node(pid) for pid in pm.upload_log[-1]])
+            demands = {pm.pm_id: pm.net_demand(per_vehicle) for pm in self.pms}
+            relocated = self.cloud.shuffle_and_relocate(demands, seed=self.rng.getrandbits(64))
+            shuffled = sum(len(v) for v in relocated.values())
+            # recycled certificates near expiry are renewed by PKI (counted as its work)
+            horizon = clock.now() + 2 * self.cfg.round_seconds
+            for ps in relocated.values():
+                for _, p in ps:
+                    if p.expiry < horizon:
+                        self.pki.renew(p)
 
         # 4. Algorithm 4 lines 18-19: shuffle results become transactions of the
         #    PM-level blockchain; the PMs mine with the configured consensus.
-        pm_by_id = {pm.pm_id: pm for pm in self.pms}
-        txs = []
         for dst_id, ps in relocated.items():
             by_origin: dict[str, list[Pseudonym]] = {}
             for origin, p in ps:
@@ -420,41 +553,95 @@ class ITSSimulation:
             road.step(1.0)
             self.sim_time += 1.0
             clock.advance(1.0)
+            now = clock.now()                     # one time base for messages, certificates and receivers
             beacons: list[Beacon] = []
+            positions = {mv.vid: mv.x for mv in road.vehicles}
+            holder_x: dict[str, float] = {}
             for mv in road.vehicles:
                 v = by_vid[mv.vid]
-                if v.revoked:
+                if v.revoked and not cfg.revoked_keep_transmitting:
                     continue
-                if step % period == 0:
+                if v.revoked and v.current is None and not v.pseudonyms and v.kept_keys:
+                    # a revoked vehicle with no sets left falls back to the copies it kept
+                    v.current = v.kept_keys[(step // period) % len(v.kept_keys)]
+                if step % period == 0 and not v.revoked:
                     if v.switch_pseudonym() is not None:
                         self.true_changes += 1 if step > 0 or v.changes > 1 else 0
                         silent_until[mv.vid] = self.sim_time + cfg.silent_period
+                        node = self._node(v.current.pid)
+                        self.epoch_histories.setdefault(v.vehicle_id, []).append(node)
+                        self.truth_of_node.setdefault(node, v.vehicle_id)
                 if self.sim_time < silent_until.get(mv.vid, 0.0):
                     continue
-                msg = v.beacon(mv.x, mv.v, mv.direction, self.sim_time)
+                msg = v.beacon(mv.x, mv.v, mv.direction, now)
                 if msg is None:
                     continue
                 messages += 1
+                holder_x[v.vehicle_id] = mv.x
+                node = self._node(msg.pid)
+                self.pid_seconds[node] = self.pid_seconds.get(node, 0.0) + 1.0
+                self.last_node_of_pid[msg.pid] = node
                 rsu = self.rsus[mv.rsu]
                 if not rsu.receive_message(v, msg):
                     rejected += 1
-                x_seen = (mv.x + self.rng.gauss(0, cfg.position_noise_m)) % road.cfg.length_m \
+                if self.v2v is not None:
+                    acc, _ = self.v2v.deliver(msg, mv.x, positions, now, exclude=mv.vid)
+                    if v.revoked and acc:
+                        self.revoked_accepted.setdefault(v.vehicle_id, []).append(now)
+                x_seen = (mv.x + self.noise_rng.gauss(0, cfg.position_noise_m)) % road.cfg.length_m \
                     if cfg.position_noise_m else mv.x
-                beacons.append(Beacon(self.sim_time, msg.pid, x_seen, mv.v, mv.direction, mv.rsu, mv.vid))
+                beacons.append(Beacon(self.sim_time, msg.pid, x_seen, mv.v, mv.direction, mv.rsu, mv.vid, node))
                 if v.malicious and step == period - 1:
                     replay = v.replay_used()
                     if replay is not None:
                         messages += 1
                         if not rsu.receive_message(v, replay):
                             rejected += 1
+            if self.former is not None:
+                messages += self._former_holder_step(by_vid, positions, holder_x, now)
             self.adversary.observe(beacons)
+            pairs = self.adversary.linked_pairs
+            self.tracker_nodes.extend(pairs[self._tracker_seen:])        # beacons carry their holding ids
+            self._tracker_seen = len(pairs)
         # retire the pseudonym in use so it is returned with the others
         for v in self.vehicles:
-            if v.current is not None:
-                v.used.append(v.current)
-                v.history.append(v.current.pid)
-                v.current = None
+            if v.current is None:
+                continue
+            if v.revoked and v.current in v.kept_keys and v.current not in v.pseudonyms:
+                v.current = None                          # a kept copy: never returned to the pool
+                continue
+            v.used.append(v.current)
+            v.history.append(v.current.pid)
+            v.current = None
         return messages, rejected
+
+    def _former_holder_step(self, by_vid: dict, positions: dict, holder_x: dict, now: float) -> int:
+        """One second of the A2 adversary: every former holder tries every key
+        it kept, by the configured strategy, over V2V and towards its RSU."""
+        cfg = self.cfg
+        road = self.road
+        sent = 0
+        for mv in road.vehicles:
+            a = by_vid[mv.vid]
+            if not a.former_holder or a.revoked:
+                continue
+            for p in list(a.kept_keys):
+                fm = self.former.forge(a, mv.x, p, self.ledger, road.cfg.length_m, holder_x, now,
+                                       mv.v, mv.direction, self.ledger.holder_cert.get(p.pid))
+                if fm is None:
+                    continue
+                sent += 1
+                acc, rx = (0, 0)
+                if self.v2v is not None:
+                    acc, rx = self.v2v.deliver(fm.msg, mv.x, positions, now, forged=True, exclude=mv.vid)
+                rsu = self.rsus[mv.rsu]
+                before = len(rsu.pm.misbehaviour_reports)
+                rsu_ok = rsu.receive_message(a if cfg.attribution == "oracle" else None, fm.msg)
+                for rep in rsu.pm.misbehaviour_reports[before:]:
+                    if fm.victim_vid and rep["vehicle"] == fm.victim_vid:
+                        self.former.stats.victims_blamed += 1
+                self.former.record(fm, acc, rx, rsu_ok, now)
+        return sent
 
     def _process_reports(self) -> None:
         """PM -> CA: a vehicle caught reusing a pseudonym has its certificate revoked."""
@@ -466,6 +653,8 @@ class ITSSimulation:
                     self.pki.revoke(v.credential.cert)
                     v.revoked = True
                     self.revocations.append(rep)
+                    self.revoked_at[v.vehicle_id] = clock.now()
+                    self.pki_reports.append((self._node(rep["pid"]), rep["vehicle"]))
                     # its remaining pseudonyms are retired in the ledger at once
                     for p in v.pseudonyms + ([v.current] if v.current else []):
                         self.ledger.mark_used(p.pid)
@@ -520,8 +709,54 @@ class ITSSimulation:
             "rsu_blocks_anchored": {p.pm_id: p.anchored_upto for p in self.pms},
         }
 
+    def insider_evidence(self) -> Evidence:
+        return Evidence(rsu_allots=self.rsu_allots, pm_domains=self.pm_domains, cloud_uploads=self.cloud_uploads,
+                        pki_reports=self.pki_reports, tracker_pairs=self.tracker_nodes,
+                        histories=self.epoch_histories, truth_of_pid=self.truth_of_node,
+                        pid_seconds=self.pid_seconds, group_size=self.cfg.pseudonyms_per_vehicle)
+
+    def load_report(self, costs: OpCosts | None = None) -> dict:
+        costs = costs or OpCosts()
+        n = len(self.vehicles)
+        secs = max(self.sim_time, 1.0)
+        pki = self.pki.load.to_dict()
+        pm = {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications")}
+        rsu = {k: sum(r.load.to_dict()[k] for r in self.rsus) for k in ("signatures", "keygens", "bytes", "verifications")}
+        veh = {k: sum(v.load.to_dict()[k] for v in self.vehicles) for k in ("signatures", "keygens", "bytes", "verifications")}
+        rounds = max(1, len(self.rounds))
+        steady = {ent: {k: tot[k] - self.setup_load[ent][k] for k in tot}
+                  for ent, tot in (("pki", pki), ("pm", pm), ("rsu", rsu), ("vehicles", veh))}
+        return {
+            "pki": pki, "pm": pm, "rsu": rsu, "vehicles": veh, "setup": self.setup_load, "steady_state": steady,
+            "pki_cpu_s_per_1000_veh_h": per_1000_vehicles_per_hour(cpu_seconds(steady["pki"], costs), n, secs),
+            "pm_cpu_s_per_1000_veh_h": per_1000_vehicles_per_hour(cpu_seconds(steady["pm"], costs), n, secs),
+            "rsu_cpu_s_per_1000_veh_h": per_1000_vehicles_per_hour(cpu_seconds(steady["rsu"], costs), n, secs),
+            "vehicle_keygens_per_vehicle_per_round": steady["vehicles"]["keygens"] / max(1, n) / rounds,
+            "bytes_per_vehicle_per_round": steady["vehicles"]["bytes"] / max(1, n) / rounds,
+            "sim_seconds": secs, "n_vehicles": n,
+        }
+
+    def recycling_report(self) -> dict:
+        out: dict = {"issuance": self.cfg.issuance, "attribution": self.cfg.attribution,
+                     "v2v": self.v2v.stats.to_dict() if self.v2v else None, "load": self.load_report()}
+        if self.former is not None:
+            st = self.former.stats
+            out["forgery"] = {**st.to_dict(), **forged_acceptance(st), "exposure": exposure_windows(st.accepted_times),
+                              "by_strategy": self.former.by_strategy, "strategy": self.cfg.former_holder_strategy}
+        if self.revoked_at:
+            per = {}
+            for vid, t0 in self.revoked_at.items():
+                later = [t for t in self.revoked_accepted.get(vid, []) if t >= t0]
+                per[vid] = {"revoked_at": t0, "accepted_after": len(later),
+                            "seconds_to_last": (max(later) - t0) if later else 0.0}
+            out["revoked_persistence"] = per
+        if self.cfg.mobility:
+            out["insider"] = full_table(self.insider_evidence())
+        return out
+
     def summary(self) -> dict:
         return {
+            "recycling": self.recycling_report() if (self.cfg.mobility or self.former or self.revoked_at) else None,
             "stockouts": sum(r.stockouts for r in self.rsus),
             "tracking": self.adversary.report(self.true_changes).to_dict() if self.adversary else None,
             "anchoring": self.anchoring_report(),

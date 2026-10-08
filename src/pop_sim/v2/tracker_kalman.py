@@ -110,6 +110,7 @@ class KalmanTrackingAdversary:
         self._next = 0
         self.changes = self.correct = self.wrong = self.lost = self.beacons = 0
         self.vehicles: set[int] = set()
+        self.linked_pairs: list[tuple[str, str]] = []     # (old pid, new pid) the tracker decided to link
 
     # -- geometry on a ring
     def _wrap(self, d: float) -> float:
@@ -163,11 +164,15 @@ class KalmanTrackingAdversary:
         matched_t: set[int] = set()
         used_b: set[int] = set()
 
-        # 1. same pseudonym: certain continuation
+        # 1. same pseudonym: continuation, unless the beacon is nowhere near the
+        #    track's prediction (a recycled pseudonym reappearing on another
+        #    vehicle); then it is a new track
         by_pid = {t.last.pid: t for t in tracks}
         for i, b in enumerate(beacons):
             t = by_pid.get(b.pid)
             if t is not None and t.track_id not in matched_t:
+                if self._mahalanobis2(t, b, preds[t.track_id]) > 16 * self.gate2 or b.direction != t.direction:
+                    continue
                 self._extend(t, b, preds[t.track_id])
                 matched_t.add(t.track_id)
                 used_b.add(i)
@@ -182,6 +187,7 @@ class KalmanTrackingAdversary:
                         continue
                     t, b = comp_rows[r], beacons[comp_cols[c]]
                     self.changes += 1
+                    self.linked_pairs.append((t.last.node or t.last.pid, b.node or b.pid))
                     if b.truth_vid == t.truth[-1]:
                         self.correct += 1
                     else:

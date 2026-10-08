@@ -67,6 +67,7 @@ class TrackingAdversary:
         self.lost = 0
         self.beacons = 0
         self.vehicles: set[int] = set()
+        self.linked_pairs: list[tuple[str, str]] = []     # (old pid, new pid) the tracker decided to link
 
     def _dist(self, a: float, b: float) -> float:
         d = abs(a - b) % self.length_m
@@ -85,6 +86,11 @@ class TrackingAdversary:
         for b in unassigned:
             t = by_pid.get(b.pid)
             if t is not None and t.track_id not in matched_tracks:
+                elapsed = t.gap + self.dt
+                pred = (t.last.x + t.last.direction * t.last.v * elapsed) % self.length_m
+                if self._dist(pred, b.x) > 4 * (self.gate + self.gate_growth * t.gap) + 40.0 or b.direction != t.last.direction:
+                    rest.append(b)                        # a recycled pseudonym on another vehicle
+                    continue
                 self._extend(t, b)
                 matched_tracks.add(t.track_id)
             else:
@@ -112,6 +118,7 @@ class TrackingAdversary:
             matched_tracks.add(tid)
             used_b.add(bid)
             self.changes += 1
+            self.linked_pairs.append((t.last.node or t.last.pid, b.node or b.pid))
             if b.truth_vid == t.truth[-1]:
                 self.correct += 1
             else:

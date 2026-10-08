@@ -21,6 +21,7 @@ jobs:
       - run: PYTHONPATH=src python -m pop_sim bench config/benchmark.json --out /tmp/results/bench.json
       - run: PYTHONPATH=src python -m pop_sim attacks --quick --out /tmp/results/v2 --figures /tmp/figures/v2
       - run: PYTHONPATH=src python -m pop_sim usecases --quick --out /tmp/results/v2 --figures /tmp/figures/v2
+      - run: PYTHONPATH=src python -m pop_sim recycling --quick --out /tmp/results/recycling --figures /tmp/figures/recycling
       - uses: actions/upload-artifact@v4
         with:
           name: quick-run-py${{ matrix.python-version }}

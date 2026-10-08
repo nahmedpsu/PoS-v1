@@ -1,0 +1,359 @@
+{
+ "experiment": "attacks",
+ "quick": false,
+ "results": [
+  {
+   "name": "value forgery / proof theft",
+   "category": "consensus",
+   "description": "A non-elected node claims a smaller value, reuses the winner's proof, uses an uncertified key, or picks its own seed.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "VRF proof bound to the certified key, the chain position and the seed; the value is recomputed from the proof.",
+   "metrics": {
+    "attempts": 4,
+    "accepted": 0,
+    "honest_block_accepted": true,
+    "per_attempt": {
+     "claim smaller value with the real proof": false,
+     "reuse the winner's proof under own name": false,
+     "self-made proof with an uncertified key": false,
+     "own proof for a seed of own choosing": false
+    }
+   },
+   "seconds": 0.003520503999993707
+  },
+  {
+   "name": "sortition threshold tampering",
+   "category": "consensus",
+   "description": "A node above the threshold edits the threshold / miner-count fields or claims a no-miner round.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "The threshold is a protocol constant; a no-miner claim needs every certified node's proof, all above threshold, with the miner's value the minimum.",
+   "metrics": {
+    "loser_value": 0.9414416911357572,
+    "attempts": 4,
+    "accepted": 0,
+    "per_attempt": {
+     "threshold field set to 1.0": false,
+     "miners field set to 0": false,
+     "claim no-miner round without evidence": false,
+     "claim no-miner round with everyone's real proofs": false
+    },
+    "honest_block_accepted": true
+   },
+   "seconds": 0.00481679800003576
+  },
+  {
+   "name": "seed grinding",
+   "category": "consensus",
+   "description": "The previous winner tries many block variants to make its next VRF value small.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "Seed the election with the previous winner's VRF output (unique, ungrindable) instead of the block hash.",
+   "metrics": {
+    "fair_share": 0.1,
+    "share": {
+     "block_hash/budget=1": 0.08333333333333333,
+     "block_hash/budget=4": 0.09333333333333334,
+     "block_hash/budget=16": 0.24666666666666667,
+     "block_hash/budget=64": 0.44,
+     "chained_vrf/budget=1": 0.12333333333333334,
+     "chained_vrf/budget=4": 0.12333333333333334,
+     "chained_vrf/budget=16": 0.12333333333333334,
+     "chained_vrf/budget=64": 0.12333333333333334
+    },
+    "worst_share_block_hash_seed": 0.44,
+    "worst_share_chained_seed": 0.12333333333333334,
+    "rounds": 300
+   },
+   "seconds": 6.517765919999988
+  },
+  {
+   "name": "multi-key seed choice",
+   "category": "consensus",
+   "description": "An attacker with k certified keys chooses which of its winning keys publishes to steer the next seed.",
+   "target": "v2",
+   "outcome": "mitigated",
+   "defense": "Bounded by the k/(n+k) share of k certificates; the gain over honest play is measured here. PKI issuance limits k.",
+   "metrics": {
+    "n_honest": 19,
+    "rounds": 400,
+    "by_k": {
+     "1": {
+      "naive_share": 0.06,
+      "strategic_share": 0.06,
+      "fair_share": 0.05
+     },
+     "2": {
+      "naive_share": 0.1175,
+      "strategic_share": 0.1175,
+      "fair_share": 0.09523809523809523
+     },
+     "3": {
+      "naive_share": 0.1625,
+      "strategic_share": 0.16,
+      "fair_share": 0.13636363636363635
+     },
+     "5": {
+      "naive_share": 0.21,
+      "strategic_share": 0.18,
+      "fair_share": 0.20833333333333334
+     }
+    },
+    "max_gain_over_naive": 0.0
+   },
+   "seconds": 13.059237230999997
+  },
+  {
+   "name": "block withholding (selfish winner)",
+   "category": "consensus",
+   "description": "Winners controlled by the attacker stay silent.",
+   "target": "v2",
+   "outcome": "mitigated",
+   "defense": "Every miner's timer fires independently: the next-smallest value publishes; a withheld block costs only waiting time.",
+   "metrics": {
+    "time_limit": 1.0,
+    "by_attacker_fraction": {
+     "0.0": {
+      "attacker_nodes": 0,
+      "mean_block_delay": 0.04573807934567144,
+      "rounds_without_block": 0.0,
+      "attacker_blocks": 0
+     },
+     "0.1": {
+      "attacker_nodes": 2,
+      "mean_block_delay": 0.0541615785227288,
+      "rounds_without_block": 0.0,
+      "attacker_blocks": 0
+     },
+     "0.25": {
+      "attacker_nodes": 5,
+      "mean_block_delay": 0.06511720544084068,
+      "rounds_without_block": 0.0005,
+      "attacker_blocks": 0
+     },
+     "0.5": {
+      "attacker_nodes": 10,
+      "mean_block_delay": 0.09469435284686117,
+      "rounds_without_block": 0.002,
+      "attacker_blocks": 0
+     }
+    }
+   },
+   "seconds": 0.09961166299996194
+  },
+  {
+   "name": "equivocation (two blocks, one proof)",
+   "category": "consensus",
+   "description": "The winner signs two conflicting blocks for the same height.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "Nodes remember (key, seed) -> block hash; the first block seen stands, a second one is rejected and the node is reported for revocation.",
+   "metrics": {
+    "second_block_accepted": false,
+    "reported_equivocators": [
+     "PM-1"
+    ]
+   },
+   "seconds": 0.06610698599996567
+  },
+  {
+   "name": "proof replay",
+   "category": "consensus",
+   "description": "A proof that won an earlier block is reused at a later height.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "The seed binds the proof to the chain position and the previous winner's output.",
+   "metrics": {
+    "replayed_block_accepted": false
+   },
+   "seconds": 0.07251606300002322
+  },
+  {
+   "name": "election server denial of service",
+   "category": "consensus",
+   "description": "The cloud server that selects miners in v1 is flooded or taken down.",
+   "target": "v1",
+   "outcome": "defended",
+   "defense": "v2 has no server: every node derives its own value from the chain.",
+   "metrics": {
+    "availability": {
+     "0.0": {
+      "v1_blocks": 1.0,
+      "v2_blocks": 1.0
+     },
+     "0.1": {
+      "v1_blocks": 0.895,
+      "v2_blocks": 1.0
+     },
+     "0.3": {
+      "v1_blocks": 0.692,
+      "v2_blocks": 1.0
+     },
+     "0.5": {
+      "v1_blocks": 0.489,
+      "v2_blocks": 1.0
+     },
+     "0.9": {
+      "v1_blocks": 0.106,
+      "v2_blocks": 1.0
+     }
+    }
+   },
+   "seconds": 0.00044671500000958986
+  },
+  {
+   "name": "Sybil election keys",
+   "category": "consensus",
+   "description": "An attacker generates many election keys to raise its chance of winning.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "Only a VRF key certified by PKI for that node id may publish; one certificate is one identity (share k/(n+k) with k certificates).",
+   "metrics": {
+    "sybil_keys": 50,
+    "blocks_accepted": 0
+   },
+   "seconds": 0.06414133999999194
+  },
+  {
+   "name": "network partition",
+   "category": "consensus",
+   "description": "The PM network is partitioned; both halves keep producing blocks until it heals.",
+   "target": "v2",
+   "outcome": "mitigated",
+   "defense": "Deterministic fork rule (smaller VRF value per height) converges on healing; partition-time blocks on the losing side are wasted. Transactions are re-included.",
+   "metrics": {
+    "rounds_partitioned": 10,
+    "wasted_blocks": 10,
+    "share_kept_from_side_a": 0.2
+   },
+   "seconds": 7.746500000394008e-05
+  },
+  {
+   "name": "pseudonym replay (internal tricking adversary)",
+   "category": "protocol",
+   "description": "A compromised OBU keeps a copy of a used pseudonym and signs with it again.",
+   "target": "both",
+   "outcome": "defended",
+   "defense": "The ledger (RSU chain) knows every pseudonym as allotted-to-X or returned; the RSU flags it, the PM reports, PKI revokes.",
+   "metrics": {
+    "malicious": 2,
+    "revoked": 2,
+    "honest_revoked": 0,
+    "flagged": 2
+   },
+   "seconds": 0.11193592400002217
+  },
+  {
+   "name": "pseudonym cloning",
+   "category": "protocol",
+   "description": "A copied pseudonym (with its key) is used in two places at once.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "Ledger plausibility check: one pseudonym cannot move faster than 60 m/s between accepted messages; holder binding catches a different sender.",
+   "metrics": {
+    "first_message_ok": true,
+    "clone_far_away": "pseudonym-cloned",
+    "clone_other_sender": "pseudonym-held-by-another-vehicle"
+   },
+   "seconds": 0.038520559000005505
+  },
+  {
+   "name": "forged pseudonym / forged PKI package",
+   "category": "protocol",
+   "description": "An attacker mints its own pseudonym credentials and offers them to RSUs and PMs.",
+   "target": "both",
+   "outcome": "defended",
+   "defense": "Pseudonyms are only valid when their certificate verifies under the real PKI key and the ledger has an allotment.",
+   "metrics": {
+    "message_with_forged_pseudonym": "unknown-pseudonym",
+    "forged_package_accepted_by_pm": false,
+    "rsu": "RSU-1.1"
+   },
+   "seconds": 0.03276470999998082
+  },
+  {
+   "name": "fake-vehicle pseudonym flood",
+   "category": "protocol",
+   "description": "30 vehicles with forged certificates ask one RSU for sets.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "The RSU allots a set only to a vehicle whose permanent certificate verifies under PKI and is not revoked.",
+   "metrics": {
+    "without_cert_check": {
+     "honest_vehicles_short": 5,
+     "fake_vehicles_served": 10,
+     "rejected_uncertified": 0,
+     "stockouts": 50
+    },
+    "with_cert_check": {
+     "honest_vehicles_short": 0,
+     "fake_vehicles_served": 0,
+     "rejected_uncertified": 60,
+     "stockouts": 0
+    }
+   },
+   "seconds": 0.09082770399999163
+  },
+  {
+   "name": "revoked vehicle keeps transmitting",
+   "category": "protocol",
+   "description": "A vehicle whose certificate PKI revoked keeps using the pseudonyms it still holds and asks for new ones.",
+   "target": "both",
+   "outcome": "defended",
+   "defense": "On revocation its held pseudonyms are marked returned in the ledger and the RSU's certificate check refuses new sets.",
+   "metrics": {
+    "revoked": true,
+    "messages_attempted": 1,
+    "messages_accepted": 0,
+    "new_sets_after_revocation": false
+   },
+   "seconds": 0.10925245399999994
+  },
+  {
+   "name": "compromised RSU rewrites its chain",
+   "category": "protocol",
+   "description": "An RSU edits a recorded transaction and re-hashes its whole chain so it validates locally.",
+   "target": "v2",
+   "outcome": "defended",
+   "defense": "Every PM block anchors the RSU chain's block hashes; the rewritten chain no longer matches the anchor.",
+   "metrics": {
+    "rsu_chain_valid_locally_after_rewrite": false,
+    "detected_from_pm_level": true
+   },
+   "seconds": 0.07983161800001426
+  },
+  {
+   "name": "curious RSU reads the ledger",
+   "category": "protocol",
+   "description": "An RSU tries to read the used/allot transactions of its neighbours from the chain it stores.",
+   "target": "both",
+   "outcome": "defended",
+   "defense": "Transactions are encrypted for the PM; the RSU holds ciphertext only.",
+   "metrics": {
+    "transactions": 6,
+    "opened_by_rsu": 0
+   },
+   "seconds": 0.05221633200000042
+  },
+  {
+   "name": "location tracking across pseudonym changes",
+   "category": "privacy",
+   "description": "A Kalman/GNN tracker links beacons by position and speed through every pseudonym change.",
+   "target": "both",
+   "outcome": "mitigated",
+   "defense": "Shuffle in dense traffic with synchronized changes and a silent period; sparse roads stay linkable.",
+   "metrics": {
+    "sparse_road_no_silence": 1.0,
+    "dense_sync_10s_silence": 0.4772727272727273,
+    "dense_unsync_10s_silence": 0.6153198653198653
+   },
+   "seconds": 2.0781686400000012
+  }
+ ],
+ "summary": {
+  "defended": 14,
+  "mitigated": 4
+ },
+ "wall_seconds": 22.481800289000034
+}

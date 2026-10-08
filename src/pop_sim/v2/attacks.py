@@ -280,7 +280,11 @@ def attack_partition(n: int = 20, split: float = 0.5, rounds: int = 10, seed: in
 
 
 # ================================================================ protocol
+DEFAULT_ATTRIBUTION = "oracle"      # run_all(attribution=...) overrides it for the whole bench
+
+
 def _fresh_sim(seed: int, **kw) -> ITSSimulation:
+    kw.setdefault("attribution", DEFAULT_ATTRIBUTION)
     cfg = ITSConfig(n_pm=2, rsus_per_pm=2, vehicles_per_rsu=4, consensus="popv2", vrf_bits=1024, seed=seed, **kw)
     return ITSSimulation(cfg)
 
@@ -357,7 +361,7 @@ def attack_fake_vehicle_flood(k_fake: int = 30, seed: int = 9) -> AttackResult:
     out = {}
     for check in (False, True):
         sim = ITSSimulation(ITSConfig(n_pm=1, rsus_per_pm=2, vehicles_per_rsu=5, consensus="pop", seed=seed,
-                                      verify_vehicle_certs=check))
+                                      verify_vehicle_certs=check, attribution=DEFAULT_ATTRIBUTION))
         rng = random.Random(seed)
         rsu = sim.rsus[0]
         honest = list(rsu.vehicles)
@@ -556,7 +560,9 @@ ATTACKS = [
 ]
 
 
-def run_all(quick: bool = False) -> dict:
+def run_all(quick: bool = False, attribution: str = "oracle") -> dict:
+    global DEFAULT_ATTRIBUTION
+    DEFAULT_ATTRIBUTION = attribution
     results = []
     t0 = time.perf_counter()
     for fn in ATTACKS:
@@ -577,5 +583,6 @@ def run_all(quick: bool = False) -> dict:
     counts = {}
     for r in results:
         counts[r["outcome"]] = counts.get(r["outcome"], 0) + 1
-    return {"experiment": "attacks", "quick": quick, "results": results, "summary": counts,
-            "wall_seconds": time.perf_counter() - t0}
+    DEFAULT_ATTRIBUTION = "oracle"
+    return {"experiment": "attacks", "quick": quick, "attribution": attribution, "results": results,
+            "summary": counts, "wall_seconds": time.perf_counter() - t0}

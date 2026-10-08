@@ -46,6 +46,7 @@ class Beacon:
     direction: int
     rsu: int
     truth_vid: int = field(repr=False, default=-1)   # hidden ground truth, scoring only
+    node: str = field(repr=False, default="")        # holding id (pid#epoch) for the insider linker, scoring only
 
 
 class Road:

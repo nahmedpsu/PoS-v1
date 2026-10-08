@@ -1,0 +1,21 @@
+{
+ "experiment": "security",
+ "results": {
+  "tampered_block_detected": true,
+  "forged_pki_package_rejected": true,
+  "curious_rsu_cannot_read_transactions": true,
+  "pm_can_read_its_transactions": true,
+  "spoofed_pm_block_rejected": true,
+  "self_signed_election_rejected": true,
+  "pseudonym_reuse_detected_and_revoked": true,
+  "honest_vehicles_never_flagged": true,
+  "unlinkability": {
+   "messages_observed": 450,
+   "pid_reused_by_same_vehicle": 0,
+   "pids_held_by_more_than_one_vehicle": 90,
+   "pids_issued": 90,
+   "linkable_fraction": 0.0
+  },
+  "pki_accessed_only_at_registration": true
+ }
+}

@@ -1,0 +1,92 @@
+{
+ "experiment": "block_time",
+ "tV": 0.00011455626000042685,
+ "tP": 0.001,
+ "tM_pow2": 0.0021432562000427424,
+ "tM_pop": 0.0460521334999803,
+ "miners": 10,
+ "pow2_difficulty": 3,
+ "rows": [
+  {
+   "transactions": 100,
+   "tprep": 5.1960000746476e-06,
+   "tB_pow2_per_block": 0.03489338400054476,
+   "tB_pop": 0.24372148950001885,
+   "ref_bao2019": 0.2,
+   "tB_pow2_per_tx": 0.3508980580000316
+  },
+  {
+   "transactions": 200,
+   "tprep": 9.411000064574182e-06,
+   "tB_pow2_per_block": 0.04635322500057737,
+   "tB_pop": 0.25518133050005143,
+   "ref_bao2019": 0.4,
+   "tB_pow2_per_tx": 0.5673000950001115
+  },
+  {
+   "transactions": 300,
+   "tprep": 1.3833000139129581e-05,
+   "tB_pow2_per_block": 0.05781327300069461,
+   "tB_pop": 0.26664137850016867,
+   "ref_bao2019": 0.6000000000000001,
+   "tB_pow2_per_tx": 0.9843295170001529
+  },
+  {
+   "transactions": 400,
+   "tprep": 1.8458000113241724e-05,
+   "tB_pow2_per_block": 0.0692735240007114,
+   "tB_pop": 0.27810162950018547,
+   "ref_bao2019": 0.8,
+   "tB_pow2_per_tx": 1.1696827050002885
+  },
+  {
+   "transactions": 500,
+   "tprep": 2.3055999918142334e-05,
+   "tB_pow2_per_block": 0.08073374800055899,
+   "tB_pop": 0.28956185350003305,
+   "ref_bao2019": 1.0,
+   "tB_pow2_per_tx": 1.365181037000004
+  },
+  {
+   "transactions": 600,
+   "tprep": 2.776899987111392e-05,
+   "tB_pow2_per_block": 0.09219408700055465,
+   "tB_pop": 0.3010221925000287,
+   "ref_bao2019": 1.2,
+   "tB_pow2_per_tx": 1.9687984550001165
+  },
+  {
+   "transactions": 700,
+   "tprep": 3.2321999924533884e-05,
+   "tB_pow2_per_block": 0.10365426600065075,
+   "tB_pop": 0.3124823715001248,
+   "ref_bao2019": 1.4,
+   "tB_pow2_per_tx": 2.0533922180002735
+  },
+  {
+   "transactions": 800,
+   "tprep": 3.632699986155785e-05,
+   "tB_pow2_per_block": 0.11511389700063046,
+   "tB_pop": 0.3239420025001045,
+   "ref_bao2019": 1.5999999999999999,
+   "tB_pow2_per_tx": 2.0956912170002413
+  },
+  {
+   "transactions": 900,
+   "tprep": 4.0788999967844575e-05,
+   "tB_pow2_per_block": 0.12657398500077943,
+   "tB_pop": 0.3354020905002535,
+   "ref_bao2019": 1.8,
+   "tB_pow2_per_tx": 2.927110037000195
+  },
+  {
+   "transactions": 1000,
+   "tprep": 4.560599995784287e-05,
+   "tB_pow2_per_block": 0.13803442800081211,
+   "tB_pop": 0.3468625335002862,
+   "ref_bao2019": 2.0,
+   "tB_pow2_per_tx": 2.8106532370004986
+  }
+ ],
+ "reference": "Bao et al. [31] report 0.2 s for 100 and 2 s for 1000 transactions (PoW); linear interpolation."
+}
