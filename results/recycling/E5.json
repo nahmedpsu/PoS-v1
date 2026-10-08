@@ -1,0 +1,483 @@
+{
+ "experiment": "E5_fix",
+ "rounds": 4,
+ "cells": [
+  {
+   "variant": "window",
+   "strategy": "S1",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 991.9,
+    "lo": 871.6,
+    "hi": 1086.1,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 22213.175876477017,
+    "lo": 22037.872228518896,
+    "hi": 22364.008124533702,
+    "n": 10
+   }
+  },
+  {
+   "variant": "window",
+   "strategy": "S2",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1141.0,
+    "lo": 1015.9,
+    "hi": 1238.2,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23645.464819994384,
+    "lo": 23555.821018059014,
+    "hi": 23734.016980092987,
+    "n": 10
+   }
+  },
+  {
+   "variant": "window",
+   "strategy": "S3",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1169.9,
+    "lo": 1048.0,
+    "hi": 1267.6,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23893.830029575656,
+    "lo": 23817.396892215656,
+    "hi": 23950.351127881368,
+    "n": 10
+   }
+  },
+  {
+   "variant": "rekey",
+   "strategy": "S1",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 926.1,
+    "lo": 888.3,
+    "hi": 968.1,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1169.9,
+    "lo": 1048.0,
+    "hi": 1267.6,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 2.990053605655933,
+    "lo": 2.9814573540474907,
+    "hi": 2.996864449284916,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23894.52747816095,
+    "lo": 23818.38976186834,
+    "hi": 23951.203878271255,
+    "n": 10
+   }
+  },
+  {
+   "variant": "rekey",
+   "strategy": "S2",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 117.1,
+    "lo": 86.9,
+    "hi": 144.8,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1169.9,
+    "lo": 1048.0,
+    "hi": 1267.6,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 2.990053605655933,
+    "lo": 2.9814573540474907,
+    "hi": 2.996864449284916,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23894.52747816095,
+    "lo": 23818.38976186834,
+    "hi": 23951.203878271255,
+    "n": 10
+   }
+  },
+  {
+   "variant": "rekey",
+   "strategy": "S3",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1169.9,
+    "lo": 1048.0,
+    "hi": 1267.6,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 2.990053605655933,
+    "lo": 2.9814573540474907,
+    "hi": 2.996864449284916,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23894.52747816095,
+    "lo": 23818.38976186834,
+    "hi": 23951.203878271255,
+    "n": 10
+   }
+  },
+  {
+   "variant": "fresh_vgk",
+   "strategy": "S1",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 1158.0,
+    "lo": 1034.4,
+    "hi": 1255.2,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 3.0,
+    "lo": 3.0,
+    "hi": 3.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12058.867454705462,
+    "lo": 12058.03857957086,
+    "hi": 12059.84453033889,
+    "n": 10
+   }
+  },
+  {
+   "variant": "fresh_vgk",
+   "strategy": "S2",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 1158.0,
+    "lo": 1034.4,
+    "hi": 1255.2,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 3.0,
+    "lo": 3.0,
+    "hi": 3.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12058.867454705462,
+    "lo": 12058.03857957086,
+    "hi": 12059.84453033889,
+    "n": 10
+   }
+  },
+  {
+   "variant": "fresh_vgk",
+   "strategy": "S3",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 1158.0,
+    "lo": 1034.4,
+    "hi": 1255.2,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 3.0,
+    "lo": 3.0,
+    "hi": 3.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12058.867454705462,
+    "lo": 12058.03857957086,
+    "hi": 12059.84453033889,
+    "n": 10
+   }
+  }
+ ]
+}

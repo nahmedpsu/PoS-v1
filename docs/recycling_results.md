@@ -135,9 +135,68 @@ victim) and makes revocation unenforceable at vehicles (E2).
 
 ![E4](../figures/recycling/E4.png)
 
-E5_PLACEHOLDER
+## E5. The fix and its ablation (RQ4)
 
-E6_PLACEHOLDER
+Ten vehicles per km, 900 s certificates, plausibility off (the receiver's weakest
+setting), ten seeds. `window` binds the recycled pseudonym to a holder window but
+keeps the shared key; `rekey` also gives each holder a fresh key; `fresh_vgk` issues
+fresh pseudonyms with vehicle-generated keys.
+
+| Variant | S1 forgeries sent / accepted | S2 sent / accepted | S3 sent / accepted | Innocent holders blamed (S1 / S2) | PM signatures per run | Vehicle key generations per vehicle per round | Bytes per vehicle per round |
+|---|---|---|---|---|---|---|---|
+| window | 739 / 739 | 104 / 104 | 471 / 0 | 223 / 38 | 990 to 1,170 | 0 | 22 to 24 k |
+| rekey | 926 / 0 | 117 / 0 | 471 / 0 | 0 / 0 | 1,170 | 3 | 24 k |
+| fresh_vgk | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 8 | 3 | 12 k |
+
+* The window alone stops only the gap filler (S3): a former holder cannot present a
+  certificate for a time when it did not hold the pseudonym. It stops nothing else,
+  because the current holder's window certificate is public (it rides in every
+  message) and the former holder still has the key it binds.
+* Re-keying stops all three strategies at every seed, and with it the wrongful
+  reports: zero innocent holders blamed.
+* Its cost against fresh vehicle-generated keys: the same three key generations per
+  vehicle per round, the same number of signatures (moved from the PKI to the PMs),
+  and twice the bytes per message, because the holder certificate has to travel with
+  each message until receivers cache it. Nothing is left that the recycled label
+  buys.
+
+![E5](../figures/recycling/E5.png)
+
+## E6. The attack bench under ledger attribution
+
+The eighteen attacks of `pop-sim attacks` rerun with `attribution="ledger"` instead
+of the oracle attribution v2.2.1 used. One outcome changes: *revoked vehicle keeps
+transmitting* goes from defended to vulnerable. Under ledger attribution the
+malicious vehicle's replay is attributed to the pseudonym's current holder, so the
+honest holder is revoked and the attacker is not; it then keeps its pseudonyms and
+keeps transmitting. The other seventeen outcomes are unchanged (13 defended, 4
+mitigated). The bench's default stays oracle so that the v2.2.1 numbers remain
+reproducible, and this finding is reported here rather than hidden by the default.
+
+## The answer
+
+Recycling is not worth it on any axis the manuscript claims, and it costs two
+properties the manuscript promises:
+
+* **Privacy against an eavesdropper**: no better than fresh issuance (E4; one point
+  worse at 10 veh/km).
+* **Security**: a former holder forges accepted messages under every strategy (E1),
+  and the ledger-based accountability turns those forgeries into revocations of the
+  innocent current holder (E1, E6). Fresh issuance has nothing to forge.
+* **Revocation**: unenforceable at vehicles for as long as the certificates live (E2),
+  which is a property of certificate lifetime, not of recycling, but recycling makes
+  the key a shared secret so the damage spreads to every past holder.
+* **Authority load**: the only axis recycling wins. Fresh issuance costs the PKI 54
+  CPU-seconds per 1,000 vehicle-hours at 30 s rounds (18 with vehicle-generated
+  keys); recycling costs it a signature per circulating pseudonym per certificate
+  lifetime. If that load matters, the safe form of recycling (`rekey`) delivers it
+  by making the PMs do the signing, at which point it is fresh issuance by another
+  authority with a bigger message.
+* **Insider exposure** is the same in every mode: the ledger, not the recycling,
+  lets a PM name 84 % of its vehicles, and the cloud's upload order leaks 73 % of
+  the pseudonym changes until the PM shuffles before uploading (E3).
+
+![Summary](../figures/recycling/summary.png)
 
 ## Limitations
 

@@ -158,6 +158,12 @@ Design, threat model, metrics and the pre-registered outcome cases are in
 [docs/recycling.md](docs/recycling.md); measured results in
 [docs/recycling_results.md](docs/recycling_results.md).
 
+The answer, over ten seeds: recycling gives no privacy an eavesdropper notices,
+lets a former holder forge messages that every vehicle accepts (and that get the
+innocent current holder revoked), and wins only on PKI load, which the safe form of
+recycling hands to the privacy managers instead. Fresh issuance with vehicle-generated
+keys dominates it.
+
 ## Results at a glance
 
 Full tables and figures: [v1 reproduction](docs/v1_results.md),

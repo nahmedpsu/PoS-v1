@@ -1,0 +1,26 @@
+{
+ "config": {
+  "seeds": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "rounds": 4,
+  "quick": false
+ },
+ "E6_changed": {
+  "revoked vehicle keeps transmitting": [
+   "defended",
+   "vulnerable"
+  ]
+ },
+ "wall_seconds_E1_E4": 7048.1,
+ "wall_seconds_E5_E6": 662.8855478839996
+}

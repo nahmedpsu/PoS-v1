@@ -1,0 +1,60 @@
+{
+ "experiment": "E6_bench_recheck",
+ "outcomes": {
+  "oracle": {
+   "value forgery / proof theft": "defended",
+   "sortition threshold tampering": "defended",
+   "seed grinding": "defended",
+   "multi-key seed choice": "mitigated",
+   "block withholding (selfish winner)": "mitigated",
+   "equivocation (two blocks, one proof)": "defended",
+   "proof replay": "defended",
+   "election server denial of service": "defended",
+   "Sybil election keys": "defended",
+   "network partition": "mitigated",
+   "pseudonym replay (internal tricking adversary)": "defended",
+   "pseudonym cloning": "defended",
+   "forged pseudonym / forged PKI package": "defended",
+   "fake-vehicle pseudonym flood": "defended",
+   "revoked vehicle keeps transmitting": "defended",
+   "compromised RSU rewrites its chain": "defended",
+   "curious RSU reads the ledger": "defended",
+   "location tracking across pseudonym changes": "mitigated"
+  },
+  "oracle_summary": {
+   "defended": 14,
+   "mitigated": 4
+  },
+  "ledger": {
+   "value forgery / proof theft": "defended",
+   "sortition threshold tampering": "defended",
+   "seed grinding": "defended",
+   "multi-key seed choice": "mitigated",
+   "block withholding (selfish winner)": "mitigated",
+   "equivocation (two blocks, one proof)": "defended",
+   "proof replay": "defended",
+   "election server denial of service": "defended",
+   "Sybil election keys": "defended",
+   "network partition": "mitigated",
+   "pseudonym replay (internal tricking adversary)": "defended",
+   "pseudonym cloning": "defended",
+   "forged pseudonym / forged PKI package": "defended",
+   "fake-vehicle pseudonym flood": "defended",
+   "revoked vehicle keeps transmitting": "vulnerable",
+   "compromised RSU rewrites its chain": "defended",
+   "curious RSU reads the ledger": "defended",
+   "location tracking across pseudonym changes": "mitigated"
+  },
+  "ledger_summary": {
+   "defended": 13,
+   "mitigated": 4,
+   "vulnerable": 1
+  }
+ },
+ "changed": {
+  "revoked vehicle keeps transmitting": [
+   "defended",
+   "vulnerable"
+  ]
+ }
+}
