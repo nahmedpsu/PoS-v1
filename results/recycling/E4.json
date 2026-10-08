@@ -1,0 +1,1031 @@
+{
+ "experiment": "E4_modes",
+ "rounds": 4,
+ "strategy": "S2",
+ "cells": [
+  {
+   "density": 10,
+   "mode": "recycle",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9749368700892708,
+    "lo": 0.969492904590288,
+    "hi": 0.9804172650063252,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 103.8,
+    "lo": 75.1,
+    "hi": 136.4,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48771710665203805,
+    "lo": 0.4593813765012781,
+    "hi": 0.5085234309697342,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.7281304312328513,
+    "lo": 0.7278844125513136,
+    "hi": 0.7283852887809047,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 0.25617293414094156,
+    "lo": 0.23266212890495092,
+    "hi": 0.28972973069819835,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 16.0,
+    "lo": 16.0,
+    "hi": 16.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 11905.281723263346,
+    "lo": 11860.521584925962,
+    "hi": 11948.659924655436,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.9,
+    "lo": 0.0,
+    "hi": 2.0,
+    "n": 10
+   }
+  },
+  {
+   "density": 10,
+   "mode": "fresh",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9656216719424211,
+    "lo": 0.9603001908704429,
+    "hi": 0.9712582112182967,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48958346944215264,
+    "lo": 0.45994440476926063,
+    "hi": 0.5119551937127073,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 54.04282458676866,
+    "lo": 53.838119263409496,
+    "hi": 54.210690095812026,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 0.12808646707047078,
+    "lo": 0.11633106445247546,
+    "hi": 0.14486486534909918,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 1163.9,
+    "lo": 1041.8,
+    "hi": 1262.3,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12029.996825272698,
+    "lo": 11990.32801661416,
+    "hi": 12057.832353811038,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 1.3,
+    "lo": 0.3,
+    "hi": 2.6,
+    "n": 10
+   }
+  },
+  {
+   "density": 10,
+   "mode": "fresh_vgk",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9653437839739409,
+    "lo": 0.9587818407926316,
+    "hi": 0.9715619282142405,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48851496628079727,
+    "lo": 0.4588959390603397,
+    "hi": 0.5109565187544434,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 18.000000000000004,
+    "lo": 18.000000000000004,
+    "hi": 18.000000000000004,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 0.12808646707047078,
+    "lo": 0.11633106445247546,
+    "hi": 0.14486486534909918,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 1158.0,
+    "lo": 1034.4,
+    "hi": 1255.2,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 3.0,
+    "lo": 3.0,
+    "hi": 3.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12058.867454705462,
+    "lo": 12058.03857957086,
+    "hi": 12059.84453033889,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "density": 10,
+   "mode": "rekey",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9735027459188326,
+    "lo": 0.9689122456352696,
+    "hi": 0.9791750925607589,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 117.1,
+    "lo": 86.9,
+    "hi": 144.8,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48958346944215264,
+    "lo": 0.45994440476926063,
+    "hi": 0.5119551937127073,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.7274321785808662,
+    "lo": 0.7272727272727273,
+    "hi": 0.7276528349699082,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 18.19649456807654,
+    "lo": 18.13229070863228,
+    "hi": 18.257378292046415,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1169.9,
+    "lo": 1048.0,
+    "hi": 1267.6,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 2.990053605655933,
+    "lo": 2.9814573540474907,
+    "hi": 2.996864449284916,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23894.52747816095,
+    "lo": 23818.38976186834,
+    "hi": 23951.203878271255,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 1.5,
+    "lo": 0.5,
+    "hi": 2.7,
+    "n": 10
+   }
+  },
+  {
+   "density": 10,
+   "mode": "window",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9749368700892708,
+    "lo": 0.969492904590288,
+    "hi": 0.9804172650063252,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 103.8,
+    "lo": 75.1,
+    "hi": 136.4,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48771710665203805,
+    "lo": 0.4593813765012781,
+    "hi": 0.5085234309697342,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.7281304312328513,
+    "lo": 0.7278844125513136,
+    "hi": 0.7283852887809047,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 17.72821260051794,
+    "lo": 17.596455084505926,
+    "hi": 17.86555314286322,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 1141.0,
+    "lo": 1015.9,
+    "hi": 1238.2,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23645.464819994384,
+    "lo": 23555.821018059014,
+    "hi": 23734.016980092987,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.9,
+    "lo": 0.0,
+    "hi": 2.0,
+    "n": 10
+   }
+  },
+  {
+   "density": 40,
+   "mode": "recycle",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9040511096455349,
+    "lo": 0.8980001512186734,
+    "hi": 0.9093201322535045,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 502.3,
+    "lo": 451.8,
+    "hi": 555.3,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 502.3,
+    "lo": 451.8,
+    "hi": 555.3,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 172.3,
+    "lo": 153.2,
+    "hi": 192.1,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48142258412517913,
+    "lo": 0.47423756107427384,
+    "hi": 0.4885912353075057,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.7280628479968055,
+    "lo": 0.7279485522895153,
+    "hi": 0.7282069161402775,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 0.06158925797509004,
+    "lo": 0.059860592131101266,
+    "hi": 0.06359115362392474,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 16.0,
+    "lo": 16.0,
+    "hi": 16.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 11917.475146646979,
+    "lo": 11892.196237844799,
+    "hi": 11938.08649305529,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.3,
+    "lo": 0.0,
+    "hi": 0.9,
+    "n": 10
+   }
+  },
+  {
+   "density": 40,
+   "mode": "fresh",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9023662144466962,
+    "lo": 0.8979819940822713,
+    "hi": 0.9067130632144843,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.4815949990679242,
+    "lo": 0.47428732381022104,
+    "hi": 0.4889569366986646,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 54.04001910288137,
+    "lo": 53.99291328352061,
+    "hi": 54.076695809763606,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 0.03079462898754502,
+    "lo": 0.029930296065550633,
+    "hi": 0.03179557681196237,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 4697.3,
+    "lo": 4550.0,
+    "hi": 4832.3,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12054.713053805797,
+    "lo": 12047.368195400346,
+    "hi": 12059.803859764987,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.6,
+    "lo": 0.0,
+    "hi": 1.5,
+    "n": 10
+   }
+  },
+  {
+   "density": 40,
+   "mode": "fresh_vgk",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9033010324231971,
+    "lo": 0.8993577931184428,
+    "hi": 0.9068675070248021,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48158990259378476,
+    "lo": 0.47428732381022104,
+    "hi": 0.4890329521504306,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 18.000000000000004,
+    "lo": 18.0,
+    "hi": 18.000000000000004,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 0.03079462898754502,
+    "lo": 0.029930296065550633,
+    "hi": 0.03179557681196237,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 4688.4,
+    "lo": 4539.6,
+    "hi": 4820.4,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 8.0,
+    "lo": 8.0,
+    "hi": 8.0,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 3.0,
+    "lo": 3.0,
+    "hi": 3.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 12059.629320034623,
+    "lo": 12059.069656542986,
+    "hi": 12060.242841664793,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "density": 40,
+   "mode": "rekey",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9069877477977552,
+    "lo": 0.9023301852902071,
+    "hi": 0.9114128554318434,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 439.8,
+    "lo": 410.5,
+    "hi": 463.4,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.4815949990679242,
+    "lo": 0.47428732381022104,
+    "hi": 0.4889569366986646,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.7272994270950202,
+    "lo": 0.7272727272727273,
+    "hi": 0.7273391356114569,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 18.054336218297017,
+    "lo": 18.044652309110404,
+    "hi": 18.06161282515125,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 4702.6,
+    "lo": 4554.7,
+    "hi": 4836.4,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 2.998791160053654,
+    "lo": 2.9969933148717063,
+    "hi": 3.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23941.876618765993,
+    "lo": 23915.043341246783,
+    "hi": 23959.999017682447,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.6,
+    "lo": 0.0,
+    "hi": 1.5,
+    "n": 10
+   }
+  },
+  {
+   "density": 40,
+   "mode": "window",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9040511096455349,
+    "lo": 0.8980001512186734,
+    "hi": 0.9093201322535045,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 502.3,
+    "lo": 451.8,
+    "hi": 555.3,
+    "n": 10
+   },
+   "forged_v2v_accepted": {
+    "mean": 502.3,
+    "lo": 451.8,
+    "hi": 555.3,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 172.3,
+    "lo": 153.2,
+    "hi": 192.1,
+    "n": 10
+   },
+   "insider_pm_link_rate": {
+    "mean": 0.48142258412517913,
+    "lo": 0.47423756107427384,
+    "hi": 0.4885912353075057,
+    "n": 10
+   },
+   "insider_cloud_link_rate": {
+    "mean": 0.7280628479968055,
+    "lo": 0.7279485522895153,
+    "hi": 0.7282069161402775,
+    "n": 10
+   },
+   "pki_cpu_s_per_1000_veh_h": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_cpu_s_per_1000_veh_h": {
+    "mean": 17.53142018607879,
+    "lo": 17.46521883026336,
+    "hi": 17.593638468494788,
+    "n": 10
+   },
+   "pki_signatures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "pm_signatures": {
+    "mean": 4566.4,
+    "lo": 4421.5,
+    "hi": 4703.5,
+    "n": 10
+   },
+   "vehicle_keygens_per_vehicle_per_round": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "bytes_per_vehicle_per_round": {
+    "mean": 23669.318866971935,
+    "lo": 23617.461210448917,
+    "hi": 23715.922789803844,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.3,
+    "lo": 0.0,
+    "hi": 0.9,
+    "n": 10
+   }
+  }
+ ],
+ "paired_tests": {
+  "10/tracker_link_rate: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 53.0,
+   "w_minus": 2.0,
+   "z": -2.5992006763318902,
+   "p": 0.009344113002204946,
+   "effect_size": 0.9272727272727272
+  },
+  "10/tracker_link_rate: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 54.0,
+   "w_minus": 1.0,
+   "z": -2.7011301146194153,
+   "p": 0.006910429807814644,
+   "effect_size": 0.9636363636363636
+  },
+  "10/tracker_link_rate: recycle vs rekey": {
+   "n": 9,
+   "w_plus": 31.0,
+   "w_minus": 14.0,
+   "z": -1.0069930921904569,
+   "p": 0.3139380937749148,
+   "effect_size": 0.37777777777777777
+  },
+  "10/tracker_link_rate: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "10/pki_cpu_s_per_1000_veh_h: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": -1.0
+  },
+  "10/pki_cpu_s_per_1000_veh_h: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": -1.0
+  },
+  "10/pki_cpu_s_per_1000_veh_h: recycle vs rekey": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "10/pki_cpu_s_per_1000_veh_h: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "10/forged_v2v_accepted: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": 1.0
+  },
+  "10/forged_v2v_accepted: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": 1.0
+  },
+  "10/forged_v2v_accepted: recycle vs rekey": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": 1.0
+  },
+  "10/forged_v2v_accepted: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "40/tracker_link_rate: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 36.0,
+   "w_minus": 19.0,
+   "z": -0.8664002254439634,
+   "p": 0.3862707203664828,
+   "effect_size": 0.3090909090909091
+  },
+  "40/tracker_link_rate: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 33.0,
+   "w_minus": 22.0,
+   "z": -0.5606119105813882,
+   "p": 0.5750621301739498,
+   "effect_size": 0.2
+  },
+  "40/tracker_link_rate: recycle vs rekey": {
+   "n": 10,
+   "w_plus": 13.0,
+   "w_minus": 42.0,
+   "z": -1.4779768551691141,
+   "p": 0.13941397332153205,
+   "effect_size": -0.5272727272727272
+  },
+  "40/tracker_link_rate: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "40/pki_cpu_s_per_1000_veh_h: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": -1.0
+  },
+  "40/pki_cpu_s_per_1000_veh_h: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": -1.0
+  },
+  "40/pki_cpu_s_per_1000_veh_h: recycle vs rekey": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "40/pki_cpu_s_per_1000_veh_h: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  },
+  "40/forged_v2v_accepted: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": 1.0
+  },
+  "40/forged_v2v_accepted: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": 1.0
+  },
+  "40/forged_v2v_accepted: recycle vs rekey": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.00506203212626799,
+   "effect_size": 1.0
+  },
+  "40/forged_v2v_accepted: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0
+  }
+ }
+}

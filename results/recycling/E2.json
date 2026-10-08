@@ -1,0 +1,72 @@
+{
+ "experiment": "E2_revocation",
+ "rounds": 4,
+ "cells": [
+  {
+   "lifetime": 300,
+   "seeds": 10,
+   "revoked_vehicles": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   }
+  },
+  {
+   "lifetime": 900,
+   "seeds": 10,
+   "revoked_vehicles": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   }
+  },
+  {
+   "lifetime": 3600,
+   "seeds": 10,
+   "revoked_vehicles": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   }
+  }
+ ]
+}

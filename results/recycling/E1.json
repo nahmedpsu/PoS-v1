@@ -1,0 +1,2229 @@
+{
+ "experiment": "E1_impersonation",
+ "rounds": 4,
+ "cells": [
+  {
+   "strategy": "S1",
+   "plausibility": false,
+   "lifetime": 300,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.630534012897854,
+    "lo": 31.11600166423965,
+    "hi": 34.179588932806325,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": false,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.630534012897854,
+    "lo": 31.11600166423965,
+    "hi": 34.179588932806325,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": false,
+   "lifetime": 3600,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.630534012897854,
+    "lo": 31.11600166423965,
+    "hi": 34.179588932806325,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 300,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9994851994851994,
+    "lo": 0.9984555984555985,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9649485848454132,
+    "lo": 0.9563069245768991,
+    "hi": 0.9715766489914254,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.61314270855003,
+    "lo": 31.092337216559184,
+    "hi": 34.1621976284585,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9994851994851994,
+    "lo": 0.9984555984555985,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9649485848454132,
+    "lo": 0.9563069245768991,
+    "hi": 0.9715766489914254,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.61314270855003,
+    "lo": 31.092337216559184,
+    "hi": 34.1621976284585,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 3600,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9994851994851994,
+    "lo": 0.9984555984555985,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9649485848454132,
+    "lo": 0.9563069245768991,
+    "hi": 0.9715766489914254,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.61314270855003,
+    "lo": 31.092337216559184,
+    "hi": 34.1621976284585,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": false,
+   "lifetime": 300,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.116123321123322,
+    "lo": 11.65953601953602,
+    "hi": 16.166636141636143,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 30.0,
+    "lo": 24.6,
+    "hi": 35.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": false,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.116123321123322,
+    "lo": 11.65953601953602,
+    "hi": 16.166636141636143,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 30.0,
+    "lo": 24.6,
+    "hi": 35.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": false,
+   "lifetime": 3600,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.116123321123322,
+    "lo": 11.65953601953602,
+    "hi": 16.166636141636143,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 30.0,
+    "lo": 24.6,
+    "hi": 35.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 300,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9962025316455696,
+    "lo": 0.9886075949367089,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7705375581708882,
+    "lo": 0.7438887376335268,
+    "hi": 0.8042999100967347,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.049456654456655,
+    "lo": 11.576031746031745,
+    "hi": 16.037063492063492,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 29.4,
+    "lo": 24.0,
+    "hi": 34.5,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9962025316455696,
+    "lo": 0.9886075949367089,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7705375581708882,
+    "lo": 0.7438887376335268,
+    "hi": 0.8042999100967347,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.049456654456655,
+    "lo": 11.576031746031745,
+    "hi": 16.037063492063492,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 29.4,
+    "lo": 24.0,
+    "hi": 34.5,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 3600,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9962025316455696,
+    "lo": 0.9886075949367089,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7705375581708882,
+    "lo": 0.7438887376335268,
+    "hi": 0.8042999100967347,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.049456654456655,
+    "lo": 11.576031746031745,
+    "hi": 16.037063492063492,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 29.4,
+    "lo": 24.0,
+    "hi": 34.5,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": false,
+   "lifetime": 300,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": false,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": false,
+   "lifetime": 3600,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 300,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9948577545524453,
+    "lo": 0.9910630701120502,
+    "hi": 0.9982490922336722,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9948577545524453,
+    "lo": 0.9910630701120502,
+    "hi": 0.9982490922336722,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 3600,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "core",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9948577545524453,
+    "lo": 0.9910630701120502,
+    "hi": 0.9982490922336722,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 2,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 175.0,
+    "lo": 162.4,
+    "hi": 185.5,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.8557985638699924,
+    "lo": 0.7535952380952381,
+    "hi": 0.953665910808768,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.974339426533229,
+    "lo": 0.954163418330905,
+    "hi": 0.9918703976435935,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7537951625094482,
+    "lo": 0.7162101284958428,
+    "hi": 0.7938537414965986,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 29.855,
+    "lo": 25.491666666666667,
+    "hi": 34.255,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 47.6,
+    "lo": 40.7,
+    "hi": 54.2,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 43.1,
+    "lo": 35.6,
+    "hi": 50.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 7.8,
+    "lo": 7.4,
+    "hi": 8.2,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 2,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 25.2,
+    "lo": 16.8,
+    "hi": 34.5,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9,
+    "lo": 0.7,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7546562304201491,
+    "lo": 0.5632305631632797,
+    "hi": 0.8850222565574072,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.5449465240641711,
+    "lo": 0.37426470588235294,
+    "hi": 0.6921434937611408,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 13.166666666666666,
+    "lo": 8.433333333333334,
+    "hi": 17.7,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 16.2,
+    "lo": 10.7,
+    "hi": 22.1,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 9.5,
+    "lo": 5.9,
+    "hi": 13.1,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 1.5,
+    "lo": 0.9,
+    "hi": 2.1,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 2,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 87.0,
+    "lo": 60.0,
+    "hi": 114.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.8487777777777777,
+    "lo": 0.7144444444444444,
+    "hi": 0.96,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.996350328370181,
+    "lo": 0.9899684163032035,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 30.25,
+    "lo": 23.416666666666668,
+    "hi": 35.9,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 39.9,
+    "lo": 28.5,
+    "hi": 50.3,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9994851994851994,
+    "lo": 0.9984555984555985,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9649485848454132,
+    "lo": 0.9563069245768991,
+    "hi": 0.9715766489914254,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.61314270855003,
+    "lo": 31.092337216559184,
+    "hi": 34.1621976284585,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9962025316455696,
+    "lo": 0.9886075949367089,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7705375581708882,
+    "lo": 0.7438887376335268,
+    "hi": 0.8042999100967347,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.049456654456655,
+    "lo": 11.576031746031745,
+    "hi": 16.037063492063492,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 29.4,
+    "lo": 24.0,
+    "hi": 34.5,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9948577545524453,
+    "lo": 0.9910630701120502,
+    "hi": 0.9982490922336722,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 40,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 3063.9,
+    "lo": 2950.5,
+    "hi": 3194.1,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9651955434525286,
+    "lo": 0.9606577537528326,
+    "hi": 0.9689038168826867,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7137185278020911,
+    "lo": 0.6936071297969045,
+    "hi": 0.7325437912150097,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 33.6735640904382,
+    "lo": 32.7318720213763,
+    "hi": 34.60438043582455,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 63.0,
+    "lo": 63.0,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 873.3,
+    "lo": 826.9,
+    "hi": 914.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 138.4,
+    "lo": 134.3,
+    "hi": 142.6,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 40,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 502.3,
+    "lo": 451.8,
+    "hi": 555.3,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.741350148791998,
+    "lo": 0.730726838095206,
+    "hi": 0.751099192555924,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6575380079513443,
+    "lo": 0.6455185438553835,
+    "hi": 0.6690087679361199,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 15.030326937221623,
+    "lo": 14.328806210929622,
+    "hi": 15.710840289568006,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 30.8,
+    "lo": 26.7,
+    "hi": 34.9,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 172.3,
+    "lo": 153.2,
+    "hi": 192.1,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 27.6,
+    "lo": 24.6,
+    "hi": 30.6,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 40,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 1524.0,
+    "lo": 1434.0,
+    "hi": 1617.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9961297142531379,
+    "lo": 0.9927820490269466,
+    "hi": 0.9989250904984897,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 34.92772316889996,
+    "lo": 34.328182476360176,
+    "hi": 35.6152054601745,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 80,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 6136.2,
+    "lo": 5999.7,
+    "hi": 6276.9,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9686080536896926,
+    "lo": 0.9668482385827878,
+    "hi": 0.9703465030661087,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.707225800921556,
+    "lo": 0.6901685891548454,
+    "hi": 0.7229540088628039,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 33.621289220912985,
+    "lo": 32.984466696274566,
+    "hi": 34.17449514564831,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 63.0,
+    "lo": 63.0,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 1801.2,
+    "lo": 1673.6,
+    "hi": 1943.6,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 279.3,
+    "lo": 272.9,
+    "hi": 286.2,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 80,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 920.2,
+    "lo": 851.6,
+    "hi": 982.1,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9999053926206244,
+    "lo": 0.9997161778618733,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7608378087277093,
+    "lo": 0.751308709885392,
+    "hi": 0.770108665429265,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6700697160195711,
+    "lo": 0.6589891060735549,
+    "hi": 0.681240606554259,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 13.241886179983931,
+    "lo": 12.793577917403724,
+    "hi": 13.752438195340833,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 25.6,
+    "lo": 23.9,
+    "hi": 27.4,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 302.7,
+    "lo": 283.4,
+    "hi": 324.8,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 50.8,
+    "lo": 47.2,
+    "hi": 54.3,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 80,
+   "share": 0.05,
+   "sweep": "density",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 2970.0,
+    "lo": 2841.0,
+    "hi": 3096.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9965145795445834,
+    "lo": 0.9940551253314467,
+    "hi": 0.9985428384398325,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 34.937370945944124,
+    "lo": 34.251915556263384,
+    "hi": 35.54472655329973,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 63.0,
+    "lo": 60.0,
+    "hi": 69.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.01,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 176.4,
+    "lo": 157.5,
+    "hi": 195.3,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9672735705216539,
+    "lo": 0.9484381234733732,
+    "hi": 0.9819696650390949,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6271705146705147,
+    "lo": 0.5174482924482924,
+    "hi": 0.7395923520923521,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 35.56,
+    "lo": 30.939999999999998,
+    "hi": 39.9,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 52.5,
+    "lo": 46.2,
+    "hi": 58.8,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 66.4,
+    "lo": 46.1,
+    "hi": 86.8,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 8.3,
+    "lo": 7.3,
+    "hi": 9.3,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.01,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 11.5,
+    "lo": 5.0,
+    "hi": 20.5,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.8,
+    "lo": 0.5,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.6646610174909562,
+    "lo": 0.442156862745098,
+    "hi": 0.8603892159526613,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.5295372107567229,
+    "lo": 0.2905128205128205,
+    "hi": 0.7733333333333333,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 8.025,
+    "lo": 3.925,
+    "hi": 12.8,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 8.9,
+    "lo": 4.4,
+    "hi": 13.9,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 4.6,
+    "lo": 1.1,
+    "hi": 10.2,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.8,
+    "lo": 0.2,
+    "hi": 1.7,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.01,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 99.0,
+    "lo": 84.0,
+    "hi": 117.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9998630136986302,
+    "lo": 0.9995890410958904,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 41.5,
+    "lo": 36.5,
+    "hi": 47.5,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 51.0,
+    "lo": 42.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 739.2,
+    "lo": 676.2,
+    "hi": 791.7,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9994851994851994,
+    "lo": 0.9984555984555985,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9649485848454132,
+    "lo": 0.9563069245768991,
+    "hi": 0.9715766489914254,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7002037913224888,
+    "lo": 0.671854722658294,
+    "hi": 0.7331808731808732,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 32.61314270855003,
+    "lo": 31.092337216559184,
+    "hi": 34.1621976284585,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.9,
+    "lo": 56.7,
+    "hi": 63.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 223.0,
+    "lo": 192.0,
+    "hi": 248.5,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 33.2,
+    "lo": 30.7,
+    "hi": 35.4,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 104.4,
+    "lo": 75.3,
+    "hi": 137.2,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9962025316455696,
+    "lo": 0.9886075949367089,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7705375581708882,
+    "lo": 0.7438887376335268,
+    "hi": 0.8042999100967347,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6497105414019436,
+    "lo": 0.6078020169557072,
+    "hi": 0.6940682131743099,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 14.049456654456655,
+    "lo": 11.576031746031745,
+    "hi": 16.037063492063492,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 29.4,
+    "lo": 24.0,
+    "hi": 34.5,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 38.3,
+    "lo": 26.6,
+    "hi": 50.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 6.1,
+    "lo": 4.4,
+    "hi": 7.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.05,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 471.0,
+    "lo": 417.0,
+    "hi": 522.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9948577545524453,
+    "lo": 0.9910630701120502,
+    "hi": 0.9982490922336722,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 37.79393523143523,
+    "lo": 35.619776057276056,
+    "hi": 40.11488511488511,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 69.0,
+    "lo": 60.0,
+    "hi": 78.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S1",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.1,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 1260.0,
+    "lo": 1159.2,
+    "hi": 1371.3,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9677234326742787,
+    "lo": 0.9630002378803053,
+    "hi": 0.9718490488380602,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7175607127142556,
+    "lo": 0.6952084839252022,
+    "hi": 0.7453898099950731,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 30.62654565094704,
+    "lo": 29.729013262488493,
+    "hi": 31.355335639143526,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 54.6,
+    "lo": 48.3,
+    "hi": 60.9,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 350.8,
+    "lo": 330.9,
+    "hi": 374.3,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 54.1,
+    "lo": 49.8,
+    "hi": 58.8,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S2",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.1,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 207.5,
+    "lo": 182.6,
+    "hi": 233.9,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.9961397058823529,
+    "lo": 0.9899159663865547,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7543597997013055,
+    "lo": 0.7264438511999445,
+    "hi": 0.7783237610836616,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.6610333644967118,
+    "lo": 0.620364238710548,
+    "hi": 0.6919021462846112,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 13.60890056022409,
+    "lo": 12.182303921568627,
+    "hi": 15.023641456582634,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 26.8,
+    "lo": 23.6,
+    "hi": 30.2,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 71.1,
+    "lo": 58.6,
+    "hi": 84.4,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 11.4,
+    "lo": 9.8,
+    "hi": 13.1,
+    "n": 10
+   }
+  },
+  {
+   "strategy": "S3",
+   "plausibility": true,
+   "lifetime": 900,
+   "density": 10,
+   "share": 0.1,
+   "sweep": "share",
+   "seeds": 10,
+   "forged_sent": {
+    "mean": 843.0,
+    "lo": 792.0,
+    "hi": 894.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.9969456941302266,
+    "lo": 0.9943444914206245,
+    "hi": 0.999467475012289,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 36.19397884723971,
+    "lo": 34.5230530339226,
+    "hi": 38.06076206402293,
+    "n": 10
+   },
+   "exposure_p95_s": {
+    "mean": 60.0,
+    "lo": 51.0,
+    "hi": 69.0,
+    "n": 10
+   },
+   "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  }
+ ]
+}
