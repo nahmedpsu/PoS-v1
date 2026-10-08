@@ -1,0 +1,1152 @@
+{
+ "experiment": "E1r_revocation_rule",
+ "rounds": 4,
+ "long_rounds": 20,
+ "strategies": [
+  "S1",
+  "S2"
+ ],
+ "cells": [
+  {
+   "reports": 1,
+   "distinct_rsus": 1,
+   "rule": "1 report / 1 RSU",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 33.2,
+     "lo": 30.7,
+     "hi": 35.4,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.34891866927855597,
+     "lo": 0.323219496187596,
+     "hi": 0.37875037230872005,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 223.0,
+     "lo": 192.0,
+     "hi": 248.5,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9649485848454132,
+     "lo": 0.9563069245768991,
+     "hi": 0.9715766489914254,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 93.6,
+     "lo": 83.8,
+     "hi": 101.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.9709433027229383,
+     "lo": 0.9630473992614496,
+     "hi": 0.9782721748078785,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 634.2,
+     "lo": 513.7,
+     "hi": 735.7,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9640057638677351,
+     "lo": 0.9591998082971981,
+     "hi": 0.9686266855774586,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 6.1,
+     "lo": 4.4,
+     "hi": 7.8,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.06630344597731253,
+     "lo": 0.046767725613074324,
+     "hi": 0.08846464407472972,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 38.3,
+     "lo": 26.6,
+     "hi": 50.4,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7705375581708882,
+     "lo": 0.7438887376335268,
+     "hi": 0.8042999100967347,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 67.3,
+     "lo": 62.1,
+     "hi": 72.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.7067602207904863,
+     "lo": 0.6543499278036798,
+     "hi": 0.7585322733401765,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 437.1,
+     "lo": 399.9,
+     "hi": 471.8,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7705502489761751,
+     "lo": 0.7604587884082056,
+     "hi": 0.7815145952122694,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 60.0,
+     "lo": 60.0,
+     "hi": 60.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 559.0,
+     "lo": 559.0,
+     "hi": 559.0,
+     "n": 10
+    }
+   }
+  },
+  {
+   "reports": 2,
+   "distinct_rsus": 1,
+   "rule": "2 reports / 1 RSU",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 33.2,
+     "lo": 30.7,
+     "hi": 35.4,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.34891866927855597,
+     "lo": 0.323219496187596,
+     "hi": 0.37875037230872005,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 223.0,
+     "lo": 192.0,
+     "hi": 248.5,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9649485848454132,
+     "lo": 0.9563069245768991,
+     "hi": 0.9715766489914254,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 93.6,
+     "lo": 83.8,
+     "hi": 101.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.9709433027229383,
+     "lo": 0.9630473992614496,
+     "hi": 0.9782721748078785,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 634.2,
+     "lo": 513.7,
+     "hi": 735.7,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9640057638677351,
+     "lo": 0.9591998082971981,
+     "hi": 0.9686266855774586,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 6.0,
+     "lo": 4.3,
+     "hi": 7.7,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.06536004975089742,
+     "lo": 0.045434394615705594,
+     "hi": 0.08826252282980579,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 38.3,
+     "lo": 26.6,
+     "hi": 50.4,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7705375581708882,
+     "lo": 0.7438887376335268,
+     "hi": 0.8042999100967347,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 66.3,
+     "lo": 58.7,
+     "hi": 73.8,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.6930445898071079,
+     "lo": 0.632011712547046,
+     "hi": 0.7584149899396538,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 446.4,
+     "lo": 401.2,
+     "hi": 491.1,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7681797250556636,
+     "lo": 0.7615652178586511,
+     "hi": 0.776511463622772,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 90.0,
+     "lo": 90.0,
+     "hi": 90.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 529.0,
+     "lo": 529.0,
+     "hi": 529.0,
+     "n": 10
+    }
+   }
+  },
+  {
+   "reports": 3,
+   "distinct_rsus": 1,
+   "rule": "3 reports / 1 RSU",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 33.2,
+     "lo": 30.7,
+     "hi": 35.4,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.34891866927855597,
+     "lo": 0.323219496187596,
+     "hi": 0.37875037230872005,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 223.0,
+     "lo": 192.0,
+     "hi": 248.5,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9649485848454132,
+     "lo": 0.9563069245768991,
+     "hi": 0.9715766489914254,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 93.6,
+     "lo": 83.8,
+     "hi": 101.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.9709433027229383,
+     "lo": 0.9630473992614496,
+     "hi": 0.9782721748078785,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 634.2,
+     "lo": 513.7,
+     "hi": 735.7,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9640057638677351,
+     "lo": 0.9591998082971981,
+     "hi": 0.9686266855774586,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 6.1,
+     "lo": 4.4,
+     "hi": 7.8,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.06622961496828873,
+     "lo": 0.046831454009752235,
+     "hi": 0.08826252282980579,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 41.3,
+     "lo": 29.7,
+     "hi": 52.9,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7587184069267936,
+     "lo": 0.7271943564853034,
+     "hi": 0.7975273823304263,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 67.8,
+     "lo": 61.6,
+     "hi": 74.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.7093852072980916,
+     "lo": 0.6512605464345973,
+     "hi": 0.7601630162145578,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 472.7,
+     "lo": 432.8,
+     "hi": 514.1,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7685061446661694,
+     "lo": 0.7591789240103715,
+     "hi": 0.7793360120202253,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 120.0,
+     "lo": 120.0,
+     "hi": 120.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 499.0,
+     "lo": 499.0,
+     "hi": 499.0,
+     "n": 10
+    }
+   }
+  },
+  {
+   "reports": 5,
+   "distinct_rsus": 1,
+   "rule": "5 reports / 1 RSU",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 32.8,
+     "lo": 30.3,
+     "hi": 35.0,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.34481096025698316,
+     "lo": 0.3190680194733035,
+     "hi": 0.373659607239068,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 223.0,
+     "lo": 192.0,
+     "hi": 248.5,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9649485848454132,
+     "lo": 0.9563069245768991,
+     "hi": 0.9715766489914254,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 92.0,
+     "lo": 82.8,
+     "hi": 99.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.9557676676949654,
+     "lo": 0.942252223994491,
+     "hi": 0.9694187104840467,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 597.0,
+     "lo": 497.8,
+     "hi": 684.7,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.96175138275973,
+     "lo": 0.9580590509494084,
+     "hi": 0.9650748267991549,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 5.6,
+     "lo": 3.9,
+     "hi": 7.5,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.06146593105272736,
+     "lo": 0.04121894427641591,
+     "hi": 0.0865405348889883,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 39.9,
+     "lo": 28.7,
+     "hi": 52.0,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7600761649183277,
+     "lo": 0.7284192926184304,
+     "hi": 0.7988851403219605,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 64.4,
+     "lo": 58.6,
+     "hi": 71.1,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.6731991291131689,
+     "lo": 0.6210467152961,
+     "hi": 0.7261358399966248,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 489.2,
+     "lo": 442.9,
+     "hi": 540.9,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7681011569800031,
+     "lo": 0.7646111238305396,
+     "hi": 0.7713870792092342,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 180.0,
+     "lo": 180.0,
+     "hi": 180.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 439.0,
+     "lo": 439.0,
+     "hi": 439.0,
+     "n": 10
+    }
+   }
+  },
+  {
+   "reports": 2,
+   "distinct_rsus": 2,
+   "rule": "2 reports / 2 RSUs",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 11.6,
+     "lo": 10.1,
+     "hi": 13.2,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.12258984588417449,
+     "lo": 0.10443147770287167,
+     "hi": 0.14325249092800227,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 259.1,
+     "lo": 223.2,
+     "hi": 292.5,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.966731607949504,
+     "lo": 0.9576456549329208,
+     "hi": 0.9759818164996071,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 87.8,
+     "lo": 77.8,
+     "hi": 98.1,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.914241846239196,
+     "lo": 0.8359907681496499,
+     "hi": 0.958990679342104,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 1216.0,
+     "lo": 1094.4,
+     "hi": 1336.6,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9660341345578467,
+     "lo": 0.962239899657328,
+     "hi": 0.9698254118590576,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 0.7,
+     "lo": 0.3,
+     "hi": 1.2,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.008130814451873709,
+     "lo": 0.002830188679245283,
+     "hi": 0.014730527507827797,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 39.1,
+     "lo": 27.7,
+     "hi": 49.2,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7827107527113637,
+     "lo": 0.7596176562681873,
+     "hi": 0.813622360101709,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 45.0,
+     "lo": 40.2,
+     "hi": 49.6,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.47142124106781935,
+     "lo": 0.42818870686905164,
+     "hi": 0.51886580038077,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 797.9,
+     "lo": 726.9,
+     "hi": 861.9,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7623103533496032,
+     "lo": 0.7553013621429375,
+     "hi": 0.7691090982684662,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 126.0,
+     "lo": 102.0,
+     "hi": 159.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 493.0,
+     "lo": 460.0,
+     "hi": 517.0,
+     "n": 10
+    }
+   }
+  },
+  {
+   "reports": 3,
+   "distinct_rsus": 2,
+   "rule": "3 reports / 2 RSUs",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 11.6,
+     "lo": 10.1,
+     "hi": 13.2,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.12258984588417449,
+     "lo": 0.10443147770287167,
+     "hi": 0.14325249092800227,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 259.1,
+     "lo": 223.2,
+     "hi": 292.5,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.966731607949504,
+     "lo": 0.9576456549329208,
+     "hi": 0.9759818164996071,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 87.8,
+     "lo": 77.8,
+     "hi": 98.1,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.914241846239196,
+     "lo": 0.8359907681496499,
+     "hi": 0.958990679342104,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 1216.0,
+     "lo": 1094.4,
+     "hi": 1336.6,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9660341345578467,
+     "lo": 0.962239899657328,
+     "hi": 0.9698254118590576,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 0.7,
+     "lo": 0.3,
+     "hi": 1.2,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.008130814451873709,
+     "lo": 0.002830188679245283,
+     "hi": 0.014730527507827797,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 39.1,
+     "lo": 27.7,
+     "hi": 49.2,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7827107527113637,
+     "lo": 0.7596176562681873,
+     "hi": 0.813622360101709,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 46.1,
+     "lo": 41.2,
+     "hi": 50.4,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.4817561042328712,
+     "lo": 0.4435693823860491,
+     "hi": 0.5220043377503549,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 808.2,
+     "lo": 736.7,
+     "hi": 868.1,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7635502848454738,
+     "lo": 0.7567084725493145,
+     "hi": 0.7699168330921755,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 138.0,
+     "lo": 120.0,
+     "hi": 165.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 481.0,
+     "lo": 454.0,
+     "hi": 499.0,
+     "n": 10
+    }
+   }
+  },
+  {
+   "reports": 3,
+   "distinct_rsus": 3,
+   "rule": "3 reports / 3 RSUs",
+   "S1_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 2.4,
+     "lo": 1.6,
+     "hi": 3.2,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.026609442959069616,
+     "lo": 0.016772261422315436,
+     "hi": 0.03770559990876251,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 275.9,
+     "lo": 245.1,
+     "hi": 305.2,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.9619766259686282,
+     "lo": 0.9561453778573484,
+     "hi": 0.9681582463843377,
+     "n": 10
+    }
+   },
+   "S1_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 87.8,
+     "lo": 79.5,
+     "hi": 95.5,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.9120552217560904,
+     "lo": 0.8866222339305052,
+     "hi": 0.9379596743739377,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 2122.6,
+     "lo": 1950.0,
+     "hi": 2287.6,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.960708536023733,
+     "lo": 0.9578582457568711,
+     "hi": 0.9635489120866604,
+     "n": 10
+    }
+   },
+   "S2_short": {
+    "sim_seconds": 120,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 39.1,
+     "lo": 28.1,
+     "hi": 48.9,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7803887467109589,
+     "lo": 0.7558587030797974,
+     "hi": 0.8116383655795647,
+     "n": 10
+    }
+   },
+   "S2_long": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "vehicles": {
+     "mean": 96.5,
+     "lo": 86.2,
+     "hi": 104.6,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 26.7,
+     "lo": 24.1,
+     "hi": 29.3,
+     "n": 10
+    },
+    "revoked_share": {
+     "mean": 0.28831802182319144,
+     "lo": 0.2396775184690941,
+     "hi": 0.35452786374058054,
+     "n": 10
+    },
+    "victims_blamed": {
+     "mean": 1177.3,
+     "lo": 1101.4,
+     "hi": 1253.0,
+     "n": 10
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7632513868381817,
+     "lo": 0.7569249620069153,
+     "hi": 0.7689068548676594,
+     "n": 10
+    }
+   },
+   "misbehaver": {
+    "sim_seconds": 600,
+    "seeds": 10,
+    "revoked_within_horizon": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 10
+    },
+    "seconds_to_revocation": {
+     "mean": 198.0,
+     "lo": 153.0,
+     "hi": 261.0,
+     "n": 10
+    },
+    "reports_against_it": {
+     "mean": 421.0,
+     "lo": 358.0,
+     "hi": 466.0,
+     "n": 10
+    }
+   }
+  }
+ ]
+}

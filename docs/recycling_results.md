@@ -66,13 +66,14 @@ it run before it is revoked.
 | 3 / 2 | 12 / 88 | 1 / 46 | 1,216 | 138 s (120 to 165) |
 | 3 / 3 | 2 / 88 | 0 / 27 | 2,123 | 198 s (153 to 261) |
 
-Of about 90 vehicles per run (the 600 s S1 figure is 96 % of them).
+Of 97 vehicles per run on average: the 600 s S1 figure is 97 % of them under the
+first-report rule and 91 % under the three-RSU rule.
 
 * Counting reports changes nothing. A shadowed holder is reported on every message
   the forger sends under its pseudonym, so five reports arrive in the same round as
   the first; the 120 s and 600 s counts are identical from one to five reports.
 * Requiring distinct RSUs slows it down: three RSUs cut S1's wrongful revocations at
-  120 s from 33 to 2. At 600 s they are back to 88 of about 90, because the victim
+  120 s from 33 to 2. At 600 s they are back to 88 of 97, because the victim
   drives past more RSUs and each one that hears the forger reports it. The rule
   delays the wrongful revocation by the time it takes to pass two more RSUs.
 * The wrongful reports grow with the stricter rule (634 to 2,123 per run): the
