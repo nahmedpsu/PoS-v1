@@ -19,7 +19,17 @@ from .consensus.pokw import pokw_mine
 from .consensus.pop import PoPServer, verify_election
 from .consensus.popv2 import EquivocationDetector, V2Node, popv2_elect, verify_popv2_proof
 from .consensus.pow2 import mine_pow2
-from .entities import PKI, RSU, Manufacturer, PMCloud, PrivacyManager, Pseudonym, PseudonymLedger, Vehicle
+from .entities import (
+    PKI,
+    RSU,
+    Manufacturer,
+    PMCloud,
+    PrivacyManager,
+    Pseudonym,
+    PseudonymLedger,
+    SafetyMessage,
+    Vehicle,
+)
 from .v2.anchoring import (
     anchors_to_proof,
     build_allotment_proof,
@@ -79,6 +89,7 @@ class ITSConfig:
     shuffle_before_upload: bool = False  # PM shuffles used sets before uploading (cloud-order leak fix)
     revocation_reports: int = 1          # clone reports against a vehicle before the PM asks the PKI to revoke it
     revocation_distinct_rsus: int = 1    # ... and from at least this many different RSUs
+    insider_forgery: bool = False        # E3b: once per round each infrastructure entity signs with a key it holds
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
@@ -193,6 +204,7 @@ class ITSSimulation:
         self.report_tally: dict[str, list[dict]] = {}        # vehicle -> clone reports received so far (revocation rule)
         self.present_vehicle_steps = 0                       # sum over driven seconds of vehicles on the road (traces: not all are)
         self.departed_returns = 0                            # pseudonyms returned by vehicles that left the corridor
+        self.insider_stats: dict[str, dict] = {}             # E3b: per entity, key custody share and forgery outcome
         self.driven_steps = 0
         self.road: Road | None = None
         self.adversary = None
@@ -427,7 +439,9 @@ class ITSSimulation:
                 continue
             keys = [crypto.generate_keypair() for _ in range(per_vehicle)]
             v.load.keygens += per_vehicle
-            ps = self.pki.certify(keys)
+            ps = self.pki.certify([k.pk for k in keys])       # only the public keys leave the vehicle
+            for p, k in zip(ps, keys):
+                p.keys = k
             v.receive_pseudonyms(ps)
             for p in ps:
                 self.ledger.allot(p, v.vehicle_id)
@@ -562,7 +576,7 @@ class ITSSimulation:
 
         # 5. Algorithm 4 line 21: PMs retrieve the new sets; Algorithm 5 again.
         for dst_id, ps in relocated.items():
-            pm_by_id[dst_id].pool.extend(p for _, p in ps)
+            pm_by_id[dst_id].receive_pool([p for _, p in ps])
         cpu2, blocks2, txs2, reassigned = self._allot_and_distribute()
 
         stats = RoundStats(
@@ -638,6 +652,8 @@ class ITSSimulation:
                             rejected += 1
             if self.former is not None:
                 messages += self._former_holder_step(by_vid, positions, holder_x, now)
+            if cfg.insider_forgery and step == cfg.round_seconds - 1:
+                messages += self._insider_step(by_vid, positions, now)
             self.adversary.observe(beacons)
             pairs = self.adversary.linked_pairs
             self.tracker_nodes.extend(pairs[self._tracker_seen:])        # beacons carry their holding ids
@@ -653,6 +669,59 @@ class ITSSimulation:
             v.history.append(v.current.pid)
             v.current = None
         return messages, rejected
+
+    def _insider_entities(self) -> dict:
+        """One instance of each infrastructure entity, as in E3: the PKI, the
+        first PM, the first RSU and the cloud, with the private keys each has held."""
+        return {"pki": self.pki.key_custody, "pm": self.pms[0].key_custody,
+                "rsu": self.rsus[0].key_custody, "cloud": self.cloud.key_custody}
+
+    def _insider_step(self, by_vid: dict, positions: dict, now: float) -> int:
+        """E3b, the A3 adversary with a key: each entity measures the share of
+        pseudonyms in use whose current signing key it holds, then signs one
+        message with such a key on behalf of its current holder, 40 m from the
+        holder, and sends it to the V2V receivers and to the holder's RSU."""
+        in_use = {}
+        for mv in self.road.vehicles:
+            v = by_vid[mv.vid]
+            if v.current is not None and not v.revoked:
+                in_use[v.current.pid] = (v, mv)
+        if not in_use:
+            return 0
+        sent = 0
+        for name, custody in self._insider_entities().items():
+            held = sorted(pid for pid, (v, mv) in in_use.items()
+                          if pid in custody and custody[pid].sk is not None
+                          and custody[pid].pk_hex == v.current.keys.pk_hex)
+            st = self.insider_stats.setdefault(name, {"rounds": 0, "share_sum": 0.0, "sent": 0, "accepted": 0,
+                                                      "receivers_total": 0, "receivers_accepting": 0,
+                                                      "rsu_accepted": 0, "holder_blamed": 0})
+            st["rounds"] += 1
+            st["share_sum"] += len(held) / len(in_use)
+            if not held:
+                continue
+            pid = held[0]
+            v, mv = in_use[pid]
+            keys = custody[pid]
+            claimed_x = (mv.x + self.cfg.ghost_offset_m) % self.wrap_m
+            msg = SafetyMessage(pid, (claimed_x, 0.0), mv.v, float(mv.direction), now)
+            msg.signature = crypto.sign(keys.sk, msg.body()).hex()
+            msg.cred = v.current.cert_wire()                 # public: the certificate every message carries
+            st["sent"] += 1
+            sent += 1
+            if self.v2v is not None:
+                acc, rx = self.v2v.deliver(msg, claimed_x, positions, now, forged=True, exclude=mv.vid)
+                st["receivers_total"] += rx
+                st["receivers_accepting"] += acc
+                if acc:
+                    st["accepted"] += 1
+            rsu = self.rsus[mv.rsu]
+            before = len(rsu.pm.misbehaviour_reports)
+            if rsu.receive_message(None, msg):
+                st["rsu_accepted"] += 1
+            if any(r["vehicle"] == v.vehicle_id for r in rsu.pm.misbehaviour_reports[before:]):
+                st["holder_blamed"] += 1
+        return sent
 
     def _former_holder_step(self, by_vid: dict, positions: dict, holder_x: dict, now: float) -> int:
         """One second of the A2 adversary: every former holder tries every key
@@ -803,6 +872,14 @@ class ITSSimulation:
             out["revoked_persistence"] = per
         if self.cfg.mobility:
             out["insider"] = full_table(self.insider_evidence())
+        if self.insider_stats:
+            out["insider_forgery"] = {
+                name: {"key_share": st["share_sum"] / max(1, st["rounds"]), "rounds": st["rounds"], "sent": st["sent"],
+                       "accepted": st["accepted"], "receivers_total": st["receivers_total"],
+                       "receivers_accepting": st["receivers_accepting"],
+                       "receiver_rate": st["receivers_accepting"] / st["receivers_total"] if st["receivers_total"] else 0.0,
+                       "rsu_accepted": st["rsu_accepted"], "holder_blamed": st["holder_blamed"]}
+                for name, st in self.insider_stats.items()}
         return out
 
     def summary(self) -> dict:

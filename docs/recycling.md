@@ -12,14 +12,18 @@ to `results/recycling/` and `figures/recycling/`; the numbers are in
 | Adversary | Capability | Not allowed | Code |
 |---|---|---|---|
 | A1 outside tracker | Hears every beacon (pid, position, speed, heading, time) with GPS noise | No keys, no ledger | `v2/tracker_kalman.py` |
-| A2 former holder | Keeps the private key of every pseudonym it held; transmits anywhere at any time | Cannot forge certificates | `v2/recycling_attacks.py` |
-| A3 curious insider | Honest-but-curious RSU, PM or cloud: follows the protocol, keeps everything it sees | Does not deviate or forge | `v2/insider.py` |
+| A2 former holder | A former holder whose vehicle does not enforce key deletion (no tamper-proof device, or a compromised one): keeps the private key of every pseudonym it held; transmits anywhere at any time | Cannot forge certificates | `v2/recycling_attacks.py` |
+| A3 curious insider | Honest-but-curious RSU, PM or cloud: follows the protocol, keeps everything it sees; holds private keys in recycle, fresh and window modes; can sign as any vehicle (E3b) | Does not deviate from the protocol or forge certificates | `v2/insider.py`, `ITSSimulation._insider_step` |
 | A4 collusion | A1 plus one A3 | Same as its parts | `v2/insider.py` (`tracker+pm` etc.) |
 
 Starting facts, read from the code: a recycled `Pseudonym` travels with its
 private key (`Pseudonym.to_wire` carries it); only RSUs check reuse, through
 the ledger; the ledger maps every pseudonym to the holder's permanent identity;
 and `RSU.receive_message` used to be told the true sender (oracle attribution).
+Mdee et al. and Salin (below) assume a tamper-proof device per vehicle that
+deletes a swapped key; PoP does not, and passes private keys through the PKI,
+PM, RSU and cloud in software (`PKI.generate_pseudonyms`,
+`PrivacyManager.receive_from_pki`, `RSU.receive_sets`, `PMCloud.upload`).
 
 ## Metrics (`v2/metrics.py`)
 
@@ -160,31 +164,21 @@ former holders (120 s and 600 s, ledger attribution), and on the other side of t
 trade the time a genuine misbehaver (the E2 vehicle, oracle attribution) survives
 before the rule is met.
 
-## Open item before submission: the two 2023 swapping papers
+## The two 2023 swapping designs, read in full
 
-The fix the study recommends, re-keying on every transfer (`rekey`), is a
-contribution only if the swapping and recycling designs in the literature do not
-already do it. Two 2023 designs have to be read in full before a related-work
-section can say so, and neither full text is open access (OpenAlex lists no open
-location for either DOI; the IEEE and Springer pages are paywalled):
-
-* Mdee, Khan, Seo and Kim, "Security Compliant and Cooperative Pseudonyms Swapping
-  for Location Privacy Preservation in VANETs", IEEE TVT 72(8), 2023,
-  DOI 10.1109/TVT.2023.3254660. What the abstract states: vehicles hold swappable and
-  non-swappable pseudonyms, swap without RSUs inside mix-contexts, and report each
-  exchange to the authority for accountability and non-repudiation. Papers that cite
-  it describe the swap as handing over the short-term pseudonym's private key. That
-  is second-hand and is *not* relied on here: whether the new holder re-keys is the
-  question to settle from the paper itself.
-* Salin, "Pseudonym Swapping with Secure Accumulators and Double Diffie-Hellman
-  Rounds in Cooperative Intelligent Transport Systems", CRiSIS 2022, LNCS 13857,
-  Springer 2023, DOI 10.1007/978-3-031-31108-6_17. What the abstract states:
-  signature keys are held in the hardware security module and in a secure
-  accumulator that proves a key valid, and the swap runs two Diffie-Hellman rounds.
-  Whether those rounds derive a fresh per-holder key is the question to settle.
-
-Decision rule once both are read: if either design gives the receiving vehicle a
-key the former holder does not have, the study's claim narrows to "re-keying is
-missing from cloud recycling, and is what the safe swapping designs already do";
-if both move the key as is, the claim stands as written, and the former-holder
-result (E1) applies to them unchanged.
+Mdee et al. (IEEE TVT 72(8), 2023, doi 10.1109/TVT.2023.3254660) hand the private
+key to the swap partner encrypted ("sends the private key PR SID r,i via encrypted
+key exchange message", Sec. IV-C). They rely on a tamper-proof device per vehicle
+("vehicles also are trusted", Sec. III-A), and their only adversary is an outside
+eavesdropper. Salin (CRiSIS 2022, LNCS 13857, pp. 223-238, doi
+10.1007/978-3-031-31108-6_17) encrypts the secret keys under a second
+Diffie-Hellman session key and sends them as is (Algorithm 2). The hardware module
+discards the old keys, and the accumulator detects altered keys, not retained
+copies. Neither design re-keys at transfer. Both depend on trusted hardware to stop
+a former holder, and both depend on an authority's record of who holds which
+pseudonym for accountability. `rekey` provides the same protection
+cryptographically, at the cost of fresh issuance with vehicle-generated keys, and
+also removes the insiders' access to keys (E3b). Mdee et al.'s Fig. 4 reports an
+innocent vehicle revoked after a swap, caused by revocation-list timing. Their
+remedy, a non-swappable pseudonym for revocation, does not cover misbehaviour
+signed under a swapped pseudonym that appears in safety messages.

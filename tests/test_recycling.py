@@ -287,3 +287,56 @@ def test_departing_vehicles_return_their_pseudonyms():
         if v.index in gone:
             assert v.pseudonyms == [] and v.current is None and v.used == []   # returned and collected
     assert sim.summary()["departed_returns"] == sim.departed_returns
+
+
+def test_tracker_counts_only_real_pseudonym_changes():
+    """A beacon that carries the pseudonym its track already has is a
+    continuation: under recycling the tracker used to re-link such beacons
+    and count them as changes, inflating the recycle link rate."""
+    from pop_sim.shuffle import ITSConfig, ITSSimulation
+    from pop_sim.v2.mobility import RoadConfig
+
+    for tracker in ("kalman", "nearest"):
+        cfg = ITSConfig(n_pm=2, rsus_per_pm=3, consensus="pop", mobility=True, road=RoadConfig(density_per_km=10, seed=4),
+                        round_seconds=30, pseudonyms_per_vehicle=3, seed=4, silent_period=3, position_noise_m=3,
+                        issuance="recycle", tracker=tracker)
+        sim = ITSSimulation(cfg)
+        sim.run(4)
+        t = sim.summary()["tracking"]
+        assert t["pseudonym_changes"] == sim.true_changes == t["true_changes"]
+        assert sim.adversary.changes <= sim.true_changes             # never more links than changes
+        assert sim.adversary.changes == sim.adversary.correct + sim.adversary.wrong
+        for old, new in sim.adversary.linked_pairs:                  # no link joins a label to itself
+            assert old.split("#")[0] != new.split("#")[0]
+        assert abs(t["linking_success_true"] - sim.adversary.correct / sim.true_changes) < 1e-12
+
+
+def test_insider_key_custody_and_forgery():
+    """E3b: in recycle, fresh and window modes the PKI, PMs, RSUs and cloud hold
+    vehicle signing keys in software and can sign as a vehicle; with
+    vehicle-generated keys (fresh_vgk, rekey) no infrastructure entity ever
+    holds a key in use."""
+    from pop_sim.shuffle import ITSConfig, ITSSimulation
+    from pop_sim.v2.mobility import RoadConfig
+
+    def run(mode):
+        cfg = ITSConfig(n_pm=2, rsus_per_pm=3, consensus="pop", mobility=True, road=RoadConfig(density_per_km=10, seed=2),
+                        round_seconds=30, pseudonyms_per_vehicle=3, seed=2, silent_period=3, position_noise_m=3,
+                        attribution="ledger", v2v=True, issuance=mode, insider_forgery=True)
+        sim = ITSSimulation(cfg)
+        sim.run(3)
+        return sim, sim.summary()["recycling"]["insider_forgery"]
+
+    for mode in ("fresh_vgk", "rekey"):
+        sim, r = run(mode)
+        assert all(x["key_share"] == 0.0 and x["sent"] == 0 for x in r.values()), mode
+        in_use_pks = {v.current.keys.pk_hex for v in sim.vehicles if v.current} | {p.keys.pk_hex for v in sim.vehicles for p in v.pseudonyms}
+        for ent in (sim.pki, *sim.pms, *sim.rsus, sim.cloud):
+            held = {k.pk_hex for k in ent.key_custody.values() if k.sk is not None}
+            assert not (held & in_use_pks), f"{mode}: an infrastructure entity holds a key in use"
+    sim, r = run("recycle")
+    assert r["pki"]["key_share"] == 1.0 and r["pm"]["key_share"] > 0 and r["rsu"]["key_share"] > 0 and r["cloud"]["key_share"] > 0
+    assert r["pki"]["sent"] == 3 and r["pki"]["accepted"] >= 1          # receivers accept the insider's message
+    assert r["pki"]["holder_blamed"] >= 1                                # and the ledger blames the holder
+    sim, r = run("fresh")
+    assert r["pki"]["key_share"] == 1.0 and r["cloud"]["key_share"] == 0.0   # fresh pseudonyms are never uploaded

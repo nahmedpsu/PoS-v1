@@ -124,6 +124,7 @@ class PKI:
         self.accesses = 0                         # paper: PKI accessed only twice
         self._pid_counter = 0
         self.load = Load()                        # signatures / key generations / bytes done here
+        self.key_custody: dict[str, KeyPair] = {}  # every pseudonym whose private key this entity has held (E3b)
 
     # Algorithm 4, step 1-2 ------------------------------------------------
     def register_vehicle(self, index: int) -> VehicleCredential:
@@ -149,14 +150,18 @@ class PKI:
             p.cert = crypto.sign(self.keys.sk, p.credential_bytes()).hex()
             self.load.signatures += 1
             self.issued_pids.add(pid)
+            self.key_custody[pid] = keys          # the PKI made the key: it holds it
             out.append(p)
         return out
 
-    def certify(self, keypairs: list[KeyPair]) -> list[Pseudonym]:
-        """SCMS-style issuance: the vehicle made the key pair, PKI only signs
-        the certificate and never holds the private key."""
+    def certify(self, public_keys: list) -> list[Pseudonym]:
+        """SCMS-style issuance: the vehicle made the key pair and sends only the
+        public key; the PKI signs the certificate and never sees the private
+        key.  The returned pseudonyms carry no private key; the vehicle
+        attaches its own."""
         out = []
-        for keys in keypairs:
+        for pk in public_keys:
+            keys = KeyPair(None, pk)
             self._pid_counter += 1
             pid = f"PID-{self.rng.getrandbits(48):012x}"
             p = Pseudonym(pid, keys, "", clock.now() + self.lifetime, self.keys.pk_hex)
@@ -424,6 +429,7 @@ class RSU:
         self.keys = crypto.generate_keypair()
         self.vehicles: list[Vehicle] = []
         self.shuffled_sets: list[Pseudonym] = []      # received from the PM
+        self.key_custody: dict[str, KeyPair] = {}     # pseudonyms whose private key passed through here (E3b)
         self.used: list[tuple[Pseudonym, dict]] = []  # used pseudonyms with vehicle status
         self.ledger = pm.ledger                       # view of the RSU-level blockchain
         self.observed: list[SafetyMessage] = []
@@ -454,6 +460,9 @@ class RSU:
 
     def receive_sets(self, pseudonyms: list[Pseudonym]) -> None:
         self.shuffled_sets.extend(pseudonyms)
+        for p in pseudonyms:                       # the RSU holds the private keys it hands out (E3b)
+            if p.keys.sk is not None:
+                self.key_custody[p.pid] = p.keys
 
     def distribute(self, per_vehicle: int, avoid_previous: bool = True, attempts: int = 25, pki: "PKI | None" = None) -> int:
         """Assign pseudonyms to vehicles under coverage; returns number assigned.
@@ -568,9 +577,13 @@ class PMCloud:
     def __init__(self, rng: random.Random):
         self.rng = rng
         self.store: list[tuple[str, Pseudonym]] = []     # (origin PM, pseudonym)
+        self.key_custody: dict[str, KeyPair] = {}     # pseudonyms whose private key passed through here (E3b)
 
     def upload(self, pm_id: str, pseudonyms: list[Pseudonym]) -> None:
         self.store.extend((pm_id, p) for p in pseudonyms)
+        for p in pseudonyms:                       # the cloud holds every recycled private key (E3b)
+            if p.keys.sk is not None:
+                self.key_custody[p.pid] = p.keys
 
     def total(self) -> int:
         return len(self.store)
@@ -614,6 +627,7 @@ class PrivacyManager:
         self.load = Load()
         self.pm_cert = ""                            # PKI certificate for signing holder certs
         self.upload_log: list[list[str]] = []        # pid order of every upload to the cloud (insider evidence)
+        self.key_custody: dict[str, KeyPair] = {}     # pseudonyms whose private key passed through here (E3b)
         self.rsu_chain = Blockchain(f"rsu-chain-{pm_id}")   # blockchain over RSU (Fig. 5)
 
     # Algorithm 4, step 6 (receiving side) --------------------------------
@@ -625,8 +639,16 @@ class PrivacyManager:
         for p in ps:
             if not p.verify(pki_pk):
                 raise ValueError(f"{self.pm_id}: pseudonym certificate invalid")
-        self.pool.extend(ps)
+        self.receive_pool(ps)
         return len(ps)
+
+    def receive_pool(self, pseudonyms: list[Pseudonym]) -> None:
+        """Pseudonyms entering this PM's pool, from the PKI or relocated from
+        the cloud: the PM decrypts and holds them, private keys included (E3b)."""
+        self.pool.extend(pseudonyms)
+        for p in pseudonyms:
+            if p.keys.sk is not None:
+                self.key_custody[p.pid] = p.keys
 
     def demand(self, per_vehicle: int) -> int:
         return sum(r.demand(per_vehicle) for r in self.rsus)

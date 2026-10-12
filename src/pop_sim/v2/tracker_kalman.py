@@ -111,6 +111,7 @@ class KalmanTrackingAdversary:
         self.changes = self.correct = self.wrong = self.lost = self.beacons = 0
         self.vehicles: set[int] = set()
         self.linked_pairs: list[tuple[str, str]] = []     # (old pid, new pid) the tracker decided to link
+        self.relabel_captures = 0                         # same-label continuations that were in fact another vehicle
 
     # -- geometry on a ring
     def _wrap(self, d: float) -> float:
@@ -173,6 +174,8 @@ class KalmanTrackingAdversary:
             if t is not None and t.track_id not in matched_t:
                 if self._mahalanobis2(t, b, preds[t.track_id]) > 16 * self.gate2 or b.direction != t.direction:
                     continue
+                if b.truth_vid != t.truth[-1]:
+                    self.relabel_captures += 1           # a reused label on another vehicle took the track
                 self._extend(t, b, preds[t.track_id])
                 matched_t.add(t.track_id)
                 used_b.add(i)
@@ -186,6 +189,15 @@ class KalmanTrackingAdversary:
                     if cost[r][c] >= 1e9:
                         continue
                     t, b = comp_rows[r], beacons[comp_cols[c]]
+                    if b.pid == t.last.pid:
+                        # the label did not change: an eavesdropper sees a continuation,
+                        # not a pseudonym change, so it is neither counted nor scored
+                        if b.truth_vid != t.truth[-1]:
+                            self.relabel_captures += 1       # a reused label on another vehicle took the track
+                        self._extend(t, b, preds[t.track_id])
+                        matched_t.add(t.track_id)
+                        used_b.add(comp_cols[c])
+                        continue
                     self.changes += 1
                     self.linked_pairs.append((t.last.node or t.last.pid, b.node or b.pid))
                     if b.truth_vid == t.truth[-1]:
@@ -290,7 +302,8 @@ class KalmanTrackingAdversary:
             beacons=self.beacons, pseudonym_changes=self.changes + self.lost,
             changes_linked_correctly=self.correct, changes_linked_wrongly=self.wrong, changes_lost=self.lost,
             mean_track_length=sum(t.length for t in tracks) / max(1, len(tracks)),
-            longest_correct_run=sum(runs) / max(1, len(runs)), vehicles=len(self.vehicles))
+            longest_correct_run=sum(runs) / max(1, len(runs)), vehicles=len(self.vehicles),
+            true_changes=true_changes if true_changes is not None else 0, relabel_captures=self.relabel_captures)
 
 
 def make_tracker(kind: str, length_m: float, gate_m: float = 8.0, dt: float = 1.0, max_gap: float = 20.0):

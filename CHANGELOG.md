@@ -1,5 +1,30 @@
 # Changelog
 
+## 3.3.0 - tracker scoring fix, insider forgery (E3b), the swapping papers read
+
+* Trackers (`v2/tracker_kalman.py`, `v2/adversary.py`): a beacon assigned to
+  a track that already carries its pseudonym is a continuation, not a change.
+  Under recycling such re-links were counted as correctly linked changes and
+  inflated the recycle link rate (1,061.7 counted against 1,058.5 true).
+  `linking_success_true` (correct links over the ground-truth change count)
+  is reported next to the existing rate; E3, E4 and the SUMO runs are rerun.
+  Counts now equal ground truth in every mode.  A residual a third of a point
+  *below* fresh remains under recycle: a recycled label reappearing on another
+  vehicle near its former holder's coasting track is taken as a continuation
+  (`relabel_captures`, reported per run; zero captures, zero difference).
+  E3 is unchanged: the removed links joined a holding to itself.
+* E3b (`exp_e3b_insider_forgery`, `ITSSimulation._insider_step`): the PKI,
+  PMs, RSUs and cloud record every private key that passes through them
+  (`key_custody`); once per round each signs one message with a key it holds
+  on behalf of the current holder.  `PKI.certify` now takes public keys only,
+  so fresh_vgk and rekey never route a vehicle's private key through the
+  infrastructure.
+* `pop-sim recycling --only E3,E3b,E4` reruns a subset.
+* docs/recycling.md: threat model A2 and A3 updated; the two 2023 swapping
+  designs (Mdee et al.; Salin) read in full: neither re-keys at transfer, both
+  rely on trusted hardware and an authority's holder record.
+* 89 tests.
+
 ## 3.2.0 - review follow-ups: the revocation rule, exact tests, real SUMO scenarios
 
 * `revocation_reports` / `revocation_distinct_rsus` (ITSConfig): the PM asks

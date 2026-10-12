@@ -66,7 +66,7 @@ src/pop_sim/
   experiments_recycling.py  E1-E6 of the pseudonym recycling study (docs/recycling.md)
   plots.py, plots_v2.py
   cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
-tests/               87 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
+tests/               89 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
 results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
 config/benchmark.json  example configuration for `pop-sim bench`
 Dockerfile           reproducible environment (python:3.12-slim + requirements)
@@ -147,7 +147,7 @@ Every shuffle round (`run_round`) then does:
 The consensus is pluggable (`pop`, `poet`, `pow2`, `pokw`) so the same protocol run
 can be compared across algorithms.
 
-## Pseudonym recycling study (versions 3.0.0 to 3.2.0)
+## Pseudonym recycling study (versions 3.0.0 to 3.3.0)
 
 The manuscript's central mechanism is *recycling*: used pseudonyms are shuffled
 through the privacy-manager cloud and handed to other vehicles, so that the PKI is
@@ -160,11 +160,13 @@ Design, threat model, metrics and the pre-registered outcome cases are in
 [docs/recycling.md](docs/recycling.md); measured results in
 [docs/recycling_results.md](docs/recycling_results.md).
 
-The answer, over ten seeds: recycling gives no privacy an eavesdropper notices,
+The answer, over ten seeds: recycling gives identical privacy against an eavesdropper,
 lets a former holder forge messages that every vehicle accepts (and that get the
 innocent current holder revoked), and wins only on PKI load, which the safe form of
-recycling hands to the privacy managers instead. Fresh issuance with vehicle-generated
-keys dominates it. Version 3.2.0 adds the checks a reviewer asks for: the wrongful
+recycling hands to the privacy managers instead. It also leaves vehicle signing keys
+in the hands of the PKI, the privacy managers, the RSUs and the cloud, each of which
+can sign as a vehicle (E3b); only vehicle-generated keys (fresh_vgk, rekey) keep
+them out. Fresh issuance with vehicle-generated keys dominates it. Version 3.2.0 adds the checks a reviewer asks for: the wrongful
 revocations under stricter revocation rules (E1r), exact paired tests, and E1 and E4
 rerun on two SUMO scenarios (the LuST Luxembourg motorway at the morning peak and a
 netgenerate motorway), where the picture is the same as on the synthetic ring.

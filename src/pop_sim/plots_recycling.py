@@ -259,3 +259,29 @@ def fig_sumo(res: dict, path: Path) -> Path:
                  f"{info['corridor_m'] / 1000:.1f} km, {res['rounds'] * 30} s")
     fig.tight_layout()
     return _save(fig, path)
+
+
+def fig_e3b(res: dict, path: Path) -> Path:
+    """E3b: per mode, the share of keys in use each insider holds, and whether its forgery was accepted."""
+    cells = res["cells"]
+    modes = list(dict.fromkeys(c["mode"] for c in cells))
+    ents = list(dict.fromkeys(c["entity"] for c in cells))
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
+    x = list(range(len(modes)))
+    w = 0.8 / len(ents)
+    ent_cols = {"pki": C_POW, "pm": C_REF, "rsu": C_POW1, "cloud": C_POET}
+    for j, (ax, key, title, ylabel) in enumerate(((axes[0], "key_share", "Share of pseudonyms in use whose key the insider holds", "share"),
+                                                  (axes[1], "forgery_accepted", "Insider's forgery accepted by V2V receivers (share of seeds)", "share of seeds"))):
+        for i, ent in enumerate(ents):
+            vals = [next(c for c in cells if c["mode"] == m and c["entity"] == ent)[key] for m in modes]
+            ax.bar([xx + (i - (len(ents) - 1) / 2) * w for xx in x], [v["mean"] for v in vals], w,
+                   yerr=[[v["mean"] - v["lo"] for v in vals], [v["hi"] - v["mean"] for v in vals]],
+                   color=ent_cols.get(ent, C_REF), label=ent.upper() if ent == "pki" else ent, capsize=2)
+        ax.set_xticks(x, modes)
+        ax.set_ylim(0, 1.15)
+        ax.set_ylabel(ylabel)
+        ax.set_title(title, fontsize=10)
+        ax.legend(fontsize=8, ncol=4, loc="upper center")
+    fig.suptitle("E3b: insiders holding vehicle signing keys")
+    fig.tight_layout()
+    return _save(fig, path)

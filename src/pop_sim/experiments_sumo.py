@@ -99,6 +99,10 @@ def exp_sumo(trace: str, corridor_path: str, name: str, seeds=tuple(range(1, 11)
                 for seed in seeds]
         e4.append({"mode": mode, "seeds": len(rows),
                    "tracker_link_rate": _agg(rows, ["tracking", "linking_success"]),
+                   "tracker_link_rate_true": _agg(rows, ["tracking", "linking_success_true"]),
+                   "tracker_changes_counted": _agg(rows, ["tracking", "pseudonym_changes"]),
+                   "true_changes": _agg(rows, ["tracking", "true_changes"]),
+                    "tracker_relabel_captures": _agg(rows, ["tracking", "relabel_captures"]),
                    "forged_v2v_accepted": _agg(rows, ["forgery", "accepted_v2v"]),
                    "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
                    "insider_pm_link_rate": _agg(rows, ["insider", "pm", "link_rate"]),

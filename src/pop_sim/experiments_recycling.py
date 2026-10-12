@@ -144,6 +144,37 @@ def exp_e3_insider(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), ord
     return {"experiment": "E3_insider", "rounds": rounds, "cells": results}
 
 
+# ------------------------------------------------------------------ E3b
+INSIDER_ENTITIES = ("pki", "pm", "rsu", "cloud")
+
+
+def exp_e3b_insider_forgery(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float = 10, modes=ISSUANCE_MODES) -> dict:
+    """RQ3, with a key: private keys pass through the PKI, the PMs, the RSUs
+    and the cloud in software.  Per entity and issuance mode: the share of
+    pseudonyms in use whose current signing key the entity holds, whether one
+    message it signs with such a key is accepted by V2V receivers, and whether
+    the RSU then blames the innocent holder.  Plausibility on, ledger
+    attribution, one forgery per entity per round, 40 m from the holder."""
+    results = []
+    for mode in modes:
+        rows = []
+        for seed in seeds:
+            cfg = _base(density, seed, issuance=mode, v2v_plausibility=True, pseudonym_lifetime=900.0, insider_forgery=True)
+            sim = ITSSimulation(cfg)
+            sim.run(rounds)
+            rows.append(sim.summary()["recycling"]["insider_forgery"])
+        for ent in INSIDER_ENTITIES:
+            per = [r[ent] for r in rows]
+            results.append({"mode": mode, "entity": ent, "seeds": len(per),
+                            "key_share": bootstrap_ci([x["key_share"] for x in per]),
+                            "forgeries_sent": bootstrap_ci([float(x["sent"]) for x in per]),
+                            "forgery_accepted": bootstrap_ci([1.0 if x["accepted"] else 0.0 for x in per]),
+                            "receiver_rate": bootstrap_ci([x["receiver_rate"] for x in per]),
+                            "rsu_accepted": bootstrap_ci([1.0 if x["rsu_accepted"] else 0.0 for x in per]),
+                            "holder_blamed": bootstrap_ci([1.0 if x["holder_blamed"] else 0.0 for x in per])})
+    return {"experiment": "E3b_insider_forgery", "rounds": rounds, "density": density, "cells": results}
+
+
 # ------------------------------------------------------------------ E4
 def exp_e4_modes(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), modes=ISSUANCE_MODES,
                  strategy: str = "S2") -> dict:
@@ -160,6 +191,10 @@ def exp_e4_modes(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), modes
                 rows.append(_run(cfg, rounds))
             cell = {"density": d, "mode": mode, "seeds": len(rows),
                     "tracker_link_rate": _agg(rows, ["tracking", "linking_success"]),
+                    "tracker_link_rate_true": _agg(rows, ["tracking", "linking_success_true"]),
+                    "tracker_changes_counted": _agg(rows, ["tracking", "pseudonym_changes"]),
+                    "true_changes": _agg(rows, ["tracking", "true_changes"]),
+                    "tracker_relabel_captures": _agg(rows, ["tracking", "relabel_captures"]),
                     "forged_sent": _agg(rows, ["forgery", "sent"]),
                     "forged_v2v_accepted": _agg(rows, ["forgery", "accepted_v2v"]),
                     "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),

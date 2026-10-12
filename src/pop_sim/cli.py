@@ -173,22 +173,30 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         ("E1 impersonation", lambda: exr.exp_e1_impersonation(seeds, rounds, lifetimes=(300, 3600), extra_density_sweep=(2, 40), extra_share_sweep=(0.05,)) if quick else exr.exp_e1_impersonation(seeds, rounds), plots_recycling.fig_e1, "E1"),
         ("E2 revocation", lambda: exr.exp_e2_revocation(seeds, rounds, lifetimes=(300, 3600)) if quick else exr.exp_e2_revocation(seeds, rounds), plots_recycling.fig_e2, "E2"),
         ("E3 insider", lambda: exr.exp_e3_insider(seeds, rounds, densities=(10,)) if quick else exr.exp_e3_insider(seeds, rounds), plots_recycling.fig_e3, "E3"),
+        ("E3b insider forgery", lambda: exr.exp_e3b_insider_forgery(seeds, rounds, modes=("recycle", "fresh_vgk")) if quick else exr.exp_e3b_insider_forgery(seeds, rounds), plots_recycling.fig_e3b, "E3b"),
         ("E4 modes", lambda: exr.exp_e4_modes(seeds, rounds, densities=(10,)) if quick else exr.exp_e4_modes(seeds, rounds), plots_recycling.fig_e4, "E4"),
         ("E5 fix", lambda: exr.exp_e5_fix(seeds, rounds, strategies=("S2", "S3")) if quick else exr.exp_e5_fix(seeds, rounds), plots_recycling.fig_e5, "E5"),
     ]
     if args.only_long:
         if not (args.long or args.sensitivity):
             args.long = args.sensitivity = True
-        for key in ("E1", "E2", "E3", "E4", "E5", "E6"):
-            res[key] = json.loads((out / f"{key}.json").read_text())
+        for key in ("E1", "E2", "E3", "E3b", "E4", "E5", "E6"):
+            if (out / f"{key}.json").exists():
+                res[key] = json.loads((out / f"{key}.json").read_text())
         steps = []
+    if args.only:
+        wanted = {k.strip() for k in args.only.split(",")}
+        for key in ("E1", "E2", "E3", "E3b", "E4", "E5", "E6"):
+            if key not in wanted and (out / f"{key}.json").exists():
+                res[key] = json.loads((out / f"{key}.json").read_text())
+        steps = [st for st in steps if st[3] in wanted]
     for name, fn, plot, key in steps:
         log(name)
         r = fn()
         res[key] = r
         _dump(r, out / f"{key}.json")
         plot(r, figs / f"{key}.png")
-    if not args.only_long:
+    if not args.only_long and (not args.only or "E6" in args.only):
         log("E6 bench re-check (oracle vs ledger attribution)")
         res["E6"] = exr.exp_e6_bench_recheck(quick=quick)
         _dump(res["E6"], out / "E6.json")
@@ -313,6 +321,8 @@ def main(argv: list[str] | None = None) -> int:
     rc.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1,2 with --quick)")
     rc.add_argument("--long", action="store_true", help="also run E1x/E2x over a 600 s horizon (certificates expire)")
     rc.add_argument("--sensitivity", action="store_true", help="also run E1r: the revocation rule (k reports from m RSUs)")
+    rc.add_argument("--only", default=None,
+                    help="comma-separated subset of E1,E2,E3,E3b,E4,E5,E6 to (re)run; the others are loaded from --out")
     rc.add_argument("--only-long", action="store_true",
                     help="skip E1-E6 (their results must already exist) and run only --long / --sensitivity (both if neither is set)")
     rc.add_argument("--out", default="results/recycling")

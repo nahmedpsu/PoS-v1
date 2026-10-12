@@ -36,14 +36,22 @@ class TrackingReport:
     mean_track_length: float
     longest_correct_run: float
     vehicles: int
+    true_changes: int = 0            # ground-truth pseudonym changes (from the simulation), 0 if unknown
+    relabel_captures: int = 0        # same-label continuations that were in fact another vehicle (scoring only)
 
     @property
     def linking_success(self) -> float:
         return self.changes_linked_correctly / self.pseudonym_changes if self.pseudonym_changes else 0.0
 
+    @property
+    def linking_success_true(self) -> float:
+        """Correct links over the ground-truth change count, the same denominator in every mode."""
+        return self.changes_linked_correctly / self.true_changes if self.true_changes else 0.0
+
     def to_dict(self) -> dict:
         d = self.__dict__.copy()
         d["linking_success"] = self.linking_success
+        d["linking_success_true"] = self.linking_success_true
         return d
 
 
@@ -68,6 +76,7 @@ class TrackingAdversary:
         self.beacons = 0
         self.vehicles: set[int] = set()
         self.linked_pairs: list[tuple[str, str]] = []     # (old pid, new pid) the tracker decided to link
+        self.relabel_captures = 0                         # same-label continuations that were in fact another vehicle
 
     def _dist(self, a: float, b: float) -> float:
         d = abs(a - b) % self.length_m
@@ -91,6 +100,8 @@ class TrackingAdversary:
                 if self._dist(pred, b.x) > 4 * (self.gate + self.gate_growth * t.gap) + 40.0 or b.direction != t.last.direction:
                     rest.append(b)                        # a recycled pseudonym on another vehicle
                     continue
+                if b.truth_vid != t.truth[-1]:
+                    self.relabel_captures += 1
                 self._extend(t, b)
                 matched_tracks.add(t.track_id)
             else:
@@ -117,6 +128,11 @@ class TrackingAdversary:
                 continue
             matched_tracks.add(tid)
             used_b.add(bid)
+            if b.pid == t.last.pid:
+                if b.truth_vid != t.truth[-1]:
+                    self.relabel_captures += 1
+                self._extend(t, b)                    # same label: a continuation, not a change
+                continue
             self.changes += 1
             self.linked_pairs.append((t.last.node or t.last.pid, b.node or b.pid))
             if b.truth_vid == t.truth[-1]:
@@ -167,4 +183,5 @@ class TrackingAdversary:
             beacons=self.beacons, pseudonym_changes=self.changes + self.lost,
             changes_linked_correctly=self.correct, changes_linked_wrongly=self.wrong, changes_lost=self.lost,
             mean_track_length=sum(t.length for t in tracks) / max(1, len(tracks)),
-            longest_correct_run=sum(runs) / max(1, len(runs)), vehicles=len(self.vehicles))
+            longest_correct_run=sum(runs) / max(1, len(runs)), vehicles=len(self.vehicles),
+            true_changes=true_changes if true_changes is not None else 0, relabel_captures=self.relabel_captures)
