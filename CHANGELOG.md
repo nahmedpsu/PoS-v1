@@ -1,5 +1,24 @@
 # Changelog
 
+## 3.4.0 - scenarios on ten seeds, a stronger insider, corrected explanations
+
+* Deployment scenarios (`pop-sim usecases`) run on seeds 1-10 and report the
+  mean and a 95 % bootstrap interval of every metric; the verdict uses the
+  mean linking rate.  Urban intersection 0.72 [0.70, 0.74]; with 9 s of
+  silence in every 10 s period 0.51 [0.50, 0.53].  No scenario reaches the
+  adequate privacy band.
+* Corrected cause of the scenario and protocol figures that changed in 3.3.1:
+  the old runs used the same Kalman tracker, whose same-pseudonym step before
+  3.0.0 took a recycled pseudonym on another vehicle as a certain
+  continuation; 3.0.0 gated that step.
+* E3b: insider forgery strategies `offset` (40 m), `near` (10 m, inside the
+  25 m one-second tolerance) and `silent` (holder's silent period), ten
+  forgeries per entity per round, receiver / message / RSU / blame rates.
+  At 40 m a third of receivers accept and the RSU blames the holder for 70 %;
+  near or silent, every receiver and the RSU accept and nobody is blamed.
+* Release workflow: `move_tag` repoints an existing tag.
+* 90 tests.
+
 ## 3.3.1 - v2 results regenerated with the current code
 
 * `results/v2` and `figures/v2` regenerated (`pop-sim run-v2`, `attacks`,

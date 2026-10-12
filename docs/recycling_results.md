@@ -146,32 +146,51 @@ In PoP the private keys pass through the infrastructure in software: the PKI
 generates them, each PM decrypts the PKI's package (`receive_from_pki`) and holds
 its pool, each RSU holds the sets it hands out (`receive_sets`), and the cloud holds
 every returned pseudonym (`PMCloud.upload`). E3b records every entity that ever holds
-a pseudonym's private key, and once per round lets one instance of each (the PKI, the
-first PM, the first RSU, the cloud) sign a message with such a key, on behalf of the
-vehicle currently holding the pseudonym, 40 m from it. Ten vehicles per km,
-plausibility on, ledger attribution, ten seeds, four rounds.
+a pseudonym's private key. One instance of each (the PKI, the first PM, the first
+RSU, the cloud) then forges 10 messages per round with keys it holds, each on
+behalf of the vehicle currently holding the pseudonym, under three strategies:
 
-| Mode | Share of pseudonyms in use whose key the entity holds: PKI / PM / RSU / cloud | Forgery accepted by V2V receivers (share of seeds): PKI / PM / RSU / cloud | RSU blames the innocent holder |
-|---|---|---|---|
-| recycle | 1.00 / 0.73 / 0.32 / 0.68 | 0.7 / 0.9 / 1.0 / 0.8 | every forgery |
-| fresh | 1.00 / 0.51 / 0.17 / 0 | 1.0 / 0.9 / 1.0 / none sent | every forgery |
-| window | 1.00 / 0.73 / 0.32 / 0.68 | 0.7 / 0.9 / 1.0 / 0.8 | every forgery |
-| fresh_vgk | 0 / 0 / 0 / 0 | none sent | none |
-| rekey | 0 / 0 / 0 / 0 | none sent | none |
+* **offset**: a position 40 m from the holder;
+* **near**: 10 m from the holder, inside the 25 m that receivers and RSUs allow
+  between two messages of one pseudonym in the same second;
+* **silent**: the holder's position, while the holder is in its post-change silent
+  period and no receiver has heard the new pseudonym yet.
 
-* Wherever the infrastructure generates or relays keys, an honest-but-curious insider
-  can sign as a vehicle. The PKI holds every key in use under recycle, fresh and
-  window, one PM about three quarters of them under recycle, one RSU a third, and the
+Ten vehicles per km, plausibility on, ledger attribution, ten seeds, four rounds.
+Key shares are the share of pseudonyms in use whose current key the entity holds.
+
+| Mode | Keys in use held: PKI / PM / RSU / cloud |
+|---|---|
+| recycle, window | 1.00 / 0.68 / 0.29 / 0.65 |
+| fresh | 1.00 / 0.44 / 0.15 / 0 |
+| fresh_vgk, rekey | 0 / 0 / 0 / 0 |
+
+Outcome of each forgery (recycle; fresh and window give the same rates), range over
+the four entities:
+
+| Strategy | Receivers in range that accept | Forgeries accepted by at least one receiver | RSU accepts | RSU reports the innocent holder |
+|---|---|---|---|---|
+| offset (40 m) | 0.32 to 0.37 | 0.57 to 0.76 | 0.30 | 0.70 |
+| near (10 m) | 1.00 | 1.00 | 1.00 | 0.00 |
+| silent period | 0.99 to 1.00 | 1.00 | 1.00 | 0.00 |
+
+* Wherever the infrastructure generates or relays keys, an honest-but-curious
+  insider can sign as a vehicle. The PKI holds every key in use under recycle, fresh
+  and window; one PM about two thirds of them under recycle, one RSU a third, and the
   cloud two thirds (every recycled pseudonym has passed through it). Fresh issuance
   keeps keys out of the cloud only because fresh pseudonyms are never uploaded.
-* Receivers accept the insider's message, and the RSU, seeing the same pseudonym
-  in two places, reports the *holder*: an insider forgery is indistinguishable from
-  the holder misbehaving. The acceptance shares above are per seed (at least one
-  receiver accepted); the receivers that rejected are the ones that had just heard
-  the real holder 40 m away, the plausibility rule doing its job.
+* A careless insider is caught half the time: at 40 m, receivers that just heard the
+  real holder reject the message as two places at once, a third of receivers accept,
+  and the RSU reports the holder for 70 % of the forgeries, an innocent vehicle
+  blamed for the insider's message.
+* A capable insider is not caught at all. Inside the 25 m tolerance, or during the
+  holder's silent period, every receiver and the RSU accept the forgery and nobody
+  is reported: the forgery is indistinguishable from the holder's own message.
 * With vehicle-generated keys (fresh_vgk, rekey) no infrastructure entity ever holds
   a key in use, checked over every entity's full custody record, so the column is
   zero by construction rather than by luck. `PKI.certify` takes public keys only.
+
+![E3b](../figures/recycling/E3b.png)
 
 ## E4. Issuance modes against every axis (RQ4)
 
@@ -314,8 +333,9 @@ ties on privacy, and costs two properties the manuscript promises:
   recycling, lets a PM name 84 % of its vehicles, and the cloud's upload order leaks
   73 % of the pseudonym changes until the PM shuffles before uploading, E3). Forging
   is not: under recycle, fresh and window the PKI, PMs, RSUs and (under recycle) the
-  cloud hold vehicle signing keys and can sign as any vehicle, with the RSU blaming
-  the holder (E3b). Only vehicle-generated keys (fresh_vgk, rekey) remove that.
+  cloud hold vehicle signing keys and can sign as any vehicle; claiming a position
+  within 25 m of the holder, or forging during its silent period, no receiver or RSU
+  notices (E3b). Only vehicle-generated keys (fresh_vgk, rekey) remove that.
 
 ![Summary](../figures/recycling/summary.png)
 

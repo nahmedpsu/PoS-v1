@@ -2,9 +2,16 @@
  "experiment": "E3b_insider_forgery",
  "rounds": 4,
  "density": 10,
+ "forgeries_per_round": 10,
+ "strategies": [
+  "offset",
+  "near",
+  "silent"
+ ],
  "cells": [
   {
    "mode": "recycle",
+   "strategy": "offset",
    "entity": "pki",
    "seeds": 10,
    "key_share": {
@@ -14,812 +21,2511 @@
     "n": 10
    },
    "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
     "n": 10
    },
-   "forgery_accepted": {
+   "receiver_rate": {
+    "mean": 0.33591276527522357,
+    "lo": 0.3208016383593888,
+    "hi": 0.3494035232633504,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.64,
+    "lo": 0.57,
+    "hi": 0.695,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
     "mean": 0.7,
-    "lo": 0.4,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.07104370042052192,
-    "lo": 0.03530118206930793,
-    "hi": 0.10930593673263037,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "recycle",
-   "entity": "pm",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.7268340605201217,
-    "lo": 0.6911225525349207,
-    "hi": 0.7544705049624367,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.9,
     "lo": 0.7,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.08152087660718069,
-    "lo": 0.04263935908789227,
-    "hi": 0.12511946532999163,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
+    "hi": 0.7,
     "n": 10
    }
   },
   {
    "mode": "recycle",
-   "entity": "rsu",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.32225323588279764,
-    "lo": 0.2991193580117085,
-    "hi": 0.34142479363322953,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.06681438922338394,
-    "lo": 0.04598458201107976,
-    "hi": 0.09235508161595549,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "recycle",
-   "entity": "cloud",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.6790725053822207,
-    "lo": 0.6680951590198323,
-    "hi": 0.6868682184712456,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 3.0,
-    "lo": 3.0,
-    "hi": 3.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.8,
-    "lo": 0.5,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.07443805018022864,
-    "lo": 0.03865108905431486,
-    "hi": 0.11967647847131348,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh",
-   "entity": "pki",
-   "seeds": 10,
-   "key_share": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.06301222206500305,
-    "lo": 0.04758361501187945,
-    "hi": 0.08638883922363272,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh",
+   "strategy": "offset",
    "entity": "pm",
    "seeds": 10,
    "key_share": {
-    "mean": 0.5077843955794203,
-    "lo": 0.47736804645447584,
-    "hi": 0.5309913788052668,
+    "mean": 0.6833184509755864,
+    "lo": 0.628675529415283,
+    "hi": 0.7258050913701082,
     "n": 10
    },
    "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.9,
-    "lo": 0.7,
-    "hi": 1.0,
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
     "n": 10
    },
    "receiver_rate": {
-    "mean": 0.05929621389740496,
-    "lo": 0.03961333388433627,
-    "hi": 0.07600678193256744,
+    "mean": 0.34740900275556724,
+    "lo": 0.3376161008805539,
+    "hi": 0.35715883929329306,
     "n": 10
    },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
+   "message_rate": {
+    "mean": 0.6825,
+    "lo": 0.62,
+    "hi": 0.7375,
     "n": 10
    },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh",
-   "entity": "rsu",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.16956774073651076,
-    "lo": 0.15919940268759813,
-    "hi": 0.18011535548207444,
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
     "n": 10
    },
-   "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.06799193704763914,
-    "lo": 0.05178427615794618,
-    "hi": 0.0852951805851003,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh",
-   "entity": "cloud",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh_vgk",
-   "entity": "pki",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh_vgk",
-   "entity": "pm",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh_vgk",
-   "entity": "rsu",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "fresh_vgk",
-   "entity": "cloud",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "rekey",
-   "entity": "pki",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "rekey",
-   "entity": "pm",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "rekey",
-   "entity": "rsu",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "rekey",
-   "entity": "cloud",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "window",
-   "entity": "pki",
-   "seeds": 10,
-   "key_share": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
+   "blame_rate": {
     "mean": 0.7,
-    "lo": 0.4,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.07104370042052192,
-    "lo": 0.03530118206930793,
-    "hi": 0.10930593673263037,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
-    "n": 10
-   }
-  },
-  {
-   "mode": "window",
-   "entity": "pm",
-   "seeds": 10,
-   "key_share": {
-    "mean": 0.7268340605201217,
-    "lo": 0.6911225525349207,
-    "hi": 0.7544705049624367,
-    "n": 10
-   },
-   "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.9,
     "lo": 0.7,
-    "hi": 1.0,
-    "n": 10
-   },
-   "receiver_rate": {
-    "mean": 0.08152087660718069,
-    "lo": 0.04263935908789227,
-    "hi": 0.12511946532999163,
-    "n": 10
-   },
-   "rsu_accepted": {
-    "mean": 0.0,
-    "lo": 0.0,
-    "hi": 0.0,
-    "n": 10
-   },
-   "holder_blamed": {
-    "mean": 1.0,
-    "lo": 1.0,
-    "hi": 1.0,
+    "hi": 0.7,
     "n": 10
    }
   },
   {
-   "mode": "window",
+   "mode": "recycle",
+   "strategy": "offset",
    "entity": "rsu",
    "seeds": 10,
    "key_share": {
-    "mean": 0.32225323588279764,
-    "lo": 0.2991193580117085,
-    "hi": 0.34142479363322953,
+    "mean": 0.2863433117555657,
+    "lo": 0.2625823363775866,
+    "hi": 0.3108165702508202,
     "n": 10
    },
    "forgeries_sent": {
-    "mean": 4.0,
-    "lo": 4.0,
-    "hi": 4.0,
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
     "n": 10
    },
-   "forgery_accepted": {
+   "receiver_rate": {
+    "mean": 0.35130832391338,
+    "lo": 0.33630718875783744,
+    "hi": 0.3708728601311635,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.6975,
+    "lo": 0.635,
+    "hi": 0.76,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "offset",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.6546250056914841,
+    "lo": 0.6408758434305118,
+    "hi": 0.6656940958749494,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 30.0,
+    "lo": 30.0,
+    "hi": 30.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.3559668160610532,
+    "lo": 0.3376813826765691,
+    "hi": 0.37105573199805036,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.6566666666666666,
+    "lo": 0.6166666666666667,
+    "hi": 0.6933333333333332,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "near",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
     "mean": 1.0,
     "lo": 1.0,
     "hi": 1.0,
     "n": 10
    },
-   "receiver_rate": {
-    "mean": 0.06681438922338394,
-    "lo": 0.04598458201107976,
-    "hi": 0.09235508161595549,
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
     "n": 10
    },
-   "rsu_accepted": {
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "near",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.7301692759821301,
+    "lo": 0.6991458705846705,
+    "hi": 0.7516035474419146,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "near",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.32513329277121406,
+    "lo": 0.297867188002745,
+    "hi": 0.34969561405979166,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9982161019370321,
+    "lo": 0.9961839323467231,
+    "hi": 0.9996396396396396,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "near",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.6820604456897843,
+    "lo": 0.6744674088236295,
+    "hi": 0.6889387810234403,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 30.0,
+    "lo": 30.0,
+    "hi": 30.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9990384615384615,
+    "lo": 0.9971153846153846,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "silent",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9967531921159469,
+    "lo": 0.9906245398514903,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "silent",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.7301692759821301,
+    "lo": 0.6991458705846705,
+    "hi": 0.7516035474419146,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9959330853746596,
+    "lo": 0.9905352416608576,
+    "hi": 0.9995402298850574,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "silent",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.32513329277121406,
+    "lo": 0.297867188002745,
+    "hi": 0.34969561405979166,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9949679881681476,
+    "lo": 0.9879860461158853,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "recycle",
+   "strategy": "silent",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.6820604456897843,
+    "lo": 0.6744674088236295,
+    "hi": 0.6889387810234403,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 27.0,
+    "lo": 27.0,
+    "hi": 27.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.999203187250996,
+    "lo": 0.9976095617529881,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "offset",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.3468127706864293,
+    "lo": 0.3345484289629059,
+    "hi": 0.3582462710864167,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.6575,
+    "lo": 0.6174999999999999,
+    "hi": 0.6925,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "offset",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.44082255614465315,
+    "lo": 0.3921980050693297,
+    "hi": 0.48225279912732005,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.34658136672510975,
+    "lo": 0.33545523750007666,
+    "hi": 0.35792878776099696,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.68,
+    "lo": 0.62,
+    "hi": 0.73,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "offset",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.14839662261821082,
+    "lo": 0.1311357955959046,
+    "hi": 0.16607210854748705,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.35345690854950024,
+    "lo": 0.33965795707401203,
+    "hi": 0.36996098625743096,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.65,
+    "lo": 0.61,
+    "hi": 0.6900000000000001,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "offset",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
    },
-   "holder_blamed": {
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "near",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
     "mean": 1.0,
     "lo": 1.0,
     "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "near",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.5113499126490514,
+    "lo": 0.4812338300692062,
+    "hi": 0.5335408198841198,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "near",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.17295958980941412,
+    "lo": 0.16218012609522042,
+    "hi": 0.18371059529169645,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "near",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "silent",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "silent",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.5113499126490514,
+    "lo": 0.4812338300692062,
+    "hi": 0.5335408198841198,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "silent",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.17295958980941412,
+    "lo": 0.16218012609522042,
+    "hi": 0.18371059529169645,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "fresh",
+   "strategy": "silent",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "offset",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "offset",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "offset",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "offset",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "near",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "near",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "near",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "near",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "silent",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "silent",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "silent",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "fresh_vgk",
+   "strategy": "silent",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "offset",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "offset",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "offset",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "offset",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "near",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "near",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "near",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "near",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "silent",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "silent",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "silent",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "rekey",
+   "strategy": "silent",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 0
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "offset",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.33591276527522357,
+    "lo": 0.3208016383593888,
+    "hi": 0.3494035232633504,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.64,
+    "lo": 0.57,
+    "hi": 0.695,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
     "n": 10
    }
   },
   {
    "mode": "window",
-   "entity": "cloud",
+   "strategy": "offset",
+   "entity": "pm",
    "seeds": 10,
    "key_share": {
-    "mean": 0.6790725053822207,
-    "lo": 0.6680951590198323,
-    "hi": 0.6868682184712456,
+    "mean": 0.6833184509755864,
+    "lo": 0.628675529415283,
+    "hi": 0.7258050913701082,
     "n": 10
    },
    "forgeries_sent": {
-    "mean": 3.0,
-    "lo": 3.0,
-    "hi": 3.0,
-    "n": 10
-   },
-   "forgery_accepted": {
-    "mean": 0.8,
-    "lo": 0.5,
-    "hi": 1.0,
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
     "n": 10
    },
    "receiver_rate": {
-    "mean": 0.07443805018022864,
-    "lo": 0.03865108905431486,
-    "hi": 0.11967647847131348,
+    "mean": 0.34740900275556724,
+    "lo": 0.3376161008805539,
+    "hi": 0.35715883929329306,
     "n": 10
    },
-   "rsu_accepted": {
+   "message_rate": {
+    "mean": 0.6825,
+    "lo": 0.62,
+    "hi": 0.7375,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "offset",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.2863433117555657,
+    "lo": 0.2625823363775866,
+    "hi": 0.3108165702508202,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.35130832391338,
+    "lo": 0.33630718875783744,
+    "hi": 0.3708728601311635,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.6975,
+    "lo": 0.635,
+    "hi": 0.76,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "offset",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.6546250056914841,
+    "lo": 0.6408758434305118,
+    "hi": 0.6656940958749494,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 30.0,
+    "lo": 30.0,
+    "hi": 30.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.3559668160610532,
+    "lo": 0.3376813826765691,
+    "hi": 0.37105573199805036,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 0.6566666666666666,
+    "lo": 0.6166666666666667,
+    "hi": 0.6933333333333332,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.3,
+    "lo": 0.3,
+    "hi": 0.3,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.7,
+    "lo": 0.7,
+    "hi": 0.7,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "near",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "near",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.7301692759821301,
+    "lo": 0.6991458705846705,
+    "hi": 0.7516035474419146,
+    "n": 10
    },
-   "holder_blamed": {
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
     "mean": 1.0,
     "lo": 1.0,
     "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "near",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.32513329277121406,
+    "lo": 0.297867188002745,
+    "hi": 0.34969561405979166,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 40.0,
+    "lo": 40.0,
+    "hi": 40.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9982161019370321,
+    "lo": 0.9961839323467231,
+    "hi": 0.9996396396396396,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "near",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.6820604456897843,
+    "lo": 0.6744674088236295,
+    "hi": 0.6889387810234403,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 30.0,
+    "lo": 30.0,
+    "hi": 30.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9990384615384615,
+    "lo": 0.9971153846153846,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "silent",
+   "entity": "pki",
+   "seeds": 10,
+   "key_share": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9967531921159469,
+    "lo": 0.9906245398514903,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "silent",
+   "entity": "pm",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.7301692759821301,
+    "lo": 0.6991458705846705,
+    "hi": 0.7516035474419146,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9959330853746596,
+    "lo": 0.9905352416608576,
+    "hi": 0.9995402298850574,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "silent",
+   "entity": "rsu",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.32513329277121406,
+    "lo": 0.297867188002745,
+    "hi": 0.34969561405979166,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 36.0,
+    "lo": 36.0,
+    "hi": 36.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.9949679881681476,
+    "lo": 0.9879860461158853,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   }
+  },
+  {
+   "mode": "window",
+   "strategy": "silent",
+   "entity": "cloud",
+   "seeds": 10,
+   "key_share": {
+    "mean": 0.6820604456897843,
+    "lo": 0.6744674088236295,
+    "hi": 0.6889387810234403,
+    "n": 10
+   },
+   "forgeries_sent": {
+    "mean": 27.0,
+    "lo": 27.0,
+    "hi": 27.0,
+    "n": 10
+   },
+   "receiver_rate": {
+    "mean": 0.999203187250996,
+    "lo": 0.9976095617529881,
+    "hi": 1.0,
+    "n": 10
+   },
+   "message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "blame_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
     "n": 10
    }
   }
