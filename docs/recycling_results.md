@@ -179,8 +179,8 @@ Attacker strategy S2, plausibility on, 900 s certificates, ten paired seeds.
 
 | Axis | recycle | fresh | fresh_vgk | rekey | window |
 |---|---|---|---|---|---|
-| Outside tracker link rate, 10 veh/km | 0.975 | 0.966 | 0.965 | 0.974 | 0.975 |
-| Outside tracker link rate, 40 veh/km | 0.904 | 0.902 | 0.903 | 0.907 | 0.904 |
+| Outside tracker link rate, 10 veh/km | 0.964 | 0.966 | 0.965 | 0.962 | 0.964 |
+| Outside tracker link rate, 40 veh/km | 0.896 | 0.902 | 0.903 | 0.900 | 0.896 |
 | Forged messages accepted (V2V), 10 / 40 veh/km | 104 / 502 | 0 / 0 | 0 / 0 | 0 / 0 | 104 / 502 |
 | Innocent holders blamed, 10 / 40 veh/km | 38 / 172 | 0 | 0 | 0 | 38 / 172 |
 | PM insider link rate | 0.49 | 0.49 | 0.49 | 0.49 | 0.49 |
@@ -196,15 +196,29 @@ Paired Wilcoxon signed-rank tests (ten seeds, same traffic in every mode, exact
 two-sided p-values from the 1,024 sign patterns): forged acceptances recycle vs
 fresh, fresh_vgk and rekey, p = 0.002 with effect size 1.0 at both densities (all ten
 pairs one way, the smallest p ten pairs can give); PKI load recycle vs fresh and
-fresh_vgk, p = 0.002; tracker link rate recycle vs fresh at 10 veh/km, p = 0.006 with
-recycle *higher* by 0.9 points (nine of ten pairs), and no significant difference at
-40 veh/km (p = 0.43). Version 3.0.0 reported these with the normal approximation
-(0.005 and 0.009); the cells themselves are unchanged.
+fresh_vgk, p = 0.002; tracker link rate recycle vs fresh, no significant difference at
+10 veh/km (p = 0.19), and recycle 0.7 points *lower* at 40 veh/km (p = 0.014).
+
+Link rates are equal across modes, to within a point. Versions 3.0.0 to 3.2.0
+reported recycle about a point *more* linkable than fresh (0.975 against 0.966). That
+was a scoring artifact: when a recycled pseudonym reappeared, the tracker's same-label
+lookup could pick up its former holder's coasting track, reject it at the gate, and
+the assignment step then re-joined the beacon to its own track and counted it as a
+correctly linked change. Those changes never happened (1,061.7 counted against 1,058.5
+true per run). The trackers now treat a beacon that keeps its track's label as a
+continuation, which uses only what an eavesdropper sees, and the counted changes
+equal the true ones in every mode. What remains goes the other way and is small: a
+recycled label that reappears on *another* vehicle near its former holder's coasting
+track is taken as a continuation of that track (2 such captures per run at 10 veh/km,
+5 at 40; rekey keeps recycled labels and has them too, fresh issuance never does).
+Each costs the tracker about two links. The seed with no captures gives recycle and
+fresh identical rates.
 
 Reading it against the pre-registered cases:
 
-1. **A1 linkability is equal across modes** (within a point; recycling is if
-   anything slightly worse). Recycling buys no privacy against an eavesdropper.
+1. **A1 linkability is equal across modes**, to within a point. Recycling buys no
+   privacy against an eavesdropper worth the name: the label reuse confuses the
+   tracker at most 0.7 points.
 2. **A2 forgeries are non-zero only under recycle and window.** Fresh, fresh_vgk
    and rekey are at zero across ten seeds and two densities.
 3. **The PKI load of fresh issuance is 54 CPU-seconds per 1,000 vehicles per hour**
@@ -280,8 +294,9 @@ The pre-registered outcome is case 2 with case 3 as the headline (the cases are
 defined in [recycling.md](recycling.md)): recycling wins on one axis, authority load,
 ties on privacy, and costs two properties the manuscript promises:
 
-* **Privacy against an eavesdropper**: no better than fresh issuance (E4; one point
-  worse at 10 veh/km).
+* **Privacy against an eavesdropper**: identical to fresh issuance, to within a point
+  on the ring and both SUMO traces (E4). The point by which recycling looked more
+  linkable before 3.3.0 was a tracker scoring artifact.
 * **Security**: a former holder forges accepted messages under every strategy (E1),
   and the ledger-based accountability turns those forgeries into revocations of the
   innocent current holder (E1, E6); a stricter revocation rule only delays them (E1r).
@@ -364,16 +379,16 @@ E4:
 
 | Scenario, mode | Tracker link rate | Forged messages accepted | Innocent holders blamed | PKI CPU-s per 1,000 veh-h | PM CPU-s per 1,000 veh-h | Bytes per vehicle per round | Allotment stock-outs per run |
 |---|---|---|---|---|---|---|---|
-| LuST, recycle | 0.969 | 87 | 28 | 0 | 0.1 | 10.7 k | 3 |
+| LuST, recycle | 0.948 | 87 | 28 | 0 | 0.1 | 10.7 k | 3 |
 | LuST, fresh | 0.950 | 0 | 0 | 53.1 | 0 | 10.8 k | 2 |
 | LuST, fresh_vgk | 0.951 | 0 | 0 | 17.9 | 0 | 10.8 k | 0 |
-| LuST, rekey | 0.970 | 0 | 0 | 0 | 17.9 | 21.7 k | 3 |
-| LuST, window | 0.969 | 87 | 28 | 0 | 17.8 | 21.7 k | 3 |
-| Motorway, recycle | 0.939 | 230 | 76 | 0 | 0.1 | 10.5 k | 2 |
+| LuST, rekey | 0.949 | 0 | 0 | 0 | 17.9 | 21.7 k | 3 |
+| LuST, window | 0.948 | 87 | 28 | 0 | 17.8 | 21.7 k | 3 |
+| Motorway, recycle | 0.919 | 230 | 76 | 0 | 0.1 | 10.5 k | 2 |
 | Motorway, fresh | 0.920 | 0 | 0 | 54.5 | 0 | 10.6 k | 2 |
 | Motorway, fresh_vgk | 0.920 | 0 | 0 | 18.1 | 0 | 10.6 k | 0 |
-| Motorway, rekey | 0.940 | 0 | 0 | 0 | 18.1 | 21.5 k | 4 |
-| Motorway, window | 0.939 | 230 | 76 | 0 | 17.9 | 21.4 k | 2 |
+| Motorway, rekey | 0.917 | 0 | 0 | 0 | 18.1 | 21.5 k | 4 |
+| Motorway, window | 0.919 | 230 | 76 | 0 | 17.9 | 21.4 k | 2 |
 
 * The picture is the ring's. Receivers accept 96 to 100 % of S1 and S3 forgeries and
   75 % of S2's; the RSU accepts two thirds of S1 and S2; the ledger blames the
@@ -383,13 +398,12 @@ E4:
 * The PKI cost of fresh issuance is the same as on the ring once normalised by the
   vehicles on the road: 53 to 55 CPU-s per 1,000 vehicle-hours, 18 with
   vehicle-generated keys; `rekey` moves 17 CPU-s to the PMs and doubles the bytes.
-* One difference: on a trace the tracker links recycle two points *better* than
-  fresh (0.969 vs 0.950 and 0.939 vs 0.920, p = 0.002, all ten pairs), where the ring
-  showed one point. The stock-outs of the first pass were suspected and are ruled
-  out: with departing vehicles returning their pseudonyms, the reuse modes have the
-  same 2 to 4 stock-outs per run as fresh issuance and the gap is unchanged to the
-  third decimal. The mechanism is not isolated; it is in the same direction as the
-  ring's, and in no case does recycling come out more private than fresh issuance.
+* The tracker link rates are equal across modes on both traces, to within a quarter
+  of a point (0.948 against 0.950 on LuST, 0.919 against 0.920 on the motorway). The
+  two-point recycle advantage reported in 3.2.0 was the scoring artifact described
+  under E4, not the stock-outs (those were removed first and the gap survived). On
+  LuST the remaining quarter point is significant (p = 0.004) and in recycling's
+  favour, from the same label captures as on the ring (1.8 per run).
 
 ![LuST](../figures/recycling/SUMO_lust_motorway.png)
 ![Motorway](../figures/recycling/SUMO_motorway.png)

@@ -66,6 +66,7 @@ the current time, and verify the message under the certificate's key.
 | E1 impersonation | RQ1 | strategy, plausibility, certificate lifetime, density, attacker share | forged acceptance, exposure window, victims blamed |
 | E2 revocation | RQ2 | certificate lifetime | messages accepted after revocation, time to last |
 | E3 insider | RQ3 | entity alone and with A1, density, cloud upload order | link rate, precision, identity rate, trajectory coverage |
+| E3b insider forgery | RQ3 | entity (PKI, PM, RSU, cloud), issuance mode | share of keys in use the entity holds, forgery accepted, holder blamed |
 | E4 modes | RQ4 | issuance mode, density | every axis, paired Wilcoxon tests against recycle |
 | E5 fix | RQ4 | window vs rekey vs fresh_vgk, strategy | forgeries accepted, added cost |
 | E6 bench re-check | all | the 18-attack bench under oracle vs ledger attribution | outcome changes |

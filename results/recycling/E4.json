@@ -8,9 +8,33 @@
    "mode": "recycle",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9749368700892708,
-    "lo": 0.969492904590288,
-    "hi": 0.9804172650063252,
+    "mean": 0.96369789704784,
+    "lo": 0.9574647982888205,
+    "hi": 0.9695442783299992,
+    "n": 10
+   },
+   "tracker_link_rate_true": {
+    "mean": 0.96369789704784,
+    "lo": 0.9574647982888205,
+    "hi": 0.9695442783299992,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 1046.8,
+    "lo": 935.1,
+    "hi": 1135.0,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 1046.8,
+    "lo": 935.1,
+    "hi": 1135.0,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 2.0,
+    "lo": 1.2,
+    "hi": 2.8,
     "n": 10
    },
    "forged_sent": {
@@ -96,6 +120,30 @@
     "hi": 0.9712582112182967,
     "n": 10
    },
+   "tracker_link_rate_true": {
+    "mean": 0.9656216719424211,
+    "lo": 0.9603001908704429,
+    "hi": 0.9712582112182967,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 1058.5,
+    "lo": 946.6,
+    "hi": 1148.7,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 1058.5,
+    "lo": 946.6,
+    "hi": 1148.7,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
    "forged_sent": {
     "mean": 0.0,
     "lo": 0.0,
@@ -179,6 +227,30 @@
     "hi": 0.9715619282142405,
     "n": 10
    },
+   "tracker_link_rate_true": {
+    "mean": 0.9653437839739409,
+    "lo": 0.9587818407926316,
+    "hi": 0.9715619282142405,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 1061.5,
+    "lo": 948.2,
+    "hi": 1150.6,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 1061.5,
+    "lo": 948.2,
+    "hi": 1150.6,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
    "forged_sent": {
     "mean": 0.0,
     "lo": 0.0,
@@ -257,9 +329,33 @@
    "mode": "rekey",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9735027459188326,
-    "lo": 0.9689122456352696,
-    "hi": 0.9791750925607589,
+    "mean": 0.9624268596670951,
+    "lo": 0.9572422116791524,
+    "hi": 0.968111932832339,
+    "n": 10
+   },
+   "tracker_link_rate_true": {
+    "mean": 0.9624268596670951,
+    "lo": 0.9572422116791524,
+    "hi": 0.968111932832339,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 1058.5,
+    "lo": 946.6,
+    "hi": 1148.7,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 1058.5,
+    "lo": 946.6,
+    "hi": 1148.7,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 1.6,
+    "lo": 1.0,
+    "hi": 2.3,
     "n": 10
    },
    "forged_sent": {
@@ -340,9 +436,33 @@
    "mode": "window",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9749368700892708,
-    "lo": 0.969492904590288,
-    "hi": 0.9804172650063252,
+    "mean": 0.96369789704784,
+    "lo": 0.9574647982888205,
+    "hi": 0.9695442783299992,
+    "n": 10
+   },
+   "tracker_link_rate_true": {
+    "mean": 0.96369789704784,
+    "lo": 0.9574647982888205,
+    "hi": 0.9695442783299992,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 1046.8,
+    "lo": 935.1,
+    "hi": 1135.0,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 1046.8,
+    "lo": 935.1,
+    "hi": 1135.0,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 2.0,
+    "lo": 1.2,
+    "hi": 2.8,
     "n": 10
    },
    "forged_sent": {
@@ -423,9 +543,33 @@
    "mode": "recycle",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9040511096455349,
-    "lo": 0.8980001512186734,
-    "hi": 0.9093201322535045,
+    "mean": 0.8959401417534018,
+    "lo": 0.8893428412846086,
+    "hi": 0.9018470477420354,
+    "n": 10
+   },
+   "tracker_link_rate_true": {
+    "mean": 0.8959401417534018,
+    "lo": 0.8893428412846086,
+    "hi": 0.9018470477420354,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 4242.5,
+    "lo": 4106.2,
+    "hi": 4368.3,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 4242.5,
+    "lo": 4106.2,
+    "hi": 4368.3,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 4.8,
+    "lo": 3.4,
+    "hi": 6.3,
     "n": 10
    },
    "forged_sent": {
@@ -511,6 +655,30 @@
     "hi": 0.9067130632144843,
     "n": 10
    },
+   "tracker_link_rate_true": {
+    "mean": 0.9023662144466962,
+    "lo": 0.8979819940822713,
+    "hi": 0.9067130632144843,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 4295.9,
+    "lo": 4160.4,
+    "hi": 4418.7,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 4295.9,
+    "lo": 4160.4,
+    "hi": 4418.7,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
    "forged_sent": {
     "mean": 0.0,
     "lo": 0.0,
@@ -594,6 +762,30 @@
     "hi": 0.9068675070248021,
     "n": 10
    },
+   "tracker_link_rate_true": {
+    "mean": 0.9033010324231971,
+    "lo": 0.8993577931184428,
+    "hi": 0.9068675070248021,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 4297.7,
+    "lo": 4161.3,
+    "hi": 4418.7,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 4297.7,
+    "lo": 4161.3,
+    "hi": 4418.7,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
    "forged_sent": {
     "mean": 0.0,
     "lo": 0.0,
@@ -672,9 +864,33 @@
    "mode": "rekey",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9069877477977552,
-    "lo": 0.9023301852902071,
-    "hi": 0.9114128554318434,
+    "mean": 0.8995961042839119,
+    "lo": 0.894038451572639,
+    "hi": 0.9048521098131742,
+    "n": 10
+   },
+   "tracker_link_rate_true": {
+    "mean": 0.8995961042839119,
+    "lo": 0.894038451572639,
+    "hi": 0.9048521098131742,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 4295.9,
+    "lo": 4160.4,
+    "hi": 4418.7,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 4295.9,
+    "lo": 4160.4,
+    "hi": 4418.7,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 4.5,
+    "lo": 3.2,
+    "hi": 5.9,
     "n": 10
    },
    "forged_sent": {
@@ -755,9 +971,33 @@
    "mode": "window",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9040511096455349,
-    "lo": 0.8980001512186734,
-    "hi": 0.9093201322535045,
+    "mean": 0.8959401417534018,
+    "lo": 0.8893428412846086,
+    "hi": 0.9018470477420354,
+    "n": 10
+   },
+   "tracker_link_rate_true": {
+    "mean": 0.8959401417534018,
+    "lo": 0.8893428412846086,
+    "hi": 0.9018470477420354,
+    "n": 10
+   },
+   "tracker_changes_counted": {
+    "mean": 4242.5,
+    "lo": 4106.2,
+    "hi": 4368.3,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 4242.5,
+    "lo": 4106.2,
+    "hi": 4368.3,
+    "n": 10
+   },
+   "tracker_relabel_captures": {
+    "mean": 4.8,
+    "lo": 3.4,
+    "hi": 6.3,
     "n": 10
    },
    "forged_sent": {
@@ -837,29 +1077,29 @@
  "paired_tests": {
   "10/tracker_link_rate: recycle vs fresh": {
    "n": 10,
-   "w_plus": 53.0,
-   "w_minus": 2.0,
-   "z": -2.5992006763318902,
-   "p": 0.005859375,
-   "effect_size": 0.9272727272727272,
+   "w_plus": 14.0,
+   "w_minus": 41.0,
+   "z": -1.376047416881589,
+   "p": 0.193359375,
+   "effect_size": -0.4909090909090909,
    "method": "exact"
   },
   "10/tracker_link_rate: recycle vs fresh_vgk": {
    "n": 10,
-   "w_plus": 54.0,
-   "w_minus": 1.0,
-   "z": -2.7011301146194153,
-   "p": 0.00390625,
-   "effect_size": 0.9636363636363636,
+   "w_plus": 14.0,
+   "w_minus": 41.0,
+   "z": -1.376047416881589,
+   "p": 0.193359375,
+   "effect_size": -0.4909090909090909,
    "method": "exact"
   },
   "10/tracker_link_rate: recycle vs rekey": {
    "n": 9,
-   "w_plus": 31.0,
-   "w_minus": 14.0,
-   "z": -1.0069930921904569,
-   "p": 0.359375,
-   "effect_size": 0.37777777777777777,
+   "w_plus": 33.0,
+   "w_minus": 12.0,
+   "z": -1.2439326432940938,
+   "p": 0.25,
+   "effect_size": 0.4666666666666667,
    "method": "exact"
   },
   "10/tracker_link_rate: recycle vs window": {
@@ -945,29 +1185,29 @@
   },
   "40/tracker_link_rate: recycle vs fresh": {
    "n": 10,
-   "w_plus": 36.0,
-   "w_minus": 19.0,
-   "z": -0.8664002254439634,
-   "p": 0.431640625,
-   "effect_size": 0.3090909090909091,
+   "w_plus": 4.0,
+   "w_minus": 51.0,
+   "z": -2.39534179975684,
+   "p": 0.013671875,
+   "effect_size": -0.8545454545454545,
    "method": "exact"
   },
   "40/tracker_link_rate: recycle vs fresh_vgk": {
    "n": 10,
-   "w_plus": 33.0,
-   "w_minus": 22.0,
-   "z": -0.5606119105813882,
-   "p": 0.625,
-   "effect_size": 0.2,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.001953125,
+   "effect_size": -1.0,
    "method": "exact"
   },
   "40/tracker_link_rate: recycle vs rekey": {
    "n": 10,
-   "w_plus": 13.0,
-   "w_minus": 42.0,
-   "z": -1.4779768551691141,
-   "p": 0.16015625,
-   "effect_size": -0.5272727272727272,
+   "w_plus": 11.0,
+   "w_minus": 44.0,
+   "z": -1.6818357317441643,
+   "p": 0.10546875,
+   "effect_size": -0.6,
    "method": "exact"
   },
   "40/tracker_link_rate: recycle vs window": {
