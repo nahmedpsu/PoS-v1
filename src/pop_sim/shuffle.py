@@ -192,6 +192,7 @@ class ITSSimulation:
         self.pki_reports: list[tuple[str, str]] = []
         self.report_tally: dict[str, list[dict]] = {}        # vehicle -> clone reports received so far (revocation rule)
         self.present_vehicle_steps = 0                       # sum over driven seconds of vehicles on the road (traces: not all are)
+        self.departed_returns = 0                            # pseudonyms returned by vehicles that left the corridor
         self.driven_steps = 0
         self.road: Road | None = None
         self.adversary = None
@@ -314,6 +315,25 @@ class ITSSimulation:
                 return False
             return not self.equivocation.observe(block.proof, block.hash or block.compute_hash())
         return True
+
+    def _return_departed(self) -> None:
+        """A vehicle that left the corridor during the round (trace roads only)
+        returns everything it holds, used or not, through the RSU it was last in:
+        in the protocol it would return them to the next RSU it meets, and the
+        study area is a window on the network, not a closed box.  On the ring
+        nobody leaves and this is a no-op."""
+        if not self.cfg.mobility or self.road is None:
+            return
+        present = {mv.vid for mv in self.road.vehicles}
+        for rsu in self.rsus:
+            for v in rsu.vehicles:
+                if v.index in present:
+                    continue
+                held = v.pseudonyms + ([v.current] if v.current is not None else [])
+                if held:
+                    v.used.extend(held)
+                    v.pseudonyms, v.current = [], None
+                    self.departed_returns += len(held)
 
     def _place_vehicles(self) -> None:
         """Mobility mode: RSU membership follows the vehicles' positions."""
@@ -465,6 +485,7 @@ class ITSSimulation:
                         if not rsu.receive_message(v, msg):
                             rejected += 1
         self._process_reports()
+        self._return_departed()
 
         # 2. Algorithm 5 lines 7-9: RSUs collect used sets, record them as
         #    transactions, mine the RSU chain and send them to the PM.
@@ -788,6 +809,7 @@ class ITSSimulation:
         return {
             "recycling": self.recycling_report() if (self.cfg.mobility or self.former or self.revoked_at) else None,
             "stockouts": sum(r.stockouts for r in self.rsus),
+            "departed_returns": self.departed_returns,
             "tracking": self.adversary.report(self.true_changes).to_dict() if self.adversary else None,
             "anchoring": self.anchoring_report(),
             "sim_seconds": self.sim_time,

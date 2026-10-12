@@ -302,7 +302,11 @@ gracefully, it collapses.
 seeds) on floating-car traces from Eclipse SUMO 1.28.0, mapped onto the corridor
 described in [recycling.md](recycling.md). The trace fixes the traffic; the seeds vary
 the keys, which vehicles are former holders, and the GPS noise. Per-vehicle loads are
-normalised by the vehicles on the corridor each second.
+normalised by the vehicles on the corridor each second. A vehicle that leaves the
+corridor returns everything it holds through its last RSU (as it would to the next
+RSU it meets): without that, the recycled supply drained out of the study area and the
+reuse modes ran short (44 to 137 unserved allotment requests per run in a first pass,
+against 0 to 2 for fresh issuance); with it, every mode is at 0 to 4.
 
 | Scenario | Corridor | Vehicles seen in 120 s (present per second) | Density | Mean speed |
 |---|---|---|---|---|
@@ -313,30 +317,30 @@ E1 (61 former holders on LuST, 103 on the motorway):
 
 | Scenario, strategy | Receivers accepting the forgery | RSU accepting | Exposure window, mean / p95 | Innocent holders blamed | Honest vehicles revoked in 120 s |
 |---|---|---|---|---|---|
-| LuST, S1 remote shadow | 99.3 % | 67 % | 28 s / 63 s | 569 | 86 of 439 (78 to 94) |
-| LuST, S2 co-located ghost | 71.8 % | 63 % | 17 s / 21 s | 26 | 4 |
-| LuST, S3 gap filler | 99.8 % | 0 % | 32 s / 58 s | 0 | 0 |
-| Motorway, S1 | 96.6 % | 69 % | 27 s / 57 s | 619 | 102 of 584 (88 to 116) |
-| Motorway, S2 | 76.7 % | 68 % | 9 s / 22 s | 59 | 11 |
-| Motorway, S3 | 99.6 % | 0 % | 28 s / 49 s | 0 | 0 |
+| LuST, S1 remote shadow | 98.9 % | 67 % | 27 s / 57 s | 547 | 83 of 439 (74 to 92) |
+| LuST, S2 co-located ghost | 75.1 % | 68 % | 18 s / 22 s | 28 | 4 |
+| LuST, S3 gap filler | 100 % | 0 % | 31 s / 60 s | 0 | 0 |
+| Motorway, S1 | 96.4 % | 69 % | 27 s / 59 s | 594 | 98 of 584 (86 to 111) |
+| Motorway, S2 | 75.1 % | 67 % | 10 s / 22 s | 76 | 13 |
+| Motorway, S3 | 99.7 % | 0 % | 31 s / 54 s | 0 | 0 |
 
 E4:
 
 | Scenario, mode | Tracker link rate | Forged messages accepted | Innocent holders blamed | PKI CPU-s per 1,000 veh-h | PM CPU-s per 1,000 veh-h | Bytes per vehicle per round | Allotment stock-outs per run |
 |---|---|---|---|---|---|---|---|
-| LuST, recycle | 0.970 | 70 | 26 | 0 | 0.1 | 10.5 k | 44 |
+| LuST, recycle | 0.969 | 87 | 28 | 0 | 0.1 | 10.7 k | 3 |
 | LuST, fresh | 0.950 | 0 | 0 | 53.1 | 0 | 10.8 k | 2 |
 | LuST, fresh_vgk | 0.951 | 0 | 0 | 17.9 | 0 | 10.8 k | 0 |
-| LuST, rekey | 0.970 | 0 | 0 | 0 | 17.2 | 21.3 k | 48 |
-| LuST, window | 0.970 | 70 | 26 | 0 | 17.2 | 21.3 k | 44 |
-| Motorway, recycle | 0.942 | 190 | 59 | 0 | 0.1 | 10.0 k | 124 |
+| LuST, rekey | 0.970 | 0 | 0 | 0 | 17.9 | 21.7 k | 3 |
+| LuST, window | 0.969 | 87 | 28 | 0 | 17.8 | 21.7 k | 3 |
+| Motorway, recycle | 0.939 | 230 | 76 | 0 | 0.1 | 10.5 k | 2 |
 | Motorway, fresh | 0.920 | 0 | 0 | 54.5 | 0 | 10.6 k | 2 |
 | Motorway, fresh_vgk | 0.920 | 0 | 0 | 18.1 | 0 | 10.6 k | 0 |
-| Motorway, rekey | 0.945 | 0 | 0 | 0 | 16.5 | 20.3 k | 137 |
-| Motorway, window | 0.942 | 190 | 59 | 0 | 16.5 | 20.3 k | 124 |
+| Motorway, rekey | 0.940 | 0 | 0 | 0 | 18.1 | 21.5 k | 4 |
+| Motorway, window | 0.939 | 230 | 76 | 0 | 17.9 | 21.4 k | 2 |
 
-* The picture is the ring's. Receivers accept 97 to 100 % of S1 and S3 forgeries and
-  72 to 77 % of S2's; the RSU accepts two thirds of S1 and S2; the ledger blames the
+* The picture is the ring's. Receivers accept 96 to 100 % of S1 and S3 forgeries and
+  75 % of S2's; the RSU accepts two thirds of S1 and S2; the ledger blames the
   innocent holder hundreds of times per run and S1 gets a fifth of the vehicles seen
   revoked in two minutes. Fresh, fresh_vgk and rekey have zero forgeries and zero
   wrongful reports on both traces (p = 0.002, all ten pairs).
@@ -344,13 +348,12 @@ E4:
   vehicles on the road: 53 to 55 CPU-s per 1,000 vehicle-hours, 18 with
   vehicle-generated keys; `rekey` moves 17 CPU-s to the PMs and doubles the bytes.
 * One difference: on a trace the tracker links recycle two points *better* than
-  fresh (0.970 vs 0.950 and 0.942 vs 0.920, p = 0.002, all ten pairs), where the ring
-  showed one point. The modes that draw on the recycled supply (recycle, rekey,
-  window) run out of stock when vehicles keep entering the corridor (44 to 137
-  allotment requests per run that an RSU could not serve, against 0 to 2 for fresh
-  issuance), and those are the modes with the higher link rate; whether the
-  stock-outs cause the difference was not isolated here. In no case does recycling
-  come out more private than fresh issuance.
+  fresh (0.969 vs 0.950 and 0.939 vs 0.920, p = 0.002, all ten pairs), where the ring
+  showed one point. The stock-outs of the first pass were suspected and are ruled
+  out: with departing vehicles returning their pseudonyms, the reuse modes have the
+  same 2 to 4 stock-outs per run as fresh issuance and the gap is unchanged to the
+  third decimal. The mechanism is not isolated; it is in the same direction as the
+  ring's, and in no case does recycling come out more private than fresh issuance.
 
 ![LuST](../figures/recycling/SUMO_lust_motorway.png)
 ![Motorway](../figures/recycling/SUMO_motorway.png)

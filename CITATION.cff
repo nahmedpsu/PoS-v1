@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this simulation, please cite the manuscript it implements."
 title: "PoS v1: simulation of Proof of Pseudonym"
 version: 3.2.0
-date-released: 2026-10-08
+date-released: 2026-10-12
 authors:
   - family-names: Ahmad
     given-names: N.

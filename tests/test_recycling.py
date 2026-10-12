@@ -267,3 +267,23 @@ def test_trace_road_provisions_vehicles_that_enter_later(tmp_path):
     assert sim.wrap_m > 1e9                       # a straight corridor never wraps around
     sim.run(2)
     assert sim.summary()["rounds"][-1]["messages"] > 0
+
+
+def test_departing_vehicles_return_their_pseudonyms():
+    """A vehicle that leaves a trace corridor hands back what it holds through
+    its last RSU, so the recycled supply does not drain out of the study area."""
+    from pop_sim.shuffle import ITSConfig, ITSSimulation
+    from pop_sim.v2.mobility_sumo import Corridor, FcdFrame, TraceRoad
+
+    # ten vehicles drive off the end of a 2 km corridor one after another
+    frames = [FcdFrame(float(t), {f"v{i}": (0.0, 0.0, "e0_0", 200.0 * i + 25.0 * t, 25.0)
+                                  for i in range(10) if 200.0 * i + 25.0 * t < 2000.0}) for t in range(90)]
+    road = TraceRoad(frames, Corridor("lane", ["e0"], {"e0": 2000.0}, ring=False), n_rsu=6)
+    sim = ITSSimulation(ITSConfig(n_pm=2, rsus_per_pm=3, mobility=True, v2v=True, seed=1, pseudonyms_per_vehicle=3), road=road)
+    sim.run(3)
+    assert sim.departed_returns > 0
+    gone = {v.index for v in sim.vehicles} - {mv.vid for mv in road.vehicles}
+    for v in sim.vehicles:
+        if v.index in gone:
+            assert v.pseudonyms == [] and v.current is None and v.used == []   # returned and collected
+    assert sim.summary()["departed_returns"] == sim.departed_returns

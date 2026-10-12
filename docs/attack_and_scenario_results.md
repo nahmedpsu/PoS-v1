@@ -9,7 +9,10 @@ the outcome from what honest nodes accept. It exits non-zero if any attack
 succeeds, so CI runs it on every push. Full table and mechanisms in
 [attacks_and_usecases.md](attacks_and_usecases.md); raw output in
 `results/v2/attacks.json`. Result of the full run: **14 defended, 4 mitigated,
-0 vulnerable**.
+0 vulnerable**, under the bench's default *oracle* attribution (the RSU is told the
+true sender of every message). Under *ledger* attribution, what a real RSU can do, one
+outcome changes: *revoked vehicle keeps transmitting* becomes vulnerable (E6 of the
+[recycling study](recycling_results.md)).
 
 | Attack | What was tried | Measured outcome |
 |---|---|---|

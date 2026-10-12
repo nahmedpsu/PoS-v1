@@ -23,9 +23,14 @@
   replay attack stays defended while E1's does not; one wording for the
   verdict (pre-registered case 2 with case 3 as the headline); the SUMO
   limitation replaced by the scenario results.
-* Related work check for the fix's framing (Mdee et al. 2023; Salin 2023) in
-  `docs/recycling.md`.
-* 86 tests.
+* Vehicles that leave a trace corridor return everything they hold through
+  their last RSU (`ITSSimulation._return_departed`), so the recycled supply no
+  longer drains out of the study area; SUMO E4 rerun with it.
+* README and bench page: the 14/4/0 bench result is stated for oracle
+  attribution, with the E6 change under ledger attribution.
+* The two 2023 swapping papers (Mdee et al.; Salin) are recorded as an open
+  go/no-go item in `docs/recycling.md`; neither full text is open access.
+* 87 tests.
 
 ## 3.1.0 - longer horizons and SUMO traces
 

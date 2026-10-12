@@ -66,7 +66,7 @@ src/pop_sim/
   experiments_recycling.py  E1-E6 of the pseudonym recycling study (docs/recycling.md)
   plots.py, plots_v2.py
   cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
-tests/               86 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
+tests/               87 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
 results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
 config/benchmark.json  example configuration for `pop-sim bench`
 Dockerfile           reproducible environment (python:3.12-slim + requirements)
@@ -88,7 +88,7 @@ PYTHONPATH=src python -m pop_sim run             # v1 full budgets (~7 min), wri
 PYTHONPATH=src python -m pop_sim run-v2 --quick  # v2 experiments, small budgets (~20 s)
 PYTHONPATH=src python -m pop_sim run-v2          # v2 full budgets (~10 min), writes results/v2 and figures/v2
 PYTHONPATH=src python -m pop_sim bench config/benchmark.json   # the protocol from a JSON configuration
-PYTHONPATH=src python -m pop_sim attacks  [--quick]  # 16 attacks executed against PoP v2 (exit 1 if any succeeds)
+PYTHONPATH=src python -m pop_sim attacks  [--quick]  # 18 attacks executed against PoP v2 (exit 1 if any succeeds)
 PYTHONPATH=src python -m pop_sim usecases [--quick]  # 7 deployment scenarios
 PYTHONPATH=src python -m pop_sim recycling [--quick] [--seeds 1,2,3]  # the recycling study, E1-E6
 PYTHONPATH=src python -m pop_sim recycling --long --sensitivity         # add E1x/E2x (600 s) and E1r (revocation rule)
@@ -186,7 +186,10 @@ All numbers come from `results/` and `results/v2/` as produced by the commands a
   ungrindable, PKI-bound election at 0.4 ms per node per block (ECVRF on
   libsecp256k1: 0.15 ms to prove, 0.23 ms to verify), plus equivocation detection, anchored RSU chains and
   certificate-checked allotment. Eighteen executed attacks: 14 defended, 4 bounded,
-  0 successful.
+  0 successful, under the bench's default *oracle* attribution (the RSU is told the
+  true sender). Under ledger attribution, what a real RSU can do, one attack
+  (*revoked vehicle keeps transmitting*) becomes successful: see E6 of the
+  [recycling study](docs/recycling_results.md).
 * **Pseudonym shuffling alone does not give location privacy.** Against a
   Kalman-filter tracker a lone vehicle is followed through every change; only dense
   traffic with synchronized changes and a silent period brings linking down, and the

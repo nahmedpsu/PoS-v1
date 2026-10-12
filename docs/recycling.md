@@ -116,8 +116,9 @@ road model is one-dimensional, so a trace is mapped onto a corridor: the lane
 position along an ordered edge sequence (`"mode": "lane"`), or the projection of
 (x, y) on an axis between two points (`"mode": "xy"`, a junction-free motorway
 section). Every vehicle that ever enters the corridor is provisioned at build time
-and is allotted pseudonyms at the first round after it appears; a straight corridor
-never wraps distances around. `pop-sim recycling-sumo` runs E1 (core cell) and E4
+and is allotted pseudonyms at the first round after it appears; one that leaves
+returns everything it holds through its last RSU; a straight corridor never wraps
+distances around. `pop-sim recycling-sumo` runs E1 (core cell) and E4
 (all modes, paired over seeds) on a trace; the trace fixes the traffic and the seeds
 vary the keys, the choice of former holders and the GPS noise.
 
@@ -159,36 +160,31 @@ former holders (120 s and 600 s, ledger attribution), and on the other side of t
 trade the time a genuine misbehaver (the E2 vehicle, oracle attribution) survives
 before the rule is met.
 
-## Related work the fix depends on (go/no-go reading)
+## Open item before submission: the two 2023 swapping papers
 
-The fix the study recommends, re-keying on every transfer (`rekey`), only matters
-as a contribution if the swapping and recycling designs in the literature do not
-already do it. Two 2023 designs were checked.
+The fix the study recommends, re-keying on every transfer (`rekey`), is a
+contribution only if the swapping and recycling designs in the literature do not
+already do it. Two 2023 designs have to be read in full before a related-work
+section can say so, and neither full text is open access (OpenAlex lists no open
+location for either DOI; the IEEE and Springer pages are paywalled):
 
-* **Mdee, Khan, Seo and Kim, "Security Compliant and Cooperative Pseudonyms
-  Swapping for Location Privacy Preservation in VANETs", IEEE TVT 72(8), 2023
-  (DOI 10.1109/TVT.2023.3254660).** Vehicles hold one non-swappable pseudonym and a
-  set of swappable ones; neighbours swap a swappable pseudonym inside a mix-context
-  without RSUs, and both report the new vehicle-to-pseudonym mapping to the authority
-  for accountability. The full text is paywalled; the mechanism is confirmed from the
-  papers that cite it: the short-term pseudonym's *private key is handed over* with
-  the pseudonym (the swap is "multiple interactions" ending with the private key
-  swapped and a confirmation broadcast), and one 2025 paper names that key handover
-  as the security risk its own design avoids. So Mdee et al. do not re-key: the new
-  holder signs with a key the former holder still has, and accountability rests on
-  the authority's record of who holds what, exactly the ledger attribution E1 breaks.
-  **Go**: the former-holder result and the rekey fix apply to it unchanged.
-* **Salin, "Pseudonym Swapping with Secure Accumulators and Double Diffie-Hellman
+* Mdee, Khan, Seo and Kim, "Security Compliant and Cooperative Pseudonyms Swapping
+  for Location Privacy Preservation in VANETs", IEEE TVT 72(8), 2023,
+  DOI 10.1109/TVT.2023.3254660. What the abstract states: vehicles hold swappable and
+  non-swappable pseudonyms, swap without RSUs inside mix-contexts, and report each
+  exchange to the authority for accountability and non-repudiation. Papers that cite
+  it describe the swap as handing over the short-term pseudonym's private key. That
+  is second-hand and is *not* relied on here: whether the new holder re-keys is the
+  question to settle from the paper itself.
+* Salin, "Pseudonym Swapping with Secure Accumulators and Double Diffie-Hellman
   Rounds in Cooperative Intelligent Transport Systems", CRiSIS 2022, LNCS 13857,
-  Springer 2023 (DOI 10.1007/978-3-031-31108-6_17).** Closed access; only the
-  abstract and the citation contexts of later papers were readable, and the author's
-  2025 doctoral thesis lists the paper but excludes its text. The abstract places
-  the signature keys in the hardware security module *and* in a secure accumulator
-  that proves a key is valid, and swaps under two Diffie-Hellman rounds; nothing
-  readable says whether the swapped pseudonym's key is re-derived for the new holder
-  or moved as is. **Unverified**: if the double Diffie-Hellman rounds derive a fresh
-  per-holder key, that paper already has the `rekey` idea for swapping (not for
-  cloud recycling), and the study's claim should be narrowed to "re-keying is
-  missing from recycling designs, and is what the swapping literature's safe variant
-  does"; if they only authenticate the handover, the claim stands as written. The
-  chapter needs to be read in full before submission.
+  Springer 2023, DOI 10.1007/978-3-031-31108-6_17. What the abstract states:
+  signature keys are held in the hardware security module and in a secure
+  accumulator that proves a key valid, and the swap runs two Diffie-Hellman rounds.
+  Whether those rounds derive a fresh per-holder key is the question to settle.
+
+Decision rule once both are read: if either design gives the receiving vehicle a
+key the former holder does not have, the study's claim narrows to "re-keying is
+missing from cloud recycling, and is what the safe swapping designs already do";
+if both move the key as is, the claim stands as written, and the former-holder
+result (E1) applies to them unchanged.
