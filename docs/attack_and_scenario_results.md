@@ -47,18 +47,21 @@ code, the only one that was a real hole in a shipped version).
 
 `pop-sim usecases` runs the protocol in seven settings an operator might deploy it
 in (`results/v2/usecases.json`, configurations included so each can be re-run with
-`pop-sim bench`). Linking success is the fraction of pseudonym changes a kinematic
-tracker follows; below 0.35 is reported as adequate, above 0.7 as insufficient.
+`pop-sim bench`). Each scenario runs on ten seeds (traffic, keys and which vehicles
+misbehave all vary); the table gives the mean with a 95 % bootstrap interval for the
+linking rate, and the mean for the rest. Linking success is the fraction of pseudonym
+changes a kinematic tracker follows; below 0.35 is reported as adequate, above 0.7 as
+insufficient.
 
 | Scenario | Setting | Vehicles | Linking | Stock-outs | Round (one core) | Verdict |
 |---|---|---|---|---|---|---|
-| Urban intersection | 2 km, 60 veh/km, 30 km/h, shuffle 20 s, 5 s silence | 237 | 0.74 | 0 | 0.7 s | Insufficient: the tracker follows a vehicle for 25 s on average; even 9 s of silence in every 10 s period leaves 0.52 |
-| Highway | 12 km, 4 veh/km, 110 km/h, shuffle 60 s | 72 | 0.98 | 8 | 0.9 s | Insufficient: tracker follows for 185 s on average; needs silence at entries/exits |
-| Rural night | 6 km, 1 veh/km | 11 | 0.84 | 0 | 0.1 s | Insufficient: a lone vehicle is tracked for 78 s on average; shuffling alone does not help |
-| Cross-PM roaming | Two PMs on a 6 km ring | 72 | 0.98 | 0 | 0.4 s | 42 crossings; 33 anchored proofs verified (1.6 KB, 27 us); 9 fell back to the ledger |
-| Toll / service access | Gantry authenticates by pseudonym | 65 | n/a | n/a | n/a | 63 accepted, 2 revoked rejected, 123 us per check, 0 permanent identities exposed |
-| Incident revocation | 3 misbehaving vehicles, 2 PMs | 72 | n/a | n/a | n/a | 3 of 3 revoked within 2 rounds, 0 honest vehicles affected, CRL of 3 |
-| City scale | 4 PMs x 5 RSUs, 20 km, 20 veh/km | 784 | 0.87 | 1 | 3.0 s | 11,760 signed CAMs per 30 s round, PM election 0.4 ms: one core keeps up with a district |
+| Urban intersection | 2 km, 60 veh/km, 30 km/h, shuffle 20 s, 5 s silence | 231 | 0.72 [0.70, 0.74] | 0.0 | 0.6 s | Insufficient: the tracker follows a vehicle for 24 s on average; 9 s of silence in every 10 s period still leaves 0.51 [0.50, 0.53] |
+| Highway | 12 km, 4 veh/km, 110 km/h, shuffle 60 s | 94 | 0.98 [0.98, 0.98] | 5.0 | 1.0 s | Insufficient: tracker follows for 176 s on average; needs silence at entries/exits |
+| Rural night | 6 km, 1 veh/km | 10 | 0.90 [0.87, 0.92] | 0.1 | 0.1 s | Insufficient: a lone vehicle is tracked for 97 s on average; shuffling alone does not help |
+| Cross-PM roaming | Two PMs on a 6 km ring | 94 | 0.97 [0.97, 0.98] | 0 | 0.5 s | 54 crossings per run; 41 anchored proofs verified (1.5 KB, 22 us); 13 fall back to the ledger |
+| Toll / service access | Gantry authenticates by pseudonym | 79 | n/a | n/a | n/a | 77 accepted, 2 revoked rejected, 125 us per check, 0 permanent identities exposed |
+| Incident revocation | 3 misbehaving vehicles, 2 PMs | 94 | n/a | n/a | n/a | 3 of 3 revoked within 2 rounds at every seed, 0 honest vehicles affected, CRL of 3 |
+| City scale | 4 PMs x 5 RSUs, 20 km, 20 veh/km | 794 | 0.88 [0.87, 0.88] | 1.2 | 3.0 s | 11,904 signed CAMs per 30 s round, PM election 0.4 ms: one core keeps up with a district |
 
 Linking success is against the Kalman/GNN tracker (the conservative adversary).
 
@@ -68,9 +71,14 @@ What the scenarios say together: PoP v2's authentication, revocation and roaming
 work where the manuscript places them (service access, revocation across operators,
 roaming between PMs, a district on one core). Its location privacy does not: against
 the Kalman tracker no scenario reaches the adequate band, including the dense
-intersection the manuscript names as the place to shuffle (0.74 at 5 s of silence,
-0.52 even when vehicles stay silent for 9 s of every 10 s period). Results before
-3.3.0 put the intersection at 0.35, "adequate, just": that run predated the
-Kalman tracker. Pseudonym change, shuffled or not, is not a location-privacy
+intersection the manuscript names as the place to shuffle (0.72 at 5 s of silence,
+0.51 even when vehicles stay silent for 9 s of every 10 s period). Results before
+3.3.1 put the intersection at 0.35, "adequate, just". That run used the same Kalman
+tracker, but before 3.0.0 the tracker took a beacon carrying a recycled pseudonym as
+a certain continuation of the track that last carried it, even when another vehicle
+now held it. Those false continuations corrupted tracks and pushed linking down;
+3.0.0 gates the continuation on the predicted position, which is why the figure
+rose (on seed 1 the 2.x code gives 0.349, and the same code with a unique label per
+pseudonym holder 0.745, against 0.737 today). Pseudonym change, shuffled or not, is not a location-privacy
 mechanism against a competent eavesdropper on its own.
 

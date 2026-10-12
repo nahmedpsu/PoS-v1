@@ -148,31 +148,40 @@ def exp_e3_insider(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), ord
 INSIDER_ENTITIES = ("pki", "pm", "rsu", "cloud")
 
 
-def exp_e3b_insider_forgery(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float = 10, modes=ISSUANCE_MODES) -> dict:
+def exp_e3b_insider_forgery(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float = 10, modes=ISSUANCE_MODES,
+                            strategies=("offset", "near", "silent"), forgeries_per_round: int = 10) -> dict:
     """RQ3, with a key: private keys pass through the PKI, the PMs, the RSUs
-    and the cloud in software.  Per entity and issuance mode: the share of
-    pseudonyms in use whose current signing key the entity holds, whether one
-    message it signs with such a key is accepted by V2V receivers, and whether
-    the RSU then blames the innocent holder.  Plausibility on, ledger
-    attribution, one forgery per entity per round, 40 m from the holder."""
+    and the cloud in software.  Per issuance mode, entity and forging
+    strategy: the share of pseudonyms in use whose current signing key the
+    entity holds, and for its forgeries (``forgeries_per_round`` per entity per
+    round, on behalf of the pseudonym's current holder) the share of receivers
+    in range that accept, the share of forgeries at least one receiver
+    accepts, the share the RSU accepts, and the share after which the RSU
+    reports the innocent holder.  Strategies: ``offset`` claims a position
+    40 m from the holder, ``near`` 10 m (inside the 25 m same-second
+    tolerance), ``silent`` forges at the holder's position while it is in its
+    post-change silent period.  Plausibility on, ledger attribution."""
     results = []
     for mode in modes:
-        rows = []
-        for seed in seeds:
-            cfg = _base(density, seed, issuance=mode, v2v_plausibility=True, pseudonym_lifetime=900.0, insider_forgery=True)
-            sim = ITSSimulation(cfg)
-            sim.run(rounds)
-            rows.append(sim.summary()["recycling"]["insider_forgery"])
-        for ent in INSIDER_ENTITIES:
-            per = [r[ent] for r in rows]
-            results.append({"mode": mode, "entity": ent, "seeds": len(per),
-                            "key_share": bootstrap_ci([x["key_share"] for x in per]),
-                            "forgeries_sent": bootstrap_ci([float(x["sent"]) for x in per]),
-                            "forgery_accepted": bootstrap_ci([1.0 if x["accepted"] else 0.0 for x in per]),
-                            "receiver_rate": bootstrap_ci([x["receiver_rate"] for x in per]),
-                            "rsu_accepted": bootstrap_ci([1.0 if x["rsu_accepted"] else 0.0 for x in per]),
-                            "holder_blamed": bootstrap_ci([1.0 if x["holder_blamed"] else 0.0 for x in per])})
-    return {"experiment": "E3b_insider_forgery", "rounds": rounds, "density": density, "cells": results}
+        for strat in strategies:
+            rows = []
+            for seed in seeds:
+                cfg = _base(density, seed, issuance=mode, v2v_plausibility=True, pseudonym_lifetime=900.0, insider_forgery=True,
+                            insider_strategy=strat, insider_forgeries_per_round=forgeries_per_round)
+                sim = ITSSimulation(cfg)
+                sim.run(rounds)
+                rows.append(sim.summary()["recycling"]["insider_forgery"])
+            for ent in INSIDER_ENTITIES:
+                per = [r[ent] for r in rows]
+                results.append({"mode": mode, "strategy": strat, "entity": ent, "seeds": len(per),
+                                "key_share": bootstrap_ci([x["key_share"] for x in per]),
+                                "forgeries_sent": bootstrap_ci([float(x["sent"]) for x in per]),
+                                "receiver_rate": bootstrap_ci([x["receiver_rate"] for x in per if x["sent"]]),
+                                "message_rate": bootstrap_ci([x["message_rate"] for x in per if x["sent"]]),
+                                "rsu_rate": bootstrap_ci([x["rsu_rate"] for x in per if x["sent"]]),
+                                "blame_rate": bootstrap_ci([x["blame_rate"] for x in per if x["sent"]])})
+    return {"experiment": "E3b_insider_forgery", "rounds": rounds, "density": density,
+            "forgeries_per_round": forgeries_per_round, "strategies": list(strategies), "cells": results}
 
 
 # ------------------------------------------------------------------ E4

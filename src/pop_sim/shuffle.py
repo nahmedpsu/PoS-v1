@@ -89,7 +89,11 @@ class ITSConfig:
     shuffle_before_upload: bool = False  # PM shuffles used sets before uploading (cloud-order leak fix)
     revocation_reports: int = 1          # clone reports against a vehicle before the PM asks the PKI to revoke it
     revocation_distinct_rsus: int = 1    # ... and from at least this many different RSUs
-    insider_forgery: bool = False        # E3b: once per round each infrastructure entity signs with a key it holds
+    insider_forgery: bool = False        # E3b: each infrastructure entity signs with keys it holds
+    insider_strategy: str = "offset"     # "offset": ghost_offset_m from the holder; "near": within the 25 m
+                                         # same-second tolerance; "silent": during the holder's silent period
+    insider_forgeries_per_round: int = 1 # per entity; "offset"/"near" spread them evenly over the round
+    insider_near_m: float = 10.0
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
@@ -100,6 +104,8 @@ class ITSConfig:
             raise ValueError(f"issuance must be one of {ISSUANCE_MODES}")
         if self.former_holder_strategy not in STRATEGIES:
             raise ValueError(f"former_holder_strategy must be one of {STRATEGIES}")
+        if self.insider_strategy not in ("offset", "near", "silent"):
+            raise ValueError("insider_strategy must be 'offset', 'near' or 'silent'")
         if self.revocation_reports < 1 or self.revocation_distinct_rsus < 1:
             raise ValueError("revocation_reports and revocation_distinct_rsus must be at least 1")
 
@@ -652,8 +658,8 @@ class ITSSimulation:
                             rejected += 1
             if self.former is not None:
                 messages += self._former_holder_step(by_vid, positions, holder_x, now)
-            if cfg.insider_forgery and step == cfg.round_seconds - 1:
-                messages += self._insider_step(by_vid, positions, now)
+            if cfg.insider_forgery:
+                messages += self._insider_step(by_vid, positions, now, step, silent_until)
             self.adversary.observe(beacons)
             pairs = self.adversary.linked_pairs
             self.tracker_nodes.extend(pairs[self._tracker_seen:])        # beacons carry their holding ids
@@ -676,38 +682,64 @@ class ITSSimulation:
         return {"pki": self.pki.key_custody, "pm": self.pms[0].key_custody,
                 "rsu": self.rsus[0].key_custody, "cloud": self.cloud.key_custody}
 
-    def _insider_step(self, by_vid: dict, positions: dict, now: float) -> int:
-        """E3b, the A3 adversary with a key: each entity measures the share of
-        pseudonyms in use whose current signing key it holds, then signs one
-        message with such a key on behalf of its current holder, 40 m from the
-        holder, and sends it to the V2V receivers and to the holder's RSU."""
+    def _insider_step(self, by_vid: dict, positions: dict, now: float, step: int, silent_until: dict) -> int:
+        """E3b, the A3 adversary with a key.  Once per round (last second) each
+        entity measures the share of pseudonyms in use whose current signing key
+        it holds.  It forges up to ``insider_forgeries_per_round`` messages per
+        round, each with a held key on behalf of the pseudonym's current holder,
+        sent to the V2V receivers and to the holder's RSU:
+
+        * ``offset``: ``ghost_offset_m`` from the holder, at evenly spaced seconds
+          (receivers that just heard the holder see two places at once);
+        * ``near``: within ``insider_near_m`` of the holder, inside the 25 m
+          tolerance receivers and RSUs allow for one second;
+        * ``silent``: while the holder is in its post-change silent period, at
+          its position, before any receiver has heard the new pseudonym."""
+        cfg = self.cfg
+        rs = cfg.round_seconds
+        n = max(1, cfg.insider_forgeries_per_round)
         in_use = {}
         for mv in self.road.vehicles:
             v = by_vid[mv.vid]
             if v.current is not None and not v.revoked:
                 in_use[v.current.pid] = (v, mv)
-        if not in_use:
-            return 0
         sent = 0
+        scheduled = step in {(i + 1) * rs // n - 1 for i in range(n)}
         for name, custody in self._insider_entities().items():
+            st = self.insider_stats.setdefault(name, {"rounds": 0, "share_sum": 0.0, "sent": 0, "accepted": 0,
+                                                      "receivers_total": 0, "receivers_accepting": 0,
+                                                      "rsu_accepted": 0, "holder_blamed": 0, "round_sent": 0})
+            if step == 0:
+                st["round_sent"] = 0
             held = sorted(pid for pid, (v, mv) in in_use.items()
                           if pid in custody and custody[pid].sk is not None
                           and custody[pid].pk_hex == v.current.keys.pk_hex)
-            st = self.insider_stats.setdefault(name, {"rounds": 0, "share_sum": 0.0, "sent": 0, "accepted": 0,
-                                                      "receivers_total": 0, "receivers_accepting": 0,
-                                                      "rsu_accepted": 0, "holder_blamed": 0})
-            st["rounds"] += 1
-            st["share_sum"] += len(held) / len(in_use)
-            if not held:
-                continue
-            pid = held[0]
+            if step == rs - 1 and in_use:
+                st["rounds"] += 1
+                st["share_sum"] += len(held) / len(in_use)
+            if cfg.insider_strategy == "silent":
+                targets = [pid for pid in held if self.sim_time < silent_until.get(in_use[pid][1].vid, 0.0)]
+                if not targets or st["round_sent"] >= n:
+                    continue
+            else:
+                if not scheduled or not held:
+                    continue
+                targets = [pid for pid in held if self.sim_time >= silent_until.get(in_use[pid][1].vid, 0.0)] or held
+            pid = targets[(step + len(name)) % len(targets)]
             v, mv = in_use[pid]
             keys = custody[pid]
-            claimed_x = (mv.x + self.cfg.ghost_offset_m) % self.wrap_m
+            if cfg.insider_strategy == "offset":
+                claimed_x = mv.x + cfg.ghost_offset_m
+            elif cfg.insider_strategy == "near":
+                claimed_x = mv.x + cfg.insider_near_m
+            else:
+                claimed_x = mv.x
+            claimed_x %= self.wrap_m
             msg = SafetyMessage(pid, (claimed_x, 0.0), mv.v, float(mv.direction), now)
             msg.signature = crypto.sign(keys.sk, msg.body()).hex()
             msg.cred = v.current.cert_wire()                 # public: the certificate every message carries
             st["sent"] += 1
+            st["round_sent"] += 1
             sent += 1
             if self.v2v is not None:
                 acc, rx = self.v2v.deliver(msg, claimed_x, positions, now, forged=True, exclude=mv.vid)
@@ -875,7 +907,10 @@ class ITSSimulation:
         if self.insider_stats:
             out["insider_forgery"] = {
                 name: {"key_share": st["share_sum"] / max(1, st["rounds"]), "rounds": st["rounds"], "sent": st["sent"],
-                       "accepted": st["accepted"], "receivers_total": st["receivers_total"],
+                       "accepted": st["accepted"], "message_rate": st["accepted"] / st["sent"] if st["sent"] else 0.0,
+                       "rsu_rate": st["rsu_accepted"] / st["sent"] if st["sent"] else 0.0,
+                       "blame_rate": st["holder_blamed"] / st["sent"] if st["sent"] else 0.0,
+                       "receivers_total": st["receivers_total"],
                        "receivers_accepting": st["receivers_accepting"],
                        "receiver_rate": st["receivers_accepting"] / st["receivers_total"] if st["receivers_total"] else 0.0,
                        "rsu_accepted": st["rsu_accepted"], "holder_blamed": st["holder_blamed"]}

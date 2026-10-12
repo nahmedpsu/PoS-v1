@@ -228,17 +228,26 @@ def fig_usecases(res: dict, path: Path) -> Path:
     rows = res["results"]
     names = [r["scenario"].replace("_", "\n") for r in rows]
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.4))
-    link = [r["metrics"].get("linking_success") or 0 for r in rows]
-    colors = [C_V2 if v < 0.35 else (C_POET if v < 0.7 else C_REF) for v in link]
-    axes[0].bar(names, link, color=colors)
-    axes[0].set_ylim(0, 1)
-    axes[0].set_title("Tracker linking success")
-    axes[0].tick_params(axis="x", labelsize=7)
-    axes[1].bar(names, [r["metrics"].get("vehicles", 0) for r in rows], color=C_POW)
-    axes[1].set_title("Vehicles simulated")
-    axes[1].tick_params(axis="x", labelsize=7)
-    axes[2].bar(names, [r["metrics"].get("wall_seconds_per_round", 0) for r in rows], color=C_POW1)
-    axes[2].set_title("Wall time per shuffle round (s, one core)")
-    axes[2].tick_params(axis="x", labelsize=7)
-    fig.suptitle("PoP v2 deployment scenarios")
+
+    def stat(r, key):
+        c = r.get("ci", {}).get(key)
+        if c:
+            return c["mean"], c["mean"] - c["lo"], c["hi"] - c["mean"]
+        v = r["metrics"].get(key) or 0
+        return v, 0.0, 0.0
+
+    for ax, key, title, ylim in ((axes[0], "linking_success", "Tracker linking success", (0, 1)),
+                                 (axes[1], "vehicles", "Vehicles simulated", None),
+                                 (axes[2], "wall_seconds_per_round", "Wall time per shuffle round (s, one core)", None)):
+        st = [stat(r, key) for r in rows]
+        vals = [x[0] for x in st]
+        colors = ([C_V2 if v < 0.35 else (C_POET if v < 0.7 else C_REF) for v in vals] if key == "linking_success"
+                  else [C_POW if key == "vehicles" else C_POW1] * len(vals))
+        ax.bar(names, vals, color=colors, yerr=[[x[1] for x in st], [x[2] for x in st]], capsize=3)
+        if ylim:
+            ax.set_ylim(*ylim)
+        ax.set_title(title)
+        ax.tick_params(axis="x", labelsize=7)
+    n = len(res.get("seeds") or [1])
+    fig.suptitle(f"PoP v2 deployment scenarios (mean and 95 % CI over {n} seed{'s' if n > 1 else ''})")
     return _save(fig, path)

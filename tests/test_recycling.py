@@ -340,3 +340,26 @@ def test_insider_key_custody_and_forgery():
     assert r["pki"]["holder_blamed"] >= 1                                # and the ledger blames the holder
     sim, r = run("fresh")
     assert r["pki"]["key_share"] == 1.0 and r["cloud"]["key_share"] == 0.0   # fresh pseudonyms are never uploaded
+
+
+def test_stronger_insider_forges_without_trace():
+    """E3b: an insider that claims a position within the 25 m one-second
+    tolerance, or forges while the holder is silent after a change, is
+    accepted by every receiver and by the RSU, and nobody is blamed."""
+    from pop_sim.shuffle import ITSConfig, ITSSimulation
+    from pop_sim.v2.mobility import RoadConfig
+
+    for strategy in ("near", "silent"):
+        cfg = ITSConfig(n_pm=2, rsus_per_pm=3, consensus="pop", mobility=True, road=RoadConfig(density_per_km=10, seed=3),
+                        round_seconds=30, pseudonyms_per_vehicle=3, seed=3, silent_period=3, position_noise_m=3,
+                        attribution="ledger", v2v=True, v2v_plausibility=True, issuance="recycle", insider_forgery=True,
+                        insider_strategy=strategy, insider_forgeries_per_round=5)
+        sim = ITSSimulation(cfg)
+        sim.run(3)
+        r = sim.summary()["recycling"]["insider_forgery"]["pki"]
+        assert r["sent"] >= 10, strategy
+        # a receiver may still reject one that last heard the recycled label from its previous holder elsewhere
+        assert r["receiver_rate"] >= 0.95 and r["rsu_rate"] == 1.0 and r["holder_blamed"] == 0, (strategy, r)
+    import pytest
+    with pytest.raises(ValueError):
+        ITSConfig(insider_strategy="teleport")

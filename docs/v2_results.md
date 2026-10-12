@@ -160,8 +160,10 @@ The election change does not alter privacy or distribution (same traffic, same
 shuffle); it removes the server and makes every block verifiable at a cost of well
 under a millisecond per node. (The 96 % linking figure is for 8 vehicles per km with
 only 3 s of silence; the dense-zone numbers above are the ones that matter. Results
-before 3.3.0 printed 75 %: an older tracker, and a scoring artifact that counted a
-vehicle keeping its pseudonym as a linked change, see the recycling study's E4.)
+before 3.3.1 printed 75 %, from the same Kalman tracker: before 3.0.0 it took a
+recycled pseudonym on another vehicle as a certain continuation of the earlier track,
+which corrupted tracks and pushed linking down. 3.0.0 gates that continuation on the
+predicted position; the 3.3.0 scoring fix moved the figure by under two points.)
 
 ![Protocol](../figures/v2/v2_protocol.png)
 

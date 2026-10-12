@@ -259,18 +259,45 @@ USE_CASES = [uc_urban_intersection, uc_highway, uc_rural_night, uc_cross_pm_roam
              uc_incident_revocation, uc_city_scale]
 
 
-def run_all(quick: bool = False) -> dict:
+DEFAULT_SEEDS = tuple(range(1, 11))
+
+
+def _numeric(m: dict) -> dict:
+    return {k: float(v) for k, v in m.items() if isinstance(v, (int, float)) and not isinstance(v, bool)}
+
+
+def run_all(quick: bool = False, seeds=None) -> dict:
+    """Every scenario over several seeds (traffic, keys, which vehicles
+    misbehave).  Each entry keeps the seed-1 result as before (``config``,
+    ``metrics``, ``verdict``) and adds ``per_seed`` metrics, the ``mean`` and a
+    95 % bootstrap ``ci`` of every numeric metric, and, for the scenarios with
+    a tracker, ``verdict_over_seeds`` from the mean linking rate."""
+    from .metrics import bootstrap_ci
+
+    seeds = tuple(seeds) if seeds else ((1,) if quick else DEFAULT_SEEDS)
     out = []
     t0 = time.perf_counter()
     for fn in USE_CASES:
         t = time.perf_counter()
-        if quick and fn is uc_city_scale:
-            r = fn(rounds=1, density=6.0, n_pm=2, rsus_per_pm=3)
-        elif quick:
-            r = fn(rounds=2)
-        else:
-            r = fn()
-        d = r.to_dict()
+        runs = []
+        for seed in seeds:
+            if quick and fn is uc_city_scale:
+                r = fn(rounds=1, seed=seed, density=6.0, n_pm=2, rsus_per_pm=3)
+            elif quick:
+                r = fn(rounds=2, seed=seed)
+            else:
+                r = fn(seed=seed)
+            runs.append(r.to_dict())
+        d = dict(runs[0])
+        d["seeds"] = list(seeds)
+        d["per_seed"] = [x["metrics"] for x in runs]
+        nums = [_numeric(x["metrics"]) for x in runs]
+        keys = sorted(set().union(*nums))
+        d["mean"] = {k: statistics.mean(n[k] for n in nums if k in n) for k in keys}
+        d["ci"] = {k: bootstrap_ci([n[k] for n in nums if k in n]) for k in keys}
+        if "linking_success" in d["mean"]:
+            d["verdict_over_seeds"] = _privacy_verdict(d["mean"]["linking_success"])
         d["seconds"] = time.perf_counter() - t
         out.append(d)
-    return {"experiment": "usecases", "quick": quick, "results": out, "wall_seconds": time.perf_counter() - t0}
+    return {"experiment": "usecases", "quick": quick, "seeds": list(seeds), "results": out,
+            "wall_seconds": time.perf_counter() - t0}

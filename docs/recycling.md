@@ -13,7 +13,7 @@ to `results/recycling/` and `figures/recycling/`; the numbers are in
 |---|---|---|---|
 | A1 outside tracker | Hears every beacon (pid, position, speed, heading, time) with GPS noise | No keys, no ledger | `v2/tracker_kalman.py` |
 | A2 former holder | A former holder whose vehicle does not enforce key deletion (no tamper-proof device, or a compromised one): keeps the private key of every pseudonym it held; transmits anywhere at any time | Cannot forge certificates | `v2/recycling_attacks.py` |
-| A3 curious insider | Honest-but-curious RSU, PM or cloud: follows the protocol, keeps everything it sees; holds private keys in recycle, fresh and window modes; can sign as any vehicle (E3b) | Does not deviate from the protocol or forge certificates | `v2/insider.py`, `ITSSimulation._insider_step` |
+| A3 curious insider | Honest-but-curious RSU, PM or cloud: follows the protocol, keeps everything it sees; holds private keys in recycle, fresh and window modes; can sign as any vehicle (E3b), and by claiming a position within 25 m of the holder or forging during its silent period does so without any receiver or RSU noticing | Does not deviate from the protocol or forge certificates | `v2/insider.py`, `ITSSimulation._insider_step` |
 | A4 collusion | A1 plus one A3 | Same as its parts | `v2/insider.py` (`tracker+pm` etc.) |
 
 Starting facts, read from the code: a recycled `Pseudonym` travels with its

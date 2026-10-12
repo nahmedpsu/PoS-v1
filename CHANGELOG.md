@@ -3,8 +3,11 @@
 ## 3.3.1 - v2 results regenerated with the current code
 
 * `results/v2` and `figures/v2` regenerated (`pop-sim run-v2`, `attacks`,
-  `usecases`); they dated from 2.1.0, before the Kalman tracker and the 3.3.0
-  scoring fix.  What moved: the tracker figures (end-to-end protocol 75 % ->
+  `usecases`); they dated from 2.x.  They already used the Kalman tracker, but
+  its same-pseudonym step then took a recycled pseudonym on another vehicle as
+  a certain continuation of the earlier track, which corrupted tracks and
+  pushed linking down; 3.0.0 gated that step (the 3.3.0 scoring fix moved the
+  figures by under two points).  What moved: the tracker figures (end-to-end protocol 75 % ->
   96 % linked; demand-aware distribution 0.61-0.82 -> 0.97-1.00), the
   deployment scenarios (urban intersection 0.35 "adequate" -> 0.74
   "insufficient"; no scenario now reaches the adequate band), the cross-PM

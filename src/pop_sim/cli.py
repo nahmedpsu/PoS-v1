@@ -149,11 +149,14 @@ def cmd_attacks(args: argparse.Namespace) -> int:
 
 
 def cmd_usecases(args: argparse.Namespace) -> int:
-    res = uc.run_all(quick=args.quick)
+    seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else None
+    res = uc.run_all(quick=args.quick, seeds=seeds)
     _dump(res, Path(args.out) / "usecases.json")
     plots_v2.fig_usecases(res, Path(args.figures) / "usecases.png")
     for r in res["results"]:
-        print(f"{r['scenario']:22s} {r['verdict']}")
+        link = r.get("ci", {}).get("linking_success")
+        extra = f"  linking {link['mean']:.2f} [{link['lo']:.2f}, {link['hi']:.2f}] over {len(r['seeds'])} seeds" if link else ""
+        print(f"{r['scenario']:22s} {r.get('verdict_over_seeds') or r['verdict']}{extra}")
     print(f"({res['wall_seconds']:.1f} s)")
     return 0
 
@@ -313,6 +316,7 @@ def main(argv: list[str] | None = None) -> int:
     a.set_defaults(func=cmd_attacks)
     u = sub.add_parser("usecases", help="run the deployment scenarios")
     u.add_argument("--quick", action="store_true")
+    u.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1 with --quick)")
     u.add_argument("--out", default="results/v2")
     u.add_argument("--figures", default="figures/v2")
     u.set_defaults(func=cmd_usecases)

@@ -1,6 +1,18 @@
 {
  "experiment": "usecases",
  "quick": false,
+ "seeds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10
+ ],
  "results": [
   {
    "scenario": "urban_intersection",
@@ -55,14 +67,14 @@
    "metrics": {
     "vehicles": 237,
     "rounds": 4,
-    "wall_seconds_per_round": 0.6566063779999922,
+    "wall_seconds_per_round": 0.6439083104999952,
     "linking_success": 0.7365883062085594,
     "mean_correct_track_s": 24.73228346456693,
     "stockouts": 0,
     "pseudonyms_issued": 595,
     "pseudonyms_per_vehicle": 2.5105485232067513,
-    "pm_election_ms": 0.3858352499719331,
-    "rsu_elections_ms": 0.7284918749661529,
+    "pm_election_ms": 0.39486474999961274,
+    "rsu_elections_ms": 0.7005876250243404,
     "messages_per_round": 2370,
     "rejected_messages": 0,
     "pm_blocks": 4,
@@ -70,9 +82,313 @@
     "revoked": 0,
     "allotment_proof_bytes": 1433
    },
-   "verdict": "privacy insufficient; 0 stock-outs; 0.7 s per round for 237 vehicles",
+   "verdict": "privacy insufficient; 0 stock-outs; 0.6 s per round for 237 vehicles",
    "extra": {},
-   "seconds": 3.0492356139998265
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 237,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.6439083104999952,
+     "linking_success": 0.7365883062085594,
+     "mean_correct_track_s": 24.73228346456693,
+     "stockouts": 0,
+     "pseudonyms_issued": 595,
+     "pseudonyms_per_vehicle": 2.5105485232067513,
+     "pm_election_ms": 0.39486474999961274,
+     "rsu_elections_ms": 0.7005876250243404,
+     "messages_per_round": 2370,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 259,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.6902166260000016,
+     "linking_success": 0.6867071152785439,
+     "mean_correct_track_s": 23.225352112676056,
+     "stockouts": 0,
+     "pseudonyms_issued": 651,
+     "pseudonyms_per_vehicle": 2.5135135135135136,
+     "pm_election_ms": 0.36882799999915505,
+     "rsu_elections_ms": 0.7339624999893601,
+     "messages_per_round": 2590,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1434
+    },
+    {
+     "vehicles": 260,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.6876810107500049,
+     "linking_success": 0.6895604395604396,
+     "mean_correct_track_s": 22.910714285714285,
+     "stockouts": 0,
+     "pseudonyms_issued": 654,
+     "pseudonyms_per_vehicle": 2.5153846153846153,
+     "pm_election_ms": 0.44803574999718876,
+     "rsu_elections_ms": 0.8370541875013515,
+     "messages_per_round": 2600,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1434
+    },
+    {
+     "vehicles": 239,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.6510637302500015,
+     "linking_success": 0.7489539748953975,
+     "mean_correct_track_s": 25.8,
+     "stockouts": 0,
+     "pseudonyms_issued": 598,
+     "pseudonyms_per_vehicle": 2.502092050209205,
+     "pm_election_ms": 0.4422417500009601,
+     "rsu_elections_ms": 0.8326671875060754,
+     "messages_per_round": 2390,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 222,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.5709133477500004,
+     "linking_success": 0.7078507078507078,
+     "mean_correct_track_s": 24.680851063829788,
+     "stockouts": 0,
+     "pseudonyms_issued": 558,
+     "pseudonyms_per_vehicle": 2.5135135135135136,
+     "pm_election_ms": 0.4351837499925182,
+     "rsu_elections_ms": 0.7788568750086711,
+     "messages_per_round": 2220,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 227,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.5880237795000056,
+     "linking_success": 0.7451227186910007,
+     "mean_correct_track_s": 25.06198347107438,
+     "stockouts": 0,
+     "pseudonyms_issued": 570,
+     "pseudonyms_per_vehicle": 2.511013215859031,
+     "pm_election_ms": 0.40175650001117447,
+     "rsu_elections_ms": 0.7409948124941224,
+     "messages_per_round": 2270,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 206,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.5541823917499968,
+     "linking_success": 0.768377253814147,
+     "mean_correct_track_s": 25.672645739910315,
+     "stockouts": 0,
+     "pseudonyms_issued": 516,
+     "pseudonyms_per_vehicle": 2.504854368932039,
+     "pm_election_ms": 0.3612297499984152,
+     "rsu_elections_ms": 0.7194981250027155,
+     "messages_per_round": 2060,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1435
+    },
+    {
+     "vehicles": 224,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.5586825120000043,
+     "linking_success": 0.6798469387755102,
+     "mean_correct_track_s": 22.00409836065574,
+     "stockouts": 0,
+     "pseudonyms_issued": 562,
+     "pseudonyms_per_vehicle": 2.5089285714285716,
+     "pm_election_ms": 0.362597500000561,
+     "rsu_elections_ms": 0.7364604374977546,
+     "messages_per_round": 2240,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1432
+    },
+    {
+     "vehicles": 213,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.5364704547500025,
+     "linking_success": 0.6968477531857814,
+     "mean_correct_track_s": 23.181818181818183,
+     "stockouts": 0,
+     "pseudonyms_issued": 536,
+     "pseudonyms_per_vehicle": 2.516431924882629,
+     "pm_election_ms": 0.4433730000101832,
+     "rsu_elections_ms": 0.8134820624956518,
+     "messages_per_round": 2130,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1432
+    },
+    {
+     "vehicles": 226,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.5425925172500001,
+     "linking_success": 0.7326169405815424,
+     "mean_correct_track_s": 24.366255144032923,
+     "stockouts": 0,
+     "pseudonyms_issued": 570,
+     "pseudonyms_per_vehicle": 2.52212389380531,
+     "pm_election_ms": 0.3624250000058282,
+     "rsu_elections_ms": 0.6758049375115149,
+     "messages_per_round": 2260,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1434
+    }
+   ],
+   "mean": {
+    "allotment_proof_bytes": 1433.3,
+    "linking_success": 0.719247214884163,
+    "mean_correct_track_s": 24.16360018242786,
+    "messages_per_round": 2313.0,
+    "pm_blocks": 4.0,
+    "pm_election_ms": 0.4020535750015597,
+    "pseudonyms_issued": 581.0,
+    "pseudonyms_per_vehicle": 2.511840419073518,
+    "rejected_messages": 0.0,
+    "revoked": 0.0,
+    "rounds": 4.0,
+    "rsu_elections_ms": 0.7569368750031558,
+    "stockouts": 0.0,
+    "vehicles": 231.3,
+    "wall_seconds_per_round": 0.6023734680500012
+   },
+   "ci": {
+    "allotment_proof_bytes": {
+     "mean": 1433.3,
+     "lo": 1432.7,
+     "hi": 1433.8,
+     "n": 10
+    },
+    "linking_success": {
+     "mean": 0.719247214884163,
+     "lo": 0.7019466821128595,
+     "hi": 0.7369273706995696,
+     "n": 10
+    },
+    "mean_correct_track_s": {
+     "mean": 24.16360018242786,
+     "lo": 23.437572326264455,
+     "hi": 24.92291216175924,
+     "n": 10
+    },
+    "messages_per_round": {
+     "mean": 2313.0,
+     "lo": 2210.0,
+     "hi": 2419.0,
+     "n": 10
+    },
+    "pm_blocks": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "pm_election_ms": {
+     "mean": 0.4020535750015597,
+     "lo": 0.3787729750023061,
+     "hi": 0.4239702000006673,
+     "n": 10
+    },
+    "pseudonyms_issued": {
+     "mean": 581.0,
+     "lo": 555.1,
+     "hi": 607.7,
+     "n": 10
+    },
+    "pseudonyms_per_vehicle": {
+     "mean": 2.511840419073518,
+     "lo": 2.5083254973249525,
+     "hi": 2.515169325939978,
+     "n": 10
+    },
+    "rejected_messages": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "rounds": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "rsu_elections_ms": {
+     "mean": 0.7569368750031558,
+     "lo": 0.7241373687515207,
+     "hi": 0.7904121500020622,
+     "n": 10
+    },
+    "stockouts": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 231.3,
+     "lo": 221.0,
+     "hi": 241.9,
+     "n": 10
+    },
+    "wall_seconds_per_round": {
+     "mean": 0.6023734680500012,
+     "lo": 0.5668583632749999,
+     "hi": 0.6378213598750009,
+     "n": 10
+    }
+   },
+   "verdict_over_seeds": "privacy insufficient",
+   "seconds": 26.377417459000014
   },
   {
    "scenario": "highway",
@@ -127,14 +443,14 @@
    "metrics": {
     "vehicles": 72,
     "rounds": 4,
-    "wall_seconds_per_round": 0.8561413365000021,
+    "wall_seconds_per_round": 0.755521181749998,
     "linking_success": 0.9833546734955185,
     "mean_correct_track_s": 185.07792207792207,
     "stockouts": 8,
     "pseudonyms_issued": 273,
     "pseudonyms_per_vehicle": 3.7916666666666665,
-    "pm_election_ms": 0.34584900004119845,
-    "rsu_elections_ms": 1.4151496666651535,
+    "pm_election_ms": 0.31619512499503344,
+    "rsu_elections_ms": 1.3109146666702522,
     "messages_per_round": 3625.25,
     "rejected_messages": 0,
     "pm_blocks": 4,
@@ -144,7 +460,311 @@
    },
    "verdict": "privacy insufficient: at this density a tracker follows most vehicles; shuffling must be paired with longer silence at entries/exits",
    "extra": {},
-   "seconds": 3.541572727999892
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 72,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.755521181749998,
+     "linking_success": 0.9833546734955185,
+     "mean_correct_track_s": 185.07792207792207,
+     "stockouts": 8,
+     "pseudonyms_issued": 273,
+     "pseudonyms_per_vehicle": 3.7916666666666665,
+     "pm_election_ms": 0.31619512499503344,
+     "rsu_elections_ms": 1.3109146666702522,
+     "messages_per_round": 3625.25,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1498
+    },
+    {
+     "vehicles": 95,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.0787161610000027,
+     "linking_success": 0.9923444976076555,
+     "mean_correct_track_s": 190.87128712871288,
+     "stockouts": 0,
+     "pseudonyms_issued": 366,
+     "pseudonyms_per_vehicle": 3.8526315789473684,
+     "pm_election_ms": 0.33620337499229436,
+     "rsu_elections_ms": 1.4925563333605396,
+     "messages_per_round": 4845,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1432
+    },
+    {
+     "vehicles": 110,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.1666715914999912,
+     "linking_success": 0.9776304888152444,
+     "mean_correct_track_s": 178.8512396694215,
+     "stockouts": 1,
+     "pseudonyms_issued": 420,
+     "pseudonyms_per_vehicle": 3.8181818181818183,
+     "pm_election_ms": 0.3189692499958596,
+     "rsu_elections_ms": 1.3729558333039904,
+     "messages_per_round": 5597.25,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 2257
+    },
+    {
+     "vehicles": 96,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.067980064000011,
+     "linking_success": 0.9742366412213741,
+     "mean_correct_track_s": 162.5084745762712,
+     "stockouts": 5,
+     "pseudonyms_issued": 366,
+     "pseudonyms_per_vehicle": 3.8125,
+     "pm_election_ms": 0.32622562498829666,
+     "rsu_elections_ms": 1.3569437500109416,
+     "messages_per_round": 4862,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1432
+    },
+    {
+     "vehicles": 109,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.240349146750006,
+     "linking_success": 0.9754653130287648,
+     "mean_correct_track_s": 169.728,
+     "stockouts": 10,
+     "pseudonyms_issued": 417,
+     "pseudonyms_per_vehicle": 3.8256880733944953,
+     "pm_election_ms": 1.2039545000135377,
+     "rsu_elections_ms": 1.4885257500244127,
+     "messages_per_round": 5486.75,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 102,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.1770620177500035,
+     "linking_success": 0.9774164408310749,
+     "mean_correct_track_s": 167.45,
+     "stockouts": 7,
+     "pseudonyms_issued": 390,
+     "pseudonyms_per_vehicle": 3.823529411764706,
+     "pm_election_ms": 0.3899164999765503,
+     "rsu_elections_ms": 1.5999034167085333,
+     "messages_per_round": 5138.25,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 68,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.7024169382499963,
+     "linking_success": 0.9807427785419532,
+     "mean_correct_track_s": 168.5125,
+     "stockouts": 9,
+     "pseudonyms_issued": 263,
+     "pseudonyms_per_vehicle": 3.8676470588235294,
+     "pm_election_ms": 0.32884074997951984,
+     "rsu_elections_ms": 1.3637212500583473,
+     "messages_per_round": 3378.75,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 103,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.1850084324999983,
+     "linking_success": 0.9866548042704626,
+     "mean_correct_track_s": 180.28947368421052,
+     "stockouts": 4,
+     "pseudonyms_issued": 390,
+     "pseudonyms_per_vehicle": 3.7864077669902914,
+     "pm_election_ms": 0.31932187502548004,
+     "rsu_elections_ms": 1.3118566666605602,
+     "messages_per_round": 5214.75,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1497
+    },
+    {
+     "vehicles": 77,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.8284831082499977,
+     "linking_success": 0.9834710743801653,
+     "mean_correct_track_s": 178.5977011494253,
+     "stockouts": 2,
+     "pseudonyms_issued": 297,
+     "pseudonyms_per_vehicle": 3.857142857142857,
+     "pm_election_ms": 0.36019687501465114,
+     "rsu_elections_ms": 1.3267870833383693,
+     "messages_per_round": 3927,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1498
+    },
+    {
+     "vehicles": 103,
+     "rounds": 4,
+     "wall_seconds_per_round": 1.1735260102500007,
+     "linking_success": 0.9723461195361285,
+     "mean_correct_track_s": 174.32456140350877,
+     "stockouts": 4,
+     "pseudonyms_issued": 393,
+     "pseudonyms_per_vehicle": 3.8155339805825244,
+     "pm_election_ms": 0.3632442500105526,
+     "rsu_elections_ms": 1.4103999999690586,
+     "messages_per_round": 5202,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    }
+   ],
+   "mean": {
+    "allotment_proof_bytes": 1534.6,
+    "linking_success": 0.9803662831728341,
+    "mean_correct_track_s": 175.6211159689472,
+    "messages_per_round": 4727.7,
+    "pm_blocks": 4.0,
+    "pm_election_ms": 0.42630681249917757,
+    "pseudonyms_issued": 357.5,
+    "pseudonyms_per_vehicle": 3.825092921249426,
+    "rejected_messages": 0.0,
+    "revoked": 0.0,
+    "rounds": 4.0,
+    "rsu_elections_ms": 1.4034564750105005,
+    "stockouts": 5.0,
+    "vehicles": 93.5,
+    "wall_seconds_per_round": 1.0375734652000006
+   },
+   "ci": {
+    "allotment_proof_bytes": {
+     "mean": 1534.6,
+     "lo": 1439.3,
+     "hi": 1699.5,
+     "n": 10
+    },
+    "linking_success": {
+     "mean": 0.9803662831728341,
+     "lo": 0.9768897111891657,
+     "hi": 0.9841428278525735,
+     "n": 10
+    },
+    "mean_correct_track_s": {
+     "mean": 175.6211159689472,
+     "lo": 170.72725911208144,
+     "hi": 180.61505767283364,
+     "n": 10
+    },
+    "messages_per_round": {
+     "mean": 4727.7,
+     "lo": 4229.6,
+     "hi": 5129.75,
+     "n": 10
+    },
+    "pm_blocks": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "pm_election_ms": {
+     "mean": 0.42630681249917757,
+     "lo": 0.3300663875094756,
+     "hi": 0.6052613500010295,
+     "n": 10
+    },
+    "pseudonyms_issued": {
+     "mean": 357.5,
+     "lo": 320.8,
+     "hi": 387.0,
+     "n": 10
+    },
+    "pseudonyms_per_vehicle": {
+     "mean": 3.825092921249426,
+     "lo": 3.809620637367233,
+     "hi": 3.8402155972999177,
+     "n": 10
+    },
+    "rejected_messages": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "rounds": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "rsu_elections_ms": {
+     "mean": 1.4034564750105005,
+     "lo": 1.3495335499987011,
+     "hi": 1.4629141416852083,
+     "n": 10
+    },
+    "stockouts": {
+     "mean": 5.0,
+     "lo": 3.0,
+     "hi": 7.1,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 93.5,
+     "lo": 83.9,
+     "hi": 101.4,
+     "n": 10
+    },
+    "wall_seconds_per_round": {
+     "mean": 1.0375734652000006,
+     "lo": 0.9101799693249987,
+     "hi": 1.1380987650999983,
+     "n": 10
+    }
+   },
+   "verdict_over_seeds": "privacy insufficient",
+   "seconds": 42.83209803099999
   },
   {
    "scenario": "rural_night",
@@ -199,14 +819,14 @@
    "metrics": {
     "vehicles": 11,
     "rounds": 4,
-    "wall_seconds_per_round": 0.11186186949998955,
+    "wall_seconds_per_round": 0.10284420924999438,
     "linking_success": 0.8441558441558441,
     "mean_correct_track_s": 78.18181818181819,
     "stockouts": 0,
     "pseudonyms_issued": 34,
     "pseudonyms_per_vehicle": 3.090909090909091,
-    "pm_election_ms": 0.33250124999995023,
-    "rsu_elections_ms": 0.7318261667516405,
+    "pm_election_ms": 0.30780849999700877,
+    "rsu_elections_ms": 0.7205054166234959,
     "messages_per_round": 440,
     "rejected_messages": 0,
     "pm_blocks": 4,
@@ -216,7 +836,311 @@
    },
    "verdict": "privacy insufficient: pseudonym change cannot hide a lone vehicle; do not rely on shuffling here",
    "extra": {},
-   "seconds": 0.4640492510000058
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 11,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.10284420924999438,
+     "linking_success": 0.8441558441558441,
+     "mean_correct_track_s": 78.18181818181819,
+     "stockouts": 0,
+     "pseudonyms_issued": 34,
+     "pseudonyms_per_vehicle": 3.090909090909091,
+     "pm_election_ms": 0.30780849999700877,
+     "rsu_elections_ms": 0.7205054166234959,
+     "messages_per_round": 440,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 9,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.08470324924999773,
+     "linking_success": 0.9047619047619048,
+     "mean_correct_track_s": 96.0,
+     "stockouts": 0,
+     "pseudonyms_issued": 28,
+     "pseudonyms_per_vehicle": 3.111111111111111,
+     "pm_election_ms": 0.369958249976321,
+     "rsu_elections_ms": 0.701814333344449,
+     "messages_per_round": 360,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 10,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.08897149975000218,
+     "linking_success": 0.8285714285714286,
+     "mean_correct_track_s": 76.0,
+     "stockouts": 0,
+     "pseudonyms_issued": 32,
+     "pseudonyms_per_vehicle": 3.2,
+     "pm_election_ms": 0.3270035000326743,
+     "rsu_elections_ms": 0.6738063333292151,
+     "messages_per_round": 400,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 2257
+    },
+    {
+     "vehicles": 6,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.06376492524999833,
+     "linking_success": 0.9761904761904762,
+     "mean_correct_track_s": 137.14285714285714,
+     "stockouts": 0,
+     "pseudonyms_issued": 19,
+     "pseudonyms_per_vehicle": 3.1666666666666665,
+     "pm_election_ms": 0.3420740000024125,
+     "rsu_elections_ms": 0.7066598333125285,
+     "messages_per_round": 240,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1432
+    },
+    {
+     "vehicles": 19,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.16865132300000596,
+     "linking_success": 0.8947368421052632,
+     "mean_correct_track_s": 92.12121212121212,
+     "stockouts": 0,
+     "pseudonyms_issued": 57,
+     "pseudonyms_per_vehicle": 3.0,
+     "pm_election_ms": 0.3653620000108049,
+     "rsu_elections_ms": 0.7289895833224591,
+     "messages_per_round": 760,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 10,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.09569508674999838,
+     "linking_success": 0.9571428571428572,
+     "mean_correct_track_s": 123.07692307692308,
+     "stockouts": 0,
+     "pseudonyms_issued": 32,
+     "pseudonyms_per_vehicle": 3.2,
+     "pm_election_ms": 0.33845625000594737,
+     "rsu_elections_ms": 0.7176004166543256,
+     "messages_per_round": 400,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 10,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.09390661025000213,
+     "linking_success": 0.8676470588235294,
+     "mean_correct_track_s": 84.44444444444444,
+     "stockouts": 1,
+     "pseudonyms_issued": 30,
+     "pseudonyms_per_vehicle": 3.0,
+     "pm_election_ms": 0.3774260000142249,
+     "rsu_elections_ms": 0.7630329999888849,
+     "messages_per_round": 390,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 7,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.06857104624999977,
+     "linking_success": 0.9183673469387755,
+     "mean_correct_track_s": 108.0,
+     "stockouts": 0,
+     "pseudonyms_issued": 22,
+     "pseudonyms_per_vehicle": 3.142857142857143,
+     "pm_election_ms": 0.32794550000403433,
+     "rsu_elections_ms": 0.6923558333179851,
+     "messages_per_round": 280,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1432
+    },
+    {
+     "vehicles": 7,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.07449662800000567,
+     "linking_success": 0.8571428571428571,
+     "mean_correct_track_s": 83.46153846153847,
+     "stockouts": 0,
+     "pseudonyms_issued": 22,
+     "pseudonyms_per_vehicle": 3.142857142857143,
+     "pm_election_ms": 0.3444347500334288,
+     "rsu_elections_ms": 0.6898079166433035,
+     "messages_per_round": 280,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    },
+    {
+     "vehicles": 12,
+     "rounds": 4,
+     "wall_seconds_per_round": 0.11812591899999347,
+     "linking_success": 0.9047619047619048,
+     "mean_correct_track_s": 96.0,
+     "stockouts": 0,
+     "pseudonyms_issued": 36,
+     "pseudonyms_per_vehicle": 3.0,
+     "pm_election_ms": 0.34618975001876606,
+     "rsu_elections_ms": 0.7047711666861763,
+     "messages_per_round": 480,
+     "rejected_messages": 0,
+     "pm_blocks": 4,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1433
+    }
+   ],
+   "mean": {
+    "allotment_proof_bytes": 1515.2,
+    "linking_success": 0.8953478520594841,
+    "mean_correct_track_s": 97.44287934287934,
+    "messages_per_round": 403.0,
+    "pm_blocks": 4.0,
+    "pm_election_ms": 0.3446658500095623,
+    "pseudonyms_issued": 31.2,
+    "pseudonyms_per_vehicle": 3.1054401154401154,
+    "rejected_messages": 0.0,
+    "revoked": 0.0,
+    "rounds": 4.0,
+    "rsu_elections_ms": 0.7099343833222823,
+    "stockouts": 0.1,
+    "vehicles": 10.1,
+    "wall_seconds_per_round": 0.0959730496749998
+   },
+   "ci": {
+    "allotment_proof_bytes": {
+     "mean": 1515.2,
+     "lo": 1432.6,
+     "hi": 1680.1,
+     "n": 10
+    },
+    "linking_success": {
+     "mean": 0.8953478520594841,
+     "lo": 0.8678905054844904,
+     "hi": 0.923015206082433,
+     "n": 10
+    },
+    "mean_correct_track_s": {
+     "mean": 97.44287934287934,
+     "lo": 86.45128205128205,
+     "hi": 109.84114774114774,
+     "n": 10
+    },
+    "messages_per_round": {
+     "mean": 403.0,
+     "lo": 328.0,
+     "hi": 499.0,
+     "n": 10
+    },
+    "pm_blocks": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "pm_election_ms": {
+     "mean": 0.3446658500095623,
+     "lo": 0.33213502500757386,
+     "hi": 0.3571446000051992,
+     "n": 10
+    },
+    "pseudonyms_issued": {
+     "mean": 31.2,
+     "lo": 25.7,
+     "hi": 38.1,
+     "n": 10
+    },
+    "pseudonyms_per_vehicle": {
+     "mean": 3.1054401154401154,
+     "lo": 3.0567099567099567,
+     "hi": 3.1511544011544013,
+     "n": 10
+    },
+    "rejected_messages": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "rounds": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "rsu_elections_ms": {
+     "mean": 0.7099343833222823,
+     "lo": 0.696800849998643,
+     "hi": 0.7257832416508829,
+     "n": 10
+    },
+    "stockouts": {
+     "mean": 0.1,
+     "lo": 0.0,
+     "hi": 0.3,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 10.1,
+     "lo": 8.2,
+     "hi": 12.5,
+     "n": 10
+    },
+    "wall_seconds_per_round": {
+     "mean": 0.0959730496749998,
+     "lo": 0.08028094522499885,
+     "hi": 0.11528548405000123,
+     "n": 10
+    }
+   },
+   "verdict_over_seeds": "privacy insufficient",
+   "seconds": 4.1521466990000135
   },
   {
    "scenario": "cross_pm_roaming",
@@ -275,14 +1199,216 @@
     "proofs_verified": 33,
     "proofs_unavailable_or_failed": 9,
     "mean_proof_bytes": 1569.3030303030303,
-    "mean_verify_us": 27.236424240541194,
-    "wall_seconds_per_round": 0.4446674467499747,
+    "mean_verify_us": 21.319636366776898,
+    "wall_seconds_per_round": 0.3665956757500055,
     "chains_valid": true,
     "linking_success": 0.9809644670050761
    },
-   "verdict": "42 crossings, 33 proofs verified (1569 B, 27 us each); 9 vehicles crossed before their allotment was anchored and fall back to the ledger",
+   "verdict": "42 crossings, 33 proofs verified (1569 B, 21 us each); 9 vehicles crossed before their allotment was anchored and fall back to the ledger",
    "extra": {},
-   "seconds": 1.9233528899999328
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 72,
+     "rounds": 4,
+     "pm_crossings": 42,
+     "proofs_verified": 33,
+     "proofs_unavailable_or_failed": 9,
+     "mean_proof_bytes": 1569.3030303030303,
+     "mean_verify_us": 21.319636366776898,
+     "wall_seconds_per_round": 0.3665956757500055,
+     "chains_valid": true,
+     "linking_success": 0.9809644670050761
+    },
+    {
+     "vehicles": 95,
+     "rounds": 4,
+     "pm_crossings": 54,
+     "proofs_verified": 42,
+     "proofs_unavailable_or_failed": 12,
+     "mean_proof_bytes": 1483.857142857143,
+     "mean_verify_us": 23.72595238447112,
+     "wall_seconds_per_round": 0.4869449262500041,
+     "chains_valid": true,
+     "linking_success": 0.9799043062200957
+    },
+    {
+     "vehicles": 110,
+     "rounds": 4,
+     "pm_crossings": 76,
+     "proofs_verified": 58,
+     "proofs_unavailable_or_failed": 18,
+     "mean_proof_bytes": 1517.396551724138,
+     "mean_verify_us": 20.197068959626858,
+     "wall_seconds_per_round": 0.540219589000003,
+     "chains_valid": true,
+     "linking_success": 0.9642857142857143
+    },
+    {
+     "vehicles": 96,
+     "rounds": 4,
+     "pm_crossings": 59,
+     "proofs_verified": 44,
+     "proofs_unavailable_or_failed": 15,
+     "mean_proof_bytes": 1519.159090909091,
+     "mean_verify_us": 22.983022727306558,
+     "wall_seconds_per_round": 0.501092919499996,
+     "chains_valid": true,
+     "linking_success": 0.9706439393939394
+    },
+    {
+     "vehicles": 109,
+     "rounds": 4,
+     "pm_crossings": 58,
+     "proofs_verified": 45,
+     "proofs_unavailable_or_failed": 13,
+     "mean_proof_bytes": 1441.4666666666667,
+     "mean_verify_us": 22.547533337223687,
+     "wall_seconds_per_round": 0.5510662359999969,
+     "chains_valid": true,
+     "linking_success": 0.9605042016806723
+    },
+    {
+     "vehicles": 102,
+     "rounds": 4,
+     "pm_crossings": 57,
+     "proofs_verified": 47,
+     "proofs_unavailable_or_failed": 10,
+     "mean_proof_bytes": 1450.9787234042553,
+     "mean_verify_us": 21.85495744842751,
+     "wall_seconds_per_round": 0.5209570547499993,
+     "chains_valid": true,
+     "linking_success": 0.9657657657657658
+    },
+    {
+     "vehicles": 68,
+     "rounds": 4,
+     "pm_crossings": 44,
+     "proofs_verified": 35,
+     "proofs_unavailable_or_failed": 9,
+     "mean_proof_bytes": 1445.6857142857143,
+     "mean_verify_us": 22.061228568353336,
+     "wall_seconds_per_round": 0.3474883220000038,
+     "chains_valid": true,
+     "linking_success": 0.978523489932886
+    },
+    {
+     "vehicles": 103,
+     "rounds": 4,
+     "pm_crossings": 60,
+     "proofs_verified": 41,
+     "proofs_unavailable_or_failed": 19,
+     "mean_proof_bytes": 1566.0731707317073,
+     "mean_verify_us": 18.399658537551968,
+     "wall_seconds_per_round": 0.4816912004999949,
+     "chains_valid": true,
+     "linking_success": 0.974267968056788
+    },
+    {
+     "vehicles": 77,
+     "rounds": 4,
+     "pm_crossings": 41,
+     "proofs_verified": 29,
+     "proofs_unavailable_or_failed": 12,
+     "mean_proof_bytes": 1441.9655172413793,
+     "mean_verify_us": 25.35651724585854,
+     "wall_seconds_per_round": 0.39573746175000224,
+     "chains_valid": true,
+     "linking_success": 0.976303317535545
+    },
+    {
+     "vehicles": 103,
+     "rounds": 4,
+     "pm_crossings": 46,
+     "proofs_verified": 33,
+     "proofs_unavailable_or_failed": 13,
+     "mean_proof_bytes": 1623.3939393939395,
+     "mean_verify_us": 26.187969696724338,
+     "wall_seconds_per_round": 0.5344041122500016,
+     "chains_valid": true,
+     "linking_success": 0.9567519858781994
+    }
+   ],
+   "mean": {
+    "linking_success": 0.9707915155754682,
+    "mean_proof_bytes": 1505.9279547517065,
+    "mean_verify_us": 22.46335452723208,
+    "pm_crossings": 53.7,
+    "proofs_unavailable_or_failed": 13.0,
+    "proofs_verified": 40.7,
+    "rounds": 4.0,
+    "vehicles": 93.5,
+    "wall_seconds_per_round": 0.47261974977500076
+   },
+   "ci": {
+    "linking_success": {
+     "mean": 0.9707915155754682,
+     "lo": 0.9660216509302578,
+     "hi": 0.9757673938731017,
+     "n": 10
+    },
+    "mean_proof_bytes": {
+     "mean": 1505.9279547517065,
+     "lo": 1470.5058339764905,
+     "hi": 1545.6107168343292,
+     "n": 10
+    },
+    "mean_verify_us": {
+     "mean": 22.46335452723208,
+     "lo": 21.113273187139484,
+     "hi": 23.82412094529172,
+     "n": 10
+    },
+    "pm_crossings": {
+     "mean": 53.7,
+     "lo": 47.6,
+     "hi": 60.3,
+     "n": 10
+    },
+    "proofs_unavailable_or_failed": {
+     "mean": 13.0,
+     "lo": 11.1,
+     "hi": 15.0,
+     "n": 10
+    },
+    "proofs_verified": {
+     "mean": 40.7,
+     "lo": 35.8,
+     "hi": 46.0,
+     "n": 10
+    },
+    "rounds": {
+     "mean": 4.0,
+     "lo": 4.0,
+     "hi": 4.0,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 93.5,
+     "lo": 83.9,
+     "hi": 101.4,
+     "n": 10
+    },
+    "wall_seconds_per_round": {
+     "mean": 0.47261974977500076,
+     "lo": 0.4253952633750032,
+     "hi": 0.5113523393250006,
+     "n": 10
+    }
+   },
+   "verdict_over_seeds": "privacy insufficient",
+   "seconds": 20.94802776900002
   },
   {
    "scenario": "toll_service_access",
@@ -341,13 +1467,183 @@
     "rejection_reasons": {
      "revoked-no-pseudonyms": 2
     },
-    "mean_check_us": 122.72704762359527,
+    "mean_check_us": 142.23661904336964,
     "permanent_ids_exposed": 0,
     "revoked_vehicles": 2
    },
-   "verdict": "63 accepted, 2 rejected in 123 us each; 0 permanent identities exposed",
+   "verdict": "63 accepted, 2 rejected in 142 us each; 0 permanent identities exposed",
    "extra": {},
-   "seconds": 0.5854043369999999
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 65,
+     "accepted": 63,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 142.23661904336964,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 72,
+     "accepted": 70,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 124.36282857249483,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 83,
+     "accepted": 81,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 122.106901231145,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 89,
+     "accepted": 87,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 111.11564368030517,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 95,
+     "accepted": 93,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 122.6181612931028,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 89,
+     "accepted": 87,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 122.78022988366816,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 65,
+     "accepted": 63,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 119.64639682154095,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 69,
+     "accepted": 67,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 140.6835373143676,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 71,
+     "accepted": 69,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 115.04489854923636,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    },
+    {
+     "vehicles": 90,
+     "accepted": 88,
+     "rejected": 2,
+     "rejection_reasons": {
+      "revoked-no-pseudonyms": 2
+     },
+     "mean_check_us": 132.95422727049362,
+     "permanent_ids_exposed": 0,
+     "revoked_vehicles": 2
+    }
+   ],
+   "mean": {
+    "accepted": 76.8,
+    "mean_check_us": 125.35494436597241,
+    "permanent_ids_exposed": 0.0,
+    "rejected": 2.0,
+    "revoked_vehicles": 2.0,
+    "vehicles": 78.8
+   },
+   "ci": {
+    "accepted": {
+     "mean": 76.8,
+     "lo": 70.0,
+     "hi": 83.6,
+     "n": 10
+    },
+    "mean_check_us": {
+     "mean": 125.35494436597241,
+     "lo": 119.65592068037377,
+     "hi": 131.78762992412285,
+     "n": 10
+    },
+    "permanent_ids_exposed": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "rejected": {
+     "mean": 2.0,
+     "lo": 2.0,
+     "hi": 2.0,
+     "n": 10
+    },
+    "revoked_vehicles": {
+     "mean": 2.0,
+     "lo": 2.0,
+     "hi": 2.0,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 78.8,
+     "lo": 72.0,
+     "hi": 85.6,
+     "n": 10
+    }
+   },
+   "seconds": 7.464382554999986
   },
   {
    "scenario": "incident_revocation",
@@ -417,7 +1713,248 @@
    },
    "verdict": "3/3 revoked after 2 rounds on average, 0 honest vehicles affected",
    "extra": {},
-   "seconds": 1.4960608920000595
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 72,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00002-008a05a6": 2,
+      "VEH-00009-f9270f4e": 2,
+      "VEH-00070-98910052": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 75,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 95,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00034-fbc46f1a": 2,
+      "VEH-00070-e21ac47b": 2,
+      "VEH-00081-acf9339d": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 98,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 110,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00012-e79a27e6": 2,
+      "VEH-00034-2b56363c": 2,
+      "VEH-00075-3c3a447d": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 113,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 96,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00010-a05885ac": 2,
+      "VEH-00022-6c8826ec": 2,
+      "VEH-00045-1321cfd7": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 99,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 109,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00005-f8eb18b9": 2,
+      "VEH-00026-d8407b1a": 2,
+      "VEH-00082-7d55197d": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 112,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 102,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00019-31307085": 2,
+      "VEH-00024-ce038150": 2,
+      "VEH-00038-b6650304": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 105,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 68,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00012-c3baea9e": 2,
+      "VEH-00028-000f49c8": 2,
+      "VEH-00050-a6511445": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 71,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 103,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00043-d330b270": 2,
+      "VEH-00066-7ffc69c3": 2,
+      "VEH-00101-9cdbf4f4": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 106,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 77,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00012-a382fe10": 2,
+      "VEH-00017-b00e0067": 2,
+      "VEH-00058-357c97d0": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 80,
+     "crl_size": 3
+    },
+    {
+     "vehicles": 103,
+     "malicious": 3,
+     "revoked": 3,
+     "honest_revoked": 0,
+     "rounds_to_revocation": {
+      "VEH-00008-280b11fd": 2,
+      "VEH-00024-8048e341": 2,
+      "VEH-00100-31499b2b": 2
+     },
+     "mean_rounds_to_revocation": 2,
+     "revoked_without_sets_at_end": 3,
+     "rejected_messages": 3,
+     "pki_accesses": 106,
+     "crl_size": 3
+    }
+   ],
+   "mean": {
+    "crl_size": 3.0,
+    "honest_revoked": 0.0,
+    "malicious": 3.0,
+    "mean_rounds_to_revocation": 2.0,
+    "pki_accesses": 96.5,
+    "rejected_messages": 3.0,
+    "revoked": 3.0,
+    "revoked_without_sets_at_end": 3.0,
+    "vehicles": 93.5
+   },
+   "ci": {
+    "crl_size": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "honest_revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "malicious": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "mean_rounds_to_revocation": {
+     "mean": 2.0,
+     "lo": 2.0,
+     "hi": 2.0,
+     "n": 10
+    },
+    "pki_accesses": {
+     "mean": 96.5,
+     "lo": 86.9,
+     "hi": 104.4,
+     "n": 10
+    },
+    "rejected_messages": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "revoked": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "revoked_without_sets_at_end": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 93.5,
+     "lo": 83.9,
+     "hi": 101.4,
+     "n": 10
+    }
+   },
+   "seconds": 19.288675232999992
   },
   {
    "scenario": "city_scale",
@@ -472,14 +2009,14 @@
    "metrics": {
     "vehicles": 784,
     "rounds": 3,
-    "wall_seconds_per_round": 3.0025127679999364,
+    "wall_seconds_per_round": 3.110997408000003,
     "linking_success": 0.8742028061224489,
     "mean_correct_track_s": 31.644736842105264,
     "stockouts": 1,
     "pseudonyms_issued": 2949,
     "pseudonyms_per_vehicle": 3.7614795918367347,
-    "pm_election_ms": 0.3541401666022163,
-    "rsu_elections_ms": 2.870705933128192,
+    "pm_election_ms": 0.3553114999922021,
+    "rsu_elections_ms": 3.054987333318119,
     "messages_per_round": 11760,
     "rejected_messages": 0,
     "pm_blocks": 3,
@@ -488,10 +2025,331 @@
     "allotment_proof_bytes": 1507,
     "signatures_per_round": 11760
    },
-   "verdict": "784 vehicles, 3.0 s per 30 s round on one core (11760 signed CAMs/round); PM election 0 ms",
+   "verdict": "784 vehicles, 3.1 s per 30 s round on one core (11760 signed CAMs/round); PM election 0 ms",
    "extra": {},
-   "seconds": 10.176126643000089
+   "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "per_seed": [
+    {
+     "vehicles": 784,
+     "rounds": 3,
+     "wall_seconds_per_round": 3.110997408000003,
+     "linking_success": 0.8742028061224489,
+     "mean_correct_track_s": 31.644736842105264,
+     "stockouts": 1,
+     "pseudonyms_issued": 2949,
+     "pseudonyms_per_vehicle": 3.7614795918367347,
+     "pm_election_ms": 0.3553114999922021,
+     "rsu_elections_ms": 3.054987333318119,
+     "messages_per_round": 11760,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1507,
+     "signatures_per_round": 11760
+    },
+    {
+     "vehicles": 799,
+     "rounds": 3,
+     "wall_seconds_per_round": 3.0916709553333326,
+     "linking_success": 0.8908262645303173,
+     "mean_correct_track_s": 32.50802139037433,
+     "stockouts": 9,
+     "pseudonyms_issued": 3012,
+     "pseudonyms_per_vehicle": 3.769712140175219,
+     "pm_election_ms": 0.36320191666068996,
+     "rsu_elections_ms": 2.793051333276253,
+     "messages_per_round": 11941.666666666666,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1507,
+     "signatures_per_round": 11941.666666666666
+    },
+    {
+     "vehicles": 801,
+     "rounds": 3,
+     "wall_seconds_per_round": 2.9270607936666693,
+     "linking_success": 0.8762291243951927,
+     "mean_correct_track_s": 32.11853448275862,
+     "stockouts": 1,
+     "pseudonyms_issued": 3019,
+     "pseudonyms_per_vehicle": 3.7690387016229714,
+     "pm_election_ms": 0.3838844166873893,
+     "rsu_elections_ms": 2.8006286667239997,
+     "messages_per_round": 12013.333333333334,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1573,
+     "signatures_per_round": 12013.333333333334
+    },
+    {
+     "vehicles": 859,
+     "rounds": 3,
+     "wall_seconds_per_round": 3.275052536333343,
+     "linking_success": 0.860302677532014,
+     "mean_correct_track_s": 31.851738241308794,
+     "stockouts": 0,
+     "pseudonyms_issued": 3232,
+     "pseudonyms_per_vehicle": 3.762514551804424,
+     "pm_election_ms": 0.4243326666729293,
+     "rsu_elections_ms": 3.4343555333900135,
+     "messages_per_round": 12885,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1507,
+     "signatures_per_round": 12885
+    },
+    {
+     "vehicles": 764,
+     "rounds": 3,
+     "wall_seconds_per_round": 2.794670680333335,
+     "linking_success": 0.8949607329842932,
+     "mean_correct_track_s": 33.49142857142857,
+     "stockouts": 0,
+     "pseudonyms_issued": 2885,
+     "pseudonyms_per_vehicle": 3.776178010471204,
+     "pm_election_ms": 0.29660658333341416,
+     "rsu_elections_ms": 2.5266817998992037,
+     "messages_per_round": 11460,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1572,
+     "signatures_per_round": 11460
+    },
+    {
+     "vehicles": 766,
+     "rounds": 3,
+     "wall_seconds_per_round": 2.826851338000002,
+     "linking_success": 0.8907755102040816,
+     "mean_correct_track_s": 33.104426787741204,
+     "stockouts": 1,
+     "pseudonyms_issued": 2885,
+     "pseudonyms_per_vehicle": 3.766318537859008,
+     "pm_election_ms": 0.32801774999313693,
+     "rsu_elections_ms": 2.8783097999962592,
+     "messages_per_round": 11485,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1574,
+     "signatures_per_round": 11485
+    },
+    {
+     "vehicles": 775,
+     "rounds": 3,
+     "wall_seconds_per_round": 2.7982519740000007,
+     "linking_success": 0.8709677419354839,
+     "mean_correct_track_s": 31.6280353200883,
+     "stockouts": 0,
+     "pseudonyms_issued": 2923,
+     "pseudonyms_per_vehicle": 3.7716129032258063,
+     "pm_election_ms": 0.31665074999409626,
+     "rsu_elections_ms": 2.5778642000318546,
+     "messages_per_round": 11625,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1573,
+     "signatures_per_round": 11625
+    },
+    {
+     "vehicles": 794,
+     "rounds": 3,
+     "wall_seconds_per_round": 3.2494032393333327,
+     "linking_success": 0.8808249370277078,
+     "mean_correct_track_s": 32.722772277227726,
+     "stockouts": 0,
+     "pseudonyms_issued": 2990,
+     "pseudonyms_per_vehicle": 3.765743073047859,
+     "pm_election_ms": 0.41157158334688876,
+     "rsu_elections_ms": 3.243971933352441,
+     "messages_per_round": 11910,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1507,
+     "signatures_per_round": 11910
+    },
+    {
+     "vehicles": 796,
+     "rounds": 3,
+     "wall_seconds_per_round": 2.888733707666669,
+     "linking_success": 0.8707600502512562,
+     "mean_correct_track_s": 31.822580645161292,
+     "stockouts": 0,
+     "pseudonyms_issued": 2994,
+     "pseudonyms_per_vehicle": 3.7613065326633164,
+     "pm_election_ms": 0.3371558333308637,
+     "rsu_elections_ms": 3.2221718666392007,
+     "messages_per_round": 11940,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1573,
+     "signatures_per_round": 11940
+    },
+    {
+     "vehicles": 801,
+     "rounds": 3,
+     "wall_seconds_per_round": 2.840210757666663,
+     "linking_success": 0.8760923845193508,
+     "mean_correct_track_s": 32.09051724137931,
+     "stockouts": 0,
+     "pseudonyms_issued": 3023,
+     "pseudonyms_per_vehicle": 3.774032459425718,
+     "pm_election_ms": 0.35782724998512094,
+     "rsu_elections_ms": 2.6396177999420916,
+     "messages_per_round": 12015,
+     "rejected_messages": 0,
+     "pm_blocks": 3,
+     "chains_valid": true,
+     "revoked": 0,
+     "allotment_proof_bytes": 1573,
+     "signatures_per_round": 12015
+    }
+   ],
+   "mean": {
+    "allotment_proof_bytes": 1546.6,
+    "linking_success": 0.8785942229502146,
+    "mean_correct_track_s": 32.29827917995734,
+    "messages_per_round": 11903.5,
+    "pm_blocks": 3.0,
+    "pm_election_ms": 0.35745602499967316,
+    "pseudonyms_issued": 2991.2,
+    "pseudonyms_per_vehicle": 3.767793650213226,
+    "rejected_messages": 0.0,
+    "revoked": 0.0,
+    "rounds": 3.0,
+    "rsu_elections_ms": 2.9171640266569434,
+    "signatures_per_round": 11903.5,
+    "stockouts": 1.2,
+    "vehicles": 793.9,
+    "wall_seconds_per_round": 2.980290339033335
+   },
+   "ci": {
+    "allotment_proof_bytes": {
+     "mean": 1546.6,
+     "lo": 1526.8,
+     "hi": 1566.5,
+     "n": 10
+    },
+    "linking_success": {
+     "mean": 0.8785942229502146,
+     "lo": 0.8721366314084741,
+     "hi": 0.8845447224905917,
+     "n": 10
+    },
+    "mean_correct_track_s": {
+     "mean": 32.29827917995734,
+     "lo": 31.938713030102303,
+     "hi": 32.68686702463151,
+     "n": 10
+    },
+    "messages_per_round": {
+     "mean": 11903.5,
+     "lo": 11701.5,
+     "hi": 12159.666666666666,
+     "n": 10
+    },
+    "pm_blocks": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "pm_election_ms": {
+     "mean": 0.35745602499967316,
+     "lo": 0.33419569999466603,
+     "hi": 0.3810753000038858,
+     "n": 10
+    },
+    "pseudonyms_issued": {
+     "mean": 2991.2,
+     "lo": 2940.2,
+     "hi": 3053.9,
+     "n": 10
+    },
+    "pseudonyms_per_vehicle": {
+     "mean": 3.767793650213226,
+     "lo": 3.7646431489963788,
+     "hi": 3.7708572497339854,
+     "n": 10
+    },
+    "rejected_messages": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 10
+    },
+    "rounds": {
+     "mean": 3.0,
+     "lo": 3.0,
+     "hi": 3.0,
+     "n": 10
+    },
+    "rsu_elections_ms": {
+     "mean": 2.9171640266569434,
+     "lo": 2.7429927799903453,
+     "hi": 3.108058219982771,
+     "n": 10
+    },
+    "signatures_per_round": {
+     "mean": 11903.5,
+     "lo": 11701.5,
+     "hi": 12159.666666666666,
+     "n": 10
+    },
+    "stockouts": {
+     "mean": 1.2,
+     "lo": 0.1,
+     "hi": 3.0,
+     "n": 10
+    },
+    "vehicles": {
+     "mean": 793.9,
+     "lo": 780.3,
+     "hi": 811.1,
+     "n": 10
+    },
+    "wall_seconds_per_round": {
+     "mean": 2.980290339033335,
+     "lo": 2.877222377066668,
+     "hi": 3.0912321595666676,
+     "n": 10
+    }
+   },
+   "verdict_over_seeds": "privacy insufficient",
+   "seconds": 99.43511375100002
   }
  ],
- "wall_seconds": 21.235816674999796
+ "wall_seconds": 220.49787796299998
 }
