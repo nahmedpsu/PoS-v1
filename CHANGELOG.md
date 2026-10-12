@@ -1,5 +1,23 @@
 # Changelog
 
+## 3.3.1 - v2 results regenerated with the current code
+
+* `results/v2` and `figures/v2` regenerated (`pop-sim run-v2`, `attacks`,
+  `usecases`); they dated from 2.1.0, before the Kalman tracker and the 3.3.0
+  scoring fix.  What moved: the tracker figures (end-to-end protocol 75 % ->
+  96 % linked; demand-aware distribution 0.61-0.82 -> 0.97-1.00), the
+  deployment scenarios (urban intersection 0.35 "adequate" -> 0.74
+  "insufficient"; no scenario now reaches the adequate band), the cross-PM
+  proof (33 of 42 verified, 1.6 KB, 27 us), the seed-grinding shares (block
+  hash 0.09 -> 0.36, chained VRF 0.11), and timing measurements within run
+  noise.  Stock-outs, forks, Sybil shares and the bench outcomes (14 defended,
+  4 mitigated) are unchanged.  docs/v2_results.md, docs/attack_and_scenario_
+  results.md and the README updated; the "10 s silence gives margin" claim is
+  withdrawn (9 s of silence in every 10 s period still leaves 0.52).
+* v1 results kept as the 1.0.0 reproduction: rerunning changes only timing
+  noise and three messages of the protocol trace.
+* Zenodo metadata removed; the release workflow keeps a generic republish.
+
 ## 3.3.0 - tracker scoring fix, insider forgery (E3b), the swapping papers read
 
 * Trackers (`v2/tracker_kalman.py`, `v2/adversary.py`): a beacon assigned to

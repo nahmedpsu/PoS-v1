@@ -18,7 +18,7 @@ outcome changes: *revoked vehicle keeps transmitting* becomes vulnerable (E6 of 
 |---|---|---|
 | Value forgery / proof theft | Claim a smaller value, reuse the winner's proof, use an uncertified key, choose the seed | 0 of 4 accepted, honest block accepted |
 | Sortition threshold tampering | A node with value 0.94 writes `threshold: 1.0`, `miners: 0`, or claims a no-miner round with or without evidence | 0 of 4 accepted, honest block accepted (an earlier verifier accepted the first two: review finding, fixed in 2.2.1) |
-| Seed grinding | Previous winner tries 1 to 64 block variants to lower its next value | Block-hash seed: share rises from 0.08 to 0.44. Chained VRF seed (v2): stays at 0.12 (fair share 0.10) |
+| Seed grinding | Previous winner tries 1 to 64 block variants to lower its next value | Block-hash seed: share rises from 0.09 to 0.36. Chained VRF seed (v2): stays at 0.11 (fair share 0.10) |
 | Multi-key seed choice | Attacker with 1 to 5 certified keys picks which winning key publishes to steer the next seed | Share 0.06 / 0.12 / 0.16 / 0.18 for k = 1 / 2 / 3 / 5 against fair 0.05 / 0.10 / 0.14 / 0.21; no measurable gain over honest play |
 | Block withholding | 0 to 50 % of nodes never publish when they win | 0 attacker blocks; mean block delay 46 ms to 95 ms; no round without a block |
 | Equivocation | Two blocks, one proof | First block stands, second rejected, node reported |
@@ -52,21 +52,25 @@ tracker follows; below 0.35 is reported as adequate, above 0.7 as insufficient.
 
 | Scenario | Setting | Vehicles | Linking | Stock-outs | Round (one core) | Verdict |
 |---|---|---|---|---|---|---|
-| Urban intersection | 2 km, 60 veh/km, 30 km/h, shuffle 20 s, 5 s silence | 237 | 0.35 | 0 | 0.5 s | Adequate, just: the right place to shuffle; 10 s silence gives margin |
-| Highway | 12 km, 4 veh/km, 110 km/h, shuffle 60 s | 72 | 0.78 | 8 | 0.7 s | Insufficient: tracker follows for 73 s on average; needs silence at entries/exits |
-| Rural night | 6 km, 1 veh/km | 11 | 0.61 | 0 | 0.1 s | A lone vehicle is tracked for 50 of 60 s; shuffling alone does not help |
-| Cross-PM roaming | Two PMs on a 6 km ring | 72 | 0.81 | 0 | 0.3 s | 42 crossings; 36 anchored proofs verified (1.4 KB, 19 us); 6 fell back to the ledger |
-| Toll / service access | Gantry authenticates by pseudonym | 65 | n/a | n/a | n/a | 63 accepted, 2 revoked rejected, 137 us per check, 0 permanent identities exposed |
+| Urban intersection | 2 km, 60 veh/km, 30 km/h, shuffle 20 s, 5 s silence | 237 | 0.74 | 0 | 0.7 s | Insufficient: the tracker follows a vehicle for 25 s on average; even 9 s of silence in every 10 s period leaves 0.52 |
+| Highway | 12 km, 4 veh/km, 110 km/h, shuffle 60 s | 72 | 0.98 | 8 | 0.9 s | Insufficient: tracker follows for 185 s on average; needs silence at entries/exits |
+| Rural night | 6 km, 1 veh/km | 11 | 0.84 | 0 | 0.1 s | Insufficient: a lone vehicle is tracked for 78 s on average; shuffling alone does not help |
+| Cross-PM roaming | Two PMs on a 6 km ring | 72 | 0.98 | 0 | 0.4 s | 42 crossings; 33 anchored proofs verified (1.6 KB, 27 us); 9 fell back to the ledger |
+| Toll / service access | Gantry authenticates by pseudonym | 65 | n/a | n/a | n/a | 63 accepted, 2 revoked rejected, 123 us per check, 0 permanent identities exposed |
 | Incident revocation | 3 misbehaving vehicles, 2 PMs | 72 | n/a | n/a | n/a | 3 of 3 revoked within 2 rounds, 0 honest vehicles affected, CRL of 3 |
-| City scale | 4 PMs x 5 RSUs, 20 km, 20 veh/km | 784 | 0.70 | 1 | 2.7 s | 11,760 signed CAMs per 30 s round, PM election 0.4 ms: one core keeps up with a district |
+| City scale | 4 PMs x 5 RSUs, 20 km, 20 veh/km | 784 | 0.87 | 1 | 3.0 s | 11,760 signed CAMs per 30 s round, PM election 0.4 ms: one core keeps up with a district |
 
 Linking success is against the Kalman/GNN tracker (the conservative adversary).
 
 ![Scenarios](../figures/v2/usecases.png)
 
-What the scenarios say together: PoP v2 is a good fit where the manuscript places it
-(dense urban zones, service access, revocation across operators, roaming between
-PMs), and the simulation puts numbers on where it is not enough on its own (sparse,
-fast roads), where the operator must add silent periods at junctions or accept that
-pseudonym change does not provide location privacy.
+What the scenarios say together: PoP v2's authentication, revocation and roaming
+work where the manuscript places them (service access, revocation across operators,
+roaming between PMs, a district on one core). Its location privacy does not: against
+the Kalman tracker no scenario reaches the adequate band, including the dense
+intersection the manuscript names as the place to shuffle (0.74 at 5 s of silence,
+0.52 even when vehicles stay silent for 9 s of every 10 s period). Results before
+3.3.0 put the intersection at 0.35, "adequate, just": that run predated the
+Kalman tracker. Pseudonym change, shuffled or not, is not a location-privacy
+mechanism against a competent eavesdropper on its own.
 

@@ -195,9 +195,10 @@ All numbers come from `results/` and `results/v2/` as produced by the commands a
 * **Pseudonym shuffling alone does not give location privacy.** Against a
   Kalman-filter tracker a lone vehicle is followed through every change; only dense
   traffic with synchronized changes and a silent period brings linking down, and the
-  curves say by how much.
+  curves say by how much. None of the seven deployment scenarios reaches the
+  adequate band, the dense intersection included (0.74 linked).
 * **Operators get numbers:** stock an RSU needs (about 25 % above forecast), proof a
-  roaming vehicle carries (2.2 KB, 24 us to verify), time to revoke a misbehaving
+  roaming vehicle carries (1.6 KB, 27 us to verify), time to revoke a misbehaving
   vehicle across PMs (2 rounds), one core keeps up with a 784-vehicle district.
 
 ## License

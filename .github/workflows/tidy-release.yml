@@ -19,12 +19,12 @@ on:
         required: false
         default: ""
       create_release:
-        description: "Publish a GitHub release for the tag (Zenodo archives it if the repository is enabled there)"
+        description: "Publish a GitHub release for the tag"
         required: false
         type: boolean
         default: false
       republish:
-        description: "Delete the tag's existing release first, then publish it again (use after switching Zenodo on, to get the DOI)"
+        description: "Delete the tag's existing release first, then publish it again"
         required: false
         type: boolean
         default: false

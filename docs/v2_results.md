@@ -11,13 +11,13 @@ same machine as the v1 run. Each subsection names the item of
 
 | Nodes | PoET, all nodes (us) | PoP v1, server total (us) | PoP v2 ECVRF, one node: own proof + verify winner (us) | PoP v2 RSA-FDH, same (us) | PoP v2 race over received values (us) |
 |---|---|---|---|---|---|
-| 10 | 26 | 723 | 374 | 8,297 | 6 |
-| 100 | 80 | 293 | 349 | 8,314 | 11 |
-| 200 | 123 | 389 | 372 | 8,264 | 22 |
+| 10 | 23 | 238 | 330 | 7,779 | 5 |
+| 100 | 70 | 251 | 369 | 7,895 | 15 |
+| 200 | 119 | 316 | 353 | 8,106 | 21 |
 
 PoP v2's per-node cost is flat in the network size: one VRF proof and one
-verification of the winner's. With the ECVRF on libsecp256k1 (0.15 ms prove,
-0.23 ms verify) a node spends about 0.37 ms per block, in the same range as PoP
+verification of the winner's. With the ECVRF on libsecp256k1 (0.13 to 0.15 ms prove,
+0.20 to 0.24 ms verify) a node spends 0.33 to 0.39 ms per block, in the same range as PoP
 v1's server total and a few times PoET's full scan; the pure-Python RSA-FDH-VRF
 costs 8 ms. The race itself stays in the tens of microseconds. What v2 buys is
 that nobody can lie about or grind the value and no server exists to spoof.
@@ -47,14 +47,14 @@ remain.
 
 ### 5 and 7. Block latency on the same network, six algorithms (`v2_latency.json`)
 
-20 ms links with 1 % loss, measured costs (ECDSA verify 0.2 ms, ECVRF prove 0.15 ms,
-one difficulty-3 puzzle 2.9 ms), 50 rounds per point:
+20 ms links with 1 % loss, measured costs (ECDSA verify 0.12 ms, ECVRF prove 0.12 ms,
+one difficulty-3 puzzle 2.7 ms), 50 rounds per point:
 
 | Nodes | PoW 2 | PoET | PoP v1 (server) | PoP v2 (VRF) | PBFT | Raft | PBFT messages |
 |---|---|---|---|---|---|---|---|
-| 10 | 58 ms | 77 ms | 260 ms | 93 ms | 94 ms | 108 ms | 189 |
-| 20 | 73 ms | 89 ms | 297 ms | 92 ms | 140 ms | 111 ms | 779 |
-| 100 | 166 ms | 168 ms | 599 ms | 183 ms | 232 ms | 208 ms | 19,899 |
+| 10 | 58 ms | 77 ms | 259 ms | 93 ms | 93 ms | 107 ms | 189 |
+| 20 | 73 ms | 89 ms | 297 ms | 92 ms | 138 ms | 110 ms | 779 |
+| 100 | 165 ms | 167 ms | 599 ms | 183 ms | 221 ms | 204 ms | 19,899 |
 
 PoP v1 is the slowest at every size because of its handshake and selection round
 trips with the server. PoP v2 removes those and lands with PBFT and Raft while
@@ -112,9 +112,9 @@ and (previous table) give the tracker more time.
 
 | RSU blocks per anchor | Allotment proof size | Verification |
 |---|---|---|
-| 10 | 1,173 bytes | 11 us |
-| 100 | 1,400 bytes | 12 us |
-| 1,000 | 1,626 bytes | 16 us |
+| 10 | 1,168 bytes | 12 us |
+| 100 | 1,394 bytes | 17 us |
+| 1,000 | 1,620 bytes | 16 us |
 
 A vehicle entering another PM's area carries a 1.2 to 1.6 KB proof (logarithmic in
 the anchor's span) that a foreign PM verifies in microseconds from the PM chain
@@ -148,18 +148,20 @@ reference, the v1 election:
 
 | | PoP v2 (VRF) | PoP v1 (server) |
 |---|---|---|
-| PM-chain election per round | 0.37 ms (ECVRF) | 150 ms (incl. the winner's wait) |
-| RSU-chain elections per round, both PMs | 1.5 ms | 390 ms |
+| PM-chain election per round | 0.38 ms (ECVRF) | 130 ms (incl. the winner's wait) |
+| RSU-chain elections per round, both PMs | 1.5 ms | 384 ms |
 | Every PM block verifies against the certified VRF key | yes | n/a |
 | Stock-outs over 5 rounds | 3 | 3 |
-| Pseudonym changes linked by the Kalman tracker | 75 % | 74 % |
-| Allotment proof | 1,439 bytes, 12 us | 1,231 bytes, 12 us |
+| Pseudonym changes linked by the Kalman tracker | 96 % | 96 % |
+| Allotment proof | 1,433 bytes, 13 us | 1,227 bytes, 21 us |
 | Malicious vehicle caught and revoked | yes | yes |
 
 The election change does not alter privacy or distribution (same traffic, same
 shuffle); it removes the server and makes every block verifiable at a cost of well
-under a millisecond per node. (The 75 % linking figure is for 8 vehicles per km with
-only 3 s of silence; the dense-zone numbers above are the ones that matter.)
+under a millisecond per node. (The 96 % linking figure is for 8 vehicles per km with
+only 3 s of silence; the dense-zone numbers above are the ones that matter. Results
+before 3.3.0 printed 75 %: an older tracker, and a scoring artifact that counted a
+vehicle keeping its pseudonym as a linked change, see the recycling study's E4.)
 
 ![Protocol](../figures/v2/v2_protocol.png)
 
