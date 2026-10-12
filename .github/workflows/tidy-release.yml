@@ -23,6 +23,11 @@ on:
         required: false
         type: boolean
         default: false
+      republish:
+        description: "Delete the tag's existing release first, then publish it again (use after switching Zenodo on, to get the DOI)"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -37,18 +42,28 @@ jobs:
       - name: Delete branch
         if: inputs.delete_branch != ''
         run: git push origin --delete "${{ inputs.delete_branch }}"
-      - name: Create tag
+      - name: Create tag (skipped if it already exists)
         if: inputs.tag != ''
         run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/${{ inputs.tag }}" >/dev/null; then
+            echo "tag ${{ inputs.tag }} already exists; keeping it"
+            exit 0
+          fi
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           sha="${{ inputs.tag_sha }}"; [ -n "$sha" ] || sha="$GITHUB_SHA"
           git tag -a "${{ inputs.tag }}" "$sha" -m "PoS v1 ${{ inputs.tag }}"
           git push origin "refs/tags/${{ inputs.tag }}"
+      - name: Delete the existing release (republish)
+        if: inputs.republish && inputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release delete "${{ inputs.tag }}" --yes || echo "no release for ${{ inputs.tag }} yet"
       - name: Create release
-        if: inputs.create_release && inputs.tag != ''
+        if: (inputs.create_release || inputs.republish) && inputs.tag != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          notes=$(awk '/^## /{n++} n==1' CHANGELOG.md)
+          git fetch origin "refs/tags/${{ inputs.tag }}:refs/tags/${{ inputs.tag }}" --force
+          notes=$(git show "${{ inputs.tag }}:CHANGELOG.md" | awk '/^## /{n++} n==1')
           gh release create "${{ inputs.tag }}" --title "${{ inputs.tag }}" --notes "$notes" --verify-tag
