@@ -1,0 +1,54 @@
+# Repository housekeeping that needs write access the cloud session does not
+# have: delete a stale branch, create an annotated tag, publish a release.
+# Run it from the Actions tab (workflow_dispatch); every step is opt-in.
+name: tidy-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      delete_branch:
+        description: "Branch to delete (empty: skip)"
+        required: false
+        default: ""
+      tag:
+        description: "Tag to create (empty: skip)"
+        required: false
+        default: ""
+      tag_sha:
+        description: "Commit the tag points at (empty: the dispatched ref)"
+        required: false
+        default: ""
+      create_release:
+        description: "Publish a GitHub release for the tag (Zenodo archives it if the repository is enabled there)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  tidy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Delete branch
+        if: inputs.delete_branch != ''
+        run: git push origin --delete "${{ inputs.delete_branch }}"
+      - name: Create tag
+        if: inputs.tag != ''
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          sha="${{ inputs.tag_sha }}"; [ -n "$sha" ] || sha="$GITHUB_SHA"
+          git tag -a "${{ inputs.tag }}" "$sha" -m "PoS v1 ${{ inputs.tag }}"
+          git push origin "refs/tags/${{ inputs.tag }}"
+      - name: Create release
+        if: inputs.create_release && inputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(awk '/^## /{n++} n==1' CHANGELOG.md)
+          gh release create "${{ inputs.tag }}" --title "${{ inputs.tag }}" --notes "$notes" --verify-tag
