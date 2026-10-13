@@ -15,7 +15,7 @@
   "rounds": 4,
   "quick": false
  },
- "wall_seconds": 8770.872171577,
+ "wall_seconds": 3068.517619978,
  "E6_changed": {
   "revoked vehicle keeps transmitting": [
    "defended",
@@ -24,13 +24,13 @@
  },
  "calibration": {
   "op_costs_s": {
-   "sign": 3.879910400019071e-05,
-   "verify": 0.00010010876600017582,
-   "keygen": 2.0928288000050088e-05,
-   "encrypt": 0.00014668106968479503,
-   "decrypt": 0.00012615359612384055,
-   "encrypt_per_byte": 3.150026293203565e-10,
-   "decrypt_per_byte": 2.170989666105957e-10
+   "sign": 5.777784400015662e-05,
+   "verify": 9.051541999997426e-05,
+   "keygen": 3.5512438000296244e-05,
+   "encrypt": 0.0001196641411711287,
+   "decrypt": 0.0001479489937651344,
+   "encrypt_per_byte": 2.1212569096195518e-09,
+   "decrypt_per_byte": 5.171352880081164e-10
   },
   "source": "measured",
   "environment": {
@@ -46,16 +46,29 @@
    ]
   }
  },
- "version": "3.6.0",
- "commit": "2cd710b7915dbe4d39d61d8d917d043b6dfc3730",
+ "version": "3.7.0",
+ "commit": "2ff94e9f040e339cfeb64225e7fedd4b863c9133",
  "source_dirty": false,
- "source_diff_sha256": null,
+ "untracked_source_files": [],
+ "source_snapshot_sha256": null,
+ "source_snapshot": null,
+ "source_paths": [
+  "src",
+  "config",
+  "scripts",
+  "pyproject.toml",
+  "requirements.lock",
+  "requirements.txt",
+  "requirements-dev.txt",
+  "requirements-sumo.lock",
+  "Dockerfile"
+ ],
  "argv": [
   "recycling",
-  "--only-long",
-  "--long",
-  "--sensitivity"
+  "--only",
+  "E1q,E1s"
  ],
+ "provenance_capture": "command start",
  "signing": {
   "deterministic_available": true,
   "randomized_fallbacks": 0
