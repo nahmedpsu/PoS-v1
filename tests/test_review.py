@@ -10,8 +10,15 @@ import pytest
 from pop_sim import clock, crypto
 from pop_sim.entities import PKI, Pseudonym, SafetyMessage, Vehicle, snapshot
 from pop_sim.shuffle import ITSConfig, ITSSimulation
-from pop_sim.v2.metrics import (ForgeryStats, UnionFind, bootstrap_ci, cluster_metrics, forged_acceptance,
-                                paired_equivalence, pooled_percentile)
+from pop_sim.v2.metrics import (
+    ForgeryStats,
+    UnionFind,
+    bootstrap_ci,
+    cluster_metrics,
+    forged_acceptance,
+    paired_equivalence,
+    pooled_percentile,
+)
 from pop_sim.v2.mobility import RoadConfig
 from pop_sim.v2.v2v import V2VLayer
 
