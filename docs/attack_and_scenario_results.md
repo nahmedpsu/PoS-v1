@@ -18,7 +18,7 @@ outcome changes: *revoked vehicle keeps transmitting* becomes vulnerable (E6 of 
 |---|---|---|
 | Value forgery / proof theft | Claim a smaller value, reuse the winner's proof, use an uncertified key, choose the seed | 0 of 4 accepted, honest block accepted |
 | Sortition threshold tampering | A node with value 0.94 writes `threshold: 1.0`, `miners: 0`, or claims a no-miner round with or without evidence | 0 of 4 accepted, honest block accepted (an earlier verifier accepted the first two: review finding, fixed in 2.2.1) |
-| Seed grinding | Previous winner tries 1 to 64 block variants to lower its next value | Block-hash seed: share rises from 0.09 to 0.36. Chained VRF seed (v2): stays at 0.11 (fair share 0.10) |
+| Seed grinding | Previous winner tries 1 to 64 block variants to lower its next value | Block-hash seed: share rises from 0.11 to 0.44. Chained VRF seed (v2): stays at 0.10 (fair share 0.10). Keys are derived from the attack's seed (3.5.0), so the figures are reproducible |
 | Multi-key seed choice | Attacker with 1 to 5 certified keys picks which winning key publishes to steer the next seed | Share 0.06 / 0.12 / 0.16 / 0.18 for k = 1 / 2 / 3 / 5 against fair 0.05 / 0.10 / 0.14 / 0.21; no measurable gain over honest play |
 | Block withholding | 0 to 50 % of nodes never publish when they win | 0 attacker blocks; mean block delay 46 ms to 95 ms; no round without a block |
 | Equivocation | Two blocks, one proof | First block stands, second rejected, node reported |

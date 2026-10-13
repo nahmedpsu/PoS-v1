@@ -50,6 +50,10 @@ Added:
   files, docs/figure_map.md, exploratory analyses labelled.
 * R25: tests/test_review.py, 13 invariant tests; 103 tests.
 * `recycling --only E1,E3b` runs selected experiments.
+* Seed-grinding attack: VRF keys are derived from the attack's seed, so the
+  bench gives the same result every run (the quick check failed about 3 % of
+  CI runs by chance with random keys).  Block-hash seed share 0.11 to 0.44,
+  chained VRF seed 0.10 (fair share 0.10).
 
 Not changed, stated as limitations (docs/recycling.md): the adversary's
 observations, transmitter placement and single-insider isolation (R05 to R07),
