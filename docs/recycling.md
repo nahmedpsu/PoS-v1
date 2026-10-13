@@ -190,13 +190,25 @@ An external review of the v3.4.0 repository (R01 to R25) is answered item by ite
 in [review_response.md](review_response.md). What the model does and does not
 establish, stated once here:
 
-* **Adversary observation and radios (R05 to R07).** The former holder (A2) and
-  the insider forger (E3b) act on simulator truth: the current holder of a
-  pseudonym, its exact position, its silent period, the current holder
-  certificate. The insider transmits from the position it claims, so a remote
-  PM, PKI or cloud insider is given a radio wherever it wants one. All entities
-  forge in the same run. These are upper bounds on the attacker, labelled as
-  such; an observation-limited attacker with placed transmitters is not modelled.
+* **Adversary observation and radios (R05 to R07, G05).** Every attacker
+  schedule in the results is conditioned on simulator state, so its rates are
+  conditional model results, not feasible attack rates and not formal upper
+  bounds:
+  * S1 sends only while another vehicle holds the pseudonym and is
+    transmitting, S2 only within radio range of that holder, and S3 only while
+    the ledger says nobody holds it. All three read the ledger's holder;
+    S2 also reads the holder's position. A former holder that broadcasts its
+    retained keys blind, or decides only from CAMs it hears, has a different
+    attempt schedule and denominator, and is not modelled.
+  * The former holder stops forging once it is itself revoked, although E2
+    shows that retained credentials stay acceptable to vehicles after
+    revocation; a persistent attacker is not modelled.
+  * The insider forger (E3b) transmits from the position it claims, so a
+    remote PM, PKI or cloud insider is given a radio wherever it wants one;
+    all four entities forge in the same run (no per-entity isolation); its
+    forged CAMs are not fed to the outside tracker (the former holder's are).
+  * The eavesdropper hears every honest CAM and every former-holder CAM, not
+    the insiders'.
 * **Detection (R08 to R11).** Version 3.5.0 adds the options the review asks for,
   each with a default that reproduces the runs in the results, and none of them is
   swept in this version's results: sensor error on the position a vehicle measures
