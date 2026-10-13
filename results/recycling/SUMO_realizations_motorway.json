@@ -35,60 +35,117 @@
    },
    "attackers_selected": 30,
    "e1_s2": {
-    "opportunities": {
-     "mean": 7991.0,
-     "lo": 7503.0,
-     "hi": 8479.0,
+    "key_checks": {
+     "mean": 10674.5,
+     "lo": 10155.0,
+     "hi": 11194.0,
+     "n": 2
+    },
+    "valid_key_seconds": {
+     "mean": 8365.5,
+     "lo": 7956.0,
+     "hi": 8775.0,
+     "n": 2
+    },
+    "eligible": {
+     "mean": 4177.5,
+     "lo": 4058.0,
+     "hi": 4297.0,
      "n": 2
     },
     "forged_sent": {
-     "mean": 302.0,
-     "lo": 284.0,
-     "hi": 320.0,
+     "mean": 419.5,
+     "lo": 405.0,
+     "hi": 434.0,
      "n": 2
     },
     "v2v_message_rate": {
-     "mean": 0.9984375,
-     "lo": 0.996875,
+     "mean": 0.9965437788018433,
+     "lo": 0.9930875576036866,
      "hi": 1.0,
      "n": 2
     },
     "v2v_receiver_rate": {
-     "mean": 0.7401984999560384,
-     "lo": 0.7328502415458937,
-     "hi": 0.747546758366183,
+     "mean": 0.7512993048721266,
+     "lo": 0.7477397173054884,
+     "hi": 0.7548588924387647,
      "n": 2
     },
     "rsu_rate": {
-     "mean": 0.6622359154929578,
-     "lo": 0.6619718309859155,
-     "hi": 0.6625,
+     "mean": 0.6718780224156569,
+     "lo": 0.6617283950617284,
+     "hi": 0.6820276497695853,
      "n": 2
     },
-    "exposure_mean_s": {
-     "mean": 9.640873015873016,
-     "lo": 7.888888888888889,
-     "hi": 11.392857142857142,
+    "exposure_contiguous_mean_s": {
+     "mean": 5.614933188876851,
+     "lo": 5.5256410256410255,
+     "hi": 5.704225352112676,
      "n": 2
     },
-    "exposure_p95_s_pooled": 21.0,
-    "exposure_windows_n": 64,
-    "victims_blamed": {
-     "mean": 102.0,
-     "lo": 96.0,
-     "hi": 108.0,
+    "exposure_contiguous_p95_s_pooled": 7.0,
+    "exposure_contiguous_n": 149,
+    "exposure_contiguous_censored": 21,
+    "exposure_cumulative_mean_s": {
+     "mean": 9.311011904761905,
+     "lo": 8.979166666666666,
+     "hi": 9.642857142857142,
      "n": 2
     },
-    "unique_victims_blamed": {
-     "mean": 19.5,
-     "lo": 17.0,
-     "hi": 22.0,
+    "exposure_cumulative_p95_s_pooled": 21.0,
+    "exposure_holdings_n": 90,
+    "reports_forgery_naming_honest": {
+     "mean": 116.5,
+     "lo": 109.0,
+     "hi": 124.0,
+     "n": 2
+    },
+    "honest_named_by_forgery_reports": {
+     "mean": 20.0,
+     "lo": 20.0,
+     "hi": 20.0,
+     "n": 2
+    },
+    "reports_beacon_naming_honest": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "honest_named_by_beacon_reports": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "reports_naming_honest": {
+     "mean": 116.5,
+     "lo": 109.0,
+     "hi": 124.0,
+     "n": 2
+    },
+    "honest_reported": {
+     "mean": 20.0,
+     "lo": 20.0,
+     "hi": 20.0,
+     "n": 2
+    },
+    "attacker_credentials_held": {
+     "mean": 238.5,
+     "lo": 230.0,
+     "hi": 247.0,
+     "n": 2
+    },
+    "attacker_credentials_retained": {
+     "mean": 238.5,
+     "lo": 230.0,
+     "hi": 247.0,
      "n": 2
     },
     "population_honest": {
-     "mean": 2039.0,
-     "lo": 2039.0,
-     "hi": 2039.0,
+     "mean": 565.0,
+     "lo": 565.0,
+     "hi": 565.0,
      "n": 2
     },
     "population_attackers": {
@@ -98,27 +155,27 @@
      "n": 2
     },
     "honest_revoked": {
-     "mean": 18.0,
-     "lo": 16.0,
+     "mean": 20.0,
+     "lo": 20.0,
      "hi": 20.0,
      "n": 2
     },
     "honest_revoked_share": {
-     "mean": 0.008827856792545365,
-     "lo": 0.00784698381559588,
-     "hi": 0.00980872976949485,
+     "mean": 0.035398230088495575,
+     "lo": 0.035398230088495575,
+     "hi": 0.035398230088495575,
      "n": 2
     },
     "attackers_revoked": {
-     "mean": 1.5,
-     "lo": 1.0,
-     "hi": 2.0,
+     "mean": 3.5,
+     "lo": 2.0,
+     "hi": 5.0,
      "n": 2
     },
     "total_revoked": {
-     "mean": 19.5,
-     "lo": 17.0,
-     "hi": 22.0,
+     "mean": 23.5,
+     "lo": 22.0,
+     "hi": 25.0,
      "n": 2
     }
    },
@@ -152,60 +209,117 @@
    },
    "attackers_selected": 30,
    "e1_s2": {
-    "opportunities": {
-     "mean": 7169.5,
-     "lo": 6544.0,
-     "hi": 7795.0,
+    "key_checks": {
+     "mean": 9615.0,
+     "lo": 8636.0,
+     "hi": 10594.0,
+     "n": 2
+    },
+    "valid_key_seconds": {
+     "mean": 7561.5,
+     "lo": 6726.0,
+     "hi": 8397.0,
+     "n": 2
+    },
+    "eligible": {
+     "mean": 3858.5,
+     "lo": 3544.0,
+     "hi": 4173.0,
      "n": 2
     },
     "forged_sent": {
-     "mean": 275.5,
-     "lo": 182.0,
-     "hi": 369.0,
+     "mean": 350.5,
+     "lo": 239.0,
+     "hi": 462.0,
      "n": 2
     },
     "v2v_message_rate": {
-     "mean": 1.0,
-     "lo": 1.0,
+     "mean": 0.9967532467532467,
+     "lo": 0.9935064935064936,
      "hi": 1.0,
      "n": 2
     },
     "v2v_receiver_rate": {
-     "mean": 0.7386559293091767,
-     "lo": 0.7350414907555685,
-     "hi": 0.7422703678627849,
+     "mean": 0.736834429007881,
+     "lo": 0.728026932788265,
+     "hi": 0.745641925227497,
      "n": 2
     },
     "rsu_rate": {
-     "mean": 0.6479496113642456,
-     "lo": 0.6373626373626373,
-     "hi": 0.6585365853658537,
+     "mean": 0.6435318516908475,
+     "lo": 0.6385281385281385,
+     "hi": 0.6485355648535565,
      "n": 2
     },
-    "exposure_mean_s": {
-     "mean": 9.924242424242424,
-     "lo": 8.666666666666666,
-     "hi": 11.181818181818182,
+    "exposure_contiguous_mean_s": {
+     "mean": 5.64781976744186,
+     "lo": 5.558139534883721,
+     "hi": 5.7375,
      "n": 2
     },
-    "exposure_p95_s_pooled": 26.0,
-    "exposure_windows_n": 54,
-    "victims_blamed": {
-     "mean": 96.0,
-     "lo": 66.0,
-     "hi": 126.0,
+    "exposure_contiguous_p95_s_pooled": 7.0,
+    "exposure_contiguous_n": 123,
+    "exposure_contiguous_censored": 16,
+    "exposure_cumulative_mean_s": {
+     "mean": 9.1508358662614,
+     "lo": 8.535714285714286,
+     "hi": 9.76595744680851,
      "n": 2
     },
-    "unique_victims_blamed": {
-     "mean": 18.0,
-     "lo": 12.0,
-     "hi": 24.0,
+    "exposure_cumulative_p95_s_pooled": 21.0,
+    "exposure_holdings_n": 75,
+    "reports_forgery_naming_honest": {
+     "mean": 122.0,
+     "lo": 77.0,
+     "hi": 167.0,
+     "n": 2
+    },
+    "honest_named_by_forgery_reports": {
+     "mean": 23.0,
+     "lo": 14.0,
+     "hi": 32.0,
+     "n": 2
+    },
+    "reports_beacon_naming_honest": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "honest_named_by_beacon_reports": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "reports_naming_honest": {
+     "mean": 122.0,
+     "lo": 77.0,
+     "hi": 167.0,
+     "n": 2
+    },
+    "honest_reported": {
+     "mean": 23.0,
+     "lo": 14.0,
+     "hi": 32.0,
+     "n": 2
+    },
+    "attacker_credentials_held": {
+     "mean": 219.0,
+     "lo": 207.0,
+     "hi": 231.0,
+     "n": 2
+    },
+    "attacker_credentials_retained": {
+     "mean": 219.0,
+     "lo": 207.0,
+     "hi": 231.0,
      "n": 2
     },
     "population_honest": {
-     "mean": 2051.0,
-     "lo": 2051.0,
-     "hi": 2051.0,
+     "mean": 577.0,
+     "lo": 577.0,
+     "hi": 577.0,
      "n": 2
     },
     "population_attackers": {
@@ -215,15 +329,15 @@
      "n": 2
     },
     "honest_revoked": {
-     "mean": 17.5,
-     "lo": 12.0,
-     "hi": 23.0,
+     "mean": 23.0,
+     "lo": 14.0,
+     "hi": 32.0,
      "n": 2
     },
     "honest_revoked_share": {
-     "mean": 0.008532423208191127,
-     "lo": 0.005850804485616773,
-     "hi": 0.01121404193076548,
+     "mean": 0.03986135181975736,
+     "lo": 0.024263431542461005,
+     "hi": 0.05545927209705372,
      "n": 2
     },
     "attackers_revoked": {
@@ -233,9 +347,9 @@
      "n": 2
     },
     "total_revoked": {
-     "mean": 18.0,
-     "lo": 12.0,
-     "hi": 24.0,
+     "mean": 23.5,
+     "lo": 15.0,
+     "hi": 32.0,
      "n": 2
     }
    },
@@ -269,16 +383,28 @@
    },
    "attackers_selected": 30,
    "e1_s2": {
-    "opportunities": {
-     "mean": 7899.5,
-     "lo": 7621.0,
-     "hi": 8178.0,
+    "key_checks": {
+     "mean": 10611.5,
+     "lo": 10179.0,
+     "hi": 11044.0,
+     "n": 2
+    },
+    "valid_key_seconds": {
+     "mean": 8271.0,
+     "lo": 7944.0,
+     "hi": 8598.0,
+     "n": 2
+    },
+    "eligible": {
+     "mean": 4158.0,
+     "lo": 3992.0,
+     "hi": 4324.0,
      "n": 2
     },
     "forged_sent": {
-     "mean": 300.0,
-     "lo": 220.0,
-     "hi": 380.0,
+     "mean": 449.0,
+     "lo": 417.0,
+     "hi": 481.0,
      "n": 2
     },
     "v2v_message_rate": {
@@ -288,41 +414,86 @@
      "n": 2
     },
     "v2v_receiver_rate": {
-     "mean": 0.8171502095943752,
-     "lo": 0.80488487647841,
-     "hi": 0.8294155427103403,
+     "mean": 0.7864322116921107,
+     "lo": 0.7598604775959217,
+     "hi": 0.8130039457882999,
      "n": 2
     },
     "rsu_rate": {
-     "mean": 0.75311004784689,
-     "lo": 0.7289473684210527,
-     "hi": 0.7772727272727272,
+     "mean": 0.7223435388903015,
+     "lo": 0.6858513189448441,
+     "hi": 0.7588357588357588,
      "n": 2
     },
-    "exposure_mean_s": {
-     "mean": 9.718468468468469,
-     "lo": 9.166666666666666,
-     "hi": 10.27027027027027,
+    "exposure_contiguous_mean_s": {
+     "mean": 5.154365079365079,
+     "lo": 4.964285714285714,
+     "hi": 5.344444444444444,
      "n": 2
     },
-    "exposure_p95_s_pooled": 21.0,
-    "exposure_windows_n": 61,
-    "victims_blamed": {
-     "mean": 76.0,
-     "lo": 49.0,
-     "hi": 103.0,
+    "exposure_contiguous_p95_s_pooled": 7.0,
+    "exposure_contiguous_n": 174,
+    "exposure_contiguous_censored": 11,
+    "exposure_cumulative_mean_s": {
+     "mean": 8.155753968253968,
+     "lo": 7.722222222222222,
+     "hi": 8.589285714285714,
      "n": 2
     },
-    "unique_victims_blamed": {
-     "mean": 15.0,
-     "lo": 10.0,
-     "hi": 20.0,
+    "exposure_cumulative_p95_s_pooled": 21.0,
+    "exposure_holdings_n": 110,
+    "reports_forgery_naming_honest": {
+     "mean": 117.0,
+     "lo": 116.0,
+     "hi": 118.0,
+     "n": 2
+    },
+    "honest_named_by_forgery_reports": {
+     "mean": 22.0,
+     "lo": 21.0,
+     "hi": 23.0,
+     "n": 2
+    },
+    "reports_beacon_naming_honest": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "honest_named_by_beacon_reports": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "reports_naming_honest": {
+     "mean": 117.0,
+     "lo": 116.0,
+     "hi": 118.0,
+     "n": 2
+    },
+    "honest_reported": {
+     "mean": 22.0,
+     "lo": 21.0,
+     "hi": 23.0,
+     "n": 2
+    },
+    "attacker_credentials_held": {
+     "mean": 242.0,
+     "lo": 230.0,
+     "hi": 254.0,
+     "n": 2
+    },
+    "attacker_credentials_retained": {
+     "mean": 242.0,
+     "lo": 230.0,
+     "hi": 254.0,
      "n": 2
     },
     "population_honest": {
-     "mean": 2036.0,
-     "lo": 2036.0,
-     "hi": 2036.0,
+     "mean": 562.0,
+     "lo": 562.0,
+     "hi": 562.0,
      "n": 2
     },
     "population_attackers": {
@@ -332,27 +503,27 @@
      "n": 2
     },
     "honest_revoked": {
-     "mean": 14.5,
-     "lo": 10.0,
-     "hi": 19.0,
+     "mean": 22.0,
+     "lo": 21.0,
+     "hi": 23.0,
      "n": 2
     },
     "honest_revoked_share": {
-     "mean": 0.00712180746561886,
-     "lo": 0.004911591355599214,
-     "hi": 0.009332023575638507,
+     "mean": 0.03914590747330961,
+     "lo": 0.037366548042704624,
+     "hi": 0.04092526690391459,
      "n": 2
     },
     "attackers_revoked": {
-     "mean": 0.5,
+     "mean": 1.5,
      "lo": 0.0,
-     "hi": 1.0,
+     "hi": 3.0,
      "n": 2
     },
     "total_revoked": {
-     "mean": 15.0,
-     "lo": 10.0,
-     "hi": 20.0,
+     "mean": 23.5,
+     "lo": 21.0,
+     "hi": 26.0,
      "n": 2
     }
    },
@@ -386,16 +557,28 @@
    },
    "attackers_selected": 30,
    "e1_s2": {
-    "opportunities": {
-     "mean": 6679.0,
-     "lo": 6602.0,
-     "hi": 6756.0,
+    "key_checks": {
+     "mean": 9006.5,
+     "lo": 8901.0,
+     "hi": 9112.0,
+     "n": 2
+    },
+    "valid_key_seconds": {
+     "mean": 6982.5,
+     "lo": 6897.0,
+     "hi": 7068.0,
+     "n": 2
+    },
+    "eligible": {
+     "mean": 3514.5,
+     "lo": 3507.0,
+     "hi": 3522.0,
      "n": 2
     },
     "forged_sent": {
-     "mean": 273.5,
-     "lo": 236.0,
-     "hi": 311.0,
+     "mean": 325.5,
+     "lo": 317.0,
+     "hi": 334.0,
      "n": 2
     },
     "v2v_message_rate": {
@@ -405,41 +588,86 @@
      "n": 2
     },
     "v2v_receiver_rate": {
-     "mean": 0.7347213892812944,
-     "lo": 0.7266859743483658,
-     "hi": 0.742756804214223,
+     "mean": 0.7618430449811867,
+     "lo": 0.7418220727606236,
+     "hi": 0.7818640172017498,
      "n": 2
     },
     "rsu_rate": {
-     "mean": 0.6323232873726088,
-     "lo": 0.6205787781350482,
-     "hi": 0.6440677966101694,
+     "mean": 0.6736715842762425,
+     "lo": 0.6407185628742516,
+     "hi": 0.7066246056782335,
      "n": 2
     },
-    "exposure_mean_s": {
-     "mean": 10.00206896551724,
-     "lo": 9.28,
-     "hi": 10.724137931034482,
+    "exposure_contiguous_mean_s": {
+     "mean": 5.3463814904492875,
+     "lo": 5.031746031746032,
+     "hi": 5.661016949152542,
      "n": 2
     },
-    "exposure_p95_s_pooled": 21.0,
-    "exposure_windows_n": 54,
-    "victims_blamed": {
-     "mean": 101.0,
-     "lo": 84.0,
-     "hi": 118.0,
+    "exposure_contiguous_p95_s_pooled": 7.0,
+    "exposure_contiguous_n": 122,
+    "exposure_contiguous_censored": 10,
+    "exposure_cumulative_mean_s": {
+     "mean": 9.04208494208494,
+     "lo": 9.027027027027026,
+     "hi": 9.057142857142857,
      "n": 2
     },
-    "unique_victims_blamed": {
-     "mean": 19.0,
-     "lo": 15.0,
+    "exposure_cumulative_p95_s_pooled": 21.0,
+    "exposure_holdings_n": 72,
+    "reports_forgery_naming_honest": {
+     "mean": 103.0,
+     "lo": 86.0,
+     "hi": 120.0,
+     "n": 2
+    },
+    "honest_named_by_forgery_reports": {
+     "mean": 20.5,
+     "lo": 18.0,
      "hi": 23.0,
      "n": 2
     },
+    "reports_beacon_naming_honest": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "honest_named_by_beacon_reports": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "reports_naming_honest": {
+     "mean": 103.0,
+     "lo": 86.0,
+     "hi": 120.0,
+     "n": 2
+    },
+    "honest_reported": {
+     "mean": 20.5,
+     "lo": 18.0,
+     "hi": 23.0,
+     "n": 2
+    },
+    "attacker_credentials_held": {
+     "mean": 212.5,
+     "lo": 211.0,
+     "hi": 214.0,
+     "n": 2
+    },
+    "attacker_credentials_retained": {
+     "mean": 212.5,
+     "lo": 211.0,
+     "hi": 214.0,
+     "n": 2
+    },
     "population_honest": {
-     "mean": 2044.0,
-     "lo": 2044.0,
-     "hi": 2044.0,
+     "mean": 570.0,
+     "lo": 570.0,
+     "hi": 570.0,
      "n": 2
     },
     "population_attackers": {
@@ -449,15 +677,15 @@
      "n": 2
     },
     "honest_revoked": {
-     "mean": 18.5,
-     "lo": 14.0,
+     "mean": 20.5,
+     "lo": 18.0,
      "hi": 23.0,
      "n": 2
     },
     "honest_revoked_share": {
-     "mean": 0.009050880626223091,
-     "lo": 0.00684931506849315,
-     "hi": 0.011252446183953033,
+     "mean": 0.035964912280701755,
+     "lo": 0.031578947368421054,
+     "hi": 0.04035087719298246,
      "n": 2
     },
     "attackers_revoked": {
@@ -467,8 +695,8 @@
      "n": 2
     },
     "total_revoked": {
-     "mean": 19.0,
-     "lo": 15.0,
+     "mean": 21.0,
+     "lo": 19.0,
      "hi": 23.0,
      "n": 2
     }
@@ -503,16 +731,28 @@
    },
    "attackers_selected": 29,
    "e1_s2": {
-    "opportunities": {
-     "mean": 6807.0,
-     "lo": 5446.0,
-     "hi": 8168.0,
+    "key_checks": {
+     "mean": 9171.5,
+     "lo": 7266.0,
+     "hi": 11077.0,
+     "n": 2
+    },
+    "valid_key_seconds": {
+     "mean": 7093.5,
+     "lo": 5460.0,
+     "hi": 8727.0,
+     "n": 2
+    },
+    "eligible": {
+     "mean": 3680.5,
+     "lo": 2837.0,
+     "hi": 4524.0,
      "n": 2
     },
     "forged_sent": {
-     "mean": 241.5,
-     "lo": 190.0,
-     "hi": 293.0,
+     "mean": 292.0,
+     "lo": 228.0,
+     "hi": 356.0,
      "n": 2
     },
     "v2v_message_rate": {
@@ -522,41 +762,86 @@
      "n": 2
     },
     "v2v_receiver_rate": {
-     "mean": 0.7275637595765989,
-     "lo": 0.7049291938997821,
-     "hi": 0.7501983252534156,
+     "mean": 0.7499110553685435,
+     "lo": 0.7449826253457201,
+     "hi": 0.754839485391367,
      "n": 2
     },
     "rsu_rate": {
-     "mean": 0.6615681695706843,
-     "lo": 0.6473684210526316,
-     "hi": 0.6757679180887372,
+     "mean": 0.6862063867534003,
+     "lo": 0.6842105263157895,
+     "hi": 0.6882022471910112,
      "n": 2
     },
-    "exposure_mean_s": {
-     "mean": 10.820833333333333,
-     "lo": 9.766666666666667,
-     "hi": 11.875,
+    "exposure_contiguous_mean_s": {
+     "mean": 5.307879208608123,
+     "lo": 5.3023255813953485,
+     "hi": 5.313432835820896,
      "n": 2
     },
-    "exposure_p95_s_pooled": 21.0,
-    "exposure_windows_n": 46,
-    "victims_blamed": {
-     "mean": 81.0,
-     "lo": 67.0,
-     "hi": 95.0,
+    "exposure_contiguous_p95_s_pooled": 7.0,
+    "exposure_contiguous_n": 110,
+    "exposure_contiguous_censored": 7,
+    "exposure_cumulative_mean_s": {
+     "mean": 8.43006993006993,
+     "lo": 8.090909090909092,
+     "hi": 8.76923076923077,
      "n": 2
     },
-    "unique_victims_blamed": {
-     "mean": 13.5,
-     "lo": 10.0,
-     "hi": 17.0,
+    "exposure_cumulative_p95_s_pooled": 21.0,
+    "exposure_holdings_n": 70,
+    "reports_forgery_naming_honest": {
+     "mean": 91.5,
+     "lo": 72.0,
+     "hi": 111.0,
+     "n": 2
+    },
+    "honest_named_by_forgery_reports": {
+     "mean": 17.0,
+     "lo": 13.0,
+     "hi": 21.0,
+     "n": 2
+    },
+    "reports_beacon_naming_honest": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "honest_named_by_beacon_reports": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "reports_naming_honest": {
+     "mean": 91.5,
+     "lo": 72.0,
+     "hi": 111.0,
+     "n": 2
+    },
+    "honest_reported": {
+     "mean": 17.0,
+     "lo": 13.0,
+     "hi": 21.0,
+     "n": 2
+    },
+    "attacker_credentials_held": {
+     "mean": 220.0,
+     "lo": 191.0,
+     "hi": 249.0,
+     "n": 2
+    },
+    "attacker_credentials_retained": {
+     "mean": 220.0,
+     "lo": 191.0,
+     "hi": 249.0,
      "n": 2
     },
     "population_honest": {
-     "mean": 2033.0,
-     "lo": 2033.0,
-     "hi": 2033.0,
+     "mean": 559.0,
+     "lo": 559.0,
+     "hi": 559.0,
      "n": 2
     },
     "population_attackers": {
@@ -566,15 +851,15 @@
      "n": 2
     },
     "honest_revoked": {
-     "mean": 13.5,
-     "lo": 10.0,
-     "hi": 17.0,
+     "mean": 17.0,
+     "lo": 13.0,
+     "hi": 21.0,
      "n": 2
     },
     "honest_revoked_share": {
-     "mean": 0.006640432857845549,
-     "lo": 0.004918839153959666,
-     "hi": 0.008362026561731432,
+     "mean": 0.03041144901610018,
+     "lo": 0.023255813953488372,
+     "hi": 0.03756708407871199,
      "n": 2
     },
     "attackers_revoked": {
@@ -584,9 +869,9 @@
      "n": 2
     },
     "total_revoked": {
-     "mean": 13.5,
-     "lo": 10.0,
-     "hi": 17.0,
+     "mean": 17.0,
+     "lo": 13.0,
+     "hi": 21.0,
      "n": 2
     }
    },
@@ -625,15 +910,58 @@
   }
  },
  "s2_receiver_rate_across_realizations": {
-  "mean": 0.7516579575434967,
-  "lo": 0.7318583373994162,
-  "hi": 0.7852741036040917,
+  "mean": 0.7572640091843698,
+  "lo": 0.7444514774746747,
+  "hi": 0.7721013990634005,
   "n": 5
  },
  "s2_honest_revoked_across_realizations": {
-  "mean": 16.4,
-  "lo": 14.5,
-  "hi": 18.1,
+  "mean": 20.5,
+  "lo": 18.3,
+  "hi": 22.2,
   "n": 5
+ },
+ "provenance": {
+  "version": "3.6.0",
+  "commit": "2cd710b7915dbe4d39d61d8d917d043b6dfc3730",
+  "source_dirty": false,
+  "source_diff_sha256": null,
+  "argv": [
+   "recycling-sumo",
+   "--trace",
+   "/home/user/sumo-scenarios/motorway/motorway_seed1.fcd.xml,/home/user/sumo-scenarios/motorway/motorway_seed2.fcd.xml,/home/user/sumo-scenarios/motorway/motorway_seed3.fcd.xml,/home/user/sumo-scenarios/motorway/motorway_seed4.fcd.xml,/home/user/sumo-scenarios/motorway/motorway_seed5.fcd.xml",
+   "--corridor",
+   "config/sumo/motorway.corridor.json",
+   "--name",
+   "motorway"
+  ],
+  "signing": {
+   "deterministic_available": true,
+   "randomized_fallbacks": 0
+  }
+ },
+ "calibration": {
+  "op_costs_s": {
+   "sign": 4.6500926000589974e-05,
+   "verify": 0.00011570412999935797,
+   "keygen": 2.867485399838188e-05,
+   "encrypt": 0.00014784164642903198,
+   "decrypt": 0.0001519314057828537,
+   "encrypt_per_byte": 1.9647976031893514e-10,
+   "decrypt_per_byte": 2.713851351060304e-10
+  },
+  "source": "measured",
+  "environment": {
+   "machine": "x86_64",
+   "processor": "x86_64",
+   "python": "3.11.15",
+   "system": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+   "cryptography": "49.0.0",
+   "samples": 500,
+   "ecies_payload_sizes": [
+    120,
+    65536
+   ]
+  }
  }
 }

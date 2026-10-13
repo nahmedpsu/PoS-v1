@@ -499,5 +499,49 @@
     }
    ]
   }
- ]
+ ],
+ "provenance": {
+  "version": "3.6.0",
+  "commit": "2cd710b7915dbe4d39d61d8d917d043b6dfc3730",
+  "source_dirty": false,
+  "source_diff_sha256": null,
+  "argv": [
+   "recycling-sumo",
+   "--returns",
+   "--trace",
+   "/home/user/sumo-scenarios/motorway/motorway.fcd.xml",
+   "--corridor",
+   "config/sumo/motorway.corridor.json",
+   "--name",
+   "motorway"
+  ],
+  "signing": {
+   "deterministic_available": true,
+   "randomized_fallbacks": 0
+  }
+ },
+ "calibration": {
+  "op_costs_s": {
+   "sign": 3.3754011998098576e-05,
+   "verify": 0.00010980569800085504,
+   "keygen": 2.0203595999191747e-05,
+   "encrypt": 0.0001509030140005052,
+   "decrypt": 0.0001419118774848571,
+   "encrypt_per_byte": 0.0,
+   "decrypt_per_byte": 1.2220955162796114e-11
+  },
+  "source": "measured",
+  "environment": {
+   "machine": "x86_64",
+   "processor": "x86_64",
+   "python": "3.11.15",
+   "system": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+   "cryptography": "49.0.0",
+   "samples": 500,
+   "ecies_payload_sizes": [
+    120,
+    65536
+   ]
+  }
+ }
 }

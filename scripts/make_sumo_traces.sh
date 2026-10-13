@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Rebuild every SUMO trace the study uses and verify it (review R24).
-# Requires Eclipse SUMO 1.28.0 (pip install eclipse-sumo==1.28.0) and git.
+# Requires Eclipse SUMO 1.28.0 (pip install -r requirements-sumo.lock) and git.
 # Checksums cover the trace content after SUMO's header comment, which holds
 # a timestamp and file paths and so differs on every run.
 set -euo pipefail

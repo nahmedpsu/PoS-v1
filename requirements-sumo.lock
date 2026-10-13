@@ -1,0 +1,4 @@
+# Eclipse SUMO, needed only to regenerate the traces (scripts/make_sumo_traces.sh)
+# and for the SUMO experiments (review G09).  Install with:
+#   pip install -r requirements-sumo.lock
+eclipse-sumo==1.28.0

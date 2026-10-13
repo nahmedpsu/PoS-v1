@@ -2,10 +2,16 @@
 
 Back to the [README](../README.md). Every figure is drawn only from the JSON
 file next to it in the table, by the named function; the command regenerates
-both. Each result file records the commit, version, command line and (for the
-recycling study) the measured cost coefficients and whether deterministic
-signing was in effect (`run_info.json`, or a `provenance` key). One entry
-point runs everything: `scripts/reproduce.sh` (review R24).
+both. From 3.6.0 every recycling result file carries its own `provenance`
+(commit, version, command line, whether the source differed from the commit
+and a SHA-256 of that difference) and `calibration` (the measured cost
+coefficients and the environment they were measured in); `run_info.json` only
+describes the last run (review G09). One entry point runs everything:
+`scripts/reproduce.sh`.
+
+Scientific values are deterministic for a given seed and source; wall-clock
+timings, the cost calibration and the provenance metadata are not, and are
+excluded from any comparison of outputs.
 
 ## v1 reproduction (`pop-sim run`)
 
@@ -40,9 +46,10 @@ point runs everything: `scripts/reproduce.sh` (review R24).
 
 | Figure | Data (key) | Function | Command |
 |---|---|---|---|
-| `figures/recycling/E1.png` | `results/recycling/E1.json` (`cells`) | `plots_recycling.fig_e1` | `recycling --only E1` |
+| `figures/recycling/E1.png` | `results/recycling/E1.json` (`cells`; first panel: core cells, plausibility on, 900 s) | `plots_recycling.fig_e1` | `recycling --only E1` |
 | `figures/recycling/E2.png` | `results/recycling/E2.json` | `plots_recycling.fig_e2` | `recycling --only E2` |
 | `figures/recycling/E3.png` | `results/recycling/E3.json` | `plots_recycling.fig_e3` | `recycling --only E3` |
+| `figures/recycling/E3_attribution.png` | `results/recycling/E3.json` (`*_identity_beacon_share`, upload order kept) | `plots_recycling.fig_e3` | `recycling --only E3` |
 | `figures/recycling/E3b.png` | `results/recycling/E3b.json` | `plots_recycling.fig_e3b` | `recycling --only E3b` |
 | `figures/recycling/E4.png` | `results/recycling/E4.json` (`privacy_attack_free` for the link rate, `cells` for the rest) | `plots_recycling.fig_e4` | `recycling --only E4` |
 | `figures/recycling/E5.png` | `results/recycling/E5.json` | `plots_recycling.fig_e5` | `recycling --only E5` |
@@ -55,3 +62,13 @@ point runs everything: `scripts/reproduce.sh` (review R24).
 Rates drawn as gaps are cells with no attempts (not applicable), never zeros.
 Per-seed numerators and denominators sit under `per_seed` in every recycling
 result cell.
+
+## Repository figures and manuscript figures
+
+The figures above are the repository's own; the manuscript's figures are laid
+out separately and the manuscript source is not part of this repository. The
+repository now draws the two layouts the follow-up review compared directly:
+the strategy bars of honest vehicles reported and revoked (first panel of
+`E1.png`) and the identity-attribution split (`E3_attribution.png`). Any other
+manuscript figure must be drawn from the result fields named in the
+manuscript's caption; a figure-number map belongs with the manuscript source.

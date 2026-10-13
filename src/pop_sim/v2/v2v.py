@@ -155,7 +155,11 @@ class V2VLayer:
                 h = cred.get("holder")
                 if not h:
                     return False, "no-holder-certificate"
-                if not (h["t_start"] <= now <= h["t_end"]):
+                # half-open (t_start, t_end]: consecutive holders' windows share an
+                # end point, which belongs to the outgoing holder (its last message
+                # is at t_end; the next holder's first is later).  No instant has
+                # two valid holders (review G04).
+                if not (h["t_start"] < now <= h["t_end"]):
                     return False, "holder-window"
                 if h["pid"] != msg.pid:
                     return False, "holder-pid-mismatch"

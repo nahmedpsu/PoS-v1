@@ -3,6 +3,7 @@
  "rounds": 4,
  "cells": [
   {
+   "mode": "recycle",
    "lifetime": 300,
    "seeds": 10,
    "misbehaver_revoked": {
@@ -46,8 +47,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -66,8 +67,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -86,8 +87,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -106,8 +107,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -126,8 +127,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -146,8 +147,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -166,8 +167,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -186,8 +187,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -206,8 +207,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -226,13 +227,14 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     }
    ]
   },
   {
+   "mode": "recycle",
    "lifetime": 900,
    "seeds": 10,
    "misbehaver_revoked": {
@@ -276,8 +278,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -296,8 +298,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -316,8 +318,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -336,8 +338,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -356,8 +358,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -376,8 +378,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -396,8 +398,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -416,8 +418,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -436,8 +438,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -456,13 +458,14 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     }
    ]
   },
   {
+   "mode": "recycle",
    "lifetime": 3600,
    "seeds": 10,
    "misbehaver_revoked": {
@@ -506,8 +509,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -526,8 +529,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -546,8 +549,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -566,8 +569,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -586,8 +589,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -606,8 +609,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -626,8 +629,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -646,8 +649,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -666,8 +669,8 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
      }
     },
     {
@@ -686,11 +689,2129 @@
      "seconds_to_last": 60.0,
      "retained_valid_end": {
       "t": 120.0,
-      "valid": 4,
-      "retained": 4
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh",
+   "lifetime": 300,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh",
+   "lifetime": 900,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh",
+   "lifetime": 3600,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh_vgk",
+   "lifetime": 300,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh_vgk",
+   "lifetime": 900,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh_vgk",
+   "lifetime": 3600,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 60.0,
+    "lo": 60.0,
+    "hi": 60.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 60,
+     "seconds_to_last": 60.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "rekey",
+   "lifetime": 300,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "rekey",
+   "lifetime": 900,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    }
+   ]
+  },
+  {
+   "mode": "rekey",
+   "lifetime": 3600,
+   "seeds": 10,
+   "misbehaver_revoked": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "post_revocation_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "seconds_to_last_accepted": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 74,
+      "honest": 73,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 115,
+      "honest": 114,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 96,
+      "honest": 95,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 111,
+      "honest": 110,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 101,
+      "honest": 100,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 68,
+      "honest": 67,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 82,
+      "honest": 81,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 106,
+      "honest": 105,
+      "attackers": 1,
+      "revoked_total": 1,
+      "revoked_honest": 0,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.0
+     },
+     "misbehaver_revoked": 1,
+     "accepted_after": 0,
+     "seconds_to_last": 0.0,
+     "retained_valid_end": {
+      "t": 120.0,
+      "valid": 6,
+      "retained": 6
      }
     }
    ]
   }
- ]
+ ],
+ "provenance": {
+  "version": "3.6.0",
+  "commit": "57fa948bec6d37cad6c7a402b5891a4e958e38a3",
+  "source_dirty": false,
+  "source_diff_sha256": null,
+  "argv": [
+   "recycling",
+   "--only",
+   "E2,E3,E3b,E5,E6"
+  ],
+  "signing": {
+   "deterministic_available": true,
+   "randomized_fallbacks": 0
+  }
+ },
+ "calibration": {
+  "op_costs_s": {
+   "sign": 5.6635402000210886e-05,
+   "verify": 0.0001375097000000096,
+   "keygen": 1.9610997999734537e-05,
+   "encrypt": 0.00016344824797086984,
+   "decrypt": 0.00017498526000008497,
+   "encrypt_per_byte": 4.768835758841239e-10,
+   "decrypt_per_byte": 0.0
+  },
+  "source": "measured",
+  "environment": {
+   "machine": "x86_64",
+   "processor": "x86_64",
+   "python": "3.11.15",
+   "system": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+   "cryptography": "49.0.0",
+   "samples": 500,
+   "ecies_payload_sizes": [
+    120,
+    65536
+   ]
+  }
+ }
 }

@@ -53,24 +53,30 @@ class FormerHolderAdversary:
               holder_state: dict, now: float, speed: float, direction: int,
               current_holder_cert: dict | None) -> ForgedMessage | None:
         """Decide whether and how to forge under ``p`` this second."""
+        st = self.stats
+        st.key_checks += 1                                # raw: every retained key, every second (G08)
         holder = ledger.holder.get(p.pid)
         own = attacker.vehicle_id
         if holder == own:
             return None                                   # it still legitimately holds p
         if p.pid in ledger.retired:
             return None                                   # fresh modes: the pseudonym is never used again
+        valid = p.expiry >= now
+        st.valid_key_seconds += valid                     # the retained certificate is still unexpired
         claimed_x = attacker_x
         victim = None
         if self.strategy == "S3":
             if holder is not None:
                 return None                               # only between holders
+            st.eligible += valid                          # gap filler: a valid key and nobody holding p
         elif holder is None:
             return None                                   # S1 / S2 need a current victim
         else:
             victim = holder
             vx = holder_state.get(holder)
             if vx is None:
-                return None
+                return None                               # the holder is silent or off the road this second
+            st.eligible += valid                          # a valid key and another vehicle transmitting under p
             if self.strategy == "S2":
                 if self._dist(vx, attacker_x, ring_length) > self.radio_range_m:
                     return None                           # must really be near the victim's neighbours
@@ -96,7 +102,8 @@ class FormerHolderAdversary:
         st.receivers_accepting += accepted_rx
         if accepted_rx:
             st.accepted_v2v += 1
-            st.accepted_times.setdefault(fm.msg.pid, []).append(now)
+            # one exposure record per holding: the pseudonym and the vehicle holding it (G03)
+            st.accepted_times.setdefault((fm.msg.pid, fm.victim_vid), []).append(now)
         if rsu_ok:
             st.accepted_rsu += 1
         b = self.by_strategy.setdefault(fm.strategy, {"sent": 0, "accepted_v2v": 0, "accepted_rsu": 0})
