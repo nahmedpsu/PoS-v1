@@ -1,5 +1,61 @@
 # Changelog
 
+## 3.5.0 - response to the external review of 3.4.0
+
+Every item of the review (R01 to R25) is answered in docs/review_response.md;
+every recycling experiment, both SUMO traces, the v2 results, the attack bench and
+the use cases were rerun.
+
+Corrections that change reported numbers:
+
+* R01: honest, attacker and total populations and revocations are disjoint
+  per-seed fields.  S1 revokes 31.8 of 91.5 honest vehicles in 120 s (35 %) and
+  89.6 (98 %) in 600 s; 3.4.0's column included revoked attackers.
+* R02: cells with no attempts are "not applicable" (null), not 0 % or 100 %, and
+  paired tests on them say so.  Retained credentials still valid are sampled in
+  every mode.
+* R03: receivers cache only signature verification and recheck expiry, holder
+  window, freshness and plausibility on every delivery.
+* R04: a former holder keeps an immutable snapshot of each credential.  Over
+  600 s a 300 s lifetime now cuts S1 receiver acceptance from 96 % to 81 % and a
+  revoked vehicle's acceptance from 540 s to 240 s; 3.4.0's flat lifetime axis
+  came from the aliasing.
+* R14: the eavesdropper hears forged CAMs.  R13 and R12: an attack-free privacy
+  comparison on the same traffic with a +-1 point equivalence test; recycle and
+  fresh are equivalent (recycle 0.2 to 0.4 points less linkable).
+* R15: pair recall, purity and identity attribution per driven second; tracker
+  plus PM at 40 veh/km attributes 38 % of driving correctly, 33 % ambiguously.
+* R17: CPU costs measured per run (sign, verify, keygen, encrypt, decrypt) with
+  a x0.5 to x2 range; transaction signatures, package encryption and decryption
+  counted.  Fresh issuance: 27 CPU-s per 1,000 vehicle-hours at the PKI plus 38
+  at the PMs (3.4.0: 54).
+* R18: standards-based CAM size model (v2/sizes.py): rekey costs 1.12 to 1.47
+  times the bytes, not twice.
+* R22: SUMO attackers are drawn from the vehicles in the evaluated window (22
+  and 29, not 61 and 103); full-trace and window statistics are exported
+  separately.  S1 revokes 18 % of the honest vehicles seen.
+* R23: the cloud channel is "absent" in fresh modes.
+
+Added:
+
+* R21: departed-vehicle return policy (`departed_return_prob`,
+  `departed_return_delay_rounds`, `recycling-sumo --returns`) and five motorway
+  traffic realizations (comma-separated `--trace`).
+* R08 to R11 (options, defaults unchanged, not swept in the results): sensor
+  noise on signed positions, range and kinematic detectors, tolerance, message
+  loss, per-RSU clone history, continuous report processing, per-second
+  misbehaver.
+* R24: requirements.lock, Dockerfile on python:3.11-slim, trace regeneration
+  script with content checksums, scripts/reproduce.sh, provenance in result
+  files, docs/figure_map.md, exploratory analyses labelled.
+* R25: tests/test_review.py, 13 invariant tests; 103 tests.
+* `recycling --only E1,E3b` runs selected experiments.
+
+Not changed, stated as limitations (docs/recycling.md): the adversary's
+observations, transmitter placement and single-insider isolation (R05 to R07),
+the fresh baseline as an ablation (R19), the re-keying trust assumption (R20),
+the one-dimensional road (R21).
+
 ## 3.4.0 - scenarios on ten seeds, a stronger insider, corrected explanations
 
 * Deployment scenarios (`pop-sim usecases`) run on seeds 1-10 and report the

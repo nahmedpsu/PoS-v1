@@ -197,17 +197,22 @@ establish, stated once here:
   PM, PKI or cloud insider is given a radio wherever it wants one. All entities
   forge in the same run. These are upper bounds on the attacker, labelled as
   such; an observation-limited attacker with placed transmitters is not modelled.
-* **Detection (R08 to R11).** GPS error enters only the eavesdropper's
-  observations, not the signed CAMs, so benign false positives of the
-  plausibility rule are not measured under sensor noise. The plausibility rule
-  of the results is one speed bound (60 m/s plus 25 m); `V2VLayer` also offers a
-  range check, a kinematic check, a tolerance parameter and packet loss, but no
-  experiment in this version varies them. RSUs share one clone-check history
-  (the per-RSU history option exists but is not used), so a multi-RSU quorum is
-  not a set of independent witnesses. Reports are processed at 30 s round
-  boundaries and the genuine misbehaver replays once per round while a former
-  holder signs every second, so revocation latencies in E1r mix policy with
-  batching and workload.
+* **Detection (R08 to R11).** Version 3.5.0 adds the options the review asks for,
+  each with a default that reproduces the runs in the results, and none of them is
+  swept in this version's results: sensor error on the position a vehicle measures
+  and signs (`gps_noise_m`, AR(1) correlated with `gps_noise_corr`), a range check
+  and a kinematic check beside the speed bound (`v2v_detectors`), the tolerance
+  (`v2v_allowance_m`, `v2v_kin_tolerance_m`) and per-reception loss (`v2v_loss`),
+  a local clone-check history per RSU (`rsu_history="local"`), continuous report
+  processing with a delivery delay (`report_processing="continuous"`,
+  `report_delay_s`) and a genuine misbehaver that replays every second
+  (`malicious_replay="per_second"`). The results therefore still rest on one
+  speed bound (60 m/s plus 25 m) at noise-free signed positions, a clone-check
+  history shared by all RSUs (so a multi-RSU quorum is not a set of independent
+  witnesses), and reports handled at 30 s round boundaries with the misbehaver
+  replaying once per round while a former holder signs every second, so revocation
+  latencies in E1r mix policy with batching and workload. Benign false positives
+  under sensor noise are not measured.
 * **Fresh issuance is a matched ablation (R19).** `fresh` and `fresh_vgk` keep the
   rest of the infrastructure so that only issuance changes. They are not an
   SCMS-style system (no butterfly keys, linkage values, batch pre-loading or
