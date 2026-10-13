@@ -1,5 +1,47 @@
 # Changelog
 
+## 3.6.0 - response to the follow-up review of 3.5.0
+
+Every item of the follow-up review (G01 to G10) is answered in
+docs/review_response_round2.md; every dependent experiment was rerun.
+
+Corrections that change reported numbers:
+
+* G01: every misbehaviour report goes through one hook and is counted by route
+  (forged message, own beacon, replay, insider), naming honest vehicles only.
+  S1 at 120 s: forged messages name 19.7 honest vehicles, their own beacons
+  25.5 more; 43.4 honest vehicles reported, all revoked.
+* G02: attackers keep the last credential of each round too (55 to 60 per
+  run, not about 40).  S1 revokes 48 % of honest vehicles in 120 s (3.5.0:
+  35 %) and 99 % in 600 s; 22 to 24 % of those seen on the SUMO motorways.
+* G03: exposure per contiguous window and per holding, with censoring.  S1's
+  window is the holder's 7 s slot (3.5.0: 32.6 s, a sum of episodes).
+* G04: holder windows are half-open (t_start, t_end]; no handoff instant has
+  two valid holders.
+* G06: equivalence is a paired t TOST on the mean difference with its 90 %
+  interval; conclusions unchanged.
+* G07: identity attribution is a share of observed beacon-seconds, with a
+  driven-time share beside it.
+* G08: opportunities are key checks, valid-key seconds and eligible seconds.
+* G10: CPU by entity and operation; the PMs' cost under fresh issuance is
+  certificate verification (98 %), not decryption.  ECIES has a per-byte term.
+* E2 and E2x run under every issuance mode: a revoked vehicle is believed until
+  expiry under recycle, fresh and fresh_vgk, and not at all under rekey.
+* SUMO revocation shares are over the honest vehicles seen in the window.
+
+Added:
+
+* G09: provenance (commit, source-diff SHA-256, captured at start) and the
+  cost calibration inside every result file; per-seed records in E3 and E3b,
+  per-seed load counts in E4; requirements-sumo.lock; the Dockerfile copies
+  scripts and can install SUMO; E1 strategy bars and the E3 attribution split.
+* tests/test_review2.py, 9 tests; 112 tests.
+
+Not changed, stated: every former-holder schedule reads simulator state
+(G05), so its rates are conditional model results; former holders stop once
+revoked; insider CAMs are not fed to the eavesdropper; the manuscript's own
+figure build path lives with the manuscript.
+
 ## 3.5.0 - response to the external review of 3.4.0
 
 Every item of the review (R01 to R25) is answered in docs/review_response.md;

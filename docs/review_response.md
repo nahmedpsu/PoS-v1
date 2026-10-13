@@ -1,5 +1,9 @@
 # Response to the external review of v3.4.0
 
+*The follow-up review of v3.5.0 (G01 to G10) is answered in
+[review_response_round2.md](review_response_round2.md); several figures below were
+revised in 3.6.0.*
+
 The review ("PoS GitHub Repository Review", Reviewer 2) examined release v3.4.0,
 commit `bd39021`, and listed 25 items, R01 to R25. This page gives the status of each
 in version 3.5.0. Results, before and after, are in
