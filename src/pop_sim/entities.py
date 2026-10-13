@@ -279,8 +279,37 @@ class PseudonymLedger:
         self.ring_length: float | None = None                  # road length when positions wrap around
         self.holder_cert: dict[str, dict] = {}                 # pid -> current holder-bound certificate (rekey/window)
         self.epoch: dict[str, int] = {}                        # pid -> number of allotments so far
+        # ownership over time (review H02): pid -> [(t, holder or None, public key)], each entry
+        # owning (t, next t], the convention of the receivers' holder windows (t_start, t_end]
+        self.owner_log: dict[str, list[tuple[float, str | None, str | None]]] = {}
+
+    def _log_owner(self, pid: str, vehicle_id: str | None, pk_hex: str | None) -> None:
+        t = clock.now()
+        log = self.owner_log.setdefault(pid, [])
+        if log and log[-1][0] == t:
+            log[-1] = (t, vehicle_id, pk_hex)              # several transitions at one instant: the last wins
+        else:
+            log.append((t, vehicle_id, pk_hex))
+
+    def owner_at(self, pid: str, t: float) -> tuple[str | None, str | None]:
+        """(holder, public key) of ``pid`` at time ``t``: the latest entry that
+        began strictly before ``t``.  At a handoff instant the outgoing holder
+        still owns the label; from the next instant the incoming one does."""
+        log = self.owner_log.get(pid)
+        if not log or t <= log[0][0]:
+            # no history, or a timestamp before the label's first allotment (not on the
+            # simulation clock, e.g. a hand-built message): the current state decides
+            return self.holder.get(pid), self.pk.get(pid)
+        owner = (None, None)
+        for t0, vid, pk in log:
+            if t0 < t:
+                owner = (vid, pk)
+            else:
+                break
+        return owner
 
     def allot(self, p: "Pseudonym", vehicle_id: str) -> None:
+        self._log_owner(p.pid, vehicle_id, p.keys.pk_hex)
         self.holder[p.pid] = vehicle_id
         self.pk[p.pid] = p.keys.pk_hex
         self.used.discard(p.pid)
@@ -296,10 +325,14 @@ class PseudonymLedger:
         return vehicle_id in self.past_holders.get(pid, ())
 
     def mark_used(self, pid: str) -> None:
+        if pid in self.holder:
+            self._log_owner(pid, None, None)
         self.holder.pop(pid, None)
         self.used.add(pid)
 
     def retire(self, pid: str) -> None:
+        if pid in self.holder:
+            self._log_owner(pid, None, None)
         self.holder.pop(pid, None)
         self.used.discard(pid)
         self.retired.add(pid)
@@ -312,16 +345,16 @@ class PseudonymLedger:
         ``last_seen`` is the observation history the clone check uses: the
         ledger's shared one by default, or an RSU's own (review R10)."""
         hist = self.last_seen if last_seen is None else last_seen
-        if pid in self.retired:
-            return False, "retired-pseudonym"
-        if pid in self.used:
-            return False, "reuse-of-returned-pseudonym"
-        holder = self.holder.get(pid)
+        holder, pk_hex = self.owner_at(pid, msg.timestamp)   # ownership at the message's own time (H02)
         if holder is None:
+            if pid in self.retired:
+                return False, "retired-pseudonym"
+            if pid in self.used:
+                return False, "reuse-of-returned-pseudonym"
             return False, "unknown-pseudonym"
         if holder != vehicle_id:
             return False, "pseudonym-held-by-another-vehicle"
-        if not msg.signature or not crypto.verify(crypto.pk_from_hex(self.pk[pid]), msg.body(),
+        if not msg.signature or not crypto.verify(crypto.pk_from_hex(pk_hex), msg.body(),
                                                   bytes.fromhex(msg.signature)):
             return False, "bad-signature"
         # Clone check: one pseudonym cannot be in two places at once.
@@ -566,7 +599,7 @@ class RSU:
         self.observed.append(msg)
         self.load.verifications += 1
         if self.attribution == "ledger" or vehicle is None:
-            holder = self.ledger.holder.get(msg.pid)
+            holder = self.ledger.owner_at(msg.pid, msg.timestamp)[0]
             ok, reason = self.ledger.check(msg.pid, holder or "", msg, self.local_history)
             if not ok:
                 self.flagged.append((msg.pid, reason))
