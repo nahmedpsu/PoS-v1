@@ -199,6 +199,7 @@ class PKI:
         ciphertext = crypto.encrypt(pm_pk, plaintext)
         signature = crypto.sign(self.keys.sk, ciphertext)
         self.load.signatures += 1
+        self.load.encryptions += 1
         self.load.bytes += len(ciphertext)
         return ciphertext, signature
 
@@ -236,10 +237,13 @@ class Load:
     keygens: int = 0
     bytes: int = 0
     verifications: int = 0
+    encryptions: int = 0      # ECIES (review R17: counted, previously omitted)
+    decryptions: int = 0
 
     def to_dict(self) -> dict:
         return {"signatures": self.signatures, "keygens": self.keygens, "bytes": self.bytes,
-                "verifications": self.verifications}
+                "verifications": self.verifications, "encryptions": self.encryptions,
+                "decryptions": self.decryptions}
 
 
 def holder_cert_bytes(pid: str, pk_hex: str, t_start: float, t_end: float, pm_id: str) -> bytes:
@@ -653,6 +657,8 @@ class PrivacyManager:
             raise ValueError(f"{self.pm_id}: PKI signature invalid, package rejected")
         wire = json.loads(crypto.decrypt(self.keys.sk, ciphertext))
         ps = [Pseudonym.from_wire(d) for d in wire]
+        self.load.verifications += 1 + len(ps)
+        self.load.decryptions += 1
         for p in ps:
             if not p.verify(pki_pk):
                 raise ValueError(f"{self.pm_id}: pseudonym certificate invalid")
@@ -719,4 +725,5 @@ class PrivacyManager:
 
     def make_tx(self, kind: str, receiver_pk, payload: dict) -> Transaction:
         self.load.signatures += 1
+        self.load.encryptions += 1
         return Transaction.create(kind, self.keys, receiver_pk, payload)

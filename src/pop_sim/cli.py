@@ -163,6 +163,7 @@ def cmd_usecases(args: argparse.Namespace) -> int:
 
 def cmd_recycling(args: argparse.Namespace) -> int:
     """E1-E6 of the pseudonym recycling study."""
+    calibration = exr.calibrate()
     out = Path(args.out)
     figs = Path(args.figures)
     seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else None
@@ -220,29 +221,56 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         plots_recycling.fig_e1r(res["E1r"], figs / "E1r.png")
     plots_recycling.fig_summary(res, figs / "summary.png")
     res["wall_seconds"] = time.perf_counter() - t0
-    _dump({k: v for k, v in res.items() if k in ("config", "wall_seconds")} | {"E6_changed": res["E6"]["changed"]},
+    _dump({k: v for k, v in res.items() if k in ("config", "wall_seconds")}
+          | {"E6_changed": res.get("E6", {}).get("changed"), "calibration": calibration, **_provenance()},
           out / "run_info.json")
     log("done")
     return 0
 
 
+def _provenance() -> dict:
+    """Commit, version and command line behind a result file (review R24)."""
+    import subprocess
+    try:
+        commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False).stdout.strip()
+        dirty = bool(subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], capture_output=True,
+                                    text=True, check=False).stdout.strip())
+    except OSError:
+        commit, dirty = None, None
+    from . import crypto
+    return {"version": __version__, "commit": commit or None, "worktree_dirty": dirty, "argv": sys.argv[1:],
+            "signing": dict(crypto.SIGNING)}
+
+
 def cmd_recycling_sumo(args: argparse.Namespace) -> int:
-    """E1 and E4 on a SUMO trace."""
+    """E1 and E4 on a SUMO trace (several comma-separated traces: realizations)."""
+    calibration = exr.calibrate()
     seeds = tuple(int(x) for x in args.seeds.split(",")) if args.seeds else ((1, 2) if args.quick else exr.DEFAULT_SEEDS)
-    res = exs.exp_sumo(args.trace, args.corridor, args.name, seeds=seeds, rounds=2 if args.quick else args.rounds,
+    traces = args.trace.split(",")
+    out, figs = Path(args.out), Path(args.figures)
+    if len(traces) > 1:
+        res = exs.exp_sumo_realizations(traces, args.corridor, args.name, seeds=seeds[:2], rounds=2 if args.quick else args.rounds)
+        _dump(res, out / f"SUMO_realizations_{args.name}.json")
+        print(json.dumps(res["attack_free_link_rate_across_realizations"], indent=1))
+        return 0
+    if args.returns:
+        res = exs.exp_sumo_returns(traces[0], args.corridor, args.name, seeds=seeds[:5], rounds=2 if args.quick else args.rounds)
+        _dump(res, out / f"SUMO_returns_{args.name}.json")
+        for c in res["cells"]:
+            print(c["return_prob"], c["return_delay_rounds"], c["mode"], c["stockouts"]["mean"], c["tracker_link_rate"]["mean"])
+        return 0
+    res = exs.exp_sumo(traces[0], args.corridor, args.name, seeds=seeds, rounds=2 if args.quick else args.rounds,
                        strategies=("S2",) if args.quick else ("S1", "S2", "S3"),
                        modes=("recycle", "rekey") if args.quick else exs.ISSUANCE_MODES)
-    _dump(res, Path(args.out) / f"SUMO_{args.name}.json")
-    plots_recycling.fig_sumo(res, Path(args.figures) / f"SUMO_{args.name}.png")
+    res["calibration"] = calibration
+    res["provenance"] = _provenance()
+    _dump(res, out / f"SUMO_{args.name}.json")
+    plots_recycling.fig_sumo(res, figs / f"SUMO_{args.name}.png")
     info = res["trace_info"]
-    print(f"{res['experiment']}: {info['vehicles_total']} vehicles, {info['density_per_km']:.1f} veh/km on "
-          f"{info['corridor_m'] / 1000:.1f} km, {res['wall_seconds']:.0f} s")
+    print(f"{res['experiment']}: window {info['window_vehicles_seen']} vehicles, {info['window_density_per_km']:.1f} veh/km "
+          f"on {info['corridor_m'] / 1000:.1f} km, {res['wall_seconds']:.0f} s")
     for c in res["E1"]:
-        print(f"  E1 {c['strategy']}: receivers accept {100 * c['v2v_receiver_rate']['mean']:.1f} %, "
-              f"blamed {c['victims_blamed']['mean']:.0f}, honest revoked {c['honest_revoked']['mean']:.1f}")
-    for c in res["E4"]:
-        print(f"  E4 {c['mode']:9s}: link rate {c['tracker_link_rate']['mean']:.3f}, forged accepted "
-              f"{c['forged_v2v_accepted']['mean']:.0f}, PKI {c['pki_cpu_s_per_1000_veh_h']['mean']:.1f} CPU-s/1000 veh-h")
+        print(f"  E1 {c['strategy']}: receiver rate {c['v2v_receiver_rate']['mean']}, honest revoked {c['honest_revoked']['mean']}")
     return 0
 
 
@@ -339,6 +367,7 @@ def main(argv: list[str] | None = None) -> int:
     rs.add_argument("--seeds", default=None, help="comma-separated seeds (default 1..10, or 1,2 with --quick)")
     rs.add_argument("--rounds", type=int, default=4)
     rs.add_argument("--quick", action="store_true")
+    rs.add_argument("--returns", action="store_true", help="return-policy sensitivity (review R21) instead of E1/E4")
     rs.add_argument("--out", default="results/recycling")
     rs.add_argument("--figures", default="figures/recycling")
     rs.set_defaults(func=cmd_recycling_sumo)
