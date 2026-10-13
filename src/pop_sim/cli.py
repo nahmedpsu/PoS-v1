@@ -163,6 +163,7 @@ def cmd_usecases(args: argparse.Namespace) -> int:
 
 def cmd_recycling(args: argparse.Namespace) -> int:
     """E1-E6 of the pseudonym recycling study."""
+    _provenance()
     calibration = exr.calibrate()
     out = Path(args.out)
     figs = Path(args.figures)
@@ -231,11 +232,26 @@ def cmd_recycling(args: argparse.Namespace) -> int:
 SOURCE_PATHS = ("src", "config", "scripts", "pyproject.toml", "requirements.lock", "requirements.txt")
 
 
+_PROVENANCE: dict = {}
+
+
 def _provenance() -> dict:
     """Source behind a result file (review R24, G09): the commit, whether the
     source differed from it (results and figures being rewritten do not
     count), a SHA-256 of that difference so a dirty run is still identified,
-    the version and the command line."""
+    the version and the command line.  Captured once, when the command
+    starts, so a commit made while a long run is going does not relabel it."""
+    if not _PROVENANCE:
+        _PROVENANCE.update(_capture_provenance())
+    return {**_PROVENANCE, "signing": _signing()}
+
+
+def _signing() -> dict:
+    from . import crypto
+    return dict(crypto.SIGNING)
+
+
+def _capture_provenance() -> dict:
     import hashlib
     import subprocess
     try:
@@ -245,9 +261,8 @@ def _provenance() -> dict:
         diff_sha = hashlib.sha256(diff).hexdigest() if diff else None
     except OSError:
         commit, dirty, diff_sha = None, None, None
-    from . import crypto
     return {"version": __version__, "commit": commit or None, "source_dirty": dirty, "source_diff_sha256": diff_sha,
-            "argv": sys.argv[1:], "signing": dict(crypto.SIGNING)}
+            "argv": sys.argv[1:], "captured": "at start"}
 
 
 def _stamp(res: dict, calibration: dict | None) -> dict:
@@ -260,6 +275,7 @@ def _stamp(res: dict, calibration: dict | None) -> dict:
 
 def cmd_recycling_sumo(args: argparse.Namespace) -> int:
     """E1 and E4 on a SUMO trace (several comma-separated traces: realizations)."""
+    _provenance()
     calibration = exr.calibrate()
     seeds = tuple(int(x) for x in args.seeds.split(",")) if args.seeds else ((1, 2) if args.quick else exr.DEFAULT_SEEDS)
     traces = args.trace.split(",")

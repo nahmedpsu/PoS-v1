@@ -80,6 +80,10 @@ def seed_record(r: dict) -> dict:
     rec["retained_valid_end"] = rv[-1] if rv else None
     rec["retention"] = r.get("retention")
     rec["reports"] = r.get("reports")
+    load = r.get("load") or {}
+    if load:
+        rec["load"] = {"steady_state": load.get("steady_state"),
+                       "cpu_by_operation_per_1000_veh_h": load.get("cpu_by_operation_per_1000_veh_h")}
     if t:
         rec["tracking"] = {k: t.get(k) for k in ("true_changes", "pseudonym_changes", "changes_linked_correctly",
                                                   "changes_linked_wrongly", "changes_lost", "relabel_captures")}
@@ -366,6 +370,11 @@ def exp_e4_modes(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), modes
                     "insider_cloud_channel": "absent" if mode in ("fresh", "fresh_vgk") else "uploads",
                     "pki_cpu_s_per_1000_veh_h": _agg(rows, ["load", "pki_cpu_s_per_1000_veh_h"]),
                     "pm_cpu_s_per_1000_veh_h": _agg(rows, ["load", "pm_cpu_s_per_1000_veh_h"]),
+                    # where the CPU goes, per entity and operation (review G10)
+                    "cpu_by_operation_per_1000_veh_h": {
+                        ent: {op: _agg(rows, ["load", "cpu_by_operation_per_1000_veh_h", ent, op])
+                              for op in ("sign", "verify", "keygen", "encrypt", "decrypt")}
+                        for ent in ("pki", "pm", "rsu")},
                     "pki_signatures": _agg(rows, ["load", "steady_state", "pki", "signatures"]),
                     "pm_signatures": _agg(rows, ["load", "steady_state", "pm", "signatures"]),
                     "vehicle_keygens_per_vehicle_per_round": _agg(rows, ["load", "vehicle_keygens_per_vehicle_per_round"]),
