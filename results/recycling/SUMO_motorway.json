@@ -4,67 +4,134 @@
  "corridor": "config/sumo/motorway.corridor.json",
  "trace_info": {
   "frames": 900,
-  "seconds": 900.0,
   "t_begin": 600.0,
   "corridor_m": 6000.0,
   "ring": false,
-  "vehicles_total": 2058,
-  "vehicles_present_mean": 369.2011111111111,
-  "vehicles_present_max": 389,
-  "density_per_km": 61.53351851851852,
-  "speed_mean_mps": 30.836470276663427,
   "run_seconds": 120,
-  "vehicles_seen_in_run": 584,
-  "vehicles_present_mean_in_run": 372.39166666666665
+  "full_seconds": 900,
+  "full_vehicles_seen": 2058,
+  "full_vehicles_present_mean": 369.2011111111111,
+  "full_vehicles_present_max": 389,
+  "full_density_per_km": 61.53351851851852,
+  "full_speed_mean_mps": 30.836470276663427,
+  "window_seconds": 120,
+  "window_vehicles_seen": 584,
+  "window_vehicles_present_mean": 372.39166666666665,
+  "window_vehicles_present_max": 385,
+  "window_density_per_km": 62.06527777777777,
+  "window_speed_mean_mps": 30.674737843220623
  },
  "rounds": 4,
  "lifetime": 900.0,
  "share": 0.05,
+ "equivalence_margin": 0.01,
  "E1": [
   {
    "strategy": "S1",
    "seeds": 10,
-   "attackers": 103,
+   "attackers_selected": 29,
+   "achieved_attack_share": {
+    "mean": 0.04977401888396653,
+    "lo": 0.04585626706045554,
+    "hi": 0.05385286615653108,
+    "n": 10
+   },
+   "attacker_vehicle_seconds": {
+    "mean": 2224.6,
+    "lo": 2049.5,
+    "hi": 2406.9,
+    "n": 10
+   },
+   "vehicle_seconds": {
+    "mean": 44694.0,
+    "lo": 44694.0,
+    "hi": 44694.0,
+    "n": 10
+   },
+   "opportunities": {
+    "mean": 5976.0,
+    "lo": 5152.2,
+    "hi": 6856.2,
+    "n": 10
+   },
    "forged_sent": {
-    "mean": 1922.8,
-    "lo": 1679.7,
-    "hi": 2162.4,
+    "mean": 1974.2,
+    "lo": 1704.1,
+    "hi": 2241.9,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
     "n": 10
    },
    "v2v_receiver_rate": {
-    "mean": 0.9637408778811114,
-    "lo": 0.9579615321131598,
-    "hi": 0.970306395491146,
+    "mean": 0.9619219725383613,
+    "lo": 0.955538182843077,
+    "hi": 0.968407936499911,
     "n": 10
    },
    "rsu_rate": {
-    "mean": 0.6917902079356845,
-    "lo": 0.6582447320129294,
-    "hi": 0.7204701823084567,
+    "mean": 0.6933097705476761,
+    "lo": 0.6721507933624281,
+    "hi": 0.7167993928381569,
     "n": 10
    },
    "exposure_mean_s": {
-    "mean": 27.16830288771766,
-    "lo": 26.258590089030765,
-    "hi": 28.05170995337188,
+    "mean": 25.645416705062537,
+    "lo": 24.67255600836031,
+    "hi": 26.476642936515788,
     "n": 10
    },
-   "exposure_p95_s": {
-    "mean": 58.7,
-    "lo": 53.9,
-    "hi": 62.4,
-    "n": 10
-   },
+   "exposure_p95_s_pooled": 56.0,
+   "exposure_windows_n": 767,
    "victims_blamed": {
-    "mean": 594.1,
-    "lo": 499.1,
-    "hi": 685.0,
+    "mean": 600.9,
+    "lo": 523.8,
+    "hi": 677.8,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 44.3,
+    "lo": 38.8,
+    "hi": 49.7,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
     "n": 10
    },
    "honest_revoked": {
-    "mean": 97.9,
-    "lo": 85.9,
-    "hi": 110.7,
+    "mean": 98.4,
+    "lo": 84.6,
+    "hi": 111.7,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.04849679645145392,
+    "lo": 0.04169541646131099,
+    "hi": 0.05505174963035978,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 4.4,
+    "lo": 3.4,
+    "hi": 5.5,
+    "n": 10
+   },
+   "total_revoked": {
+    "mean": 102.8,
+    "lo": 88.4,
+    "hi": 116.9,
     "n": 10
    },
    "vehicles": {
@@ -72,52 +139,1263 @@
     "lo": 2058.0,
     "hi": 2058.0,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 74,
+      "revoked_honest": 72,
+      "revoked_attackers": 2,
+      "revoked_honest_share": 0.03548546081813701
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 4237,
+      "sent": 1366,
+      "accepted_v2v": 1366,
+      "receivers_total": 52250,
+      "receivers_accepting": 49452,
+      "accepted_rsu": 973,
+      "victims_blamed": 393,
+      "unique_victims_blamed": 31,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       4.0,
+       5.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       10.0,
+       10.0,
+       10.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       15.0,
+       18.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       22.0,
+       27.0,
+       27.0,
+       28.0,
+       30.0,
+       31.0,
+       31.0,
+       36.0,
+       39.0,
+       41.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       57.0,
+       63.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 110,
+       "retained": 110
+      }
+     },
+     "tracking": {
+      "true_changes": 3493,
+      "pseudonym_changes": 3493,
+      "changes_linked_correctly": 3192,
+      "changes_linked_wrongly": 254,
+      "changes_lost": 47,
+      "relabel_captures": 13
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 110,
+      "revoked_honest": 107,
+      "revoked_attackers": 3,
+      "revoked_honest_share": 0.0527353376047314
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5813,
+      "sent": 2011,
+      "accepted_v2v": 2011,
+      "receivers_total": 75122,
+      "receivers_accepting": 71583,
+      "accepted_rsu": 1333,
+      "victims_blamed": 678,
+      "unique_victims_blamed": 52,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       3.0,
+       3.0,
+       3.0,
+       6.0,
+       6.0,
+       7.0,
+       10.0,
+       10.0,
+       10.0,
+       10.0,
+       11.0,
+       11.0,
+       12.0,
+       12.0,
+       14.0,
+       14.0,
+       15.0,
+       15.0,
+       17.0,
+       18.0,
+       18.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       22.0,
+       24.0,
+       27.0,
+       27.0,
+       31.0,
+       31.0,
+       31.0,
+       32.0,
+       32.0,
+       33.0,
+       33.0,
+       33.0,
+       35.0,
+       41.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       49.0,
+       49.0,
+       51.0,
+       55.0,
+       56.0,
+       63.0,
+       63.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 130,
+       "retained": 130
+      }
+     },
+     "tracking": {
+      "true_changes": 3471,
+      "pseudonym_changes": 3471,
+      "changes_linked_correctly": 3258,
+      "changes_linked_wrongly": 212,
+      "changes_lost": 1,
+      "relabel_captures": 8
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 99,
+      "revoked_honest": 95,
+      "revoked_attackers": 4,
+      "revoked_honest_share": 0.046821094135041895
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5781,
+      "sent": 1815,
+      "accepted_v2v": 1815,
+      "receivers_total": 68010,
+      "receivers_accepting": 65071,
+      "accepted_rsu": 1328,
+      "victims_blamed": 487,
+      "unique_victims_blamed": 43,
+      "exposure_windows_s": [
+       3.0,
+       3.0,
+       4.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       9.0,
+       9.0,
+       9.0,
+       9.0,
+       10.0,
+       10.0,
+       10.0,
+       10.0,
+       10.0,
+       12.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       17.0,
+       18.0,
+       18.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       25.0,
+       28.0,
+       29.0,
+       31.0,
+       34.0,
+       35.0,
+       35.0,
+       35.0,
+       35.0,
+       35.0,
+       35.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       45.0,
+       49.0,
+       63.0,
+       63.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 134,
+       "retained": 134
+      }
+     },
+     "tracking": {
+      "true_changes": 3503,
+      "pseudonym_changes": 3503,
+      "changes_linked_correctly": 3270,
+      "changes_linked_wrongly": 215,
+      "changes_lost": 18,
+      "relabel_captures": 4
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 148,
+      "revoked_honest": 140,
+      "revoked_attackers": 8,
+      "revoked_honest_share": 0.06899950714637752
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 8722,
+      "sent": 2787,
+      "accepted_v2v": 2787,
+      "receivers_total": 102300,
+      "receivers_accepting": 98330,
+      "accepted_rsu": 1927,
+      "victims_blamed": 860,
+      "unique_victims_blamed": 63,
+      "exposure_windows_s": [
+       1.0,
+       3.0,
+       3.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       11.0,
+       11.0,
+       12.0,
+       12.0,
+       13.0,
+       13.0,
+       13.0,
+       14.0,
+       14.0,
+       16.0,
+       19.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       27.0,
+       27.0,
+       27.0,
+       28.0,
+       33.0,
+       33.0,
+       33.0,
+       35.0,
+       35.0,
+       36.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       45.0,
+       45.0,
+       48.0,
+       49.0,
+       49.0,
+       51.0,
+       56.0,
+       63.0,
+       63.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 171,
+       "retained": 171
+      }
+     },
+     "tracking": {
+      "true_changes": 3393,
+      "pseudonym_changes": 3430,
+      "changes_linked_correctly": 3182,
+      "changes_linked_wrongly": 248,
+      "changes_lost": 0,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 95,
+      "revoked_honest": 89,
+      "revoked_attackers": 6,
+      "revoked_honest_share": 0.04386397240019714
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5347,
+      "sent": 1911,
+      "accepted_v2v": 1911,
+      "receivers_total": 71027,
+      "receivers_accepting": 67275,
+      "accepted_rsu": 1262,
+      "victims_blamed": 649,
+      "unique_victims_blamed": 45,
+      "exposure_windows_s": [
+       2.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       9.0,
+       10.0,
+       10.0,
+       13.0,
+       13.0,
+       14.0,
+       14.0,
+       17.0,
+       17.0,
+       19.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       27.0,
+       27.0,
+       29.0,
+       34.0,
+       34.0,
+       34.0,
+       35.0,
+       38.0,
+       38.0,
+       40.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       47.0,
+       48.0,
+       56.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 124,
+       "retained": 124
+      }
+     },
+     "tracking": {
+      "true_changes": 3483,
+      "pseudonym_changes": 3483,
+      "changes_linked_correctly": 3238,
+      "changes_linked_wrongly": 214,
+      "changes_lost": 31,
+      "relabel_captures": 11
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 86,
+      "revoked_honest": 81,
+      "revoked_attackers": 5,
+      "revoked_honest_share": 0.03992114342040414
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5500,
+      "sent": 1759,
+      "accepted_v2v": 1759,
+      "receivers_total": 61865,
+      "receivers_accepting": 60259,
+      "accepted_rsu": 1159,
+      "victims_blamed": 600,
+      "unique_victims_blamed": 39,
+      "exposure_windows_s": [
+       2.0,
+       2.0,
+       3.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       13.0,
+       14.0,
+       14.0,
+       14.0,
+       19.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       24.0,
+       27.0,
+       32.0,
+       34.0,
+       34.0,
+       34.0,
+       35.0,
+       39.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       43.0,
+       45.0,
+       50.0,
+       54.0,
+       59.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 120,
+       "retained": 120
+      }
+     },
+     "tracking": {
+      "true_changes": 3547,
+      "pseudonym_changes": 3547,
+      "changes_linked_correctly": 3304,
+      "changes_linked_wrongly": 203,
+      "changes_lost": 40,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 115,
+      "revoked_honest": 110,
+      "revoked_attackers": 5,
+      "revoked_honest_share": 0.05421389847215377
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6396,
+      "sent": 2182,
+      "accepted_v2v": 2182,
+      "receivers_total": 80227,
+      "receivers_accepting": 78309,
+      "accepted_rsu": 1568,
+      "victims_blamed": 614,
+      "unique_victims_blamed": 43,
+      "exposure_windows_s": [
+       1.0,
+       2.0,
+       4.0,
+       4.0,
+       4.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       9.0,
+       11.0,
+       13.0,
+       13.0,
+       13.0,
+       14.0,
+       14.0,
+       16.0,
+       16.0,
+       18.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       22.0,
+       22.0,
+       23.0,
+       23.0,
+       23.0,
+       23.0,
+       24.0,
+       25.0,
+       28.0,
+       28.0,
+       30.0,
+       30.0,
+       32.0,
+       32.0,
+       34.0,
+       34.0,
+       35.0,
+       35.0,
+       38.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       44.0,
+       44.0,
+       49.0,
+       49.0,
+       49.0,
+       51.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 138,
+       "retained": 138
+      }
+     },
+     "tracking": {
+      "true_changes": 3423,
+      "pseudonym_changes": 3429,
+      "changes_linked_correctly": 3181,
+      "changes_linked_wrongly": 248,
+      "changes_lost": 0,
+      "relabel_captures": 8
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 108,
+      "revoked_honest": 104,
+      "revoked_attackers": 4,
+      "revoked_honest_share": 0.051256776737309016
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6056,
+      "sent": 2025,
+      "accepted_v2v": 2025,
+      "receivers_total": 74453,
+      "receivers_accepting": 71653,
+      "accepted_rsu": 1332,
+      "victims_blamed": 693,
+      "unique_victims_blamed": 52,
+      "exposure_windows_s": [
+       2.0,
+       2.0,
+       3.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       8.0,
+       9.0,
+       10.0,
+       10.0,
+       10.0,
+       12.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       16.0,
+       16.0,
+       16.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       23.0,
+       23.0,
+       27.0,
+       27.0,
+       28.0,
+       31.0,
+       31.0,
+       33.0,
+       35.0,
+       35.0,
+       37.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       49.0,
+       52.0,
+       56.0,
+       56.0,
+       56.0,
+       56.0,
+       63.0,
+       63.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 134,
+       "retained": 134
+      }
+     },
+     "tracking": {
+      "true_changes": 3463,
+      "pseudonym_changes": 3463,
+      "changes_linked_correctly": 3246,
+      "changes_linked_wrongly": 191,
+      "changes_lost": 26,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 70,
+      "revoked_honest": 68,
+      "revoked_attackers": 2,
+      "revoked_honest_share": 0.03351404632824051
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 4183,
+      "sent": 1380,
+      "accepted_v2v": 1380,
+      "receivers_total": 51287,
+      "receivers_accepting": 49692,
+      "accepted_rsu": 926,
+      "victims_blamed": 454,
+      "unique_victims_blamed": 32,
+      "exposure_windows_s": [
+       3.0,
+       3.0,
+       3.0,
+       3.0,
+       4.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       14.0,
+       14.0,
+       15.0,
+       18.0,
+       20.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       27.0,
+       29.0,
+       32.0,
+       34.0,
+       35.0,
+       39.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       62.0,
+       62.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 102,
+       "retained": 102
+      }
+     },
+     "tracking": {
+      "true_changes": 3531,
+      "pseudonym_changes": 3531,
+      "changes_linked_correctly": 3277,
+      "changes_linked_wrongly": 216,
+      "changes_lost": 38,
+      "relabel_captures": 4
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 123,
+      "revoked_honest": 118,
+      "revoked_attackers": 5,
+      "revoked_honest_share": 0.05815672745194677
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 7725,
+      "sent": 2506,
+      "accepted_v2v": 2506,
+      "receivers_total": 90227,
+      "receivers_accepting": 87818,
+      "accepted_rsu": 1925,
+      "victims_blamed": 581,
+      "unique_victims_blamed": 43,
+      "exposure_windows_s": [
+       2.0,
+       2.0,
+       2.0,
+       6.0,
+       7.0,
+       7.0,
+       9.0,
+       10.0,
+       11.0,
+       12.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       14.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       15.0,
+       17.0,
+       18.0,
+       18.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       23.0,
+       23.0,
+       25.0,
+       25.0,
+       26.0,
+       27.0,
+       33.0,
+       34.0,
+       35.0,
+       35.0,
+       36.0,
+       36.0,
+       38.0,
+       38.0,
+       39.0,
+       40.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       42.0,
+       46.0,
+       48.0,
+       48.0,
+       56.0,
+       56.0,
+       57.0,
+       63.0,
+       63.0,
+       63.0,
+       63.0,
+       63.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 153,
+       "retained": 153
+      }
+     },
+     "tracking": {
+      "true_changes": 3473,
+      "pseudonym_changes": 3473,
+      "changes_linked_correctly": 3210,
+      "changes_linked_wrongly": 248,
+      "changes_lost": 15,
+      "relabel_captures": 7
+     }
+    }
+   ]
   },
   {
    "strategy": "S2",
    "seeds": 10,
-   "attackers": 103,
+   "attackers_selected": 29,
+   "achieved_attack_share": {
+    "mean": 0.04977401888396653,
+    "lo": 0.04585626706045554,
+    "hi": 0.05385286615653108,
+    "n": 10
+   },
+   "attacker_vehicle_seconds": {
+    "mean": 2224.6,
+    "lo": 2049.5,
+    "hi": 2406.9,
+    "n": 10
+   },
+   "vehicle_seconds": {
+    "mean": 44694.0,
+    "lo": 44694.0,
+    "hi": 44694.0,
+    "n": 10
+   },
+   "opportunities": {
+    "mean": 6452.6,
+    "lo": 5576.6,
+    "hi": 7382.8,
+    "n": 10
+   },
    "forged_sent": {
-    "mean": 230.2,
-    "lo": 205.8,
-    "hi": 259.9,
+    "mean": 254.5,
+    "lo": 216.7,
+    "hi": 287.1,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
     "n": 10
    },
    "v2v_receiver_rate": {
-    "mean": 0.7507509473953127,
-    "lo": 0.727694298531482,
-    "hi": 0.7733218268376068,
+    "mean": 0.7896437154557258,
+    "lo": 0.7753964697669206,
+    "hi": 0.8031460919469035,
     "n": 10
    },
    "rsu_rate": {
-    "mean": 0.6684035948532919,
-    "lo": 0.6377058887387712,
-    "hi": 0.6947265531776504,
+    "mean": 0.7125730005197235,
+    "lo": 0.6986242997639257,
+    "hi": 0.7265221163264561,
     "n": 10
    },
    "exposure_mean_s": {
-    "mean": 9.968593523775418,
-    "lo": 9.277930785689406,
-    "hi": 10.738665223665222,
+    "mean": 9.542764087316895,
+    "lo": 8.679022776029994,
+    "hi": 10.279548898250724,
     "n": 10
    },
-   "exposure_p95_s": {
-    "mean": 21.8,
-    "lo": 21.0,
-    "hi": 23.0,
-    "n": 10
-   },
+   "exposure_p95_s_pooled": 21.0,
+   "exposure_windows_n": 271,
    "victims_blamed": {
-    "mean": 76.2,
-    "lo": 66.2,
-    "hi": 88.7,
+    "mean": 72.5,
+    "lo": 63.2,
+    "hi": 80.3,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 13.5,
+    "lo": 11.8,
+    "hi": 15.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
     "n": 10
    },
    "honest_revoked": {
-    "mean": 13.3,
-    "lo": 11.4,
-    "hi": 15.9,
+    "mean": 12.8,
+    "lo": 11.0,
+    "hi": 14.5,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.006308526367668803,
+    "lo": 0.005421389847215377,
+    "hi": 0.007146377525874815,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.7,
+    "lo": 0.1,
+    "hi": 1.5,
+    "n": 10
+   },
+   "total_revoked": {
+    "mean": 13.5,
+    "lo": 11.8,
+    "hi": 15.0,
     "n": 10
    },
    "vehicles": {
@@ -125,22 +1403,705 @@
     "lo": 2058.0,
     "hi": 2058.0,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 12,
+      "revoked_honest": 12,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.005914243469689502
+     },
+     "stockouts": 3,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 179,
+      "accepted_v2v": 179,
+      "receivers_total": 7375,
+      "receivers_accepting": 5517,
+      "accepted_rsu": 122,
+      "victims_blamed": 57,
+      "unique_victims_blamed": 12,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3663,
+      "pseudonym_changes": 3663,
+      "changes_linked_correctly": 3331,
+      "changes_linked_wrongly": 252,
+      "changes_lost": 80,
+      "relabel_captures": 32
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 14,
+      "revoked_honest": 10,
+      "revoked_attackers": 4,
+      "revoked_honest_share": 0.0049285362247412515
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6173,
+      "sent": 310,
+      "accepted_v2v": 310,
+      "receivers_total": 11830,
+      "receivers_accepting": 9551,
+      "accepted_rsu": 229,
+      "victims_blamed": 81,
+      "unique_victims_blamed": 14,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       9.0,
+       10.0,
+       10.0,
+       15.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 134,
+       "retained": 134
+      }
+     },
+     "tracking": {
+      "true_changes": 3658,
+      "pseudonym_changes": 3658,
+      "changes_linked_correctly": 3328,
+      "changes_linked_wrongly": 270,
+      "changes_lost": 60,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 16,
+      "revoked_honest": 16,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.007885657959586003
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 288,
+      "accepted_v2v": 288,
+      "receivers_total": 10741,
+      "receivers_accepting": 8196,
+      "accepted_rsu": 204,
+      "victims_blamed": 84,
+      "unique_victims_blamed": 16,
+      "exposure_windows_s": [
+       1.0,
+       3.0,
+       4.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       9.0,
+       9.0,
+       9.0,
+       10.0,
+       14.0,
+       14.0,
+       15.0,
+       19.0,
+       21.0,
+       21.0,
+       21.0,
+       26.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3651,
+      "pseudonym_changes": 3651,
+      "changes_linked_correctly": 3287,
+      "changes_linked_wrongly": 299,
+      "changes_lost": 65,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 18,
+      "revoked_honest": 18,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.008871365204534253
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 304,
+      "accepted_v2v": 304,
+      "receivers_total": 11354,
+      "receivers_accepting": 9253,
+      "accepted_rsu": 218,
+      "victims_blamed": 86,
+      "unique_victims_blamed": 18,
+      "exposure_windows_s": [
+       1.0,
+       2.0,
+       2.0,
+       2.0,
+       2.0,
+       3.0,
+       3.0,
+       3.0,
+       3.0,
+       4.0,
+       4.0,
+       4.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       8.0,
+       9.0,
+       13.0,
+       13.0,
+       15.0,
+       20.0,
+       21.0,
+       24.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3654,
+      "pseudonym_changes": 3654,
+      "changes_linked_correctly": 3314,
+      "changes_linked_wrongly": 322,
+      "changes_lost": 18,
+      "relabel_captures": 21
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 13,
+      "revoked_honest": 12,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.005914243469689502
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5996,
+      "sent": 285,
+      "accepted_v2v": 285,
+      "receivers_total": 11082,
+      "receivers_accepting": 9048,
+      "accepted_rsu": 213,
+      "victims_blamed": 72,
+      "unique_victims_blamed": 13,
+      "exposure_windows_s": [
+       2.0,
+       4.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       11.0,
+       14.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       25.0,
+       27.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 133,
+       "retained": 133
+      }
+     },
+     "tracking": {
+      "true_changes": 3659,
+      "pseudonym_changes": 3659,
+      "changes_linked_correctly": 3320,
+      "changes_linked_wrongly": 288,
+      "changes_lost": 51,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 14,
+      "revoked_honest": 14,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.006899950714637753
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 232,
+      "accepted_v2v": 232,
+      "receivers_total": 8311,
+      "receivers_accepting": 6374,
+      "accepted_rsu": 158,
+      "victims_blamed": 74,
+      "unique_victims_blamed": 14,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       3.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       12.0,
+       13.0,
+       17.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3686,
+      "pseudonym_changes": 3686,
+      "changes_linked_correctly": 3359,
+      "changes_linked_wrongly": 262,
+      "changes_lost": 65,
+      "relabel_captures": 29
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 13,
+      "revoked_honest": 13,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.006407097092163627
+     },
+     "stockouts": 3,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 218,
+      "accepted_v2v": 218,
+      "receivers_total": 8257,
+      "receivers_accepting": 6595,
+      "accepted_rsu": 151,
+      "victims_blamed": 67,
+      "unique_victims_blamed": 13,
+      "exposure_windows_s": [
+       2.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       10.0,
+       14.0,
+       16.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3668,
+      "pseudonym_changes": 3668,
+      "changes_linked_correctly": 3296,
+      "changes_linked_wrongly": 331,
+      "changes_lost": 41,
+      "relabel_captures": 17
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 12,
+      "revoked_honest": 11,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.005421389847215377
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6524,
+      "sent": 236,
+      "accepted_v2v": 236,
+      "receivers_total": 8913,
+      "receivers_accepting": 7054,
+      "accepted_rsu": 165,
+      "victims_blamed": 71,
+      "unique_victims_blamed": 12,
+      "exposure_windows_s": [
+       3.0,
+       4.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       16.0,
+       17.0,
+       18.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3653,
+      "pseudonym_changes": 3653,
+      "changes_linked_correctly": 3311,
+      "changes_linked_wrongly": 276,
+      "changes_lost": 66,
+      "relabel_captures": 43
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 8,
+      "revoked_honest": 8,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.003942828979793002
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 155,
+      "accepted_v2v": 155,
+      "receivers_total": 6049,
+      "receivers_accepting": 4822,
+      "accepted_rsu": 113,
+      "victims_blamed": 42,
+      "unique_victims_blamed": 8,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       2.0,
+       3.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       14.0,
+       21.0,
+       21.0,
+       27.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3671,
+      "pseudonym_changes": 3671,
+      "changes_linked_correctly": 3341,
+      "changes_linked_wrongly": 267,
+      "changes_lost": 63,
+      "relabel_captures": 26
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 15,
+      "revoked_honest": 14,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.006899950714637753
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 8133,
+      "sent": 338,
+      "accepted_v2v": 338,
+      "receivers_total": 12817,
+      "receivers_accepting": 10155,
+      "accepted_rsu": 247,
+      "victims_blamed": 91,
+      "unique_victims_blamed": 15,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       2.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       9.0,
+       9.0,
+       13.0,
+       14.0,
+       14.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       26.0,
+       27.0,
+       37.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 159,
+       "retained": 159
+      }
+     },
+     "tracking": {
+      "true_changes": 3671,
+      "pseudonym_changes": 3671,
+      "changes_linked_correctly": 3291,
+      "changes_linked_wrongly": 312,
+      "changes_lost": 68,
+      "relabel_captures": 34
+     }
+    }
+   ]
   },
   {
    "strategy": "S3",
    "seeds": 10,
-   "attackers": 103,
+   "attackers_selected": 29,
+   "achieved_attack_share": {
+    "mean": 0.04977401888396653,
+    "lo": 0.04585626706045554,
+    "hi": 0.05385286615653108,
+    "n": 10
+   },
+   "attacker_vehicle_seconds": {
+    "mean": 2224.6,
+    "lo": 2049.5,
+    "hi": 2406.9,
+    "n": 10
+   },
+   "vehicle_seconds": {
+    "mean": 44694.0,
+    "lo": 44694.0,
+    "hi": 44694.0,
+    "n": 10
+   },
+   "opportunities": {
+    "mean": 6530.6,
+    "lo": 5633.2,
+    "hi": 7430.3,
+    "n": 10
+   },
    "forged_sent": {
-    "mean": 802.4,
-    "lo": 706.3,
-    "hi": 897.9,
+    "mean": 757.3,
+    "lo": 583.6,
+    "hi": 934.4,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
     "n": 10
    },
    "v2v_receiver_rate": {
-    "mean": 0.9968769920993336,
-    "lo": 0.994274896784839,
-    "hi": 0.9988080672774569,
+    "mean": 0.9955403174256585,
+    "lo": 0.9918852658253658,
+    "hi": 0.998266163871029,
     "n": 10
    },
    "rsu_rate": {
@@ -150,24 +2111,56 @@
     "n": 10
    },
    "exposure_mean_s": {
-    "mean": 30.744374095594292,
-    "lo": 29.22815668202765,
-    "hi": 32.132839333021664,
+    "mean": 28.97983131810718,
+    "lo": 27.70914408866995,
+    "hi": 30.105842849679057,
     "n": 10
    },
-   "exposure_p95_s": {
-    "mean": 53.8,
-    "lo": 45.0,
-    "hi": 60.0,
-    "n": 10
-   },
+   "exposure_p95_s_pooled": 60.0,
+   "exposure_windows_n": 253,
    "victims_blamed": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
    },
+   "unique_victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
+    "n": 10
+   },
    "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "total_revoked": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
@@ -178,7 +2171,642 @@
     "lo": 2058.0,
     "hi": 2058.0,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 431,
+      "accepted_v2v": 431,
+      "receivers_total": 16186,
+      "receivers_accepting": 16171,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       4.0,
+       9.0,
+       16.0,
+       24.0,
+       24.0,
+       27.0,
+       27.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3410,
+      "changes_linked_wrongly": 180,
+      "changes_lost": 99,
+      "relabel_captures": 8
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6533,
+      "sent": 862,
+      "accepted_v2v": 862,
+      "receivers_total": 32119,
+      "receivers_accepting": 31923,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       6.0,
+       17.0,
+       17.0,
+       17.0,
+       18.0,
+       18.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       39.0,
+       48.0,
+       52.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 138,
+       "retained": 138
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3398,
+      "changes_linked_wrongly": 200,
+      "changes_lost": 91,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 904,
+      "accepted_v2v": 904,
+      "receivers_total": 33934,
+      "receivers_accepting": 33360,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       15.0,
+       15.0,
+       20.0,
+       21.0,
+       21.0,
+       22.0,
+       22.0,
+       22.0,
+       27.0,
+       27.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       60.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3417,
+      "changes_linked_wrongly": 192,
+      "changes_lost": 80,
+      "relabel_captures": 6
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 1290,
+      "accepted_v2v": 1290,
+      "receivers_total": 48582,
+      "receivers_accepting": 48424,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       2.0,
+       9.0,
+       9.0,
+       10.0,
+       11.0,
+       11.0,
+       19.0,
+       19.0,
+       19.0,
+       23.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       48.0,
+       60.0,
+       60.0,
+       60.0,
+       60.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 83,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6206,
+      "sent": 629,
+      "accepted_v2v": 629,
+      "receivers_total": 22165,
+      "receivers_accepting": 22165,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       9.0,
+       9.0,
+       15.0,
+       16.0,
+       16.0,
+       19.0,
+       23.0,
+       25.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       60.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 135,
+       "retained": 135
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 222,
+      "changes_lost": 91,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 491,
+      "accepted_v2v": 491,
+      "receivers_total": 17309,
+      "receivers_accepting": 17148,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       11.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3394,
+      "changes_linked_wrongly": 204,
+      "changes_lost": 91,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 626,
+      "accepted_v2v": 626,
+      "receivers_total": 22801,
+      "receivers_accepting": 22743,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       11.0,
+       13.0,
+       15.0,
+       17.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3398,
+      "changes_linked_wrongly": 197,
+      "changes_lost": 94,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6734,
+      "sent": 918,
+      "accepted_v2v": 918,
+      "receivers_total": 34172,
+      "receivers_accepting": 34052,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       16.0,
+       20.0,
+       20.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       52.0,
+       60.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 142,
+       "retained": 142
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 202,
+      "changes_lost": 90,
+      "relabel_captures": 4
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 325,
+      "accepted_v2v": 325,
+      "receivers_total": 12332,
+      "receivers_accepting": 12332,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       6.0,
+       9.0,
+       18.0,
+       22.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3385,
+      "changes_linked_wrongly": 210,
+      "changes_lost": 94,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 8133,
+      "sent": 1097,
+      "accepted_v2v": 1097,
+      "receivers_total": 38660,
+      "receivers_accepting": 38581,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [
+       21.0,
+       23.0,
+       23.0,
+       23.0,
+       23.0,
+       24.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       30.0,
+       60.0,
+       60.0,
+       60.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 159,
+       "retained": 159
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3415,
+      "changes_linked_wrongly": 198,
+      "changes_lost": 76,
+      "relabel_captures": 1
+     }
+    }
+   ]
   }
  ],
  "E4": [
@@ -186,51 +2814,119 @@
    "mode": "recycle",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9185077714078081,
-    "lo": 0.9161589198808502,
-    "hi": 0.9204559458884888,
-    "n": 10
-   },
-   "tracker_link_rate_true": {
-    "mean": 0.9185077714078081,
-    "lo": 0.9161589198808502,
-    "hi": 0.9204559458884888,
-    "n": 10
-   },
-   "tracker_changes_counted": {
-    "mean": 3669.0,
-    "lo": 3664.3,
-    "hi": 3673.7,
+    "mean": 0.9056593796036679,
+    "lo": 0.9022815809990732,
+    "hi": 0.9087006698891699,
     "n": 10
    },
    "true_changes": {
-    "mean": 3669.0,
-    "lo": 3664.3,
-    "hi": 3673.7,
+    "mean": 3663.4,
+    "lo": 3657.6,
+    "hi": 3669.8,
     "n": 10
    },
    "tracker_relabel_captures": {
-    "mean": 2.7,
-    "lo": 1.6,
-    "hi": 3.8,
+    "mean": 31.0,
+    "lo": 26.3,
+    "hi": 35.1,
     "n": 10
    },
-   "forged_v2v_accepted": {
-    "mean": 229.7,
-    "lo": 205.8,
-    "hi": 258.4,
+   "forged_accepted_v2v": {
+    "mean": 254.5,
+    "lo": 216.7,
+    "hi": 287.1,
     "n": 10
    },
+   "opportunities": {
+    "mean": 6452.6,
+    "lo": 5576.6,
+    "hi": 7382.8,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 254.5,
+    "lo": 216.7,
+    "hi": 287.1,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7896437154557258,
+    "lo": 0.7753964697669206,
+    "hi": 0.8031460919469035,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7125730005197235,
+    "lo": 0.6986242997639257,
+    "hi": 0.7265221163264561,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 9.542764087316895,
+    "lo": 8.679022776029994,
+    "hi": 10.279548898250724,
+    "n": 10
+   },
+   "exposure_p95_s_pooled": 21.0,
+   "exposure_windows_n": 271,
    "victims_blamed": {
-    "mean": 76.2,
-    "lo": 66.2,
-    "hi": 88.7,
+    "mean": 72.5,
+    "lo": 63.2,
+    "hi": 80.3,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 13.5,
+    "lo": 11.8,
+    "hi": 15.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 12.8,
+    "lo": 11.0,
+    "hi": 14.5,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.006308526367668803,
+    "lo": 0.005421389847215377,
+    "hi": 0.007146377525874815,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.7,
+    "lo": 0.1,
+    "hi": 1.5,
+    "n": 10
+   },
+   "total_revoked": {
+    "mean": 13.5,
+    "lo": 11.8,
+    "hi": 15.0,
     "n": 10
    },
    "insider_pm_link_rate": {
-    "mean": 0.47083654367054323,
-    "lo": 0.4704693404338963,
-    "hi": 0.4711885051911946,
+    "mean": 0.47095733126615125,
+    "lo": 0.4702340077851812,
+    "hi": 0.47169870650417633,
     "n": 10
    },
    "pki_cpu_s_per_1000_veh_h": {
@@ -240,23 +2936,676 @@
     "n": 10
    },
    "pm_cpu_s_per_1000_veh_h": {
-    "mean": 0.0644381796214257,
-    "lo": 0.0644381796214257,
-    "hi": 0.0644381796214257,
+    "mean": 0.18096685622232866,
+    "lo": 0.18096685622232866,
+    "hi": 0.18096685622232866,
     "n": 10
    },
    "bytes_per_vehicle_per_round": {
-    "mean": 10533.295744395222,
-    "lo": 10521.031279366358,
-    "hi": 10545.545106725735,
+    "mean": 10518.331521009532,
+    "lo": 10504.157336555243,
+    "hi": 10533.747013021883,
     "n": 10
    },
    "stockouts": {
-    "mean": 2.1,
-    "lo": 2.0,
-    "hi": 2.3,
+    "mean": 2.6,
+    "lo": 2.2,
+    "hi": 3.1,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 12,
+      "revoked_honest": 12,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.005914243469689502
+     },
+     "stockouts": 3,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 179,
+      "accepted_v2v": 179,
+      "receivers_total": 7375,
+      "receivers_accepting": 5517,
+      "accepted_rsu": 122,
+      "victims_blamed": 57,
+      "unique_victims_blamed": 12,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3663,
+      "pseudonym_changes": 3663,
+      "changes_linked_correctly": 3331,
+      "changes_linked_wrongly": 252,
+      "changes_lost": 80,
+      "relabel_captures": 32
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 14,
+      "revoked_honest": 10,
+      "revoked_attackers": 4,
+      "revoked_honest_share": 0.0049285362247412515
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6173,
+      "sent": 310,
+      "accepted_v2v": 310,
+      "receivers_total": 11830,
+      "receivers_accepting": 9551,
+      "accepted_rsu": 229,
+      "victims_blamed": 81,
+      "unique_victims_blamed": 14,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       9.0,
+       10.0,
+       10.0,
+       15.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 134,
+       "retained": 134
+      }
+     },
+     "tracking": {
+      "true_changes": 3658,
+      "pseudonym_changes": 3658,
+      "changes_linked_correctly": 3328,
+      "changes_linked_wrongly": 270,
+      "changes_lost": 60,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 16,
+      "revoked_honest": 16,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.007885657959586003
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 288,
+      "accepted_v2v": 288,
+      "receivers_total": 10741,
+      "receivers_accepting": 8196,
+      "accepted_rsu": 204,
+      "victims_blamed": 84,
+      "unique_victims_blamed": 16,
+      "exposure_windows_s": [
+       1.0,
+       3.0,
+       4.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       9.0,
+       9.0,
+       9.0,
+       10.0,
+       14.0,
+       14.0,
+       15.0,
+       19.0,
+       21.0,
+       21.0,
+       21.0,
+       26.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3651,
+      "pseudonym_changes": 3651,
+      "changes_linked_correctly": 3287,
+      "changes_linked_wrongly": 299,
+      "changes_lost": 65,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 18,
+      "revoked_honest": 18,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.008871365204534253
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 304,
+      "accepted_v2v": 304,
+      "receivers_total": 11354,
+      "receivers_accepting": 9253,
+      "accepted_rsu": 218,
+      "victims_blamed": 86,
+      "unique_victims_blamed": 18,
+      "exposure_windows_s": [
+       1.0,
+       2.0,
+       2.0,
+       2.0,
+       2.0,
+       3.0,
+       3.0,
+       3.0,
+       3.0,
+       4.0,
+       4.0,
+       4.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       8.0,
+       9.0,
+       13.0,
+       13.0,
+       15.0,
+       20.0,
+       21.0,
+       24.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3654,
+      "pseudonym_changes": 3654,
+      "changes_linked_correctly": 3314,
+      "changes_linked_wrongly": 322,
+      "changes_lost": 18,
+      "relabel_captures": 21
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 13,
+      "revoked_honest": 12,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.005914243469689502
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5996,
+      "sent": 285,
+      "accepted_v2v": 285,
+      "receivers_total": 11082,
+      "receivers_accepting": 9048,
+      "accepted_rsu": 213,
+      "victims_blamed": 72,
+      "unique_victims_blamed": 13,
+      "exposure_windows_s": [
+       2.0,
+       4.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       11.0,
+       14.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       25.0,
+       27.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 133,
+       "retained": 133
+      }
+     },
+     "tracking": {
+      "true_changes": 3659,
+      "pseudonym_changes": 3659,
+      "changes_linked_correctly": 3320,
+      "changes_linked_wrongly": 288,
+      "changes_lost": 51,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 14,
+      "revoked_honest": 14,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.006899950714637753
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 232,
+      "accepted_v2v": 232,
+      "receivers_total": 8311,
+      "receivers_accepting": 6374,
+      "accepted_rsu": 158,
+      "victims_blamed": 74,
+      "unique_victims_blamed": 14,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       3.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       12.0,
+       13.0,
+       17.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3686,
+      "pseudonym_changes": 3686,
+      "changes_linked_correctly": 3359,
+      "changes_linked_wrongly": 262,
+      "changes_lost": 65,
+      "relabel_captures": 29
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 13,
+      "revoked_honest": 13,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.006407097092163627
+     },
+     "stockouts": 3,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 218,
+      "accepted_v2v": 218,
+      "receivers_total": 8257,
+      "receivers_accepting": 6595,
+      "accepted_rsu": 151,
+      "victims_blamed": 67,
+      "unique_victims_blamed": 13,
+      "exposure_windows_s": [
+       2.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       10.0,
+       14.0,
+       16.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3668,
+      "pseudonym_changes": 3668,
+      "changes_linked_correctly": 3296,
+      "changes_linked_wrongly": 331,
+      "changes_lost": 41,
+      "relabel_captures": 17
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 12,
+      "revoked_honest": 11,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.005421389847215377
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6524,
+      "sent": 236,
+      "accepted_v2v": 236,
+      "receivers_total": 8913,
+      "receivers_accepting": 7054,
+      "accepted_rsu": 165,
+      "victims_blamed": 71,
+      "unique_victims_blamed": 12,
+      "exposure_windows_s": [
+       3.0,
+       4.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       16.0,
+       17.0,
+       18.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3653,
+      "pseudonym_changes": 3653,
+      "changes_linked_correctly": 3311,
+      "changes_linked_wrongly": 276,
+      "changes_lost": 66,
+      "relabel_captures": 43
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 8,
+      "revoked_honest": 8,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.003942828979793002
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 155,
+      "accepted_v2v": 155,
+      "receivers_total": 6049,
+      "receivers_accepting": 4822,
+      "accepted_rsu": 113,
+      "victims_blamed": 42,
+      "unique_victims_blamed": 8,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       2.0,
+       3.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       14.0,
+       21.0,
+       21.0,
+       27.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3671,
+      "pseudonym_changes": 3671,
+      "changes_linked_correctly": 3341,
+      "changes_linked_wrongly": 267,
+      "changes_lost": 63,
+      "relabel_captures": 26
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 15,
+      "revoked_honest": 14,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.006899950714637753
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 8133,
+      "sent": 338,
+      "accepted_v2v": 338,
+      "receivers_total": 12817,
+      "receivers_accepting": 10155,
+      "accepted_rsu": 247,
+      "victims_blamed": 91,
+      "unique_victims_blamed": 15,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       2.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       9.0,
+       9.0,
+       13.0,
+       14.0,
+       14.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       26.0,
+       27.0,
+       37.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 159,
+       "retained": 159
+      }
+     },
+     "tracking": {
+      "true_changes": 3671,
+      "pseudonym_changes": 3671,
+      "changes_linked_correctly": 3291,
+      "changes_linked_wrongly": 312,
+      "changes_lost": 68,
+      "relabel_captures": 34
+     }
+    }
+   ]
   },
   {
    "mode": "fresh",
@@ -267,18 +3616,6 @@
     "hi": 0.9215001353912808,
     "n": 10
    },
-   "tracker_link_rate_true": {
-    "mean": 0.9196046574600596,
-    "lo": 0.9175737882480368,
-    "hi": 0.9215001353912808,
-    "n": 10
-   },
-   "tracker_changes_counted": {
-    "mean": 3693.0,
-    "lo": 3693.0,
-    "hi": 3693.0,
-    "n": 10
-   },
    "true_changes": {
     "mean": 3693.0,
     "lo": 3693.0,
@@ -291,13 +3628,93 @@
     "hi": 0.0,
     "n": 10
    },
-   "forged_v2v_accepted": {
+   "forged_accepted_v2v": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
    },
+   "opportunities": {
+    "mean": 6530.6,
+    "lo": 5633.2,
+    "hi": 7430.3,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "v2v_receiver_rate": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "exposure_mean_s": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "exposure_p95_s_pooled": null,
+   "exposure_windows_n": 0,
    "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "total_revoked": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
@@ -310,21 +3727,21 @@
     "n": 10
    },
    "pki_cpu_s_per_1000_veh_h": {
-    "mean": 54.474426097462754,
-    "lo": 54.474426097462754,
-    "hi": 54.474426097462754,
+    "mean": 20.934818408381744,
+    "lo": 20.934818408381744,
+    "hi": 20.934818408381744,
     "n": 10
    },
    "pm_cpu_s_per_1000_veh_h": {
-    "mean": 0.03221908981071285,
-    "lo": 0.03221908981071285,
-    "hi": 0.03221908981071285,
+    "mean": 28.015382168989465,
+    "lo": 28.015382168989465,
+    "hi": 28.015382168989465,
     "n": 10
    },
    "bytes_per_vehicle_per_round": {
-    "mean": 10593.270170492684,
-    "lo": 10593.068935427575,
-    "hi": 10593.477312390925,
+    "mean": 10593.227748691099,
+    "lo": 10593.001342462076,
+    "hi": 10593.44784534837,
     "n": 10
    },
    "stockouts": {
@@ -332,7 +3749,379 @@
     "lo": 2.0,
     "hi": 2.0,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3409,
+      "changes_linked_wrongly": 196,
+      "changes_lost": 88,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6533,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 138,
+       "retained": 138
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3400,
+      "changes_linked_wrongly": 201,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3405,
+      "changes_linked_wrongly": 196,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3404,
+      "changes_linked_wrongly": 204,
+      "changes_lost": 85,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6206,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 135,
+       "retained": 135
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3389,
+      "changes_linked_wrongly": 207,
+      "changes_lost": 97,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3393,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 91,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3390,
+      "changes_linked_wrongly": 212,
+      "changes_lost": 91,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6734,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 142,
+       "retained": 142
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3416,
+      "changes_linked_wrongly": 185,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3375,
+      "changes_linked_wrongly": 223,
+      "changes_lost": 95,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 8133,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 159,
+       "retained": 159
+      }
+     },
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3380,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 94,
+      "relabel_captures": 0
+     }
+    }
+   ]
   },
   {
    "mode": "fresh_vgk",
@@ -341,18 +4130,6 @@
     "mean": 0.9195458231954582,
     "lo": 0.9172479048391458,
     "hi": 0.9222222222222223,
-    "n": 10
-   },
-   "tracker_link_rate_true": {
-    "mean": 0.9195458231954582,
-    "lo": 0.9172479048391458,
-    "hi": 0.9222222222222223,
-    "n": 10
-   },
-   "tracker_changes_counted": {
-    "mean": 3699.0,
-    "lo": 3699.0,
-    "hi": 3699.0,
     "n": 10
    },
    "true_changes": {
@@ -367,13 +4144,93 @@
     "hi": 0.0,
     "n": 10
    },
-   "forged_v2v_accepted": {
+   "forged_accepted_v2v": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
    },
+   "opportunities": {
+    "mean": 6545.6,
+    "lo": 5633.2,
+    "hi": 7475.3,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "v2v_receiver_rate": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "rsu_rate": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "exposure_mean_s": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "exposure_p95_s_pooled": null,
+   "exposure_windows_n": 0,
    "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "total_revoked": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
@@ -386,21 +4243,21 @@
     "n": 10
    },
    "pki_cpu_s_per_1000_veh_h": {
-    "mean": 18.07490938380991,
-    "lo": 18.07490938380991,
-    "hi": 18.07490938380991,
+    "mean": 14.142656453647003,
+    "lo": 14.142656453647003,
+    "hi": 14.142656453647003,
     "n": 10
    },
    "pm_cpu_s_per_1000_veh_h": {
-    "mean": 0.03221908981071285,
-    "lo": 0.03221908981071285,
-    "hi": 0.03221908981071285,
+    "mean": 0.09048342811116433,
+    "lo": 0.09048342811116433,
+    "hi": 0.09048342811116433,
     "n": 10
    },
    "bytes_per_vehicle_per_round": {
-    "mean": 10608.743388374278,
-    "lo": 10608.458585044973,
-    "hi": 10609.07209021345,
+    "mean": 10608.79393207142,
+    "lo": 10608.523425963216,
+    "hi": 10609.066518995838,
     "n": 10
    },
    "stockouts": {
@@ -408,27 +4265,387 @@
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3399,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 6533,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 138,
+       "retained": 138
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3414,
+      "changes_linked_wrongly": 193,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3428,
+      "changes_linked_wrongly": 185,
+      "changes_lost": 86,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3424,
+      "changes_linked_wrongly": 185,
+      "changes_lost": 90,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 6206,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 135,
+       "retained": 135
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3377,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 103,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 93,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3391,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 89,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 6734,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 142,
+       "retained": 142
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3394,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 96,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3398,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 93,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "forgery": {
+      "opportunities": 8283,
+      "sent": 0,
+      "accepted_v2v": 0,
+      "receivers_total": 0,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 161,
+       "retained": 161
+      }
+     },
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3392,
+      "changes_linked_wrongly": 218,
+      "changes_lost": 89,
+      "relabel_captures": 0
+     }
+    }
+   ]
   },
   {
    "mode": "rekey",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9172675521821632,
-    "lo": 0.9154784494442938,
-    "hi": 0.9191921930062348,
-    "n": 10
-   },
-   "tracker_link_rate_true": {
-    "mean": 0.9172675521821632,
-    "lo": 0.9154784494442938,
-    "hi": 0.9191921930062348,
-    "n": 10
-   },
-   "tracker_changes_counted": {
-    "mean": 3689.0,
-    "lo": 3689.0,
-    "hi": 3689.0,
+    "mean": 0.9064787205204663,
+    "lo": 0.9032258064516129,
+    "hi": 0.9094605584169151,
     "n": 10
    },
    "true_changes": {
@@ -438,18 +4655,98 @@
     "n": 10
    },
    "tracker_relabel_captures": {
-    "mean": 3.2,
-    "lo": 1.9,
-    "hi": 4.6,
+    "mean": 38.5,
+    "lo": 31.8,
+    "hi": 46.5,
     "n": 10
    },
-   "forged_v2v_accepted": {
+   "forged_accepted_v2v": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
     "n": 10
    },
+   "opportunities": {
+    "mean": 6530.6,
+    "lo": 5633.2,
+    "hi": 7430.3,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 272.4,
+    "lo": 241.4,
+    "hi": 308.1,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": null,
+    "lo": null,
+    "hi": null,
+    "n": 0
+   },
+   "exposure_p95_s_pooled": null,
+   "exposure_windows_n": 0,
    "victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "total_revoked": {
     "mean": 0.0,
     "lo": 0.0,
     "hi": 0.0,
@@ -468,15 +4765,15 @@
     "n": 10
    },
    "pm_cpu_s_per_1000_veh_h": {
-    "mean": 18.095046314941605,
-    "lo": 18.095046314941605,
-    "hi": 18.095046314941605,
+    "mean": 14.288959936208435,
+    "lo": 14.288959936208435,
+    "hi": 14.288959936208435,
     "n": 10
    },
    "bytes_per_vehicle_per_round": {
-    "mean": 21452.037454691905,
-    "lo": 21436.64216673379,
-    "hi": 21463.68385018123,
+    "mean": 21450.907571486106,
+    "lo": 21436.04503960263,
+    "hi": 21462.492616458585,
     "n": 10
    },
    "stockouts": {
@@ -484,57 +4781,497 @@
     "lo": 4.0,
     "hi": 4.0,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 251,
+      "accepted_v2v": 0,
+      "receivers_total": 9910,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3371,
+      "changes_linked_wrongly": 227,
+      "changes_lost": 91,
+      "relabel_captures": 58
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6533,
+      "sent": 292,
+      "accepted_v2v": 0,
+      "receivers_total": 10921,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 138,
+       "retained": 138
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3348,
+      "changes_linked_wrongly": 288,
+      "changes_lost": 53,
+      "relabel_captures": 38
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 296,
+      "accepted_v2v": 0,
+      "receivers_total": 11195,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3311,
+      "changes_linked_wrongly": 306,
+      "changes_lost": 72,
+      "relabel_captures": 43
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 405,
+      "accepted_v2v": 0,
+      "receivers_total": 15034,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3343,
+      "changes_linked_wrongly": 333,
+      "changes_lost": 13,
+      "relabel_captures": 43
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6206,
+      "sent": 268,
+      "accepted_v2v": 0,
+      "receivers_total": 10359,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 135,
+       "retained": 135
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3345,
+      "changes_linked_wrongly": 290,
+      "changes_lost": 54,
+      "relabel_captures": 34
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 232,
+      "accepted_v2v": 0,
+      "receivers_total": 8311,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3363,
+      "changes_linked_wrongly": 263,
+      "changes_lost": 63,
+      "relabel_captures": 32
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 193,
+      "accepted_v2v": 0,
+      "receivers_total": 7173,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3315,
+      "changes_linked_wrongly": 312,
+      "changes_lost": 62,
+      "relabel_captures": 24
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6734,
+      "sent": 259,
+      "accepted_v2v": 0,
+      "receivers_total": 9892,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 142,
+       "retained": 142
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3358,
+      "changes_linked_wrongly": 254,
+      "changes_lost": 77,
+      "relabel_captures": 60
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 216,
+      "accepted_v2v": 0,
+      "receivers_total": 8217,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3351,
+      "changes_linked_wrongly": 271,
+      "changes_lost": 67,
+      "relabel_captures": 27
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 8133,
+      "sent": 312,
+      "accepted_v2v": 0,
+      "receivers_total": 11636,
+      "receivers_accepting": 0,
+      "accepted_rsu": 0,
+      "victims_blamed": 0,
+      "unique_victims_blamed": 0,
+      "exposure_windows_s": [],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 159,
+       "retained": 159
+      }
+     },
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3335,
+      "changes_linked_wrongly": 307,
+      "changes_lost": 47,
+      "relabel_captures": 26
+     }
+    }
+   ]
   },
   {
    "mode": "window",
    "seeds": 10,
    "tracker_link_rate": {
-    "mean": 0.9185077714078081,
-    "lo": 0.9161589198808502,
-    "hi": 0.9204559458884888,
-    "n": 10
-   },
-   "tracker_link_rate_true": {
-    "mean": 0.9185077714078081,
-    "lo": 0.9161589198808502,
-    "hi": 0.9204559458884888,
-    "n": 10
-   },
-   "tracker_changes_counted": {
-    "mean": 3669.0,
-    "lo": 3664.3,
-    "hi": 3673.7,
+    "mean": 0.9056593796036679,
+    "lo": 0.9022815809990732,
+    "hi": 0.9087006698891699,
     "n": 10
    },
    "true_changes": {
-    "mean": 3669.0,
-    "lo": 3664.3,
-    "hi": 3673.7,
+    "mean": 3663.4,
+    "lo": 3657.6,
+    "hi": 3669.8,
     "n": 10
    },
    "tracker_relabel_captures": {
-    "mean": 2.7,
-    "lo": 1.6,
-    "hi": 3.8,
+    "mean": 31.0,
+    "lo": 26.3,
+    "hi": 35.1,
     "n": 10
    },
-   "forged_v2v_accepted": {
-    "mean": 229.7,
-    "lo": 205.8,
-    "hi": 258.4,
+   "forged_accepted_v2v": {
+    "mean": 254.5,
+    "lo": 216.7,
+    "hi": 287.1,
     "n": 10
    },
+   "opportunities": {
+    "mean": 6452.6,
+    "lo": 5576.6,
+    "hi": 7382.8,
+    "n": 10
+   },
+   "forged_sent": {
+    "mean": 254.5,
+    "lo": 216.7,
+    "hi": 287.1,
+    "n": 10
+   },
+   "v2v_message_rate": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "n": 10
+   },
+   "v2v_receiver_rate": {
+    "mean": 0.7896437154557258,
+    "lo": 0.7753964697669206,
+    "hi": 0.8031460919469035,
+    "n": 10
+   },
+   "rsu_rate": {
+    "mean": 0.7125730005197235,
+    "lo": 0.6986242997639257,
+    "hi": 0.7265221163264561,
+    "n": 10
+   },
+   "exposure_mean_s": {
+    "mean": 9.542764087316895,
+    "lo": 8.679022776029994,
+    "hi": 10.279548898250724,
+    "n": 10
+   },
+   "exposure_p95_s_pooled": 21.0,
+   "exposure_windows_n": 271,
    "victims_blamed": {
-    "mean": 76.2,
-    "lo": 66.2,
-    "hi": 88.7,
+    "mean": 72.5,
+    "lo": 63.2,
+    "hi": 80.3,
+    "n": 10
+   },
+   "unique_victims_blamed": {
+    "mean": 13.5,
+    "lo": 11.8,
+    "hi": 15.0,
+    "n": 10
+   },
+   "population_honest": {
+    "mean": 2029.0,
+    "lo": 2029.0,
+    "hi": 2029.0,
+    "n": 10
+   },
+   "population_attackers": {
+    "mean": 29.0,
+    "lo": 29.0,
+    "hi": 29.0,
+    "n": 10
+   },
+   "honest_revoked": {
+    "mean": 12.8,
+    "lo": 11.0,
+    "hi": 14.5,
+    "n": 10
+   },
+   "honest_revoked_share": {
+    "mean": 0.006308526367668803,
+    "lo": 0.005421389847215377,
+    "hi": 0.007146377525874815,
+    "n": 10
+   },
+   "attackers_revoked": {
+    "mean": 0.7,
+    "lo": 0.1,
+    "hi": 1.5,
+    "n": 10
+   },
+   "total_revoked": {
+    "mean": 13.5,
+    "lo": 11.8,
+    "hi": 15.0,
     "n": 10
    },
    "insider_pm_link_rate": {
-    "mean": 0.47083654367054323,
-    "lo": 0.4704693404338963,
-    "hi": 0.4711885051911946,
+    "mean": 0.47095733126615125,
+    "lo": 0.4702340077851812,
+    "hi": 0.47169870650417633,
     "n": 10
    },
    "pki_cpu_s_per_1000_veh_h": {
@@ -544,97 +5281,1958 @@
     "n": 10
    },
    "pm_cpu_s_per_1000_veh_h": {
-    "mean": 17.876359242851393,
-    "lo": 17.839710028191707,
-    "hi": 17.91220298026581,
+    "mean": 14.100517232124634,
+    "lo": 14.075307505825798,
+    "hi": 14.124466472108528,
     "n": 10
    },
    "bytes_per_vehicle_per_round": {
-    "mean": 21356.356960665864,
-    "lo": 21326.337562088873,
-    "hi": 21385.561484763057,
+    "mean": 21326.394750973286,
+    "lo": 21294.638542086188,
+    "hi": 21363.53718619949,
     "n": 10
    },
    "stockouts": {
-    "mean": 2.1,
-    "lo": 2.0,
-    "hi": 2.3,
+    "mean": 2.6,
+    "lo": 2.2,
+    "hi": 3.1,
     "n": 10
-   }
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 12,
+      "revoked_honest": 12,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.005914243469689502
+     },
+     "stockouts": 3,
+     "forgery": {
+      "opportunities": 4705,
+      "sent": 179,
+      "accepted_v2v": 179,
+      "receivers_total": 7375,
+      "receivers_accepting": 5517,
+      "accepted_rsu": 122,
+      "victims_blamed": 57,
+      "unique_victims_blamed": 12,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 116,
+       "retained": 116
+      }
+     },
+     "tracking": {
+      "true_changes": 3663,
+      "pseudonym_changes": 3663,
+      "changes_linked_correctly": 3331,
+      "changes_linked_wrongly": 252,
+      "changes_lost": 80,
+      "relabel_captures": 32
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 14,
+      "revoked_honest": 10,
+      "revoked_attackers": 4,
+      "revoked_honest_share": 0.0049285362247412515
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6173,
+      "sent": 310,
+      "accepted_v2v": 310,
+      "receivers_total": 11830,
+      "receivers_accepting": 9551,
+      "accepted_rsu": 229,
+      "victims_blamed": 81,
+      "unique_victims_blamed": 14,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       9.0,
+       10.0,
+       10.0,
+       15.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 134,
+       "retained": 134
+      }
+     },
+     "tracking": {
+      "true_changes": 3658,
+      "pseudonym_changes": 3658,
+      "changes_linked_correctly": 3328,
+      "changes_linked_wrongly": 270,
+      "changes_lost": 60,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 16,
+      "revoked_honest": 16,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.007885657959586003
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6231,
+      "sent": 288,
+      "accepted_v2v": 288,
+      "receivers_total": 10741,
+      "receivers_accepting": 8196,
+      "accepted_rsu": 204,
+      "victims_blamed": 84,
+      "unique_victims_blamed": 16,
+      "exposure_windows_s": [
+       1.0,
+       3.0,
+       4.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       9.0,
+       9.0,
+       9.0,
+       10.0,
+       14.0,
+       14.0,
+       15.0,
+       19.0,
+       21.0,
+       21.0,
+       21.0,
+       26.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3651,
+      "pseudonym_changes": 3651,
+      "changes_linked_correctly": 3287,
+      "changes_linked_wrongly": 299,
+      "changes_lost": 65,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 18,
+      "revoked_honest": 18,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.008871365204534253
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 9380,
+      "sent": 304,
+      "accepted_v2v": 304,
+      "receivers_total": 11354,
+      "receivers_accepting": 9253,
+      "accepted_rsu": 218,
+      "victims_blamed": 86,
+      "unique_victims_blamed": 18,
+      "exposure_windows_s": [
+       1.0,
+       2.0,
+       2.0,
+       2.0,
+       2.0,
+       3.0,
+       3.0,
+       3.0,
+       3.0,
+       4.0,
+       4.0,
+       4.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       8.0,
+       9.0,
+       13.0,
+       13.0,
+       15.0,
+       20.0,
+       21.0,
+       24.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 178,
+       "retained": 178
+      }
+     },
+     "tracking": {
+      "true_changes": 3654,
+      "pseudonym_changes": 3654,
+      "changes_linked_correctly": 3314,
+      "changes_linked_wrongly": 322,
+      "changes_lost": 18,
+      "relabel_captures": 21
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 13,
+      "revoked_honest": 12,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.005914243469689502
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 5996,
+      "sent": 285,
+      "accepted_v2v": 285,
+      "receivers_total": 11082,
+      "receivers_accepting": 9048,
+      "accepted_rsu": 213,
+      "victims_blamed": 72,
+      "unique_victims_blamed": 13,
+      "exposure_windows_s": [
+       2.0,
+       4.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       11.0,
+       14.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       25.0,
+       27.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 133,
+       "retained": 133
+      }
+     },
+     "tracking": {
+      "true_changes": 3659,
+      "pseudonym_changes": 3659,
+      "changes_linked_correctly": 3320,
+      "changes_linked_wrongly": 288,
+      "changes_lost": 51,
+      "relabel_captures": 36
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 14,
+      "revoked_honest": 14,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.006899950714637753
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 6155,
+      "sent": 232,
+      "accepted_v2v": 232,
+      "receivers_total": 8311,
+      "receivers_accepting": 6374,
+      "accepted_rsu": 158,
+      "victims_blamed": 74,
+      "unique_victims_blamed": 14,
+      "exposure_windows_s": [
+       2.0,
+       3.0,
+       3.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       12.0,
+       13.0,
+       17.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 129,
+       "retained": 129
+      }
+     },
+     "tracking": {
+      "true_changes": 3686,
+      "pseudonym_changes": 3686,
+      "changes_linked_correctly": 3359,
+      "changes_linked_wrongly": 262,
+      "changes_lost": 65,
+      "relabel_captures": 29
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 13,
+      "revoked_honest": 13,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.006407097092163627
+     },
+     "stockouts": 3,
+     "forgery": {
+      "opportunities": 6966,
+      "sent": 218,
+      "accepted_v2v": 218,
+      "receivers_total": 8257,
+      "receivers_accepting": 6595,
+      "accepted_rsu": 151,
+      "victims_blamed": 67,
+      "unique_victims_blamed": 13,
+      "exposure_windows_s": [
+       2.0,
+       4.0,
+       5.0,
+       5.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       10.0,
+       14.0,
+       16.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 144,
+       "retained": 144
+      }
+     },
+     "tracking": {
+      "true_changes": 3668,
+      "pseudonym_changes": 3668,
+      "changes_linked_correctly": 3296,
+      "changes_linked_wrongly": 331,
+      "changes_lost": 41,
+      "relabel_captures": 17
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 12,
+      "revoked_honest": 11,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.005421389847215377
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 6524,
+      "sent": 236,
+      "accepted_v2v": 236,
+      "receivers_total": 8913,
+      "receivers_accepting": 7054,
+      "accepted_rsu": 165,
+      "victims_blamed": 71,
+      "unique_victims_blamed": 12,
+      "exposure_windows_s": [
+       3.0,
+       4.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       16.0,
+       17.0,
+       18.0,
+       20.0,
+       21.0,
+       21.0,
+       21.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 140,
+       "retained": 140
+      }
+     },
+     "tracking": {
+      "true_changes": 3653,
+      "pseudonym_changes": 3653,
+      "changes_linked_correctly": 3311,
+      "changes_linked_wrongly": 276,
+      "changes_lost": 66,
+      "relabel_captures": 43
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 8,
+      "revoked_honest": 8,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.003942828979793002
+     },
+     "stockouts": 4,
+     "forgery": {
+      "opportunities": 4263,
+      "sent": 155,
+      "accepted_v2v": 155,
+      "receivers_total": 6049,
+      "receivers_accepting": 4822,
+      "accepted_rsu": 113,
+      "victims_blamed": 42,
+      "unique_victims_blamed": 8,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       2.0,
+       3.0,
+       5.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       14.0,
+       21.0,
+       21.0,
+       27.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 103,
+       "retained": 103
+      }
+     },
+     "tracking": {
+      "true_changes": 3671,
+      "pseudonym_changes": 3671,
+      "changes_linked_correctly": 3341,
+      "changes_linked_wrongly": 267,
+      "changes_lost": 63,
+      "relabel_captures": 26
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2029,
+      "attackers": 29,
+      "revoked_total": 15,
+      "revoked_honest": 14,
+      "revoked_attackers": 1,
+      "revoked_honest_share": 0.006899950714637753
+     },
+     "stockouts": 2,
+     "forgery": {
+      "opportunities": 8133,
+      "sent": 338,
+      "accepted_v2v": 338,
+      "receivers_total": 12817,
+      "receivers_accepting": 10155,
+      "accepted_rsu": 247,
+      "victims_blamed": 91,
+      "unique_victims_blamed": 15,
+      "exposure_windows_s": [
+       1.0,
+       1.0,
+       2.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       6.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       7.0,
+       8.0,
+       8.0,
+       9.0,
+       9.0,
+       13.0,
+       14.0,
+       14.0,
+       21.0,
+       21.0,
+       21.0,
+       21.0,
+       26.0,
+       27.0,
+       37.0
+      ],
+      "retained_valid_end": {
+       "t": 120.0,
+       "valid": 159,
+       "retained": 159
+      }
+     },
+     "tracking": {
+      "true_changes": 3671,
+      "pseudonym_changes": 3671,
+      "changes_linked_correctly": 3291,
+      "changes_linked_wrongly": 312,
+      "changes_lost": 68,
+      "relabel_captures": 34
+     }
+    }
+   ]
+  }
+ ],
+ "E4_attack_free": [
+  {
+   "mode": "recycle",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9164272160477094,
+    "lo": 0.9145838980753591,
+    "hi": 0.9184060721062618,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 3689.0,
+    "lo": 3689.0,
+    "hi": 3689.0,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 4.0,
+    "lo": 4.0,
+    "hi": 4.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3401,
+      "changes_linked_wrongly": 198,
+      "changes_lost": 90,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3383,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 98,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3389,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 92,
+      "relabel_captures": 1
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3385,
+      "changes_linked_wrongly": 212,
+      "changes_lost": 92,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 211,
+      "changes_lost": 102,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3371,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 99,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3361,
+      "changes_linked_wrongly": 225,
+      "changes_lost": 103,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 188,
+      "changes_lost": 104,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3368,
+      "changes_linked_wrongly": 220,
+      "changes_lost": 101,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 218,
+      "changes_lost": 95,
+      "relabel_captures": 2
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9196046574600596,
+    "lo": 0.9175737882480368,
+    "hi": 0.9215001353912808,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 3693.0,
+    "lo": 3693.0,
+    "hi": 3693.0,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 2.0,
+    "lo": 2.0,
+    "hi": 2.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3409,
+      "changes_linked_wrongly": 196,
+      "changes_lost": 88,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3400,
+      "changes_linked_wrongly": 201,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3405,
+      "changes_linked_wrongly": 196,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3404,
+      "changes_linked_wrongly": 204,
+      "changes_lost": 85,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3389,
+      "changes_linked_wrongly": 207,
+      "changes_lost": 97,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3393,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 91,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3390,
+      "changes_linked_wrongly": 212,
+      "changes_lost": 91,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3416,
+      "changes_linked_wrongly": 185,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3375,
+      "changes_linked_wrongly": 223,
+      "changes_lost": 95,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 2,
+     "tracking": {
+      "true_changes": 3693,
+      "pseudonym_changes": 3693,
+      "changes_linked_correctly": 3380,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 94,
+      "relabel_captures": 0
+     }
+    }
+   ]
+  },
+  {
+   "mode": "fresh_vgk",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9195458231954582,
+    "lo": 0.9172479048391458,
+    "hi": 0.9222222222222223,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 3699.0,
+    "lo": 3699.0,
+    "hi": 3699.0,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3399,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3414,
+      "changes_linked_wrongly": 193,
+      "changes_lost": 92,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3428,
+      "changes_linked_wrongly": 185,
+      "changes_lost": 86,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3424,
+      "changes_linked_wrongly": 185,
+      "changes_lost": 90,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3377,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 103,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 93,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3391,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 89,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3394,
+      "changes_linked_wrongly": 209,
+      "changes_lost": 96,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3398,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 93,
+      "relabel_captures": 0
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 0,
+     "tracking": {
+      "true_changes": 3699,
+      "pseudonym_changes": 3699,
+      "changes_linked_correctly": 3392,
+      "changes_linked_wrongly": 218,
+      "changes_lost": 89,
+      "relabel_captures": 0
+     }
+    }
+   ]
+  },
+  {
+   "mode": "rekey",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9164272160477094,
+    "lo": 0.9145838980753591,
+    "hi": 0.9184060721062618,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 3689.0,
+    "lo": 3689.0,
+    "hi": 3689.0,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 4.0,
+    "lo": 4.0,
+    "hi": 4.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3401,
+      "changes_linked_wrongly": 198,
+      "changes_lost": 90,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3383,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 98,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3389,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 92,
+      "relabel_captures": 1
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3385,
+      "changes_linked_wrongly": 212,
+      "changes_lost": 92,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 211,
+      "changes_lost": 102,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3371,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 99,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3361,
+      "changes_linked_wrongly": 225,
+      "changes_lost": 103,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 188,
+      "changes_lost": 104,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3368,
+      "changes_linked_wrongly": 220,
+      "changes_lost": 101,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 218,
+      "changes_lost": 95,
+      "relabel_captures": 2
+     }
+    }
+   ]
+  },
+  {
+   "mode": "window",
+   "seeds": 10,
+   "tracker_link_rate": {
+    "mean": 0.9164272160477094,
+    "lo": 0.9145838980753591,
+    "hi": 0.9184060721062618,
+    "n": 10
+   },
+   "true_changes": {
+    "mean": 3689.0,
+    "lo": 3689.0,
+    "hi": 3689.0,
+    "n": 10
+   },
+   "stockouts": {
+    "mean": 4.0,
+    "lo": 4.0,
+    "hi": 4.0,
+    "n": 10
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3401,
+      "changes_linked_wrongly": 198,
+      "changes_lost": 90,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 2,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3383,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 98,
+      "relabel_captures": 3
+     }
+    },
+    {
+     "seed": 3,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3389,
+      "changes_linked_wrongly": 208,
+      "changes_lost": 92,
+      "relabel_captures": 1
+     }
+    },
+    {
+     "seed": 4,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3385,
+      "changes_linked_wrongly": 212,
+      "changes_lost": 92,
+      "relabel_captures": 2
+     }
+    },
+    {
+     "seed": 5,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 211,
+      "changes_lost": 102,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 6,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3371,
+      "changes_linked_wrongly": 219,
+      "changes_lost": 99,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 7,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3361,
+      "changes_linked_wrongly": 225,
+      "changes_lost": 103,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 8,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3397,
+      "changes_linked_wrongly": 188,
+      "changes_lost": 104,
+      "relabel_captures": 7
+     }
+    },
+    {
+     "seed": 9,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3368,
+      "changes_linked_wrongly": 220,
+      "changes_lost": 101,
+      "relabel_captures": 5
+     }
+    },
+    {
+     "seed": 10,
+     "population": {
+      "vehicles": 2058,
+      "honest": 2058,
+      "attackers": 0,
+      "revoked_total": 0,
+      "revoked_honest": 0,
+      "revoked_attackers": 0,
+      "revoked_honest_share": 0.0
+     },
+     "stockouts": 4,
+     "tracking": {
+      "true_changes": 3689,
+      "pseudonym_changes": 3689,
+      "changes_linked_correctly": 3376,
+      "changes_linked_wrongly": 218,
+      "changes_lost": 95,
+      "relabel_captures": 2
+     }
+    }
+   ]
   }
  ],
  "paired_tests": {
-  "tracker_link_rate: recycle vs fresh": {
+  "attack_free/tracker_link_rate: recycle vs fresh": {
    "n": 10,
-   "w_plus": 16.0,
-   "w_minus": 39.0,
-   "z": -1.1721885403065389,
-   "p": 0.275390625,
-   "effect_size": -0.41818181818181815,
-   "method": "exact"
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact",
+   "n_valid": 10
   },
-  "tracker_link_rate: recycle vs fresh_vgk": {
+  "attack_free/tracker_link_rate: recycle vs fresh_vgk": {
    "n": 10,
-   "w_plus": 20.0,
-   "w_minus": 35.0,
-   "z": -0.7644707871564383,
-   "p": 0.4921875,
-   "effect_size": -0.2727272727272727,
-   "method": "exact"
+   "w_plus": 9.0,
+   "w_minus": 46.0,
+   "z": -1.8856946083192145,
+   "p": 0.064453125,
+   "effect_size": -0.6727272727272727,
+   "method": "exact",
+   "n_valid": 10
   },
-  "tracker_link_rate: recycle vs rekey": {
-   "n": 10,
-   "w_plus": 34.0,
-   "w_minus": 21.0,
-   "z": -0.6625413488689132,
-   "p": 0.556640625,
-   "effect_size": 0.23636363636363636,
-   "method": "exact"
-  },
-  "tracker_link_rate: recycle vs window": {
+  "attack_free/tracker_link_rate: recycle vs rekey": {
    "n": 0,
    "w_plus": 0.0,
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
    "effect_size": 0.0,
-   "method": "none"
+   "method": "none",
+   "n_valid": 10
   },
-  "forged_v2v_accepted: recycle vs fresh": {
-   "n": 10,
-   "w_plus": 55.0,
-   "w_minus": 0,
-   "z": -2.8030595529069404,
-   "p": 0.001953125,
-   "effect_size": 1.0,
-   "method": "exact"
-  },
-  "forged_v2v_accepted: recycle vs fresh_vgk": {
-   "n": 10,
-   "w_plus": 55.0,
-   "w_minus": 0,
-   "z": -2.8030595529069404,
-   "p": 0.001953125,
-   "effect_size": 1.0,
-   "method": "exact"
-  },
-  "forged_v2v_accepted: recycle vs rekey": {
-   "n": 10,
-   "w_plus": 55.0,
-   "w_minus": 0,
-   "z": -2.8030595529069404,
-   "p": 0.001953125,
-   "effect_size": 1.0,
-   "method": "exact"
-  },
-  "forged_v2v_accepted: recycle vs window": {
+  "attack_free/tracker_link_rate: recycle vs window": {
    "n": 0,
    "w_plus": 0.0,
    "w_minus": 0.0,
    "z": 0.0,
    "p": 1.0,
    "effect_size": 0.0,
-   "method": "none"
+   "method": "none",
+   "n_valid": 10
+  },
+  "joint/tracker_link_rate: recycle vs fresh": {
+   "n": 10,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact",
+   "n_valid": 10
+  },
+  "joint/tracker_link_rate: recycle vs fresh_vgk": {
+   "n": 10,
+   "w_plus": 0,
+   "w_minus": 55.0,
+   "z": -2.8030595529069404,
+   "p": 0.001953125,
+   "effect_size": -1.0,
+   "method": "exact",
+   "n_valid": 10
+  },
+  "joint/tracker_link_rate: recycle vs rekey": {
+   "n": 10,
+   "w_plus": 25.0,
+   "w_minus": 30.0,
+   "z": -0.2548235957188128,
+   "p": 0.845703125,
+   "effect_size": -0.09090909090909091,
+   "method": "exact",
+   "n_valid": 10
+  },
+  "joint/tracker_link_rate: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0,
+   "method": "none",
+   "n_valid": 10
+  },
+  "forged_accepted_v2v: recycle vs fresh": {
+   "n_valid": 0,
+   "result": "not applicable: no attempts in at least one mode"
+  },
+  "forged_accepted_v2v: recycle vs fresh_vgk": {
+   "n_valid": 0,
+   "result": "not applicable: no attempts in at least one mode"
+  },
+  "forged_accepted_v2v: recycle vs rekey": {
+   "n": 10,
+   "w_plus": 55.0,
+   "w_minus": 0,
+   "z": -2.8030595529069404,
+   "p": 0.001953125,
+   "effect_size": 1.0,
+   "method": "exact",
+   "n_valid": 10
+  },
+  "forged_accepted_v2v: recycle vs window": {
+   "n": 0,
+   "w_plus": 0.0,
+   "w_minus": 0.0,
+   "z": 0.0,
+   "p": 1.0,
+   "effect_size": 0.0,
+   "method": "none",
+   "n_valid": 10
   },
   "pki_cpu_s_per_1000_veh_h: recycle vs fresh": {
    "n": 10,
@@ -643,7 +7241,8 @@
    "z": -2.8030595529069404,
    "p": 0.001953125,
    "effect_size": -1.0,
-   "method": "exact"
+   "method": "exact",
+   "n_valid": 10
   },
   "pki_cpu_s_per_1000_veh_h: recycle vs fresh_vgk": {
    "n": 10,
@@ -652,7 +7251,8 @@
    "z": -2.8030595529069404,
    "p": 0.001953125,
    "effect_size": -1.0,
-   "method": "exact"
+   "method": "exact",
+   "n_valid": 10
   },
   "pki_cpu_s_per_1000_veh_h: recycle vs rekey": {
    "n": 0,
@@ -661,7 +7261,8 @@
    "z": 0.0,
    "p": 1.0,
    "effect_size": 0.0,
-   "method": "none"
+   "method": "none",
+   "n_valid": 10
   },
   "pki_cpu_s_per_1000_veh_h: recycle vs window": {
    "n": 0,
@@ -670,8 +7271,151 @@
    "z": 0.0,
    "p": 1.0,
    "effect_size": 0.0,
-   "method": "none"
+   "method": "none",
+   "n_valid": 10
   }
  },
- "wall_seconds": 1911.469265879
+ "equivalence": {
+  "attack_free/tracker_link_rate: recycle vs fresh": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": -0.003177441412350179,
+   "ci95": [
+    -0.004397284188170192,
+    -0.002012107481812486
+   ],
+   "p_lower": 0.0009765625,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.0009765625,
+   "equivalent": true
+  },
+  "attack_free/tracker_link_rate: recycle vs fresh_vgk": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": -0.003118607147748842,
+   "ci95": [
+    -0.0056605673428621215,
+    -0.0005452888844625692
+   ],
+   "p_lower": 0.0009765625,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.0009765625,
+   "equivalent": true
+  },
+  "attack_free/tracker_link_rate: recycle vs rekey": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "p_lower": 0.0009765625,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.0009765625,
+   "equivalent": true
+  },
+  "attack_free/tracker_link_rate: recycle vs window": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "p_lower": 0.0009765625,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.0009765625,
+   "equivalent": true
+  },
+  "joint/tracker_link_rate: recycle vs fresh": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": -0.013945277856391668,
+   "ci95": [
+    -0.01728514099830657,
+    -0.010578559553256716
+   ],
+   "p_lower": 0.9755859375,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.9755859375,
+   "equivalent": false
+  },
+  "joint/tracker_link_rate: recycle vs fresh_vgk": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": -0.013886443591790332,
+   "ci95": [
+    -0.01795730133013925,
+    -0.009950360975593065
+   ],
+   "p_lower": 0.919921875,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.919921875,
+   "equivalent": false
+  },
+  "joint/tracker_link_rate: recycle vs rekey": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": -0.000819340916798339,
+   "ci95": [
+    -0.003002669176316153,
+    0.0010105045010676329
+   ],
+   "p_lower": 0.0009765625,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.0009765625,
+   "equivalent": true
+  },
+  "joint/tracker_link_rate: recycle vs window": {
+   "n_valid": 10,
+   "margin": 0.01,
+   "mean_diff": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "p_lower": 0.0009765625,
+   "p_upper": 0.0009765625,
+   "p_tost": 0.0009765625,
+   "equivalent": true
+  }
+ },
+ "wall_seconds": 2223.826665896,
+ "calibration": {
+  "op_costs_s": {
+   "sign": 3.9122344000006136e-05,
+   "verify": 7.659839000000091e-05,
+   "keygen": 1.8308286000007e-05,
+   "encrypt": 0.000101296626000007,
+   "decrypt": 0.0001153106759999929
+  },
+  "source": "measured",
+  "environment": {
+   "machine": "x86_64",
+   "processor": "x86_64",
+   "python": "3.11.15",
+   "system": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+   "cryptography": "49.0.0",
+   "samples": 500
+  }
+ },
+ "provenance": {
+  "version": "3.4.0",
+  "commit": "727079e051460fe8e98e55d1de6bd688d0debfbe",
+  "worktree_dirty": true,
+  "argv": [
+   "recycling-sumo",
+   "--trace",
+   "/home/user/sumo-scenarios/motorway/motorway.fcd.xml",
+   "--corridor",
+   "config/sumo/motorway.corridor.json",
+   "--name",
+   "motorway"
+  ],
+  "signing": {
+   "deterministic_available": true,
+   "randomized_fallbacks": 0
+  }
+ }
 }
