@@ -1,0 +1,503 @@
+{
+ "experiment": "SUMO_returns_motorway",
+ "trace": "/home/user/sumo-scenarios/motorway/motorway.fcd.xml",
+ "rounds": 4,
+ "cells": [
+  {
+   "return_prob": 1.0,
+   "return_delay_rounds": 0,
+   "mode": "recycle",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 4.0,
+    "lo": 4.0,
+    "hi": 4.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 660.0,
+    "lo": 660.0,
+    "hi": 660.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9180807806993765,
+    "lo": 0.9160206017891027,
+    "hi": 0.9200867443751694,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 4,
+     "departed_lost": 0,
+     "link": 0.9219300623475196
+    },
+    {
+     "seed": 2,
+     "stockouts": 4,
+     "departed_lost": 0,
+     "link": 0.9170506912442397
+    },
+    {
+     "seed": 3,
+     "stockouts": 4,
+     "departed_lost": 0,
+     "link": 0.9186771482786663
+    },
+    {
+     "seed": 4,
+     "stockouts": 4,
+     "departed_lost": 0,
+     "link": 0.9175928435890485
+    },
+    {
+     "seed": 5,
+     "stockouts": 4,
+     "departed_lost": 0,
+     "link": 0.9151531580374085
+    }
+   ]
+  },
+  {
+   "return_prob": 1.0,
+   "return_delay_rounds": 0,
+   "mode": "fresh_vgk",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 660.0,
+    "lo": 660.0,
+    "hi": 660.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9214382265477156,
+    "lo": 0.9165179778318464,
+    "hi": 0.9255474452554745,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9188969991889699
+    },
+    {
+     "seed": 2,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9229521492295215
+    },
+    {
+     "seed": 3,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9267369559340363
+    },
+    {
+     "seed": 4,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9256555825898891
+    },
+    {
+     "seed": 5,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9129494457961611
+    }
+   ]
+  },
+  {
+   "return_prob": 1.0,
+   "return_delay_rounds": 2,
+   "mode": "recycle",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 282.0,
+    "lo": 282.0,
+    "hi": 282.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 276.0,
+    "lo": 276.0,
+    "hi": 276.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9072316024211533,
+    "lo": 0.904109589041096,
+    "hi": 0.9100987575661039,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 282,
+     "departed_lost": 0,
+     "link": 0.9015610066900287
+    },
+    {
+     "seed": 2,
+     "stockouts": 282,
+     "departed_lost": 0,
+     "link": 0.9114367633004141
+    },
+    {
+     "seed": 3,
+     "stockouts": 282,
+     "departed_lost": 0,
+     "link": 0.9044281618349793
+    },
+    {
+     "seed": 4,
+     "stockouts": 282,
+     "departed_lost": 0,
+     "link": 0.908888180949347
+    },
+    {
+     "seed": 5,
+     "stockouts": 282,
+     "departed_lost": 0,
+     "link": 0.9098438993309972
+    }
+   ]
+  },
+  {
+   "return_prob": 1.0,
+   "return_delay_rounds": 2,
+   "mode": "fresh_vgk",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 276.0,
+    "lo": 276.0,
+    "hi": 276.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9214382265477156,
+    "lo": 0.9165179778318464,
+    "hi": 0.9255474452554745,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9188969991889699
+    },
+    {
+     "seed": 2,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9229521492295215
+    },
+    {
+     "seed": 3,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9267369559340363
+    },
+    {
+     "seed": 4,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9256555825898891
+    },
+    {
+     "seed": 5,
+     "stockouts": 0,
+     "departed_lost": 0,
+     "link": 0.9129494457961611
+    }
+   ]
+  },
+  {
+   "return_prob": 0.5,
+   "return_delay_rounds": 0,
+   "mode": "recycle",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 202.0,
+    "lo": 193.4,
+    "hi": 211.6,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 318.2,
+    "lo": 314.0,
+    "hi": 322.2,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 312.4,
+    "lo": 305.4,
+    "hi": 321.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9138372792733078,
+    "lo": 0.9116436051920065,
+    "hi": 0.9161177969142323,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 210,
+     "departed_lost": 318,
+     "link": 0.917906008328376
+    },
+    {
+     "seed": 2,
+     "stockouts": 189,
+     "departed_lost": 311,
+     "link": 0.9107665301345816
+    },
+    {
+     "seed": 3,
+     "stockouts": 194,
+     "departed_lost": 318,
+     "link": 0.916104429451452
+    },
+    {
+     "seed": 4,
+     "stockouts": 201,
+     "departed_lost": 325,
+     "link": 0.9122755372387401
+    },
+    {
+     "seed": 5,
+     "stockouts": 216,
+     "departed_lost": 319,
+     "link": 0.9121338912133892
+    }
+   ]
+  },
+  {
+   "return_prob": 0.5,
+   "return_delay_rounds": 0,
+   "mode": "fresh_vgk",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 333.6,
+    "lo": 327.6,
+    "hi": 339.6,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 326.4,
+    "lo": 320.4,
+    "hi": 332.4,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9214382265477156,
+    "lo": 0.9165179778318464,
+    "hi": 0.9255474452554745,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 0,
+     "departed_lost": 336,
+     "link": 0.9188969991889699
+    },
+    {
+     "seed": 2,
+     "stockouts": 0,
+     "departed_lost": 324,
+     "link": 0.9229521492295215
+    },
+    {
+     "seed": 3,
+     "stockouts": 0,
+     "departed_lost": 330,
+     "link": 0.9267369559340363
+    },
+    {
+     "seed": 4,
+     "stockouts": 0,
+     "departed_lost": 336,
+     "link": 0.9256555825898891
+    },
+    {
+     "seed": 5,
+     "stockouts": 0,
+     "departed_lost": 342,
+     "link": 0.9129494457961611
+    }
+   ]
+  },
+  {
+   "return_prob": 0.0,
+   "return_delay_rounds": 0,
+   "mode": "recycle",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 107.0,
+    "lo": 107.0,
+    "hi": 107.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 529.0,
+    "lo": 529.0,
+    "hi": 529.0,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9050570962479608,
+    "lo": 0.9023164763458401,
+    "hi": 0.9082544861337684,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 107,
+     "departed_lost": 529,
+     "link": 0.9050570962479608
+    },
+    {
+     "seed": 2,
+     "stockouts": 107,
+     "departed_lost": 529,
+     "link": 0.9112561174551387
+    },
+    {
+     "seed": 3,
+     "stockouts": 107,
+     "departed_lost": 529,
+     "link": 0.9057096247960849
+    },
+    {
+     "seed": 4,
+     "stockouts": 107,
+     "departed_lost": 529,
+     "link": 0.901468189233279
+    },
+    {
+     "seed": 5,
+     "stockouts": 107,
+     "departed_lost": 529,
+     "link": 0.901794453507341
+    }
+   ]
+  },
+  {
+   "return_prob": 0.0,
+   "return_delay_rounds": 0,
+   "mode": "fresh_vgk",
+   "seeds": 5,
+   "stockouts": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "departed_lost": {
+    "mean": 660.0,
+    "lo": 660.0,
+    "hi": 660.0,
+    "n": 5
+   },
+   "departed_returns": {
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "n": 5
+   },
+   "tracker_link_rate": {
+    "mean": 0.9214382265477156,
+    "lo": 0.9165179778318464,
+    "hi": 0.9255474452554745,
+    "n": 5
+   },
+   "per_seed": [
+    {
+     "seed": 1,
+     "stockouts": 0,
+     "departed_lost": 660,
+     "link": 0.9188969991889699
+    },
+    {
+     "seed": 2,
+     "stockouts": 0,
+     "departed_lost": 660,
+     "link": 0.9229521492295215
+    },
+    {
+     "seed": 3,
+     "stockouts": 0,
+     "departed_lost": 660,
+     "link": 0.9267369559340363
+    },
+    {
+     "seed": 4,
+     "stockouts": 0,
+     "departed_lost": 660,
+     "link": 0.9256555825898891
+    },
+    {
+     "seed": 5,
+     "stockouts": 0,
+     "departed_lost": 660,
+     "link": 0.9129494457961611
+    }
+   ]
+  }
+ ]
+}

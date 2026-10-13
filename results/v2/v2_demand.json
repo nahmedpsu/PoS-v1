@@ -11,7 +11,7 @@
    "pids_issued": 195,
    "stock_per_vehicle": 3.0,
    "linking_success": 0.9817483189241114,
-   "mean_pm_consensus": 0.17839524216664054
+   "mean_pm_consensus": 0.1784214096666225
   },
   {
    "round_seconds": 20,
@@ -21,7 +21,7 @@
    "pids_issued": 225,
    "stock_per_vehicle": 3.4615384615384617,
    "linking_success": 0.9954254345837146,
-   "mean_pm_consensus": 0.1533876511667313
+   "mean_pm_consensus": 0.15338991233343527
   },
   {
    "round_seconds": 20,
@@ -31,7 +31,7 @@
    "pids_issued": 252,
    "stock_per_vehicle": 3.876923076923077,
    "linking_success": 1.0,
-   "mean_pm_consensus": 0.17671809700009514
+   "mean_pm_consensus": 0.17673794316670866
   },
   {
    "round_seconds": 20,
@@ -41,7 +41,7 @@
    "pids_issued": 297,
    "stock_per_vehicle": 4.569230769230769,
    "linking_success": 0.9963800904977376,
-   "mean_pm_consensus": 0.1833845705000158
+   "mean_pm_consensus": 0.1833917781665908
   },
   {
    "round_seconds": 40,
@@ -51,7 +51,7 @@
    "pids_issued": 195,
    "stock_per_vehicle": 3.0,
    "linking_success": 0.9793103448275862,
-   "mean_pm_consensus": 0.13173007549998905
+   "mean_pm_consensus": 0.1317286266665542
   },
   {
    "round_seconds": 40,
@@ -61,7 +61,7 @@
    "pids_issued": 225,
    "stock_per_vehicle": 3.4615384615384617,
    "linking_success": 0.9925925925925926,
-   "mean_pm_consensus": 0.13339474016660613
+   "mean_pm_consensus": 0.1333953638333848
   },
   {
    "round_seconds": 40,
@@ -71,7 +71,7 @@
    "pids_issued": 251,
    "stock_per_vehicle": 3.8615384615384616,
    "linking_success": 0.9954379562043796,
-   "mean_pm_consensus": 0.07839220633335268
+   "mean_pm_consensus": 0.07840834849999131
   },
   {
    "round_seconds": 40,
@@ -81,7 +81,7 @@
    "pids_issued": 296,
    "stock_per_vehicle": 4.553846153846154,
    "linking_success": 0.9981900452488688,
-   "mean_pm_consensus": 0.18340223800000027
+   "mean_pm_consensus": 0.18338680849988123
   },
   {
    "round_seconds": 80,
@@ -91,7 +91,7 @@
    "pids_issued": 195,
    "stock_per_vehicle": 3.0,
    "linking_success": 0.9721115537848606,
-   "mean_pm_consensus": 0.13506773983326031
+   "mean_pm_consensus": 0.1350587079999453
   },
   {
    "round_seconds": 80,
@@ -101,7 +101,7 @@
    "pids_issued": 225,
    "stock_per_vehicle": 3.4615384615384617,
    "linking_success": 0.9867924528301887,
-   "mean_pm_consensus": 0.18505452366667668
+   "mean_pm_consensus": 0.18505525116671379
   },
   {
    "round_seconds": 80,
@@ -111,7 +111,7 @@
    "pids_issued": 252,
    "stock_per_vehicle": 3.876923076923077,
    "linking_success": 0.9916434540389972,
-   "mean_pm_consensus": 0.09173515050005487
+   "mean_pm_consensus": 0.09173638833337161
   },
   {
    "round_seconds": 80,
@@ -121,7 +121,7 @@
    "pids_issued": 297,
    "stock_per_vehicle": 4.569230769230769,
    "linking_success": 0.9945504087193461,
-   "mean_pm_consensus": 0.16339831283338602
+   "mean_pm_consensus": 0.16338560300004853
   }
  ]
 }
