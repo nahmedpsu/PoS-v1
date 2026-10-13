@@ -15,7 +15,7 @@
   "rounds": 4,
   "quick": false
  },
- "wall_seconds": 4599.118061380001,
+ "wall_seconds": 4739.517691237,
  "E6_changed": {
   "revoked vehicle keeps transmitting": [
    "defended",
@@ -24,13 +24,13 @@
  },
  "calibration": {
   "op_costs_s": {
-   "sign": 6.81147619998228e-05,
-   "verify": 0.0001028884279999147,
-   "keygen": 3.544713200017213e-05,
-   "encrypt": 0.00010979365526433099,
-   "decrypt": 0.00010911860619678444,
-   "encrypt_per_byte": 1.8268946434583162e-10,
-   "decrypt_per_byte": 1.2721983612604849e-09
+   "sign": 7.630853999989995e-05,
+   "verify": 0.00017644406799990976,
+   "keygen": 3.6580945999958204e-05,
+   "encrypt": 0.00012576137399992148,
+   "decrypt": 0.00011141617396934089,
+   "encrypt_per_byte": 0.0,
+   "decrypt_per_byte": 7.647002568166859e-10
   },
   "source": "measured",
   "environment": {
@@ -66,7 +66,7 @@
  "argv": [
   "recycling",
   "--only",
-  "E1"
+  "E2,E3,E3b,E5,E6,E3bi"
  ],
  "provenance_capture": "command start",
  "signing": {
