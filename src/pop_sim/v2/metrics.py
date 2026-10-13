@@ -51,14 +51,18 @@ class ForgeryStats:
     receivers_total: int = 0         # receivers in range of forged messages
     receivers_accepting: int = 0
     accepted_rsu: int = 0
-    accepted_times: dict = field(default_factory=dict)   # pid -> sorted list of times a forgery was accepted (V2V)
-    victims_blamed: int = 0          # misbehaviour reports that name the innocent holder (reports, not vehicles)
-    victims_blamed_ids: set = field(default_factory=set)   # distinct innocent vehicles named at least once
+    accepted_times: dict = field(default_factory=dict)   # (pid, holder or None) -> times a forgery was accepted (V2V)
+    # denominators, from the widest to the narrowest (review G08)
+    key_checks: int = 0              # every retained key examined, every second
+    valid_key_seconds: int = 0       # ... whose retained certificate had not expired (key no longer held by self)
+    eligible: int = 0                # ... and the strategy's condition held (S1/S2: another vehicle transmitting
+                                     #     under the pseudonym; S3: nobody holding it)
 
     def to_dict(self) -> dict:
         return {"sent": self.sent, "accepted_v2v": self.accepted_v2v, "receivers_total": self.receivers_total,
                 "receivers_accepting": self.receivers_accepting, "accepted_rsu": self.accepted_rsu,
-                "victims_blamed": self.victims_blamed, "pids_with_accepted_forgeries": len(self.accepted_times)}
+                "key_checks": self.key_checks, "valid_key_seconds": self.valid_key_seconds,
+                "eligible": self.eligible, "holdings_with_accepted_forgeries": len(self.accepted_times)}
 
 
 def forged_acceptance(stats: ForgeryStats) -> dict:
@@ -71,29 +75,43 @@ def forged_acceptance(stats: ForgeryStats) -> dict:
     }
 
 
-def exposure_windows(accepted_times: dict, gap: float = 2.0) -> dict:
-    """Seconds during which forgeries under each pseudonym were accepted: the
-    span from first to last accepted time, counting only stretches with no
-    gap above ``gap`` seconds.  Returns mean and 95th percentile."""
-    windows = []
-    for pid, times in accepted_times.items():
+def exposure_windows(accepted_times: dict, gap: float = 2.0, horizon_end: float | None = None) -> dict:
+    """Exposure to accepted forgeries, per holding (review G03).
+
+    ``accepted_times`` maps a holding (pseudonym, holder) to the times a forged
+    message under it was accepted by at least one receiver.  A *contiguous
+    window* is a run of accepted seconds with no gap above ``gap`` seconds; a
+    holding may have several.  The *cumulative* exposure of a holding is the
+    sum of its windows.  A window that reaches ``horizon_end`` is right-censored
+    (the run ended, not the exposure).  Means and pooled 95th percentiles are
+    given for both endpoints, with the counts behind them."""
+    segments, cumulative = [], []
+    for key, times in accepted_times.items():
         ts = sorted(times)
         if not ts:
             continue
         total = 0.0
         start = prev = ts[0]
-        for t in ts[1:]:
-            if t - prev > gap:
-                total += prev - start + 1.0
+        for t in ts[1:] + [None]:
+            if t is None or t - prev > gap:
+                length = prev - start + 1.0
+                censored = horizon_end is not None and prev >= horizon_end - gap
+                segments.append({"start": start, "end": prev, "seconds": length, "censored": censored})
+                total += length
+                if t is None:
+                    break
                 start = t
             prev = t
-        total += prev - start + 1.0
-        windows.append(total)
-    if not windows:
-        return {"mean": None, "p95": None, "n": 0, "windows": []}
-    windows.sort()
-    return {"mean": statistics.mean(windows), "p95": pooled_percentile(windows, 0.95),
-            "n": len(windows), "windows": windows}
+        cumulative.append(total)
+
+    def _summ(vals):
+        return {"mean": statistics.mean(vals) if vals else None, "p95": pooled_percentile(vals, 0.95),
+                "n": len(vals), "values": sorted(vals)}
+
+    contiguous = [s["seconds"] for s in segments]
+    return {"contiguous": {**_summ(contiguous), "censored": sum(s["censored"] for s in segments)},
+            "cumulative_per_holding": _summ(cumulative),
+            "segments": segments}
 
 
 def pooled_percentile(values: list[float], q: float) -> float | None:
@@ -114,7 +132,7 @@ def post_revocation(accepted_after: list[float], revoked_at: float | None) -> di
 
 # ----------------------------------------------------------- linking metrics
 def cluster_metrics(uf: UnionFind, histories: dict[str, list[str]], truth_of_pid: dict[str, str],
-                    pid_seconds: dict[str, float]) -> dict:
+                    pid_seconds: dict[str, float], driven_seconds: float | None = None) -> dict:
     """``histories``: vehicle -> pseudonym holdings in the order used.  Permanent
     ids are nodes of the union-find too (prefix ``VEH-``); any other node (a
     forged-message node, say) is neither a holding nor an identity.
@@ -125,9 +143,10 @@ def cluster_metrics(uf: UnionFind, histories: dict[str, list[str]], truth_of_pid
     * ``purity``: beacon-seconds in each cluster that belong to its majority
       vehicle, over all beacon-seconds;
     * ``pair_recall``: same-vehicle holding pairs that share a cluster;
-    * ``correct_identity_seconds``: beacon-seconds whose cluster carries exactly
-      one permanent identity and it is the true one; ``wrong_identity_seconds``
-      one identity but another vehicle's; ``ambiguous_identity_seconds`` two or
+    * ``correct_identity_beacon_share``: share of observed beacon-seconds whose
+      cluster carries exactly one permanent identity and it is the true one;
+      ``wrong_identity_beacon_share`` one identity but another vehicle's;
+      ``ambiguous_identity_beacon_share`` two or
       more identities; the rest carries none.  All as shares of beacon-seconds."""
     changes = correct = 0
     for vid, pids in histories.items():
@@ -188,11 +207,15 @@ def cluster_metrics(uf: UnionFind, histories: dict[str, list[str]], truth_of_pid
         "pair_recall": same_vehicle_pairs_in_cluster / all_same_vehicle_pairs if all_same_vehicle_pairs else None,
         "purity": share(pure_s),
         "identity_rate": len(identified) / len(histories) if histories else None,
-        "correct_identity_seconds": share(correct_s),
-        "wrong_identity_seconds": share(wrong_s),
-        "ambiguous_identity_seconds": share(ambiguous_s),
+        # shares of observed beacon-seconds (all vehicles' beacon-seconds pooled; review G07)
+        "correct_identity_beacon_share": share(correct_s),
+        "wrong_identity_beacon_share": share(wrong_s),
+        "ambiguous_identity_beacon_share": share(ambiguous_s),
+        # shares of driven time: every vehicle-second on the road, silent and
+        # unserved seconds included (they carry no observation, so no attribution)
+        "correct_identity_driven_share": correct_s / driven_seconds if driven_seconds else None,
         "trajectory_coverage": statistics.mean(coverage) if coverage else None,
-        "changes": changes, "pairs": pairs, "beacon_seconds": total_s,
+        "changes": changes, "pairs": pairs, "beacon_seconds": total_s, "driven_seconds": driven_seconds,
     }
 
 
@@ -207,9 +230,11 @@ class OpCosts:
     sign: float = 5e-5
     verify: float = 2e-4
     keygen: float = 1e-4
-    encrypt: float = 3e-4
+    encrypt: float = 3e-4            # fixed cost of one ECIES encryption (key agreement, KDF)
     decrypt: float = 3e-4
     source: str = "assumed"
+    encrypt_per_byte: float = 0.0    # plus this per plaintext byte (review G10: packages are large)
+    decrypt_per_byte: float = 0.0
 
 
 def calibrate_op_costs(samples: int = 200) -> tuple[OpCosts, dict]:
@@ -224,6 +249,7 @@ def calibrate_op_costs(samples: int = 200) -> tuple[OpCosts, dict]:
 
     k = crypto.generate_keypair()
     msg = b"x" * 120
+    big = b"x" * 65536                # about a PKI package of 150 pseudonyms with their keys
     t0 = _t.perf_counter()
     for _ in range(samples):
         crypto.generate_keypair()
@@ -236,23 +262,41 @@ def calibrate_op_costs(samples: int = 200) -> tuple[OpCosts, dict]:
     for _ in range(samples):
         crypto.verify(k.pk, msg, sig)
     verify = (_t.perf_counter() - t0) / samples
-    t0 = _t.perf_counter()
-    for _ in range(samples):
-        ct = crypto.encrypt(k.pk, msg)
-    enc = (_t.perf_counter() - t0) / samples
-    t0 = _t.perf_counter()
-    for _ in range(samples):
-        crypto.decrypt(k.sk, ct)
-    dec = (_t.perf_counter() - t0) / samples
+
+    def _time_ecies(payload: bytes) -> tuple[float, float]:
+        t1 = _t.perf_counter()
+        for _ in range(samples):
+            ct = crypto.encrypt(k.pk, payload)
+        e = (_t.perf_counter() - t1) / samples
+        t1 = _t.perf_counter()
+        for _ in range(samples):
+            crypto.decrypt(k.sk, ct)
+        return e, (_t.perf_counter() - t1) / samples
+
+    enc_s, dec_s = _time_ecies(msg)
+    enc_b, dec_b = _time_ecies(big)
+    span = len(big) - len(msg)
+    enc_pb, dec_pb = max(0.0, (enc_b - enc_s) / span), max(0.0, (dec_b - dec_s) / span)
+    enc, dec = max(0.0, enc_s - enc_pb * len(msg)), max(0.0, dec_s - dec_pb * len(msg))
     env = {"machine": platform.machine(), "processor": platform.processor(), "python": platform.python_version(),
-           "system": platform.platform(), "cryptography": cryptography.__version__, "samples": samples}
-    return OpCosts(sign, verify, keygen, enc, dec, "measured"), env
+           "system": platform.platform(), "cryptography": cryptography.__version__, "samples": samples,
+           "ecies_payload_sizes": [len(msg), len(big)]}
+    return OpCosts(sign, verify, keygen, enc, dec, "measured", enc_pb, dec_pb), env
+
+
+def cpu_breakdown(load: dict, costs: OpCosts) -> dict:
+    """Modelled CPU seconds per operation (review G10)."""
+    return {"sign": load.get("signatures", 0) * costs.sign,
+            "verify": load.get("verifications", 0) * costs.verify,
+            "keygen": load.get("keygens", 0) * costs.keygen,
+            "encrypt": load.get("encryptions", 0) * costs.encrypt
+            + load.get("encrypted_bytes", 0) * costs.encrypt_per_byte,
+            "decrypt": load.get("decryptions", 0) * costs.decrypt
+            + load.get("decrypted_bytes", 0) * costs.decrypt_per_byte}
 
 
 def cpu_seconds(load: dict, costs: OpCosts) -> float:
-    return (load.get("signatures", 0) * costs.sign + load.get("keygens", 0) * costs.keygen
-            + load.get("verifications", 0) * costs.verify + load.get("encryptions", 0) * costs.encrypt
-            + load.get("decryptions", 0) * costs.decrypt)
+    return sum(cpu_breakdown(load, costs).values())
 
 
 def per_1000_vehicles_per_hour(cpu: float, vehicles: int, sim_seconds: float) -> float:
@@ -361,24 +405,90 @@ def _one_sided_greater_p(x: list[float]) -> float:
     return sum(dist[w_obs:]) / 2 ** len(pairs)
 
 
-def paired_equivalence(a: list, b: list, margin: float, resamples: int = 2000, seed: int = 0) -> dict:
-    """Paired comparison of a against b for an equivalence claim (review R12).
+def _betacf(a: float, b: float, x: float) -> float:
+    """Continued fraction for the regularized incomplete beta (Lentz)."""
+    tiny, qab, qap, qam = 1e-300, a + b, a + 1.0, a - 1.0
+    c, d = 1.0, 1.0 - qab * x / qap
+    d = 1.0 / (d if abs(d) > tiny else tiny)
+    h = d
+    for m in range(1, 300):
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
+        d = 1.0 / (d if abs(d) > tiny else tiny)
+        c = 1.0 + aa / c if abs(1.0 + aa / c) > tiny else tiny
+        h *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d
+        d = 1.0 / (d if abs(d) > tiny else tiny)
+        c = 1.0 + aa / c if abs(1.0 + aa / c) > tiny else tiny
+        delta = d * c
+        h *= delta
+        if abs(delta - 1.0) < 1e-14:
+            break
+    return h
 
-    Only pairs where both values exist are used (``n_valid``).  Reports the
-    mean paired difference a - b with a 95 % bootstrap interval, and two
-    one-sided exact signed-rank tests (TOST): equivalence within +/- margin is
-    concluded when both one-sided p-values are below 0.05, which coincides
-    with the difference lying inside the margin with 90 % confidence."""
+
+def _betainc(a: float, b: float, x: float) -> float:
+    if x <= 0.0:
+        return 0.0
+    if x >= 1.0:
+        return 1.0
+    lbt = math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b) + a * math.log(x) + b * math.log(1.0 - x)
+    if x < (a + 1.0) / (a + b + 2.0):
+        return math.exp(lbt) * _betacf(a, b, x) / a
+    return 1.0 - math.exp(lbt) * _betacf(b, a, 1.0 - x) / b
+
+
+def t_cdf(t: float, df: float) -> float:
+    """Student-t distribution function."""
+    x = df / (df + t * t)
+    tail = 0.5 * _betainc(df / 2.0, 0.5, x)
+    return 1.0 - tail if t > 0 else tail
+
+
+def t_ppf(q: float, df: float) -> float:
+    """Student-t quantile by bisection on ``t_cdf``."""
+    lo, hi = -1e3, 1e3
+    for _ in range(200):
+        mid = (lo + hi) / 2.0
+        if t_cdf(mid, df) < q:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2.0
+
+
+def paired_equivalence(a: list, b: list, margin: float, alpha: float = 0.05) -> dict:
+    """Mean equivalence of paired values a and b within +/- margin (review R12, G06).
+
+    Estimand: the mean paired difference a - b.  Test: two one-sided paired
+    t-tests (TOST) of H0: mean <= -margin and H0: mean >= +margin; equivalence
+    is concluded when both are rejected at ``alpha``, which is the same as the
+    (1 - 2 alpha) t confidence interval for the mean lying inside the margin
+    (reported as ``ci90``).  Assumes the paired differences are roughly normal
+    (or n large enough for the mean); ``ci95`` is the t interval for the same
+    mean.  Only pairs where both values exist are used (``n_valid``)."""
     d = [float(x) - float(y) for x, y in zip(a, b) if x is not None and y is not None]
     n = len(d)
-    if n == 0:
-        return {"n_valid": 0, "margin": margin, "mean_diff": None, "ci95": None, "p_lower": None, "p_upper": None,
-                "p_tost": None, "equivalent": None}
-    rng = random.Random(seed)
-    boots = sorted(statistics.mean(rng.choices(d, k=n)) for _ in range(resamples))
-    ci = (boots[int(0.025 * resamples)], boots[min(resamples - 1, int(0.975 * resamples))])
-    p_lower = _one_sided_greater_p([x + margin for x in d])     # H1: diff > -margin
-    p_upper = _one_sided_greater_p([margin - x for x in d])     # H1: diff < +margin
+    base = {"n_valid": n, "margin": margin, "estimand": "mean paired difference", "test": "paired t TOST"}
+    if n < 2:
+        return {**base, "mean_diff": statistics.mean(d) if d else None, "sd_diff": None, "ci90": None, "ci95": None,
+                "p_lower": None, "p_upper": None, "p_tost": None, "equivalent": None}
+    m = statistics.mean(d)
+    sd = statistics.stdev(d)
+    df = n - 1
+    se = sd / math.sqrt(n)
+    if se == 0.0:
+        inside = -margin < m < margin
+        p_lower = p_upper = 0.0 if inside else 1.0
+        ci90 = ci95 = (m, m)
+    else:
+        p_lower = 1.0 - t_cdf((m + margin) / se, df)      # H1: mean > -margin
+        p_upper = t_cdf((m - margin) / se, df)            # H1: mean < +margin
+        q90, q95 = t_ppf(1.0 - alpha, df), t_ppf(0.975, df)
+        ci90 = (m - q90 * se, m + q90 * se)
+        ci95 = (m - q95 * se, m + q95 * se)
     p = max(p_lower, p_upper)
-    return {"n_valid": n, "margin": margin, "mean_diff": statistics.mean(d), "ci95": ci,
-            "p_lower": p_lower, "p_upper": p_upper, "p_tost": p, "equivalent": p < 0.05}
+    return {**base, "mean_diff": m, "sd_diff": sd, "ci90": ci90, "ci95": ci95,
+            "p_lower": p_lower, "p_upper": p_upper, "p_tost": p, "equivalent": p < alpha}

@@ -106,7 +106,7 @@ def test_gap_filler_is_accepted_under_recycling_until_expiry():
     f = sim.recycling_report()["forgery"]
     assert f["sent"] > 0 and f["accepted_v2v"] == f["sent"]        # V2V has no ledger
     assert f["accepted_rsu"] == 0                                   # the RSU's ledger says "returned"
-    assert f["exposure"]["mean"] > 0
+    assert f["exposure"]["contiguous"]["mean"] > 0
 
 
 def test_ghost_blames_the_victim_under_ledger_attribution():
@@ -115,7 +115,7 @@ def test_ghost_blames_the_victim_under_ledger_attribution():
     sim.run(3)
     f = sim.recycling_report()["forgery"]
     assert f["sent"] > 0 and f["accepted_v2v"] > 0
-    assert f["victims_blamed"] > 0
+    assert sim.recycling_report()["reports"]["by_route"]["forgery"]["naming_honest"] > 0
     assert all(not v.former_holder for v in sim.vehicles if v.revoked)     # only victims were revoked
 
 
@@ -127,7 +127,8 @@ def test_rekey_blocks_every_strategy_and_window_does_not_block_the_ghost():
         f = sim.recycling_report()["forgery"]
         assert f["sent"] > 0
         assert f["accepted_v2v"] == 0, (strategy, f)
-        assert f["victims_blamed"] == 0
+        routes = sim.recycling_report()["reports"]["by_route"]
+        assert routes.get("forgery", {}).get("naming_honest", 0) == 0
     sim = ITSSimulation(_cfg(issuance="window", v2v=True, former_holders=3, former_holder_strategy="S2",
                              attribution="ledger"))
     sim.run(3)
@@ -206,8 +207,9 @@ def test_cloud_order_leak_and_its_fix():
 
 # ------------------------------------------------------------------ metrics
 def test_exposure_windows_and_statistics():
-    e = exposure_windows({"p": [1, 2, 3, 10, 11], "q": [5]})
-    assert e["n"] == 2 and e["mean"] == pytest.approx((5 + 1) / 2)
+    e = exposure_windows({("p", "A"): [1, 2, 3, 10, 11], ("q", "B"): [5]})
+    assert e["contiguous"]["n"] == 3 and e["contiguous"]["mean"] == pytest.approx((3 + 2 + 1) / 3)
+    assert e["cumulative_per_holding"]["n"] == 2 and e["cumulative_per_holding"]["mean"] == pytest.approx((5 + 1) / 2)
     ci = bootstrap_ci([1, 2, 3, 4, 5], resamples=200)
     assert ci["lo"] <= ci["mean"] <= ci["hi"]
     w = wilcoxon_signed_rank([5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6])

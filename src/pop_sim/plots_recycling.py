@@ -31,18 +31,32 @@ def _ci(ax, x, cells, key, **kw):
 
 def fig_e1(res: dict, path: Path) -> Path:
     cells = [c for c in res["cells"] if c["sweep"] == "core"]
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4.2))
+    fig, all_axes = plt.subplots(1, 4, figsize=(18, 4.2))
+    # strategy bars at the core cell (plausibility on, 900 s): honest vehicles reported and revoked
+    bar_ax, axes = all_axes[0], all_axes[1:]
+    core = [next((c for c in cells if c["strategy"] == st and c["plausibility"] and c["lifetime"] == 900), None)
+            for st in ("S1", "S2", "S3")]
+    for i, (key, col, lab) in enumerate((("honest_reported", C_POW, "honest vehicles reported"),
+                                         ("honest_revoked", C_REF, "honest vehicles revoked"))):
+        ys = [_v(c[key]) if c else 0 for c in core]
+        err = [[_v(c[key]) - _v(c[key], "lo") if c else 0 for c in core],
+               [_v(c[key], "hi") - _v(c[key]) if c else 0 for c in core]]
+        bar_ax.bar([j + (i - 0.5) * 0.35 for j in range(3)], ys, width=0.35, yerr=err, capsize=3, color=col, label=lab)
+    bar_ax.set_xticks(range(3), ["S1", "S2", "S3"])
+    bar_ax.set_ylabel("vehicles per run (mean, 95 % CI)")
+    bar_ax.set_title("Accountability failure by strategy (120 s)", fontsize=10)
+    bar_ax.legend(fontsize=7)
     for st, color in zip(("S1", "S2", "S3"), (C_REF, C_POET, C_POW1)):
         for pl, ls in ((False, "-"), (True, "--")):
             sub = sorted([c for c in cells if c["strategy"] == st and c["plausibility"] == pl], key=lambda c: c["lifetime"])
             if not sub:
                 continue
             x = [c["lifetime"] for c in sub]
-            _ci(axes[0], x, sub, "exposure_mean_s", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
+            _ci(axes[0], x, sub, "exposure_contiguous_mean_s", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
             _ci(axes[1], x, sub, "v2v_receiver_rate", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
-            _ci(axes[2], x, sub, "victims_blamed", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
-    for ax, t, yl in zip(axes, ("Exposure window per recycled pseudonym", "Forged messages accepted by V2V receivers", "Innocent holders blamed by RSUs"),
-                         ("seconds (mean, 95 % CI)", "receiver acceptance rate", "misbehaviour reports naming the victim")):
+            _ci(axes[2], x, sub, "reports_naming_honest", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
+    for ax, t, yl in zip(axes, ("Contiguous exposure window", "Forged messages accepted by V2V receivers", "Reports naming honest vehicles (all routes)"),
+                         ("seconds (mean, 95 % CI)", "receiver acceptance rate", "misbehaviour reports per run")):
         ax.set_xscale("log")
         ax.set_xlabel("Certificate lifetime (s)")
         ax.set_ylabel(yl)
@@ -60,10 +74,10 @@ def fig_e1x(res: dict, path: Path) -> Path:
         if not sub:
             continue
         x = [c["lifetime"] for c in sub]
-        _ci(axes[0], x, sub, "exposure_mean_s", color=color, label=st)
+        _ci(axes[0], x, sub, "exposure_contiguous_mean_s", color=color, label=st)
         _ci(axes[1], x, sub, "v2v_receiver_rate", color=color, label=st)
         _ci(axes[2], x, sub, "pki_renewals", color=color, label=st)
-    for ax, t in zip(axes, ("Exposure window per recycled pseudonym (s)", "Forged messages accepted by V2V receivers",
+    for ax, t in zip(axes, ("Contiguous exposure window (s)", "Forged messages accepted by V2V receivers",
                             "PKI certificate renewals per run")):
         ax.set_xscale("log")
         ax.set_xlabel("Certificate lifetime (s)")
@@ -74,17 +88,20 @@ def fig_e1x(res: dict, path: Path) -> Path:
 
 
 def fig_e2(res: dict, path: Path) -> Path:
-    cells = sorted(res["cells"], key=lambda c: c["lifetime"])
-    fig, ax = plt.subplots(figsize=(7, 4.2))
-    x = [c["lifetime"] for c in cells]
-    _ci(ax, x, cells, "post_revocation_accepted", color=C_REF, label="V2V-accepted messages after revocation")
-    ax2 = ax.twinx()
-    _ci(ax2, x, cells, "seconds_to_last_accepted", color=C_POW, label="seconds until the last accepted message")
-    ax.set_xscale("log")
-    ax.set_xlabel("Certificate lifetime (s)")
-    ax.set_ylabel("messages", color=C_REF)
-    ax2.set_ylabel("seconds", color=C_POW)
-    ax.set_title("E2 - a revoked vehicle keeps being believed by other vehicles")
+    modes = list(dict.fromkeys(c.get("mode", "recycle") for c in res["cells"]))
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
+    for mode in modes:
+        cells = sorted((c for c in res["cells"] if c.get("mode", "recycle") == mode), key=lambda c: c["lifetime"])
+        x = [c["lifetime"] for c in cells]
+        col = MODE_COLORS.get(mode, C_REF)
+        _ci(axes[0], x, cells, "post_revocation_accepted", color=col, label=mode)
+        _ci(axes[1], x, cells, "seconds_to_last_accepted", color=col, label=mode)
+    for ax, lab in zip(axes, ("V2V-accepted messages after revocation", "seconds until the last accepted message")):
+        ax.set_xscale("log")
+        ax.set_xlabel("Certificate lifetime (s)")
+        ax.set_ylabel(lab)
+        ax.legend(fontsize=8)
+    fig.suptitle("E2 - a revoked vehicle keeps being believed by other vehicles, in every issuance mode")
     return _save(fig, path)
 
 
@@ -108,7 +125,28 @@ def fig_e3(res: dict, path: Path) -> Path:
         ax.set_title(f"{c['density']} veh/km, cloud upload order {c['cloud_order']}", fontsize=10)
     axes[0].legend(fontsize=7)
     fig.suptitle("E3 - what each insider can link (recycle mode)")
-    return _save(fig, path)
+    _save(fig, path)
+    # identity attribution split (review R15, G07): shares of observed beacon-seconds
+    kept = [c for c in cells if c["cloud_order"] == "kept"]
+    combos = ["rsu", "pm", "tracker+rsu", "tracker+pm", "all"]
+    fig, axes = plt.subplots(1, len(kept), figsize=(6 * len(kept), 4.4), sharey=True)
+    if len(kept) == 1:
+        axes = [axes]
+    for ax, c in zip(axes, kept):
+        bottom = [0.0] * len(combos)
+        for key, col, lab in (("correct_identity_beacon_share", C_V2, "right identity"),
+                              ("wrong_identity_beacon_share", C_REF, "wrong identity"),
+                              ("ambiguous_identity_beacon_share", C_POET, "ambiguous (several identities)")):
+            ys = [_v(c["table"][e][key]) if e in c["table"] else 0.0 for e in combos]
+            ax.bar(range(len(combos)), ys, bottom=bottom, color=col, label=lab)
+            bottom = [b + y for b, y in zip(bottom, ys)]
+        ax.set_xticks(range(len(combos)), combos, rotation=20)
+        ax.set_ylim(0, 1.02)
+        ax.set_ylabel("share of observed beacon-seconds")
+        ax.set_title(f"{c['density']} veh/km", fontsize=10)
+    axes[0].legend(fontsize=8)
+    fig.suptitle("E3 - identity attribution of observed beacon-seconds, by entity (recycle, upload order kept)")
+    return _save(fig, path.with_name(path.stem + "_attribution" + path.suffix))
 
 
 def fig_e4(res: dict, path: Path) -> Path:
@@ -204,9 +242,9 @@ def fig_e1r(res: dict, path: Path) -> Path:
     for st, col in (("S1", C_REF), ("S2", C_POW)):
         key = f"{st}_long"
         if key in cells[0]:
-            _ci(ax, x, [c[key] for c in cells], "victims_blamed", color=col, label=f"{st}, {cells[0][key]['sim_seconds']} s")
+            _ci(ax, x, [c[key] for c in cells], "reports_naming_honest", color=col, label=f"{st}, {cells[0][key]['sim_seconds']} s")
     ax.set_xticks(x, labels, rotation=30, ha="right")
-    ax.set_ylabel("reports naming an innocent holder")
+    ax.set_ylabel("reports naming honest vehicles (all routes)")
     ax.set_title("Wrongful reports filed")
     ax.legend(fontsize=8)
     ax = axes[2]

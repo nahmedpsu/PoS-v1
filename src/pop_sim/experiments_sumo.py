@@ -85,14 +85,25 @@ def _run_trace(frames, corridor, seed: int, rounds: int, n_pm: int, rsus_per_pm:
     sim.run(rounds)
     s = sim.summary()
     r = s["recycling"]
-    pop = dict(s["linkability"]["population"])
-    pop["revoked_honest_share"] = pop["revoked_honest"] / pop["honest"] if pop["honest"] else None
+    full = dict(s["linkability"]["population"])
+    attackers = {v.vehicle_id for v in sim.vehicles if v.former_holder or v.malicious}
+    in_window = [v for v in sim.vehicles if v.index in road.window_ids]
+    honest_win = sum(1 for v in in_window if v.vehicle_id not in attackers)
+    # Only vehicles that drive inside the evaluated window can be revoked; the
+    # share is over them.  The whole trace's counts keep their own names (R22).
+    pop = {"vehicles": len(in_window), "honest": honest_win, "attackers": full["attackers"],
+           "vehicles_in_trace": full["vehicles"], "honest_in_trace": full["honest"],
+           "revoked_total": full["revoked_total"], "revoked_honest": full["revoked_honest"],
+           "revoked_attackers": full["revoked_attackers"],
+           "revoked_honest_share": full["revoked_honest"] / honest_win if honest_win else None,
+           "revoked_honest_share_of_trace": full["revoked_honest"] / full["honest"] if full["honest"] else None}
     return {"seed": seed, "vehicles": len(sim.vehicles), "population": pop, "stockouts": s["stockouts"],
             "departed_returns": s["departed_returns"], "departed_lost": s["departed_lost"],
             "attacker_vehicle_seconds": s["attacker_vehicle_seconds"], "vehicle_seconds": s["vehicle_seconds"],
             "achieved_attack_share": s["achieved_attack_share"],
             "tracking": s["tracking"], "v2v": r["v2v"], "load": r["load"], "insider": r.get("insider"),
             "forgery": r.get("forgery"), "retained_valid": r.get("retained_valid"),
+            "reports": r.get("reports"), "retention": r.get("retention"),
             "rejected_messages": sum(x["rejected_messages"] for x in s["rounds"])}
 
 

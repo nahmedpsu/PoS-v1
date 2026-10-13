@@ -200,6 +200,7 @@ class PKI:
         signature = crypto.sign(self.keys.sk, ciphertext)
         self.load.signatures += 1
         self.load.encryptions += 1
+        self.load.encrypted_bytes += len(plaintext)
         self.load.bytes += len(ciphertext)
         return ciphertext, signature
 
@@ -239,11 +240,18 @@ class Load:
     verifications: int = 0
     encryptions: int = 0      # ECIES (review R17: counted, previously omitted)
     decryptions: int = 0
+    encrypted_bytes: int = 0  # plaintext bytes encrypted: ECIES cost grows with size (review G10)
+    decrypted_bytes: int = 0
 
     def to_dict(self) -> dict:
         return {"signatures": self.signatures, "keygens": self.keygens, "bytes": self.bytes,
                 "verifications": self.verifications, "encryptions": self.encryptions,
-                "decryptions": self.decryptions}
+                "decryptions": self.decryptions, "encrypted_bytes": self.encrypted_bytes,
+                "decrypted_bytes": self.decrypted_bytes}
+
+
+LOAD_KEYS = ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions",
+             "encrypted_bytes", "decrypted_bytes")
 
 
 def holder_cert_bytes(pid: str, pk_hex: str, t_start: float, t_end: float, pm_id: str) -> bytes:
@@ -367,9 +375,9 @@ class Vehicle:
     def _keep(self, p: "Pseudonym") -> None:
         """A dishonest OBU keeps what it held, as it held it: an immutable
         snapshot (key, certificate, expiry, holder certificate at that moment).
-        Later renewals of the circulating object do not reach the copy; a
-        former holder learns a renewed certificate only by overhearing it
-        (``ITSSimulation`` with ``former_holder_cert_source="overheard"``)."""
+        Later renewals of the circulating object do not reach the copy.
+        Called whenever a credential leaves the vehicle: at a pseudonym change
+        and at the end of a round (review G02)."""
         if (self.malicious or self.former_holder) and all(k.pid != p.pid for k in self.kept_keys):
             self.kept_keys.append(snapshot(p))
 
@@ -645,6 +653,7 @@ class PrivacyManager:
         self.collected: list[tuple[Pseudonym, dict]] = []
         self.ledger = ledger or PseudonymLedger()
         self.misbehaviour_reports: list[dict] = []
+        self.report_hook = None          # evaluation only: every report passes through here once (review G01)
         self.load = Load()
         self.pm_cert = ""                            # PKI certificate for signing holder certs
         self.upload_log: list[list[str]] = []        # pid order of every upload to the cloud (insider evidence)
@@ -657,8 +666,9 @@ class PrivacyManager:
             raise ValueError(f"{self.pm_id}: PKI signature invalid, package rejected")
         wire = json.loads(crypto.decrypt(self.keys.sk, ciphertext))
         ps = [Pseudonym.from_wire(d) for d in wire]
-        self.load.verifications += 1 + len(ps)
+        self.load.verifications += 1 + len(ps)       # the package signature, then each pseudonym certificate
         self.load.decryptions += 1
+        self.load.decrypted_bytes += len(ciphertext)
         for p in ps:
             if not p.verify(pki_pk):
                 raise ValueError(f"{self.pm_id}: pseudonym certificate invalid")
@@ -713,7 +723,10 @@ class PrivacyManager:
 
     def report_misbehaviour(self, vehicle, pid: str, rsu_id: str, reason: str) -> None:
         vid = vehicle if isinstance(vehicle, str) else vehicle.vehicle_id
-        self.misbehaviour_reports.append({"vehicle": vid, "pid": pid, "rsu": rsu_id, "reason": reason, "t": clock.now()})
+        rep = {"vehicle": vid, "pid": pid, "rsu": rsu_id, "reason": reason, "t": clock.now()}
+        self.misbehaviour_reports.append(rep)
+        if self.report_hook is not None:
+            self.report_hook(rep)
 
     def sign_holder_cert(self, pid: str, pk_hex: str, t_start: float, t_end: float) -> dict:
         """Holder-bound certificate (rekey / window modes): binds ``pid`` to
@@ -724,6 +737,8 @@ class PrivacyManager:
                 "pm_pk": self.keys.pk_hex, "pm_cert": self.pm_cert, "sig": sig}
 
     def make_tx(self, kind: str, receiver_pk, payload: dict) -> Transaction:
+        tx = Transaction.create(kind, self.keys, receiver_pk, payload)
         self.load.signatures += 1
         self.load.encryptions += 1
-        return Transaction.create(kind, self.keys, receiver_pk, payload)
+        self.load.encrypted_bytes += len(tx.ciphertext) // 2
+        return tx

@@ -57,7 +57,7 @@ def test_no_attempt_is_not_applicable_not_zero():
     sim = ITSSimulation(_cfg(issuance="fresh", former_holders=5, former_holder_strategy="S2"))
     sim.run(2)
     f = sim.summary()["recycling"]["forgery"]
-    assert f["opportunities"] > 0 and f["sent"] == 0
+    assert f["key_checks"] > 0 and f["eligible"] == 0 and f["sent"] == 0
     assert f["v2v_receiver_rate"] is None and f["rsu_rate"] is None
 
 
@@ -124,7 +124,7 @@ def test_all_merged_clusters_are_not_reported_as_attribution():
                         {"a1": "VEH-A", "a2": "VEH-A", "b1": "VEH-B", "b2": "VEH-B"}, dict.fromkeys(nodes[:4], 10.0))
     assert m["trajectory_coverage"] == 1.0 and m["link_rate"] == 1.0
     assert abs(m["precision"] - 1 / 3) < 1e-12 and m["purity"] == 0.5
-    assert m["correct_identity_seconds"] == 0.0 and m["ambiguous_identity_seconds"] == 1.0
+    assert m["correct_identity_beacon_share"] == 0.0 and m["ambiguous_identity_beacon_share"] == 1.0
 
 
 def test_equivalence_uses_valid_pairs_and_the_margin():

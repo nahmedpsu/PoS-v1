@@ -198,26 +198,26 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         log(name)
         r = fn()
         res[key] = r
-        _dump(r, out / f"{key}.json")
+        _dump(_stamp(r, calibration), out / f"{key}.json")
         plot(r, figs / f"{key}.png")
     if not args.only_long and (not args.only or "E6" in args.only):
         log("E6 bench re-check (oracle vs ledger attribution)")
         res["E6"] = exr.exp_e6_bench_recheck(quick=quick)
-        _dump(res["E6"], out / "E6.json")
+        _dump(_stamp(res["E6"], calibration), out / "E6.json")
     if args.long:
         log("E1x / E2x: 600 s horizon so certificates expire")
         res["E1x"] = exr.exp_e1_lifetime_long(seeds, rounds=4 if quick else 20, lifetimes=(300, 3600) if quick else (300, 900, 3600),
                                               strategies=("S3",) if quick else ("S1", "S2", "S3"))
-        _dump(res["E1x"], out / "E1x.json")
+        _dump(_stamp(res["E1x"], calibration), out / "E1x.json")
         plots_recycling.fig_e1x(res["E1x"], figs / "E1x.png")
         res["E2x"] = exr.exp_e2_long(seeds, rounds=4 if quick else 20, lifetimes=(300, 3600) if quick else (300, 900, 3600))
-        _dump(res["E2x"], out / "E2x.json")
+        _dump(_stamp(res["E2x"], calibration), out / "E2x.json")
         plots_recycling.fig_e2(res["E2x"], figs / "E2x.png")
     if args.sensitivity:
         log("E1r: the revocation rule (k reports from m RSUs)")
         res["E1r"] = exr.exp_e1_revocation_rule(seeds, rounds=rounds, long_rounds=4 if quick else 20,
                                                 rules=((1, 1), (3, 2)) if quick else exr.REVOCATION_RULES)
-        _dump(res["E1r"], out / "E1r.json")
+        _dump(_stamp(res["E1r"], calibration), out / "E1r.json")
         plots_recycling.fig_e1r(res["E1r"], figs / "E1r.png")
     plots_recycling.fig_summary(res, figs / "summary.png")
     res["wall_seconds"] = time.perf_counter() - t0
@@ -228,18 +228,34 @@ def cmd_recycling(args: argparse.Namespace) -> int:
     return 0
 
 
+SOURCE_PATHS = ("src", "config", "scripts", "pyproject.toml", "requirements.lock", "requirements.txt")
+
+
 def _provenance() -> dict:
-    """Commit, version and command line behind a result file (review R24)."""
+    """Source behind a result file (review R24, G09): the commit, whether the
+    source differed from it (results and figures being rewritten do not
+    count), a SHA-256 of that difference so a dirty run is still identified,
+    the version and the command line."""
+    import hashlib
     import subprocess
     try:
         commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False).stdout.strip()
-        dirty = bool(subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], capture_output=True,
-                                    text=True, check=False).stdout.strip())
+        diff = subprocess.run(["git", "diff", "HEAD", "--", *SOURCE_PATHS], capture_output=True, check=False).stdout
+        dirty = bool(diff)
+        diff_sha = hashlib.sha256(diff).hexdigest() if diff else None
     except OSError:
-        commit, dirty = None, None
+        commit, dirty, diff_sha = None, None, None
     from . import crypto
-    return {"version": __version__, "commit": commit or None, "worktree_dirty": dirty, "argv": sys.argv[1:],
-            "signing": dict(crypto.SIGNING)}
+    return {"version": __version__, "commit": commit or None, "source_dirty": dirty, "source_diff_sha256": diff_sha,
+            "argv": sys.argv[1:], "signing": dict(crypto.SIGNING)}
+
+
+def _stamp(res: dict, calibration: dict | None) -> dict:
+    """Put the provenance and the cost calibration inside a result (G09)."""
+    res["provenance"] = _provenance()
+    if calibration is not None:
+        res["calibration"] = calibration
+    return res
 
 
 def cmd_recycling_sumo(args: argparse.Namespace) -> int:
@@ -250,21 +266,19 @@ def cmd_recycling_sumo(args: argparse.Namespace) -> int:
     out, figs = Path(args.out), Path(args.figures)
     if len(traces) > 1:
         res = exs.exp_sumo_realizations(traces, args.corridor, args.name, seeds=seeds[:2], rounds=2 if args.quick else args.rounds)
-        _dump(res, out / f"SUMO_realizations_{args.name}.json")
+        _dump(_stamp(res, calibration), out / f"SUMO_realizations_{args.name}.json")
         print(json.dumps(res["attack_free_link_rate_across_realizations"], indent=1))
         return 0
     if args.returns:
         res = exs.exp_sumo_returns(traces[0], args.corridor, args.name, seeds=seeds[:5], rounds=2 if args.quick else args.rounds)
-        _dump(res, out / f"SUMO_returns_{args.name}.json")
+        _dump(_stamp(res, calibration), out / f"SUMO_returns_{args.name}.json")
         for c in res["cells"]:
             print(c["return_prob"], c["return_delay_rounds"], c["mode"], c["stockouts"]["mean"], c["tracker_link_rate"]["mean"])
         return 0
     res = exs.exp_sumo(traces[0], args.corridor, args.name, seeds=seeds, rounds=2 if args.quick else args.rounds,
                        strategies=("S2",) if args.quick else ("S1", "S2", "S3"),
                        modes=("recycle", "rekey") if args.quick else exs.ISSUANCE_MODES)
-    res["calibration"] = calibration
-    res["provenance"] = _provenance()
-    _dump(res, out / f"SUMO_{args.name}.json")
+    _dump(_stamp(res, calibration), out / f"SUMO_{args.name}.json")
     plots_recycling.fig_sumo(res, figs / f"SUMO_{args.name}.png")
     info = res["trace_info"]
     print(f"{res['experiment']}: window {info['window_vehicles_seen']} vehicles, {info['window_density_per_km']:.1f} veh/km "

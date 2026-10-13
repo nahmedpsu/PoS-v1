@@ -35,6 +35,7 @@ class Evidence:
     histories: dict[str, list[str]] = field(default_factory=dict)                # vid -> pids in order
     truth_of_pid: dict[str, str] = field(default_factory=dict)
     pid_seconds: dict[str, float] = field(default_factory=dict)
+    driven_seconds: float = 0.0                                                  # vehicle-seconds on the road
     group_size: int = 3                                                          # cloud's guess of pseudonyms per vehicle
 
 
@@ -72,7 +73,7 @@ def link(ev: Evidence, entities: list[str], member: str | None = None) -> dict:
     for e in entities:
         for a, b in edges_for(e, ev, member):
             uf.union(a, b)
-    m = cluster_metrics(uf, ev.histories, ev.truth_of_pid, ev.pid_seconds)
+    m = cluster_metrics(uf, ev.histories, ev.truth_of_pid, ev.pid_seconds, ev.driven_seconds or None)
     m["entities"] = list(entities)
     return m
 
