@@ -194,7 +194,7 @@ Fresh issuance with vehicle-generated keys dominates it. Version 3.5.0 answers a
 external review of 3.4.0: disjoint honest and attacker counts, not-applicable cells
 instead of 0 % or 100 %, immutable retained credentials (which makes short
 certificate lifetimes matter over 600 s), attack-free privacy with equivalence tests,
-identity attribution per driven second, measured CPU costs, a standards-based size
+identity attribution per observed beacon-second, measured CPU costs, a standards-based size
 model, SUMO attackers drawn from the simulated window, and pinned reproduction.
 Version 3.6.0 answers the follow-up review: every misbehaviour report route is
 counted, attackers keep every credential they held, exposure is per contiguous
