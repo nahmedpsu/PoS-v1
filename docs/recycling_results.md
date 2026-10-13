@@ -78,9 +78,51 @@ about 92 honest vehicles and 5 attackers per run.
 
 ## E1r. A stricter revocation rule delays the wrongful revocations, it does not prevent them
 
-*Being rerun at 3.5.0. The 3.4.0 figures for this section counted revoked
-attackers among the honest vehicles (R01) and are withdrawn; the new table will
-replace this note.*
+E1 revokes on the first clone report. `pop-sim recycling --sensitivity` makes the PM
+wait for k reports from at least m distinct RSUs before it asks the PKI to revoke
+(`revocation_reports`, `revocation_distinct_rsus`), for seven rules, S1 and S2 at
+5 % former holders, plausibility on, 900 s certificates, ten seeds, over 120 s and
+600 s. The other side of the trade is measured on the E2 vehicle (a genuine
+misbehaver replaying its own pseudonyms, oracle attribution): how long the rule lets
+it run before it is revoked. Honest vehicles are counted alone (91.5 per run).
+
+| Rule (reports / distinct RSUs) | Honest vehicles revoked by S1, 120 s / 600 s | by S2, 120 s / 600 s | Reports naming the innocent holder, S1, 600 s | Genuine misbehaver revoked after (600 s horizon) |
+|---|---|---|---|---|
+| 1 / 1 (E1) | 31.8 / 89.6 | 6.0 / 64.3 | 634 | 60 s |
+| 2 / 1 | 31.8 / 89.6 | 5.9 / 63.4 | 634 | 90 s |
+| 3 / 1 | 31.8 / 89.6 | 6.0 / 65.0 | 634 | 120 s |
+| 5 / 1 | 31.4 / 87.9 | 5.5 / 61.5 | 597 | 180 s |
+| 2 / 2 | 10.9 / 83.7 | 0.6 / 43.1 | 1,216 | 126 s (102 to 159) |
+| 3 / 2 | 10.9 / 83.7 | 0.6 / 44.3 | 1,216 | 138 s (120 to 165) |
+| 3 / 3 | 2.3 / 83.8 | 0 / 26.1 | 2,123 | 198 s (153 to 261) |
+
+Over 600 s S1 revokes 98 % of the honest vehicles under the first-report rule and
+91 % under the three-RSU rule; 4 of the 5 attackers are revoked as well under every
+rule.
+
+* Counting reports changes nothing. A shadowed holder is reported on every message
+  the forger sends under its pseudonym, so five reports arrive in the same round as
+  the first; the 120 s and 600 s counts are the same from one to five reports.
+* Requiring distinct RSUs slows it down: three RSUs cut S1's wrongful revocations at
+  120 s from 31.8 to 2.3. At 600 s they are back to 84 of 91.5, because the victim
+  drives past more RSUs and each one that hears the forger reports it. The rule
+  delays the wrongful revocation by the time it takes to pass two more RSUs.
+* The wrongful reports grow with the stricter rule (634 to 2,123 per run): the
+  victims that are not yet revoked keep being reported.
+* The price on the other side: the genuine misbehaver, revoked 60 s into the run
+  under the first-report rule, runs for 198 s (up to 261 s) under the three-RSU rule,
+  and is still caught within 600 s at every seed.
+
+Two caveats from the review apply to this table (scope in
+[recycling.md](recycling.md#scope-after-the-external-review-of-v340-version-350)):
+the RSUs share one clone-check history, so a multi-RSU quorum is correlated evidence,
+not independent witnesses (R10); and reports are handled at 30 s round boundaries
+while the misbehaver replays once per round and a former holder signs every second,
+so the latencies mix the rule with batching and workload (R11). The failure is in the
+attribution, not in the threshold: no count of reports naming the wrong vehicle makes
+them name the right one.
+
+![E1r](../figures/recycling/E1r.png)
 
 ## E2. Revocation does not reach other vehicles (RQ2)
 
