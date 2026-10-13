@@ -89,10 +89,14 @@ def _signature_algorithm():
 _SIGN_ALG = _signature_algorithm()
 
 
+SIGNING = {"deterministic_available": getattr(_SIGN_ALG, "deterministic_signing", False), "randomized_fallbacks": 0}
+
+
 def sign(sk: ec.EllipticCurvePrivateKey, data: bytes) -> bytes:
     try:
         return sk.sign(data, _SIGN_ALG)
     except Exception:  # noqa: BLE001 - OpenSSL builds without RFC 6979 support
+        SIGNING["randomized_fallbacks"] += 1          # recorded in provenance: outputs not byte-identical (R24)
         return sk.sign(data, ec.ECDSA(hashes.SHA256()))
 
 

@@ -87,8 +87,9 @@ def attack_seed_grinding(n_honest: int = 9, budgets=(1, 4, 16, 64), rounds: int 
     value for block i+1 is small.  Possible when the seed is the block hash;
     impossible when the seed is the previous winner's VRF output."""
     rng = random.Random(seed)
-    honest = [vrf.generate_vrf_keypair(bits) for _ in range(n_honest)]
-    attacker = vrf.generate_vrf_keypair(bits)
+    key_rng = random.Random(f"grinding-keys:{seed}")    # keys from the seed: the bench is reproducible
+    honest = [vrf.generate_vrf_keypair(bits, rng=key_rng) for _ in range(n_honest)]
+    attacker = vrf.generate_vrf_keypair(bits, rng=key_rng)
     results = {}
     for mode in ("block_hash", "chained_vrf"):
         for budget in budgets:

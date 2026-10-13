@@ -46,6 +46,12 @@ from .v2.tracker_kalman import make_tracker
 from .v2.v2v import V2VLayer
 from .vrf import generate_vrf_keypair
 
+DEFAULT_OP_COSTS: list[OpCosts] = [OpCosts()]   # replaced by measured coefficients via set_op_costs (review R17)
+
+
+def set_op_costs(costs: OpCosts) -> None:
+    DEFAULT_OP_COSTS[0] = costs
+
 CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw", "popv2")
 ISSUANCE_MODES = ("recycle", "fresh", "fresh_vgk", "rekey", "window")
 
@@ -70,7 +76,9 @@ class ITSConfig:
     road: RoadConfig | None = None       # mobility parameters (n_rsu is forced to n_pm * rsus_per_pm)
     round_seconds: int = 30              # simulated seconds per shuffle round in mobility mode
     silent_period: float = 0.0           # seconds without beacons after a pseudonym change
-    position_noise_m: float = 0.0        # GPS error added to what the eavesdropper sees
+    position_noise_m: float = 0.0        # observer error added to what the eavesdropper sees (on top of gps_noise_m)
+    gps_noise_m: float = 0.0             # sensor error in the position a vehicle measures and signs (review R08)
+    gps_noise_corr: float = 0.9          # AR(1) correlation of that error from one second to the next
     forecast_alpha: float = 0.5          # EMA weight of the RSU demand forecast
     safety_stock: float = 0.0            # extra fraction of sets an RSU asks for above its forecast
     adversary_gate_m: float = 8.0        # tracking adversary's matching gate
@@ -79,7 +87,11 @@ class ITSConfig:
     attribution: str = "oracle"          # "oracle": RSU knows the true sender; "ledger": attributes by ledger holder
     v2v: bool = False                    # vehicle-to-vehicle receivers (certificate + signature, no ledger)
     v2v_range_m: float = 300.0
-    v2v_plausibility: bool = False       # receivers apply the local two-places-at-once rule
+    v2v_plausibility: bool = False
+    v2v_detectors: tuple = ("ssc",)      # plausibility detectors at receivers: ssc, art, kin (review R09)
+    v2v_allowance_m: float = 25.0        # ssc: distance allowed on top of max speed x elapsed time
+    v2v_kin_tolerance_m: float = 10.0    # kin: allowed deviation from the dead-reckoned position
+    v2v_loss: float = 0.0                # independent per-reception loss probability       # receivers apply the local two-places-at-once rule
     former_holders: int = 0              # A2 adversaries: vehicles that keep every key they held
     former_holder_strategy: str = "S1"   # S1 remote shadow, S2 co-located ghost, S3 gap filler
     ghost_offset_m: float = 40.0
@@ -89,6 +101,12 @@ class ITSConfig:
     shuffle_before_upload: bool = False  # PM shuffles used sets before uploading (cloud-order leak fix)
     revocation_reports: int = 1          # clone reports against a vehicle before the PM asks the PKI to revoke it
     revocation_distinct_rsus: int = 1    # ... and from at least this many different RSUs
+    rsu_history: str = "shared"          # clone-check history: "shared" ledger state or "local" per RSU (review R10)
+    report_processing: str = "round"     # "round": PM acts at round ends; "continuous": every second (review R11)
+    report_delay_s: float = 1.0          # continuous: seconds for a report to reach the PM
+    malicious_replay: str = "per_round"  # genuine misbehaver replays "per_round" or "per_second" (matched workload, R11)
+    departed_return_prob: float = 1.0    # trace roads: chance a departing vehicle's pseudonyms ever come back (review R21)
+    departed_return_delay_rounds: int = 0  # ... and how many rounds later they reach an RSU
     insider_forgery: bool = False        # E3b: each infrastructure entity signs with keys it holds
     insider_strategy: str = "offset"     # "offset": ghost_offset_m from the holder; "near": within the 25 m
                                          # same-second tolerance; "silent": during the holder's silent period
@@ -102,6 +120,12 @@ class ITSConfig:
             raise ValueError("attribution must be 'oracle' or 'ledger'")
         if self.issuance not in ISSUANCE_MODES:
             raise ValueError(f"issuance must be one of {ISSUANCE_MODES}")
+        if self.rsu_history not in ("shared", "local"):
+            raise ValueError("rsu_history must be 'shared' or 'local'")
+        if self.report_processing not in ("round", "continuous"):
+            raise ValueError("report_processing must be 'round' or 'continuous'")
+        if self.malicious_replay not in ("per_round", "per_second"):
+            raise ValueError("malicious_replay must be 'per_round' or 'per_second'")
         if self.former_holder_strategy not in STRATEGIES:
             raise ValueError(f"former_holder_strategy must be one of {STRATEGIES}")
         if self.insider_strategy not in ("offset", "near", "silent"):
@@ -207,9 +231,19 @@ class ITSSimulation:
         self.pm_domains: dict[str, list[tuple[str, str]]] = {}
         self.cloud_uploads: list[list[str]] = []
         self.pki_reports: list[tuple[str, str]] = []
+        self.first_report_at: dict[str, float] = {}           # vehicle -> time of the first report against it (R11)
+        self.first_replay_at: dict[str, float] = {}           # genuine misbehaver -> time of its first replay (R11)
         self.report_tally: dict[str, list[dict]] = {}        # vehicle -> clone reports received so far (revocation rule)
         self.present_vehicle_steps = 0                       # sum over driven seconds of vehicles on the road (traces: not all are)
         self.departed_returns = 0                            # pseudonyms returned by vehicles that left the corridor
+        self.retained_valid: list[tuple[float, int, int]] = []   # (time, unexpired retained credentials, retained)
+        self.departed_lost = 0                               # pseudonyms that never came back from departed vehicles
+        self._pending_returns: list[tuple[int, object, list]] = []   # (due round, rsu, pseudonyms)
+        self.attacker_present_steps = 0                      # former-holder vehicle-seconds on the road (review R22)
+        self.return_rng = random.Random(cfg.seed ^ 0x2E7)
+        self.gps_rng = random.Random(cfg.seed ^ 0x6B5)       # sensor error, independent of the protocol's randomness
+        self._gps_err: dict[int, float] = {}
+        self.attack_opportunities = 0                        # (former holder, retained credential, second) checked
         self.insider_stats: dict[str, dict] = {}             # E3b: per entity, key custody share and forgery outcome
         self.driven_steps = 0
         self.road: Road | None = None
@@ -219,9 +253,9 @@ class ITSSimulation:
         self._build()
         # work done at set-up (registration, initial sets) is reported separately from steady-state work
         self.setup_load = {"pki": self.pki.load.to_dict(),
-                           "pm": {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications")},
-                           "rsu": {k: sum(r.load.to_dict()[k] for r in self.rsus) for k in ("signatures", "keygens", "bytes", "verifications")},
-                           "vehicles": {k: sum(v.load.to_dict()[k] for v in self.vehicles) for k in ("signatures", "keygens", "bytes", "verifications")}}
+                           "pm": {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions")},
+                           "rsu": {k: sum(r.load.to_dict()[k] for r in self.rsus) for k in ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions")},
+                           "vehicles": {k: sum(v.load.to_dict()[k] for v in self.vehicles) for k in ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions")}}
 
     # ------------------------------------------------------------------
     def _build(self) -> None:
@@ -236,6 +270,8 @@ class ITSSimulation:
             for j in range(cfg.rsus_per_pm):
                 rsu = RSU(f"RSU-{i+1}.{j+1}", pm, self.rng)
                 rsu.attribution = cfg.attribution
+                if cfg.rsu_history == "local":
+                    rsu.local_history = {}
                 pm.rsus.append(rsu)
                 self.rsus.append(rsu)
                 if not cfg.mobility:
@@ -269,14 +305,17 @@ class ITSSimulation:
         for v in self.rng.sample(self.vehicles, cfg.malicious_vehicles):
             v.malicious = True
         if cfg.former_holders:
-            honest = [v for v in self.vehicles if not v.malicious]
+            window = getattr(self.road, "window_ids", None)       # traces: only vehicles present in the evaluated window
+            honest = [v for v in self.vehicles if not v.malicious and (window is None or v.index in window)]
             for v in self.rng.sample(honest, min(cfg.former_holders, len(honest))):
                 v.former_holder = True
             self.former = FormerHolderAdversary(cfg.former_holder_strategy, cfg.ghost_offset_m, cfg.v2v_range_m)
         if cfg.mobility and cfg.v2v:
             self.v2v = V2VLayer(self.pki.keys.pk, self.wrap_m, cfg.v2v_range_m, cfg.v2v_plausibility,
                                 mode="holder" if cfg.issuance in ("rekey", "window") else "pki",
-                                pm_cert_check=self.pki.verify_pm_cert)
+                                pm_cert_check=self.pki.verify_pm_cert, detectors=tuple(cfg.v2v_detectors),
+                                allowance_m=cfg.v2v_allowance_m, kin_tolerance_m=cfg.v2v_kin_tolerance_m,
+                                loss=cfg.v2v_loss, seed=cfg.seed)
 
         # Alg. 4 steps 4-6: PKI generates the pseudonym sets and broadcasts them
         # to the PMs, encrypted with the PM's public key and signed by PKI.
@@ -334,6 +373,18 @@ class ITSSimulation:
             return not self.equivocation.observe(block.proof, block.hash or block.compute_hash())
         return True
 
+    def _measured_x(self, vid: int, x: float) -> float:
+        """True position plus an AR(1) GPS error of standard deviation
+        ``gps_noise_m`` (review R08); the true position when it is zero."""
+        sd = self.cfg.gps_noise_m
+        if not sd:
+            return x
+        rho = self.cfg.gps_noise_corr
+        prev = self._gps_err.get(vid)
+        e = self.gps_rng.gauss(0, sd) if prev is None else rho * prev + (1 - rho * rho) ** 0.5 * self.gps_rng.gauss(0, sd)
+        self._gps_err[vid] = e
+        return (x + e) % self.wrap_m
+
     def _return_departed(self) -> None:
         """A vehicle that left the corridor during the round (trace roads only)
         returns everything it holds, used or not, through the RSU it was last in:
@@ -343,15 +394,30 @@ class ITSSimulation:
         if not self.cfg.mobility or self.road is None:
             return
         present = {mv.vid for mv in self.road.vehicles}
+        round_no = len(self.rounds)
         for rsu in self.rsus:
             for v in rsu.vehicles:
                 if v.index in present:
                     continue
-                held = v.pseudonyms + ([v.current] if v.current is not None else [])
-                if held:
+                # everything the departed vehicle carries: unused sets, the one in use, and used ones
+                held = v.pseudonyms + ([v.current] if v.current is not None else []) + v.used
+                if not held:
+                    continue
+                v.pseudonyms, v.current, v.used = [], None, []
+                if self.return_rng.random() >= self.cfg.departed_return_prob:
+                    self.departed_lost += len(held)            # never returned: stays allotted in the ledger
+                elif self.cfg.departed_return_delay_rounds <= 0:
                     v.used.extend(held)
-                    v.pseudonyms, v.current = [], None
                     self.departed_returns += len(held)
+                else:
+                    self._pending_returns.append((round_no + self.cfg.departed_return_delay_rounds, rsu, held))
+        due = [x for x in self._pending_returns if x[0] <= round_no]
+        self._pending_returns = [x for x in self._pending_returns if x[0] > round_no]
+        for _, rsu, held in due:                               # returned late, through the RSU last seen
+            for p in held:
+                rsu.used.append((p, {}))
+                self.ledger.mark_used(p.pid)
+            self.departed_returns += len(held)
 
     def _place_vehicles(self) -> None:
         """Mobility mode: RSU membership follows the vehicles' positions."""
@@ -404,6 +470,8 @@ class ITSSimulation:
             for rsu in pm.rsus:
                 payload = {"rsu": rsu.rsu_id, "pids": [p.pid for p in rsu.shuffled_sets]}
                 txs.append(Transaction.create("allot", rsu.keys, pm.keys.pk, payload))
+                rsu.load.signatures += 1                  # review R17: RSU block transactions were not counted
+                rsu.load.encryptions += 1
             outcome, n = self._mine(pm.rsu_chain, pm.rsus, txs)
             cpu += outcome.cpu_seconds
             blocks += 1
@@ -504,7 +572,7 @@ class ITSSimulation:
                         messages += 1
                         if not rsu.receive_message(v, msg):
                             rejected += 1
-        self._process_reports()
+        self._process_reports(clock.now() if self.cfg.report_processing == "continuous" else None)
         self._return_departed()
 
         # 2. Algorithm 5 lines 7-9: RSUs collect used sets, record them as
@@ -519,6 +587,8 @@ class ITSSimulation:
                 payload = {"rsu": rsu.rsu_id,
                            "used": [{"pid": p.pid, "status": s} for p, s in rsu.used]}
                 txs.append(Transaction.create("used", rsu.keys, pm.keys.pk, payload))
+                rsu.load.signatures += 1                  # review R17: RSU block transactions were not counted
+                rsu.load.encryptions += 1
             outcome, n = self._mine(pm.rsu_chain, pm.rsus, txs)
             rsu_cpu += outcome.cpu_seconds
             rsu_blocks += 1
@@ -612,6 +682,7 @@ class ITSSimulation:
             clock.advance(1.0)
             now = clock.now()                     # one time base for messages, certificates and receivers
             self.present_vehicle_steps += len(road.vehicles)
+            self.attacker_present_steps += sum(1 for mv in road.vehicles if by_vid[mv.vid].former_holder)
             self.driven_steps += 1
             beacons: list[Beacon] = []
             positions = {mv.vid: mv.x for mv in road.vehicles}
@@ -632,7 +703,8 @@ class ITSSimulation:
                         self.truth_of_node.setdefault(node, v.vehicle_id)
                 if self.sim_time < silent_until.get(mv.vid, 0.0):
                     continue
-                msg = v.beacon(mv.x, mv.v, mv.direction, now)
+                x_tx = self._measured_x(mv.vid, mv.x)          # what the vehicle measures and signs (R08)
+                msg = v.beacon(x_tx, mv.v, mv.direction, now)
                 if msg is None:
                     continue
                 messages += 1
@@ -647,23 +719,31 @@ class ITSSimulation:
                     acc, _ = self.v2v.deliver(msg, mv.x, positions, now, exclude=mv.vid)
                     if v.revoked and acc:
                         self.revoked_accepted.setdefault(v.vehicle_id, []).append(now)
-                x_seen = (mv.x + self.noise_rng.gauss(0, cfg.position_noise_m)) % self.wrap_m \
-                    if cfg.position_noise_m else mv.x
+                x_seen = (x_tx + self.noise_rng.gauss(0, cfg.position_noise_m)) % self.wrap_m \
+                    if cfg.position_noise_m else x_tx
                 beacons.append(Beacon(self.sim_time, msg.pid, x_seen, mv.v, mv.direction, mv.rsu, mv.vid, node))
-                if v.malicious and step == period - 1:
+                replay_now = step == period - 1 if cfg.malicious_replay == "per_round" else True
+                if v.malicious and replay_now:
                     replay = v.replay_used()
                     if replay is not None:
+                        self.first_replay_at.setdefault(v.vehicle_id, now)
                         messages += 1
                         if not rsu.receive_message(v, replay):
                             rejected += 1
             if self.former is not None:
-                messages += self._former_holder_step(by_vid, positions, holder_x, now)
+                messages += self._former_holder_step(by_vid, positions, holder_x, now, beacons)
             if cfg.insider_forgery:
                 messages += self._insider_step(by_vid, positions, now, step, silent_until)
+            if cfg.report_processing == "continuous":
+                self._process_reports(now)
             self.adversary.observe(beacons)
             pairs = self.adversary.linked_pairs
             self.tracker_nodes.extend(pairs[self._tracker_seen:])        # beacons carry their holding ids
             self._tracker_seen = len(pairs)
+        # retained credentials still unexpired (review R02): sampled once per round
+        held = [k for v in self.vehicles if v.former_holder or v.malicious for k in v.kept_keys]
+        if held:
+            self.retained_valid.append((self.sim_time, sum(k.expiry >= clock.now() for k in held), len(held)))
         # retire the pseudonym in use so it is returned with the others
         for v in self.vehicles:
             if v.current is None:
@@ -755,7 +835,8 @@ class ITSSimulation:
                 st["holder_blamed"] += 1
         return sent
 
-    def _former_holder_step(self, by_vid: dict, positions: dict, holder_x: dict, now: float) -> int:
+    def _former_holder_step(self, by_vid: dict, positions: dict, holder_x: dict, now: float,
+                            beacons: list | None = None) -> int:
         """One second of the A2 adversary: every former holder tries every key
         it kept, by the configured strategy, over V2V and towards its RSU."""
         cfg = self.cfg
@@ -766,6 +847,7 @@ class ITSSimulation:
             if not a.former_holder or a.revoked:
                 continue
             for p in list(a.kept_keys):
+                self.attack_opportunities += 1
                 fm = self.former.forge(a, mv.x, p, self.ledger, self.wrap_m, holder_x, now,
                                        mv.v, mv.direction, self.ledger.holder_cert.get(p.pid))
                 if fm is None:
@@ -780,7 +862,14 @@ class ITSSimulation:
                 for rep in rsu.pm.misbehaviour_reports[before:]:
                     if fm.victim_vid and rep["vehicle"] == fm.victim_vid:
                         self.former.stats.victims_blamed += 1
+                        self.former.stats.victims_blamed_ids.add(fm.victim_vid)
                 self.former.record(fm, acc, rx, rsu_ok, now)
+                if beacons is not None:
+                    # the eavesdropper hears forged CAMs too (review R14); the true sender is for scoring only
+                    x_seen = (fm.msg.position[0] + self.noise_rng.gauss(0, cfg.position_noise_m)) % self.wrap_m \
+                        if cfg.position_noise_m else fm.msg.position[0]
+                    beacons.append(Beacon(self.sim_time, fm.msg.pid, x_seen, fm.msg.speed, int(fm.msg.direction),
+                                          mv.rsu, mv.vid, f"{fm.msg.pid}#forged"))
         return sent
 
     def _revocation_due(self, vid: str) -> bool:
@@ -791,14 +880,21 @@ class ITSSimulation:
         return (len(reps) >= self.cfg.revocation_reports and
                 len({r["rsu"] for r in reps}) >= self.cfg.revocation_distinct_rsus)
 
-    def _process_reports(self) -> None:
+    def _process_reports(self, now: float | None = None) -> None:
         """PM -> CA: a vehicle caught reusing a pseudonym has its certificate
-        revoked once the revocation rule is met."""
+        revoked once the revocation rule is met.  With ``now`` (continuous
+        processing) only reports older than ``report_delay_s`` are handled,
+        oldest first; without it, everything pending (round processing)."""
         for pm in self.pms:
-            while pm.misbehaviour_reports:
-                rep = pm.misbehaviour_reports.pop()
+            due = [r for r in pm.misbehaviour_reports
+                   if now is None or r.get("t", 0.0) + self.cfg.report_delay_s <= now]
+            if not due:
+                continue
+            pm.misbehaviour_reports = [r for r in pm.misbehaviour_reports if r not in due]
+            for rep in sorted(due, key=lambda r: r.get("t", 0.0)):
                 v = next(v for v in self.vehicles if v.vehicle_id == rep["vehicle"])
                 self.report_tally.setdefault(v.vehicle_id, []).append(rep)
+                self.first_report_at.setdefault(v.vehicle_id, rep.get("t"))
                 if not v.revoked and self._revocation_due(v.vehicle_id):
                     self.pki.revoke(v.credential.cert)
                     v.revoked = True
@@ -815,6 +911,18 @@ class ITSSimulation:
         return self.rounds
 
     # ------------------------------------------------------------------
+    def population_report(self) -> dict:
+        """Disjoint population and revocation counts (review R01).  Attackers are
+        vehicles configured as former holders or as misbehaving; everyone else
+        is honest.  ``revoked_total == revoked_honest + revoked_attackers`` and
+        ``vehicles == honest + attackers`` hold by construction."""
+        attackers = [v for v in self.vehicles if v.former_holder or v.malicious]
+        honest = [v for v in self.vehicles if not (v.former_holder or v.malicious)]
+        return {"population": {"vehicles": len(self.vehicles), "honest": len(honest), "attackers": len(attackers),
+                               "revoked_total": sum(v.revoked for v in self.vehicles),
+                               "revoked_honest": sum(v.revoked for v in honest),
+                               "revoked_attackers": sum(v.revoked for v in attackers)}}
+
     def linkability_report(self) -> dict:
         """What a Global Passive Adversary sees: every safety message carries a
         pseudonym; can it chain the messages of one vehicle across rounds?"""
@@ -831,6 +939,7 @@ class ITSSimulation:
             "pids_held_by_more_than_one_vehicle": multi_holder,
             "vehicles": len(self.vehicles),
             "revoked_vehicles": sum(v.revoked for v in self.vehicles),
+            **self.population_report(),
             "flagged_messages": sum(len(r.flagged) for r in self.rsus),
             "pki_accesses": self.pki.accesses,
         }
@@ -866,20 +975,25 @@ class ITSSimulation:
                         pid_seconds=self.pid_seconds, group_size=self.cfg.pseudonyms_per_vehicle)
 
     def load_report(self, costs: OpCosts | None = None) -> dict:
-        costs = costs or OpCosts()
+        costs = costs or DEFAULT_OP_COSTS[0]
         # per-vehicle figures are normalised by the vehicles actually on the road: on
         # the synthetic ring that is every vehicle; on a trace, the mean present per second
         n = self.present_vehicle_steps / self.driven_steps if self.driven_steps else len(self.vehicles)
         secs = max(self.sim_time, 1.0)
         pki = self.pki.load.to_dict()
-        pm = {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications")}
-        rsu = {k: sum(r.load.to_dict()[k] for r in self.rsus) for k in ("signatures", "keygens", "bytes", "verifications")}
-        veh = {k: sum(v.load.to_dict()[k] for v in self.vehicles) for k in ("signatures", "keygens", "bytes", "verifications")}
+        pm = {k: sum(p.load.to_dict()[k] for p in self.pms) for k in ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions")}
+        rsu = {k: sum(r.load.to_dict()[k] for r in self.rsus) for k in ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions")}
+        veh = {k: sum(v.load.to_dict()[k] for v in self.vehicles) for k in ("signatures", "keygens", "bytes", "verifications", "encryptions", "decryptions")}
         rounds = max(1, len(self.rounds))
         steady = {ent: {k: tot[k] - self.setup_load[ent][k] for k in tot}
                   for ent, tot in (("pki", pki), ("pm", pm), ("rsu", rsu), ("vehicles", veh))}
+        cpu_range = {ent: [per_1000_vehicles_per_hour(cpu_seconds(steady[ent], costs) * f, n, secs) for f in (0.5, 2.0)]
+                     for ent in ("pki", "pm", "rsu")}
         return {
             "pki": pki, "pm": pm, "rsu": rsu, "vehicles": veh, "setup": self.setup_load, "steady_state": steady,
+            "cost_model": {**{k: getattr(costs, k) for k in ("sign", "verify", "keygen", "encrypt", "decrypt", "source")},
+                           "note": "modelled: counted cryptographic operations x per-operation coefficients"},
+            "cpu_range_x0.5_x2_per_1000_veh_h": cpu_range,
             "pki_cpu_s_per_1000_veh_h": per_1000_vehicles_per_hour(cpu_seconds(steady["pki"], costs), n, secs),
             "pm_cpu_s_per_1000_veh_h": per_1000_vehicles_per_hour(cpu_seconds(steady["pm"], costs), n, secs),
             "rsu_cpu_s_per_1000_veh_h": per_1000_vehicles_per_hour(cpu_seconds(steady["rsu"], costs), n, secs),
@@ -894,7 +1008,18 @@ class ITSSimulation:
         if self.former is not None:
             st = self.former.stats
             out["forgery"] = {**st.to_dict(), **forged_acceptance(st), "exposure": exposure_windows(st.accepted_times),
+                              "opportunities": self.attack_opportunities,
+                              "unique_victims_blamed": len(st.victims_blamed_ids),
+
                               "by_strategy": self.former.by_strategy, "strategy": self.cfg.former_holder_strategy}
+        out["retained_valid"] = [{"t": t, "valid": a, "retained": n} for t, a, n in self.retained_valid]
+        # revocation latency decomposed (review R11): misbehaviour -> first report -> decision
+        out["revocation_timing"] = {
+            vid: {"first_replay": self.first_replay_at.get(vid), "first_report": self.first_report_at.get(vid),
+                  "revoked": t, "detection_s": (self.first_report_at[vid] - self.first_replay_at[vid])
+                  if vid in self.first_replay_at and vid in self.first_report_at else None,
+                  "decision_s": (t - self.first_report_at[vid]) if vid in self.first_report_at else None}
+            for vid, t in self.revoked_at.items()}
         if self.revoked_at:
             per = {}
             for vid, t0 in self.revoked_at.items():
@@ -922,6 +1047,11 @@ class ITSSimulation:
             "recycling": self.recycling_report() if (self.cfg.mobility or self.former or self.revoked_at) else None,
             "stockouts": sum(r.stockouts for r in self.rsus),
             "departed_returns": self.departed_returns,
+            "departed_lost": self.departed_lost,
+            "attacker_vehicle_seconds": self.attacker_present_steps,
+            "vehicle_seconds": self.present_vehicle_steps,
+            "achieved_attack_share": (self.attacker_present_steps / self.present_vehicle_steps
+                                      if self.present_vehicle_steps else None),
             "tracking": self.adversary.report(self.true_changes).to_dict() if self.adversary else None,
             "anchoring": self.anchoring_report(),
             "sim_seconds": self.sim_time,

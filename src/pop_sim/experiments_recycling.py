@@ -14,10 +14,24 @@ from dataclasses import asdict
 from . import clock
 from .shuffle import ISSUANCE_MODES, ITSConfig, ITSSimulation
 from .v2 import attacks as atk
-from .v2.metrics import bootstrap_ci, wilcoxon_signed_rank
+from .v2.metrics import bootstrap_ci, paired_equivalence, pooled_percentile, wilcoxon_signed_rank
 from .v2.mobility import RoadConfig
 
 DEFAULT_SEEDS = tuple(range(1, 11))
+_CALIBRATION: dict = {}
+
+
+def calibrate(samples: int = 500) -> dict:
+    """Measure the per-operation CPU coefficients once per process and make the
+    simulator use them (review R17); returns them with the environment."""
+    if not _CALIBRATION:
+        from .shuffle import set_op_costs
+        from .v2.metrics import calibrate_op_costs
+        costs, env = calibrate_op_costs(samples)
+        set_op_costs(costs)
+        _CALIBRATION.update({"op_costs_s": {k: getattr(costs, k) for k in ("sign", "verify", "keygen", "encrypt", "decrypt")},
+                             "source": costs.source, "environment": env})
+    return dict(_CALIBRATION)
 # (clone reports needed, distinct RSUs needed) before the PM asks the PKI to revoke a vehicle
 REVOCATION_RULES = ((1, 1), (2, 1), (3, 1), (5, 1), (2, 2), (3, 2), (3, 3))
 
@@ -35,11 +49,63 @@ def _run(cfg: ITSConfig, rounds: int) -> dict:
     sim.run(rounds)
     s = sim.summary()
     r = s["recycling"]
-    out = {"vehicles": len(sim.vehicles), "revoked": s["linkability"]["revoked_vehicles"], "stockouts": s["stockouts"],
+    pop = s["linkability"]["population"]
+    assert pop["revoked_total"] == pop["revoked_honest"] + pop["revoked_attackers"]
+    assert pop["vehicles"] == pop["honest"] + pop["attackers"]
+    pop = {**pop, "revoked_honest_share": pop["revoked_honest"] / pop["honest"] if pop["honest"] else None}
+    out = {"seed": cfg.seed, "vehicles": len(sim.vehicles), "population": pop, "stockouts": s["stockouts"],
            "tracking": s["tracking"], "v2v": r["v2v"], "load": r["load"], "insider": r.get("insider"),
            "forgery": r.get("forgery"), "revoked_persistence": r.get("revoked_persistence"),
+           "retained_valid": r.get("retained_valid"),
            "rejected_messages": sum(x["rejected_messages"] for x in s["rounds"])}
     return out
+
+
+def seed_record(r: dict) -> dict:
+    """The per-seed numerators and denominators behind every aggregate (review
+    R16): population and revocations, forgery counts with their opportunities,
+    exposure windows, tracker counts."""
+    f = r.get("forgery") or {}
+    t = r.get("tracking") or {}
+    rec = {"seed": r.get("seed"), "population": r.get("population"), "stockouts": r.get("stockouts")}
+    if f:
+        rec["forgery"] = {k: f.get(k) for k in ("opportunities", "sent", "accepted_v2v", "receivers_total",
+                                                 "receivers_accepting", "accepted_rsu", "victims_blamed",
+                                                 "unique_victims_blamed")}
+        rec["forgery"]["exposure_windows_s"] = (f.get("exposure") or {}).get("windows", [])
+        rv = r.get("retained_valid") or []
+        rec["forgery"]["retained_valid_end"] = rv[-1] if rv else None
+    if t:
+        rec["tracking"] = {k: t.get(k) for k in ("true_changes", "pseudonym_changes", "changes_linked_correctly",
+                                                  "changes_linked_wrongly", "changes_lost", "relabel_captures")}
+    return rec
+
+
+def _revocation_fields(rows: list[dict]) -> dict:
+    """Disjoint revocation counts (review R01): honest, attackers and total,
+    with the honest denominator, never a total labelled honest."""
+    return {"population_honest": _agg(rows, ["population", "honest"]),
+            "population_attackers": _agg(rows, ["population", "attackers"]),
+            "honest_revoked": _agg(rows, ["population", "revoked_honest"]),
+            "honest_revoked_share": _agg(rows, ["population", "revoked_honest_share"]),
+            "attackers_revoked": _agg(rows, ["population", "revoked_attackers"]),
+            "total_revoked": _agg(rows, ["population", "revoked_total"])}
+
+
+def _forgery_fields(rows: list[dict]) -> dict:
+    """Forgery outcomes with denominators (review R02, R16).  Rates are None
+    where nothing was attempted; the exposure p95 is pooled over all seeds."""
+    windows = [w for r in rows for w in ((r.get("forgery") or {}).get("exposure") or {}).get("windows", [])]
+    return {"opportunities": _agg(rows, ["forgery", "opportunities"]),
+            "forged_sent": _agg(rows, ["forgery", "sent"]),
+            "v2v_message_rate": _agg(rows, ["forgery", "v2v_message_rate"]),
+            "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"]),
+            "rsu_rate": _agg(rows, ["forgery", "rsu_rate"]),
+            "exposure_mean_s": _agg(rows, ["forgery", "exposure", "mean"]),
+            "exposure_p95_s_pooled": pooled_percentile(windows, 0.95),
+            "exposure_windows_n": len(windows),
+            "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
+            "unique_victims_blamed": _agg(rows, ["forgery", "unique_victims_blamed"])}
 
 
 def _agg(rows: list[dict], path: list[str]) -> dict:
@@ -90,15 +156,8 @@ def exp_e1_impersonation(seeds=DEFAULT_SEEDS, rounds: int = 4, strategies=("S1",
                         former_holder_strategy=c["strategy"], v2v_plausibility=c["plausibility"],
                         pseudonym_lifetime=float(c["lifetime"]))
             rows.append(_run(cfg, rounds))
-        results.append({**c, "seeds": len(rows),
-                        "forged_sent": _agg(rows, ["forgery", "sent"]),
-                        "v2v_message_rate": _agg(rows, ["forgery", "v2v_message_rate"]),
-                        "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"]),
-                        "rsu_rate": _agg(rows, ["forgery", "rsu_rate"]),
-                        "exposure_mean_s": _agg(rows, ["forgery", "exposure", "mean"]),
-                        "exposure_p95_s": _agg(rows, ["forgery", "exposure", "p95"]),
-                        "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
-                        "honest_revoked": _agg(rows, ["revoked"])})
+        results.append({**c, "seeds": len(rows), **_forgery_fields(rows), **_revocation_fields(rows),
+                        "per_seed": [seed_record(r) for r in rows]})
     return {"experiment": "E1_impersonation", "rounds": rounds, "cells": results}
 
 
@@ -113,17 +172,31 @@ def exp_e2_revocation(seeds=DEFAULT_SEEDS, rounds: int = 4, lifetimes=(300, 900,
         for seed in seeds:
             cfg = _base(density, seed, issuance="recycle", malicious_vehicles=1, revoked_keep_transmitting=True,
                         pseudonym_lifetime=float(lt), attribution="oracle")
-            r = _run(cfg, rounds)
-            rp = r["revoked_persistence"] or {}
-            acc = [v["accepted_after"] for v in rp.values()]
-            last = [v["seconds_to_last"] for v in rp.values()]
-            rows.append({"revoked": len(rp), "accepted_after": statistics.mean(acc) if acc else 0.0,
-                         "seconds_to_last": statistics.mean(last) if last else 0.0})
-        results.append({"lifetime": lt, "seeds": len(rows),
-                        "revoked_vehicles": _agg(rows, ["revoked"]),
-                        "post_revocation_accepted": _agg(rows, ["accepted_after"]),
-                        "seconds_to_last_accepted": _agg(rows, ["seconds_to_last"])})
+            rows.append(_e2_row(_run(cfg, rounds)))
+        results.append({"lifetime": lt, "seeds": len(rows), **_e2_fields(rows)})
     return {"experiment": "E2_revocation", "rounds": rounds, "cells": results}
+
+
+def _e2_row(r: dict) -> dict:
+    """One E2 run: the misbehaving vehicle's revocation, the messages other
+    vehicles accepted from it afterwards, and its retained credentials still
+    unexpired at the end (review R04: retained copies no longer follow renewals)."""
+    rp = r["revoked_persistence"] or {}
+    acc = [v["accepted_after"] for v in rp.values()]
+    last = [v["seconds_to_last"] for v in rp.values()]
+    rv = r.get("retained_valid") or []
+    return {"seed": r.get("seed"), "population": r["population"], "misbehaver_revoked": len(rp),
+            "accepted_after": statistics.mean(acc) if acc else None,
+            "seconds_to_last": statistics.mean(last) if last else None,
+            "retained_valid_end": rv[-1] if rv else None}
+
+
+def _e2_fields(rows: list[dict]) -> dict:
+    return {"misbehaver_revoked": _agg(rows, ["misbehaver_revoked"]),
+            "honest_revoked": _agg(rows, ["population", "revoked_honest"]),
+            "post_revocation_accepted": _agg(rows, ["accepted_after"]),
+            "seconds_to_last_accepted": _agg(rows, ["seconds_to_last"]),
+            "per_seed": rows}
 
 
 # ------------------------------------------------------------------ E3
@@ -139,7 +212,9 @@ def exp_e3_insider(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), ord
             table = {}
             for entity in rows[0]["insider"]:
                 table[entity] = {m: _agg(rows, ["insider", entity, m])
-                                 for m in ("link_rate", "precision", "identity_rate", "trajectory_coverage")}
+                                 for m in ("link_rate", "precision", "pair_recall", "purity", "identity_rate",
+                                           "correct_identity_seconds", "wrong_identity_seconds",
+                                           "ambiguous_identity_seconds", "trajectory_coverage")}
             results.append({"density": d, "cloud_order": order, "seeds": len(rows), "table": table})
     return {"experiment": "E3_insider", "rounds": rounds, "cells": results}
 
@@ -185,13 +260,34 @@ def exp_e3b_insider_forgery(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float
 
 
 # ------------------------------------------------------------------ E4
+EQUIVALENCE_MARGIN = 0.01   # tracker link rate: one point, set in 3.5.0 after the earlier results (review R12)
+
+
 def exp_e4_modes(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), modes=ISSUANCE_MODES,
-                 strategy: str = "S2") -> dict:
-    """RQ4: modes against axes.  Same seed = same traffic, so paired."""
-    results = []
-    paired: dict[str, dict[str, list[float]]] = {}
+                 strategy: str = "S2", margin: float = EQUIVALENCE_MARGIN) -> dict:
+    """RQ4: modes against axes.  Same seed = same mobility, so paired.
+
+    Two privacy comparisons (review R13): ``privacy_attack_free`` runs every
+    mode with no attacker, so each mode emits the same beacons and has the same
+    pseudonym changes; the joint cells run the S2 attack, whose forgeries and
+    revocations change the emitted traffic.  Link-rate equality is tested as
+    equivalence within ``margin`` (TOST), with the paired difference and its
+    interval, on the valid pairs only.  Forgery comparisons are reported only
+    where both modes had attempts; a mode with none is not applicable."""
+    results, attack_free = [], []
+    paired: dict[str, dict[str, list]] = {}
     for d in densities:
         for mode in modes:
+            # attack-free privacy (matched emission opportunities)
+            af = [_run(_base(d, seed, issuance=mode, v2v_plausibility=True, pseudonym_lifetime=900.0), rounds)
+                  for seed in seeds]
+            attack_free.append({"density": d, "mode": mode, "seeds": len(af),
+                                "tracker_link_rate": _agg(af, ["tracking", "linking_success"]),
+                                "true_changes": _agg(af, ["tracking", "true_changes"]),
+                                "tracker_relabel_captures": _agg(af, ["tracking", "relabel_captures"]),
+                                "per_seed": [seed_record(r) for r in af]})
+            paired.setdefault(f"{d}/attack_free/tracker_link_rate", {})[mode] = [
+                (r.get("tracking") or {}).get("linking_success") for r in af]
             rows = []
             for seed in seeds:
                 est = int(2 * d * 5)
@@ -200,35 +296,52 @@ def exp_e4_modes(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), modes
                 rows.append(_run(cfg, rounds))
             cell = {"density": d, "mode": mode, "seeds": len(rows),
                     "tracker_link_rate": _agg(rows, ["tracking", "linking_success"]),
-                    "tracker_link_rate_true": _agg(rows, ["tracking", "linking_success_true"]),
-                    "tracker_changes_counted": _agg(rows, ["tracking", "pseudonym_changes"]),
                     "true_changes": _agg(rows, ["tracking", "true_changes"]),
                     "tracker_relabel_captures": _agg(rows, ["tracking", "relabel_captures"]),
-                    "forged_sent": _agg(rows, ["forgery", "sent"]),
-                    "forged_v2v_accepted": _agg(rows, ["forgery", "accepted_v2v"]),
-                    "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
+                    "forged_accepted_v2v": _agg(rows, ["forgery", "accepted_v2v"]),
+                    **_forgery_fields(rows), **_revocation_fields(rows),
                     "insider_pm_link_rate": _agg(rows, ["insider", "pm", "link_rate"]),
-                    "insider_cloud_link_rate": _agg(rows, ["insider", "cloud", "link_rate"]),
+                    # fresh modes never upload to the cloud: that channel does not exist there (review R23)
+                    "insider_cloud_link_rate": (_agg(rows, ["insider", "cloud", "link_rate"])
+                                                if mode not in ("fresh", "fresh_vgk") else _agg([], [])),
+                    "insider_cloud_channel": "absent" if mode in ("fresh", "fresh_vgk") else "uploads",
                     "pki_cpu_s_per_1000_veh_h": _agg(rows, ["load", "pki_cpu_s_per_1000_veh_h"]),
                     "pm_cpu_s_per_1000_veh_h": _agg(rows, ["load", "pm_cpu_s_per_1000_veh_h"]),
                     "pki_signatures": _agg(rows, ["load", "steady_state", "pki", "signatures"]),
                     "pm_signatures": _agg(rows, ["load", "steady_state", "pm", "signatures"]),
                     "vehicle_keygens_per_vehicle_per_round": _agg(rows, ["load", "vehicle_keygens_per_vehicle_per_round"]),
                     "bytes_per_vehicle_per_round": _agg(rows, ["load", "bytes_per_vehicle_per_round"]),
-                    "stockouts": _agg(rows, ["stockouts"])}
+                    "stockouts": _agg(rows, ["stockouts"]),
+                    "per_seed": [seed_record(r) for r in rows]}
             results.append(cell)
-            for metric in ("tracker_link_rate", "pki_cpu_s_per_1000_veh_h", "forged_v2v_accepted"):
-                paired.setdefault(f"{d}/{metric}", {})[mode] = [
-                    (r.get("tracking") or {}).get("linking_success", 0.0) if metric == "tracker_link_rate" else
-                    r["load"]["pki_cpu_s_per_1000_veh_h"] if metric == "pki_cpu_s_per_1000_veh_h" else
-                    (r.get("forgery") or {}).get("accepted_v2v", 0) for r in rows]
-    tests = {}
+            paired.setdefault(f"{d}/joint/tracker_link_rate", {})[mode] = [
+                (r.get("tracking") or {}).get("linking_success") for r in rows]
+            paired.setdefault(f"{d}/pki_cpu_s_per_1000_veh_h", {})[mode] = [
+                r["load"]["pki_cpu_s_per_1000_veh_h"] for r in rows]
+            paired.setdefault(f"{d}/forged_accepted_v2v", {})[mode] = [
+                (r.get("forgery") or {}).get("accepted_v2v") if (r.get("forgery") or {}).get("sent") else None
+                for r in rows]
+    tests, equivalence = {}, {}
     for key, by_mode in paired.items():
-        if "recycle" in by_mode:
-            for mode, vals in by_mode.items():
-                if mode != "recycle":
-                    tests[f"{key}: recycle vs {mode}"] = wilcoxon_signed_rank(by_mode["recycle"], vals)
-    return {"experiment": "E4_modes", "rounds": rounds, "strategy": strategy, "cells": results, "paired_tests": tests}
+        if "recycle" not in by_mode:
+            continue
+        for mode, vals in by_mode.items():
+            if mode == "recycle":
+                continue
+            a, b = by_mode["recycle"], vals
+            valid = [(x, y) for x, y in zip(a, b) if x is not None and y is not None]
+            name = f"{key}: recycle vs {mode}"
+            if not valid:
+                tests[name] = {"n_valid": 0, "result": "not applicable: no attempts in at least one mode"}
+                continue
+            t = wilcoxon_signed_rank([x for x, _ in valid], [y for _, y in valid])
+            tests[name] = {**t, "n_valid": len(valid)}
+            if key.endswith("tracker_link_rate"):
+                equivalence[name] = paired_equivalence(a, b, margin)
+    from .v2.sizes import size_table
+    return {"experiment": "E4_modes", "rounds": rounds, "strategy": strategy, "equivalence_margin": margin,
+            "cells": results, "privacy_attack_free": attack_free, "paired_tests": tests, "equivalence": equivalence,
+            "size_estimate_standard": size_table()}
 
 
 # ------------------------------------------------------------------ E5
@@ -243,11 +356,9 @@ def exp_e5_fix(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float = 10, varian
                 cfg = _base(density, seed, issuance=var, former_holders=_attackers(est, 0.05), former_holder_strategy=st,
                             v2v_plausibility=False, pseudonym_lifetime=900.0)
                 rows.append(_run(cfg, rounds))
-            results.append({"variant": var, "strategy": st, "seeds": len(rows),
-                            "forged_sent": _agg(rows, ["forgery", "sent"]),
+            results.append({"variant": var, "strategy": st, "seeds": len(rows), **_forgery_fields(rows),
                             "forged_v2v_accepted": _agg(rows, ["forgery", "accepted_v2v"]),
-                            "v2v_message_rate": _agg(rows, ["forgery", "v2v_message_rate"]),
-                            "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
+                            **_revocation_fields(rows), "per_seed": [seed_record(r) for r in rows],
                             "pm_signatures": _agg(rows, ["load", "steady_state", "pm", "signatures"]),
                             "pki_signatures": _agg(rows, ["load", "steady_state", "pki", "signatures"]),
                             "vehicle_keygens_per_vehicle_per_round": _agg(rows, ["load", "vehicle_keygens_per_vehicle_per_round"]),
@@ -306,13 +417,8 @@ def exp_e1_lifetime_long(seeds=DEFAULT_SEEDS, rounds: int = 20, lifetimes=(300, 
                             former_holder_strategy=st, v2v_plausibility=True, pseudonym_lifetime=float(lt))
                 rows.append(_run(cfg, rounds))
             results.append({"strategy": st, "lifetime": lt, "seeds": len(rows), "sim_seconds": rounds * 30,
-                            "forged_sent": _agg(rows, ["forgery", "sent"]),
-                            "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"]),
-                            "rsu_rate": _agg(rows, ["forgery", "rsu_rate"]),
-                            "exposure_mean_s": _agg(rows, ["forgery", "exposure", "mean"]),
-                            "exposure_p95_s": _agg(rows, ["forgery", "exposure", "p95"]),
-                            "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
-                            "honest_revoked": _agg(rows, ["revoked"]),
+                            **_forgery_fields(rows), **_revocation_fields(rows),
+                            "per_seed": [seed_record(r) for r in rows],
                             "pki_renewals": _agg(rows, ["load", "steady_state", "pki", "signatures"]),
                             "v2v_expired_rejections": _agg(rows, ["v2v", "rejected", "certificate-expired"])})
     return {"experiment": "E1x_lifetime_long", "rounds": rounds, "cells": results}
@@ -327,16 +433,8 @@ def exp_e2_long(seeds=DEFAULT_SEEDS, rounds: int = 20, lifetimes=(300, 900, 3600
         for seed in seeds:
             cfg = _base(density, seed, issuance="recycle", malicious_vehicles=1, revoked_keep_transmitting=True,
                         pseudonym_lifetime=float(lt), attribution="oracle")
-            r = _run(cfg, rounds)
-            rp = r["revoked_persistence"] or {}
-            acc = [v["accepted_after"] for v in rp.values()]
-            last = [v["seconds_to_last"] for v in rp.values()]
-            rows.append({"revoked": len(rp), "accepted_after": statistics.mean(acc) if acc else 0.0,
-                         "seconds_to_last": statistics.mean(last) if last else 0.0})
-        results.append({"lifetime": lt, "seeds": len(rows), "sim_seconds": rounds * 30,
-                        "revoked_vehicles": _agg(rows, ["revoked"]),
-                        "post_revocation_accepted": _agg(rows, ["accepted_after"]),
-                        "seconds_to_last_accepted": _agg(rows, ["seconds_to_last"])})
+            rows.append(_e2_row(_run(cfg, rounds)))
+        results.append({"lifetime": lt, "seeds": len(rows), "sim_seconds": rounds * 30, **_e2_fields(rows)})
     return {"experiment": "E2x_long", "rounds": rounds, "cells": results}
 
 
@@ -364,16 +462,13 @@ def exp_e1_revocation_rule(seeds=DEFAULT_SEEDS, rounds: int = 4, long_rounds: in
                     cfg = _base(density, seed, issuance="recycle", former_holders=_attackers(est, share),
                                 former_holder_strategy=st, v2v_plausibility=True, pseudonym_lifetime=lifetime,
                                 revocation_reports=k, revocation_distinct_rsus=m)
-                    r = _run(cfg, n_rounds)
-                    # share of all vehicles: former holders hold recycled pseudonyms too and get blamed like anyone
-                    r["revoked_share"] = r["revoked"] / max(1, r["vehicles"])
-                    rows.append(r)
+                    rows.append(_run(cfg, n_rounds))
                 cell[f"{st}_{label}"] = {"sim_seconds": n_rounds * 30, "seeds": len(rows),
-                                         "vehicles": _agg(rows, ["vehicles"]),
-                                         "honest_revoked": _agg(rows, ["revoked"]),
-                                         "revoked_share": _agg(rows, ["revoked_share"]),
+                                         "vehicles": _agg(rows, ["vehicles"]), **_revocation_fields(rows),
                                          "victims_blamed": _agg(rows, ["forgery", "victims_blamed"]),
-                                         "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"])}
+                                         "unique_victims_blamed": _agg(rows, ["forgery", "unique_victims_blamed"]),
+                                         "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"]),
+                                         "per_seed": [seed_record(r) for r in rows]}
         # the genuine misbehaver: how long the stricter rule lets it run
         rows = []
         for seed in seeds:
@@ -385,10 +480,11 @@ def exp_e1_revocation_rule(seeds=DEFAULT_SEEDS, rounds: int = 4, long_rounds: in
             bad = next(v for v in sim.vehicles if v.malicious)
             t_rev = sim.revoked_at.get(bad.vehicle_id)
             reports = len(sim.report_tally.get(bad.vehicle_id, []))
-            rows.append({"revoked": 1.0 if t_rev is not None else 0.0,
+            # not revoked within the horizon: censored at the horizon (counted in revoked_within_horizon)
+            rows.append({"seed": seed, "revoked": 1.0 if t_rev is not None else 0.0,
                          "seconds_to_revocation": (t_rev - t0) if t_rev is not None else float(long_rounds * 30),
-                         "reports_against_it": reports})
-        cell["misbehaver"] = {"sim_seconds": long_rounds * 30, "seeds": len(rows),
+                         "censored": t_rev is None, "reports_against_it": reports})
+        cell["misbehaver"] = {"sim_seconds": long_rounds * 30, "seeds": len(rows), "per_seed": rows,
                               "revoked_within_horizon": _agg(rows, ["revoked"]),
                               "seconds_to_revocation": _agg(rows, ["seconds_to_revocation"]),
                               "reports_against_it": _agg(rows, ["reports_against_it"])}

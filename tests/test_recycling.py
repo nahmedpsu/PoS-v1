@@ -214,7 +214,7 @@ def test_exposure_windows_and_statistics():
     assert w["effect_size"] == 1.0 and w["p"] < 0.05
     assert wilcoxon_signed_rank([1, 2], [1, 2])["n"] == 0
     m = cluster_metrics(UnionFind(), {}, {}, {})
-    assert m["link_rate"] == 0.0
+    assert m["link_rate"] is None          # no pseudonym changes: not applicable, not 0 (review R16)
 
 
 # ------------------------------------------------- review follow-ups (3.2.0)

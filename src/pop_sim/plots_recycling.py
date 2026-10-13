@@ -15,10 +15,17 @@ C_V2 = "#2A7F62"
 MODE_COLORS = {"recycle": C_REF, "fresh": C_POW, "fresh_vgk": C_POW1, "rekey": C_V2, "window": C_POET}
 
 
+def _v(d, k: str = "mean") -> float:
+    """A summary statistic, NaN when not applicable (nothing measured), so a
+    0/0 cell is drawn as a gap, never as zero (review R02)."""
+    x = d.get(k) if isinstance(d, dict) else None
+    return float("nan") if x is None else float(x)
+
+
 def _ci(ax, x, cells, key, **kw):
-    y = [c[key]["mean"] for c in cells]
-    lo = [c[key]["mean"] - c[key]["lo"] for c in cells]
-    hi = [c[key]["hi"] - c[key]["mean"] for c in cells]
+    y = [_v(c[key]) for c in cells]
+    lo = [_v(c[key]) - _v(c[key], "lo") for c in cells]
+    hi = [_v(c[key], "hi") - _v(c[key]) for c in cells]
     ax.errorbar(x, y, yerr=[lo, hi], capsize=3, marker="o", **kw)
 
 
@@ -88,9 +95,9 @@ def fig_e3(res: dict, path: Path) -> Path:
         axes = [axes]
     for ax, c in zip(axes, cells):
         ents = ["tracker", "rsu", "pm", "cloud", "pki"]
-        alone = [c["table"][e]["link_rate"]["mean"] for e in ents]
-        with_tr = [c["table"]["tracker"]["link_rate"]["mean"]] + [c["table"][f"tracker+{e}"]["link_rate"]["mean"] for e in ents[1:]]
-        ident = [c["table"][e]["identity_rate"]["mean"] for e in ents]
+        alone = [_v(c["table"][e]["link_rate"]) for e in ents]
+        with_tr = [_v(c["table"]["tracker"]["link_rate"])] + [_v(c["table"][f"tracker+{e}"]["link_rate"]) for e in ents[1:]]
+        ident = [_v(c["table"][e]["identity_rate"]) for e in ents]
         x = range(len(ents))
         ax.bar([i - 0.27 for i in x], alone, width=0.27, color=C_POW, label="alone: link rate")
         ax.bar([i for i in x], with_tr, width=0.27, color=C_V2, label="with tracker: link rate")
@@ -108,16 +115,18 @@ def fig_e4(res: dict, path: Path) -> Path:
     cells = res["cells"]
     dens = sorted({c["density"] for c in cells})
     modes = [m for m in MODE_COLORS if any(c["mode"] == m for c in cells)]
-    metrics = [("tracker_link_rate", "Outside tracker link rate"), ("forged_v2v_accepted", "Forged messages accepted (V2V)"),
+    metrics = [("tracker_link_rate", "Tracker link rate, attack-free (matched traffic)"),
+               ("forged_accepted_v2v", "Forged messages accepted (V2V); gap = no attempts"),
                ("insider_pm_link_rate", "PM insider link rate"), ("pki_cpu_s_per_1000_veh_h", "PKI CPU-s per 1,000 veh per h"),
                ("pm_cpu_s_per_1000_veh_h", "PM CPU-s per 1,000 veh per h"), ("bytes_per_vehicle_per_round", "Bytes per vehicle per round")]
     fig, axes = plt.subplots(2, 3, figsize=(14, 8))
     for ax, (key, title) in zip(axes.flat, metrics):
         for i, m in enumerate(modes):
-            sub = [next(c for c in cells if c["mode"] == m and c["density"] == d) for d in dens]
+            src = res.get("privacy_attack_free") or cells if key == "tracker_link_rate" else cells
+            sub = [next(c for c in src if c["mode"] == m and c["density"] == d) for d in dens]
             xs = [j + (i - len(modes) / 2) * 0.15 for j in range(len(dens))]
-            ys = [c[key]["mean"] for c in sub]
-            err = [[c[key]["mean"] - c[key]["lo"] for c in sub], [c[key]["hi"] - c[key]["mean"] for c in sub]]
+            ys = [_v(c[key]) for c in sub]
+            err = [[_v(c[key]) - _v(c[key], "lo") for c in sub], [_v(c[key], "hi") - _v(c[key]) for c in sub]]
             ax.bar(xs, ys, width=0.15, yerr=err, capsize=2, color=MODE_COLORS[m], label=m)
         ax.set_xticks(range(len(dens)))
         ax.set_xticklabels([f"{d} veh/km" for d in dens])
@@ -135,8 +144,8 @@ def fig_e5(res: dict, path: Path) -> Path:
     for i, v in enumerate(variants):
         sub = [next(c for c in cells if c["variant"] == v and c["strategy"] == s) for s in strategies]
         xs = [j + (i - 1) * 0.25 for j in range(len(strategies))]
-        axes[0].bar(xs, [c["v2v_message_rate"]["mean"] for c in sub], width=0.25, color=MODE_COLORS[v], label=v)
-        axes[1].bar(xs, [c["pm_signatures"]["mean"] + c["pki_signatures"]["mean"] for c in sub], width=0.25, color=MODE_COLORS[v], label=v)
+        axes[0].bar(xs, [_v(c["v2v_message_rate"]) for c in sub], width=0.25, color=MODE_COLORS[v], label=v)
+        axes[1].bar(xs, [_v(c["pm_signatures"]) + _v(c["pki_signatures"]) for c in sub], width=0.25, color=MODE_COLORS[v], label=v)
     for ax, t in zip(axes, ("Forged messages accepted by V2V receivers (rate)", "Authority signatures per run (PKI + PM)")):
         ax.set_xticks(range(len(strategies)))
         ax.set_xticklabels(strategies)
@@ -153,12 +162,15 @@ def fig_summary(res: dict, path: Path) -> Path:
     modes = [m for m in MODE_COLORS if any(c["mode"] == m for c in e4)]
     rows = [next(c for c in e4 if c["mode"] == m and c["density"] == d) for m in modes]
     fig, axes = plt.subplots(1, 3, figsize=(13, 4))
-    axes[0].bar(modes, [r["forged_v2v_accepted"]["mean"] for r in rows], color=[MODE_COLORS[m] for m in modes])
-    axes[0].set_title("Forged messages accepted (A2, V2V)")
-    axes[1].bar(modes, [r["tracker_link_rate"]["mean"] for r in rows], color=[MODE_COLORS[m] for m in modes])
+    af = res["E4"].get("privacy_attack_free") or e4
+    af_rows = [next(c for c in af if c["mode"] == m and c["density"] == d) for m in modes]
+    axes[0].bar(modes, [_v(r.get("forged_accepted_v2v", r.get("forged_v2v_accepted"))) for r in rows],
+                color=[MODE_COLORS[m] for m in modes])
+    axes[0].set_title("Forged messages accepted (A2, V2V); gap = no attempts", fontsize=9)
+    axes[1].bar(modes, [_v(r["tracker_link_rate"]) for r in af_rows], color=[MODE_COLORS[m] for m in modes])
     axes[1].set_ylim(0, 1)
-    axes[1].set_title("Outside tracker link rate (A1)")
-    axes[2].bar(modes, [r["pki_cpu_s_per_1000_veh_h"]["mean"] for r in rows], color=[MODE_COLORS[m] for m in modes])
+    axes[1].set_title("Tracker link rate, attack-free (A1)", fontsize=9)
+    axes[2].bar(modes, [_v(r["pki_cpu_s_per_1000_veh_h"]) for r in rows], color=[MODE_COLORS[m] for m in modes])
     axes[2].set_title("PKI CPU-seconds per 1,000 vehicles per hour")
     fig.suptitle(f"Is pseudonym recycling ever worth it?  ({d} veh/km, {rows[0]['seeds']} seeds)")
     return _save(fig, path)
@@ -176,9 +188,9 @@ def fig_e1r(res: dict, path: Path) -> Path:
     for i, (st, label) in enumerate(series):
         key = f"{st}_{label}"
         sub = [c[key] for c in cells]
-        vals = [c["revoked_share"]["mean"] * 100 for c in sub]
-        lo = [v - c["revoked_share"]["lo"] * 100 for v, c in zip(vals, sub)]
-        hi = [c["revoked_share"]["hi"] * 100 - v for v, c in zip(vals, sub)]
+        vals = [_v(c["honest_revoked_share"]) * 100 for c in sub]
+        lo = [v - _v(c["honest_revoked_share"], "lo") * 100 for v, c in zip(vals, sub)]
+        hi = [_v(c["honest_revoked_share"], "hi") * 100 - v for v, c in zip(vals, sub)]
         off = (i - (len(series) - 1) / 2) * w
         ax.bar([xx + off for xx in x], vals, w, yerr=[lo, hi], color=C_REF if st == "S1" else C_POW,
                hatch="" if label == "short" else "//", alpha=0.65 if label == "short" else 0.95,
@@ -202,9 +214,9 @@ def fig_e1r(res: dict, path: Path) -> Path:
     ax.set_xticks(x, labels, rotation=30, ha="right")
     ax.set_ylabel(f"seconds ({cells[0]['misbehaver']['sim_seconds']} s horizon)")
     ax.set_title("Genuine misbehaver (oracle attribution)")
-    ax.set_ylim(0, 1.5 * max(c["misbehaver"]["seconds_to_revocation"]["hi"] for c in cells))
+    ax.set_ylim(0, 1.5 * max(_v(c["misbehaver"]["seconds_to_revocation"], "hi") for c in cells))
     ax2 = ax.twinx()
-    ax2.plot(x, [c["misbehaver"]["revoked_within_horizon"]["mean"] * 100 for c in cells], "k--", marker="s",
+    ax2.plot(x, [_v(c["misbehaver"]["revoked_within_horizon"]) * 100 for c in cells], "k--", marker="s",
              label="revoked within horizon (%)")
     ax2.set_ylim(0, 130)
     ax2.set_ylabel("revoked within horizon (%)")
@@ -222,40 +234,40 @@ def fig_sumo(res: dict, path: Path) -> Path:
     ax = axes[0]
     e1 = res["E1"]
     x = list(range(len(e1)))
-    ax.bar(x, [100 * c["v2v_receiver_rate"]["mean"] for c in e1], 0.5, color=C_REF, label="V2V receivers accepting (%)")
-    ax.bar([xx + 0.3 for xx in x], [100 * c["rsu_rate"]["mean"] for c in e1], 0.3, color=C_POW, label="RSU accepting (%)")
+    ax.bar(x, [100 * _v(c["v2v_receiver_rate"]) for c in e1], 0.5, color=C_REF, label="V2V receivers accepting (%)")
+    ax.bar([xx + 0.3 for xx in x], [100 * _v(c["rsu_rate"]) for c in e1], 0.3, color=C_POW, label="RSU accepting (%)")
     ax.set_xticks([xx + 0.15 for xx in x], [c["strategy"] for c in e1])
     ax.set_ylim(0, 140)
     ax.set_title("E1 on the trace: forgeries accepted")
     ax.legend(loc="upper left", fontsize=8)
     ax2 = ax.twinx()
-    ax2.plot(x, [c["honest_revoked"]["mean"] for c in e1], "k--", marker="s", label="honest vehicles revoked")
-    ax2.set_ylim(0, max(1.0, 1.4 * max(c["honest_revoked"]["mean"] for c in e1)))
+    ax2.plot(x, [_v(c["honest_revoked"]) for c in e1], "k--", marker="s", label="honest vehicles revoked")
+    ax2.set_ylim(0, max(1.0, 1.4 * max(_v(c["honest_revoked"]) for c in e1)))
     ax2.set_ylabel("honest vehicles revoked per run")
     ax2.legend(loc="upper right", fontsize=8)
     e4 = res["E4"]
     x = list(range(len(e4)))
     cols = [MODE_COLORS.get(c["mode"], C_REF) for c in e4]
     ax = axes[1]
-    ax.bar(x, [c["tracker_link_rate"]["mean"] for c in e4], 0.6, color=cols)
+    ax.bar(x, [_v(c["tracker_link_rate"]) for c in e4], 0.6, color=cols)
     for xx, c in zip(x, e4):
-        ax.plot([xx, xx], [c["tracker_link_rate"]["lo"], c["tracker_link_rate"]["hi"]], color="k")
+        ax.plot([xx, xx], [_v(c["tracker_link_rate"], "lo"), _v(c["tracker_link_rate"], "hi")], color="k")
     ax.set_xticks(x, [c["mode"] for c in e4], rotation=20)
     ax.set_ylim(0, 1.05)
     ax.set_title("E4 on the trace: outside tracker link rate")
     ax = axes[2]
-    ax.bar(x, [c["forged_v2v_accepted"]["mean"] for c in e4], 0.6, color=cols, label="forged messages accepted (V2V)")
+    ax.bar(x, [_v(c.get("forged_accepted_v2v", c.get("forged_v2v_accepted"))) for c in e4], 0.6, color=cols, label="forged messages accepted (V2V)")
     ax.set_xticks(x, [c["mode"] for c in e4], rotation=20)
     ax.set_ylabel("forged messages accepted per run")
-    ax.set_ylim(0, max(1.0, 1.5 * max(c["forged_v2v_accepted"]["mean"] for c in e4)))
+    ax.set_ylim(0, max(1.0, 1.5 * max(_v(c.get("forged_accepted_v2v", c.get("forged_v2v_accepted"))) for c in e4)))
     ax2 = ax.twinx()
-    ax2.plot(x, [c["pki_cpu_s_per_1000_veh_h"]["mean"] for c in e4], "k--", marker="o", label="PKI CPU-s per 1,000 veh-h")
-    ax2.set_ylim(0, max(1.0, 1.5 * max(c["pki_cpu_s_per_1000_veh_h"]["mean"] for c in e4)))
+    ax2.plot(x, [_v(c["pki_cpu_s_per_1000_veh_h"]) for c in e4], "k--", marker="o", label="PKI CPU-s per 1,000 veh-h")
+    ax2.set_ylim(0, max(1.0, 1.5 * max(_v(c["pki_cpu_s_per_1000_veh_h"]) for c in e4)))
     ax2.set_ylabel("PKI CPU-s per 1,000 vehicle-hours")
     ax.legend(loc="upper left", fontsize=8)
     ax2.legend(loc="upper right", fontsize=8)
     ax.set_title("E4 on the trace: forgeries and PKI load")
-    fig.suptitle(f"{res['experiment']}: {info['vehicles_total']} vehicles, {info['density_per_km']:.1f} veh/km, "
+    fig.suptitle(f"{res['experiment']}: {info['window_vehicles_seen']} vehicles, {info['window_density_per_km']:.1f} veh/km, "
                  f"{info['corridor_m'] / 1000:.1f} km, {res['rounds'] * 30} s")
     fig.tight_layout()
     return _save(fig, path)
@@ -274,8 +286,8 @@ def fig_e3b(res: dict, path: Path) -> Path:
     x = list(range(len(modes)))
     for i, ent in enumerate(ents):
         vals = [next(c for c in cells if c["mode"] == m and c["entity"] == ent and c["strategy"] == strats[0])["key_share"] for m in modes]
-        ax.bar([xx + (i - (len(ents) - 1) / 2) * w for xx in x], [v["mean"] for v in vals], w,
-               yerr=[[v["mean"] - v["lo"] for v in vals], [v["hi"] - v["mean"] for v in vals]],
+        ax.bar([xx + (i - (len(ents) - 1) / 2) * w for xx in x], [_v(v) for v in vals], w,
+               yerr=[[_v(v) - _v(v, "lo") for v in vals], [_v(v, "hi") - _v(v) for v in vals]],
                color=ent_cols.get(ent, C_REF), label=ent.upper() if ent == "pki" else ent, capsize=2)
     ax.set_xticks(x, modes)
     ax.set_ylim(0, 1.15)
@@ -286,8 +298,8 @@ def fig_e3b(res: dict, path: Path) -> Path:
     x = list(range(len(strats)))
     for i, ent in enumerate(ents):
         vals = [next(c for c in cells if c["mode"] == "recycle" and c["entity"] == ent and c["strategy"] == st)["receiver_rate"] for st in strats]
-        ax.bar([xx + (i - (len(ents) - 1) / 2) * w for xx in x], [v["mean"] for v in vals], w,
-               yerr=[[v["mean"] - v["lo"] for v in vals], [v["hi"] - v["mean"] for v in vals]],
+        ax.bar([xx + (i - (len(ents) - 1) / 2) * w for xx in x], [_v(v) for v in vals], w,
+               yerr=[[_v(v) - _v(v, "lo") for v in vals], [_v(v, "hi") - _v(v) for v in vals]],
                color=ent_cols.get(ent, C_REF), label=ent.upper() if ent == "pki" else ent, capsize=2)
     ax.set_xticks(x, [{"offset": "40 m from holder", "near": "10 m from holder", "silent": "holder's silent period"}.get(st, st) for st in strats])
     ax.set_ylim(0, 1.15)

@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import math
 import random
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from cryptography.hazmat.primitives.asymmetric import ec
 
@@ -70,6 +70,13 @@ class Pseudonym:
         if self.holder_cert is not None:
             d["holder"] = dict(self.holder_cert)
         return d
+
+
+def snapshot(p: "Pseudonym") -> "Pseudonym":
+    """An independent copy of a credential as held at this moment (review R04).
+    The key pair is immutable; certificate, expiry and holder certificate are
+    copied so that later mutation of the circulating object does not leak in."""
+    return replace(p, holder_cert=dict(p.holder_cert) if p.holder_cert else None)
 
 
 @dataclass
@@ -192,6 +199,7 @@ class PKI:
         ciphertext = crypto.encrypt(pm_pk, plaintext)
         signature = crypto.sign(self.keys.sk, ciphertext)
         self.load.signatures += 1
+        self.load.encryptions += 1
         self.load.bytes += len(ciphertext)
         return ciphertext, signature
 
@@ -229,10 +237,13 @@ class Load:
     keygens: int = 0
     bytes: int = 0
     verifications: int = 0
+    encryptions: int = 0      # ECIES (review R17: counted, previously omitted)
+    decryptions: int = 0
 
     def to_dict(self) -> dict:
         return {"signatures": self.signatures, "keygens": self.keygens, "bytes": self.bytes,
-                "verifications": self.verifications}
+                "verifications": self.verifications, "encryptions": self.encryptions,
+                "decryptions": self.decryptions}
 
 
 def holder_cert_bytes(pid: str, pk_hex: str, t_start: float, t_end: float, pm_id: str) -> bytes:
@@ -287,8 +298,12 @@ class PseudonymLedger:
 
     MAX_SPEED = 60.0          # m/s plausibility bound for the clone check
 
-    def check(self, pid: str, vehicle_id: str, msg: "SafetyMessage") -> tuple[bool, str]:
-        """Return (ok, reason) for a safety message carrying ``pid``."""
+    def check(self, pid: str, vehicle_id: str, msg: "SafetyMessage",
+              last_seen: dict | None = None) -> tuple[bool, str]:
+        """Return (ok, reason) for a safety message carrying ``pid``.
+        ``last_seen`` is the observation history the clone check uses: the
+        ledger's shared one by default, or an RSU's own (review R10)."""
+        hist = self.last_seen if last_seen is None else last_seen
         if pid in self.retired:
             return False, "retired-pseudonym"
         if pid in self.used:
@@ -302,7 +317,7 @@ class PseudonymLedger:
                                                   bytes.fromhex(msg.signature)):
             return False, "bad-signature"
         # Clone check: one pseudonym cannot be in two places at once.
-        last = self.last_seen.get(pid)
+        last = hist.get(pid)
         if last is not None:
             dt = max(1e-6, msg.timestamp - last[1])
             dx = abs(msg.position[0] - last[0])
@@ -310,7 +325,7 @@ class PseudonymLedger:
                 dx = min(dx, self.ring_length - dx)
             if dx > self.MAX_SPEED * dt + 25.0:
                 return False, "pseudonym-cloned"
-        self.last_seen[pid] = (msg.position[0], msg.timestamp)
+        hist[pid] = (msg.position[0], msg.timestamp)
         return True, "ok"
 
 
@@ -346,12 +361,17 @@ class Vehicle:
 
     @_kept_copy.setter
     def _kept_copy(self, p: "Pseudonym | None") -> None:
-        if p is not None and p not in self.kept_keys:
-            self.kept_keys.insert(0, p)
+        if p is not None and all(k.pid != p.pid for k in self.kept_keys):
+            self.kept_keys.insert(0, snapshot(p))
 
     def _keep(self, p: "Pseudonym") -> None:
+        """A dishonest OBU keeps what it held, as it held it: an immutable
+        snapshot (key, certificate, expiry, holder certificate at that moment).
+        Later renewals of the circulating object do not reach the copy; a
+        former holder learns a renewed certificate only by overhearing it
+        (``ITSSimulation`` with ``former_holder_cert_source="overheard"``)."""
         if (self.malicious or self.former_holder) and all(k.pid != p.pid for k in self.kept_keys):
-            self.kept_keys.append(p)
+            self.kept_keys.append(snapshot(p))
 
     def receive_pseudonyms(self, pseudonyms: list[Pseudonym]) -> None:
         self.pseudonyms = list(pseudonyms)
@@ -439,6 +459,7 @@ class RSU:
         self.stockouts = 0                            # vehicles that got fewer sets than needed
         self.rejected_uncertified = 0                 # allotment requests without a valid certificate
         self.attribution = "oracle"                   # "oracle" | "ledger"
+        self.local_history: dict | None = None        # own clone-check history (review R10); None: shared ledger
         self.load = Load()
         self.allot_log: list[tuple[str, str]] = []    # (pid, vehicle) this RSU handed out: insider evidence
 
@@ -538,14 +559,14 @@ class RSU:
         self.load.verifications += 1
         if self.attribution == "ledger" or vehicle is None:
             holder = self.ledger.holder.get(msg.pid)
-            ok, reason = self.ledger.check(msg.pid, holder or "", msg)
+            ok, reason = self.ledger.check(msg.pid, holder or "", msg, self.local_history)
             if not ok:
                 self.flagged.append((msg.pid, reason))
                 # an unsigned or wrongly signed message cannot be attributed to anyone
                 if holder and reason != "bad-signature":
                     self.pm.report_misbehaviour(holder, msg.pid, self.rsu_id, reason)
             return ok
-        ok, reason = self.ledger.check(msg.pid, vehicle.vehicle_id, msg)
+        ok, reason = self.ledger.check(msg.pid, vehicle.vehicle_id, msg, self.local_history)
         if not ok:
             self.flagged.append((msg.pid, reason))
             if reason != "bad-signature":
@@ -636,6 +657,8 @@ class PrivacyManager:
             raise ValueError(f"{self.pm_id}: PKI signature invalid, package rejected")
         wire = json.loads(crypto.decrypt(self.keys.sk, ciphertext))
         ps = [Pseudonym.from_wire(d) for d in wire]
+        self.load.verifications += 1 + len(ps)
+        self.load.decryptions += 1
         for p in ps:
             if not p.verify(pki_pk):
                 raise ValueError(f"{self.pm_id}: pseudonym certificate invalid")
@@ -690,7 +713,7 @@ class PrivacyManager:
 
     def report_misbehaviour(self, vehicle, pid: str, rsu_id: str, reason: str) -> None:
         vid = vehicle if isinstance(vehicle, str) else vehicle.vehicle_id
-        self.misbehaviour_reports.append({"vehicle": vid, "pid": pid, "rsu": rsu_id, "reason": reason})
+        self.misbehaviour_reports.append({"vehicle": vid, "pid": pid, "rsu": rsu_id, "reason": reason, "t": clock.now()})
 
     def sign_holder_cert(self, pid: str, pk_hex: str, t_start: float, t_end: float) -> dict:
         """Holder-bound certificate (rekey / window modes): binds ``pid`` to
@@ -702,4 +725,5 @@ class PrivacyManager:
 
     def make_tx(self, kind: str, receiver_pk, payload: dict) -> Transaction:
         self.load.signatures += 1
+        self.load.encryptions += 1
         return Transaction.create(kind, self.keys, receiver_pk, payload)

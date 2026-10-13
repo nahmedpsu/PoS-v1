@@ -35,6 +35,8 @@
     "round_seconds": 20,
     "silent_period": 5,
     "position_noise_m": 3,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -43,6 +45,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -52,7 +60,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 2000,
      "n_rsu": 4,
@@ -67,14 +84,14 @@
    "metrics": {
     "vehicles": 237,
     "rounds": 4,
-    "wall_seconds_per_round": 0.6439083104999952,
+    "wall_seconds_per_round": 0.62734711374992,
     "linking_success": 0.7365883062085594,
     "mean_correct_track_s": 24.73228346456693,
     "stockouts": 0,
     "pseudonyms_issued": 595,
     "pseudonyms_per_vehicle": 2.5105485232067513,
-    "pm_election_ms": 0.39486474999961274,
-    "rsu_elections_ms": 0.7005876250243404,
+    "pm_election_ms": 0.48490175015558634,
+    "rsu_elections_ms": 0.789129874988248,
     "messages_per_round": 2370,
     "rejected_messages": 0,
     "pm_blocks": 4,
@@ -100,14 +117,14 @@
     {
      "vehicles": 237,
      "rounds": 4,
-     "wall_seconds_per_round": 0.6439083104999952,
+     "wall_seconds_per_round": 0.62734711374992,
      "linking_success": 0.7365883062085594,
      "mean_correct_track_s": 24.73228346456693,
      "stockouts": 0,
      "pseudonyms_issued": 595,
      "pseudonyms_per_vehicle": 2.5105485232067513,
-     "pm_election_ms": 0.39486474999961274,
-     "rsu_elections_ms": 0.7005876250243404,
+     "pm_election_ms": 0.48490175015558634,
+     "rsu_elections_ms": 0.789129874988248,
      "messages_per_round": 2370,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -118,14 +135,14 @@
     {
      "vehicles": 259,
      "rounds": 4,
-     "wall_seconds_per_round": 0.6902166260000016,
+     "wall_seconds_per_round": 0.6138400854999873,
      "linking_success": 0.6867071152785439,
      "mean_correct_track_s": 23.225352112676056,
      "stockouts": 0,
      "pseudonyms_issued": 651,
      "pseudonyms_per_vehicle": 2.5135135135135136,
-     "pm_election_ms": 0.36882799999915505,
-     "rsu_elections_ms": 0.7339624999893601,
+     "pm_election_ms": 0.3148835000956751,
+     "rsu_elections_ms": 0.6580341249957655,
      "messages_per_round": 2590,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -136,14 +153,14 @@
     {
      "vehicles": 260,
      "rounds": 4,
-     "wall_seconds_per_round": 0.6876810107500049,
+     "wall_seconds_per_round": 0.6312166124999976,
      "linking_success": 0.6895604395604396,
      "mean_correct_track_s": 22.910714285714285,
      "stockouts": 0,
      "pseudonyms_issued": 654,
      "pseudonyms_per_vehicle": 2.5153846153846153,
-     "pm_election_ms": 0.44803574999718876,
-     "rsu_elections_ms": 0.8370541875013515,
+     "pm_election_ms": 0.3988734998756627,
+     "rsu_elections_ms": 0.6244761873972493,
      "messages_per_round": 2600,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -154,14 +171,14 @@
     {
      "vehicles": 239,
      "rounds": 4,
-     "wall_seconds_per_round": 0.6510637302500015,
+     "wall_seconds_per_round": 0.5654940539999416,
      "linking_success": 0.7489539748953975,
      "mean_correct_track_s": 25.8,
      "stockouts": 0,
      "pseudonyms_issued": 598,
      "pseudonyms_per_vehicle": 2.502092050209205,
-     "pm_election_ms": 0.4422417500009601,
-     "rsu_elections_ms": 0.8326671875060754,
+     "pm_election_ms": 0.4758982499879494,
+     "rsu_elections_ms": 0.6950817498534434,
      "messages_per_round": 2390,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -172,14 +189,14 @@
     {
      "vehicles": 222,
      "rounds": 4,
-     "wall_seconds_per_round": 0.5709133477500004,
+     "wall_seconds_per_round": 0.5805242737500294,
      "linking_success": 0.7078507078507078,
      "mean_correct_track_s": 24.680851063829788,
      "stockouts": 0,
      "pseudonyms_issued": 558,
      "pseudonyms_per_vehicle": 2.5135135135135136,
-     "pm_election_ms": 0.4351837499925182,
-     "rsu_elections_ms": 0.7788568750086711,
+     "pm_election_ms": 0.3545167501215474,
+     "rsu_elections_ms": 0.7054947499511854,
      "messages_per_round": 2220,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -190,14 +207,14 @@
     {
      "vehicles": 227,
      "rounds": 4,
-     "wall_seconds_per_round": 0.5880237795000056,
+     "wall_seconds_per_round": 0.48862600049994853,
      "linking_success": 0.7451227186910007,
      "mean_correct_track_s": 25.06198347107438,
      "stockouts": 0,
      "pseudonyms_issued": 570,
      "pseudonyms_per_vehicle": 2.511013215859031,
-     "pm_election_ms": 0.40175650001117447,
-     "rsu_elections_ms": 0.7409948124941224,
+     "pm_election_ms": 0.3111442499630357,
+     "rsu_elections_ms": 0.6149669999615526,
      "messages_per_round": 2270,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -208,14 +225,14 @@
     {
      "vehicles": 206,
      "rounds": 4,
-     "wall_seconds_per_round": 0.5541823917499968,
+     "wall_seconds_per_round": 0.5237707554999815,
      "linking_success": 0.768377253814147,
      "mean_correct_track_s": 25.672645739910315,
      "stockouts": 0,
      "pseudonyms_issued": 516,
      "pseudonyms_per_vehicle": 2.504854368932039,
-     "pm_election_ms": 0.3612297499984152,
-     "rsu_elections_ms": 0.7194981250027155,
+     "pm_election_ms": 0.40228274997389235,
+     "rsu_elections_ms": 0.7920237499092764,
      "messages_per_round": 2060,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -226,14 +243,14 @@
     {
      "vehicles": 224,
      "rounds": 4,
-     "wall_seconds_per_round": 0.5586825120000043,
+     "wall_seconds_per_round": 0.5838272424999786,
      "linking_success": 0.6798469387755102,
      "mean_correct_track_s": 22.00409836065574,
      "stockouts": 0,
      "pseudonyms_issued": 562,
      "pseudonyms_per_vehicle": 2.5089285714285716,
-     "pm_election_ms": 0.362597500000561,
-     "rsu_elections_ms": 0.7364604374977546,
+     "pm_election_ms": 0.41656374992271594,
+     "rsu_elections_ms": 0.7170673124505811,
      "messages_per_round": 2240,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -244,14 +261,14 @@
     {
      "vehicles": 213,
      "rounds": 4,
-     "wall_seconds_per_round": 0.5364704547500025,
+     "wall_seconds_per_round": 0.5889445050000859,
      "linking_success": 0.6968477531857814,
      "mean_correct_track_s": 23.181818181818183,
      "stockouts": 0,
      "pseudonyms_issued": 536,
      "pseudonyms_per_vehicle": 2.516431924882629,
-     "pm_election_ms": 0.4433730000101832,
-     "rsu_elections_ms": 0.8134820624956518,
+     "pm_election_ms": 0.39315449998866825,
+     "rsu_elections_ms": 0.7865133124766999,
      "messages_per_round": 2130,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -262,14 +279,14 @@
     {
      "vehicles": 226,
      "rounds": 4,
-     "wall_seconds_per_round": 0.5425925172500001,
+     "wall_seconds_per_round": 0.48779553199995007,
      "linking_success": 0.7326169405815424,
      "mean_correct_track_s": 24.366255144032923,
      "stockouts": 0,
      "pseudonyms_issued": 570,
      "pseudonyms_per_vehicle": 2.52212389380531,
-     "pm_election_ms": 0.3624250000058282,
-     "rsu_elections_ms": 0.6758049375115149,
+     "pm_election_ms": 0.31901174986614933,
+     "rsu_elections_ms": 0.6106888750423423,
      "messages_per_round": 2260,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -284,16 +301,16 @@
     "mean_correct_track_s": 24.16360018242786,
     "messages_per_round": 2313.0,
     "pm_blocks": 4.0,
-    "pm_election_ms": 0.4020535750015597,
+    "pm_election_ms": 0.38712307499508825,
     "pseudonyms_issued": 581.0,
     "pseudonyms_per_vehicle": 2.511840419073518,
     "rejected_messages": 0.0,
     "revoked": 0.0,
     "rounds": 4.0,
-    "rsu_elections_ms": 0.7569368750031558,
+    "rsu_elections_ms": 0.6993476937026344,
     "stockouts": 0.0,
     "vehicles": 231.3,
-    "wall_seconds_per_round": 0.6023734680500012
+    "wall_seconds_per_round": 0.5691386174999821
    },
    "ci": {
     "allotment_proof_bytes": {
@@ -327,9 +344,9 @@
      "n": 10
     },
     "pm_election_ms": {
-     "mean": 0.4020535750015597,
-     "lo": 0.3787729750023061,
-     "hi": 0.4239702000006673,
+     "mean": 0.38712307499508825,
+     "lo": 0.3519904499739823,
+     "hi": 0.4259448999960114,
      "n": 10
     },
     "pseudonyms_issued": {
@@ -363,9 +380,9 @@
      "n": 10
     },
     "rsu_elections_ms": {
-     "mean": 0.7569368750031558,
-     "lo": 0.7241373687515207,
-     "hi": 0.7904121500020622,
+     "mean": 0.6993476937026344,
+     "lo": 0.6585731374514125,
+     "hi": 0.7432887124394938,
      "n": 10
     },
     "stockouts": {
@@ -381,14 +398,14 @@
      "n": 10
     },
     "wall_seconds_per_round": {
-     "mean": 0.6023734680500012,
-     "lo": 0.5668583632749999,
-     "hi": 0.6378213598750009,
+     "mean": 0.5691386174999821,
+     "lo": 0.5366827959749685,
+     "hi": 0.5973222616999919,
      "n": 10
     }
    },
    "verdict_over_seeds": "privacy insufficient",
-   "seconds": 26.377417459000014
+   "seconds": 24.98203271200009
   },
   {
    "scenario": "highway",
@@ -411,6 +428,8 @@
     "round_seconds": 60,
     "silent_period": 3,
     "position_noise_m": 3,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -419,6 +438,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -428,7 +453,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 12000,
      "n_rsu": 6,
@@ -443,14 +477,14 @@
    "metrics": {
     "vehicles": 72,
     "rounds": 4,
-    "wall_seconds_per_round": 0.755521181749998,
+    "wall_seconds_per_round": 0.7966791407500295,
     "linking_success": 0.9833546734955185,
     "mean_correct_track_s": 185.07792207792207,
     "stockouts": 8,
     "pseudonyms_issued": 273,
     "pseudonyms_per_vehicle": 3.7916666666666665,
-    "pm_election_ms": 0.31619512499503344,
-    "rsu_elections_ms": 1.3109146666702522,
+    "pm_election_ms": 0.32194812501984416,
+    "rsu_elections_ms": 1.3432956667429607,
     "messages_per_round": 3625.25,
     "rejected_messages": 0,
     "pm_blocks": 4,
@@ -476,14 +510,14 @@
     {
      "vehicles": 72,
      "rounds": 4,
-     "wall_seconds_per_round": 0.755521181749998,
+     "wall_seconds_per_round": 0.7966791407500295,
      "linking_success": 0.9833546734955185,
      "mean_correct_track_s": 185.07792207792207,
      "stockouts": 8,
      "pseudonyms_issued": 273,
      "pseudonyms_per_vehicle": 3.7916666666666665,
-     "pm_election_ms": 0.31619512499503344,
-     "rsu_elections_ms": 1.3109146666702522,
+     "pm_election_ms": 0.32194812501984416,
+     "rsu_elections_ms": 1.3432956667429607,
      "messages_per_round": 3625.25,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -494,14 +528,14 @@
     {
      "vehicles": 95,
      "rounds": 4,
-     "wall_seconds_per_round": 1.0787161610000027,
+     "wall_seconds_per_round": 1.0600991665000947,
      "linking_success": 0.9923444976076555,
      "mean_correct_track_s": 190.87128712871288,
      "stockouts": 0,
      "pseudonyms_issued": 366,
      "pseudonyms_per_vehicle": 3.8526315789473684,
-     "pm_election_ms": 0.33620337499229436,
-     "rsu_elections_ms": 1.4925563333605396,
+     "pm_election_ms": 0.3494025001486989,
+     "rsu_elections_ms": 1.3830656667247847,
      "messages_per_round": 4845,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -512,14 +546,14 @@
     {
      "vehicles": 110,
      "rounds": 4,
-     "wall_seconds_per_round": 1.1666715914999912,
+     "wall_seconds_per_round": 1.2486055912499978,
      "linking_success": 0.9776304888152444,
      "mean_correct_track_s": 178.8512396694215,
      "stockouts": 1,
      "pseudonyms_issued": 420,
      "pseudonyms_per_vehicle": 3.8181818181818183,
-     "pm_election_ms": 0.3189692499958596,
-     "rsu_elections_ms": 1.3729558333039904,
+     "pm_election_ms": 0.28581249978287815,
+     "rsu_elections_ms": 1.1772288330575975,
      "messages_per_round": 5597.25,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -530,14 +564,14 @@
     {
      "vehicles": 96,
      "rounds": 4,
-     "wall_seconds_per_round": 1.067980064000011,
+     "wall_seconds_per_round": 1.0396175947499842,
      "linking_success": 0.9742366412213741,
      "mean_correct_track_s": 162.5084745762712,
      "stockouts": 5,
      "pseudonyms_issued": 366,
      "pseudonyms_per_vehicle": 3.8125,
-     "pm_election_ms": 0.32622562498829666,
-     "rsu_elections_ms": 1.3569437500109416,
+     "pm_election_ms": 0.3533717501227329,
+     "rsu_elections_ms": 1.4070594165029129,
      "messages_per_round": 4862,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -548,14 +582,14 @@
     {
      "vehicles": 109,
      "rounds": 4,
-     "wall_seconds_per_round": 1.240349146750006,
+     "wall_seconds_per_round": 1.1607783087499683,
      "linking_success": 0.9754653130287648,
      "mean_correct_track_s": 169.728,
      "stockouts": 10,
      "pseudonyms_issued": 417,
      "pseudonyms_per_vehicle": 3.8256880733944953,
-     "pm_election_ms": 1.2039545000135377,
-     "rsu_elections_ms": 1.4885257500244127,
+     "pm_election_ms": 0.4836002501065195,
+     "rsu_elections_ms": 1.3541615001410414,
      "messages_per_round": 5486.75,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -566,14 +600,14 @@
     {
      "vehicles": 102,
      "rounds": 4,
-     "wall_seconds_per_round": 1.1770620177500035,
+     "wall_seconds_per_round": 1.123212599249996,
      "linking_success": 0.9774164408310749,
      "mean_correct_track_s": 167.45,
      "stockouts": 7,
      "pseudonyms_issued": 390,
      "pseudonyms_per_vehicle": 3.823529411764706,
-     "pm_election_ms": 0.3899164999765503,
-     "rsu_elections_ms": 1.5999034167085333,
+     "pm_election_ms": 0.42057750005142225,
+     "rsu_elections_ms": 1.4438131661715186,
      "messages_per_round": 5138.25,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -584,14 +618,14 @@
     {
      "vehicles": 68,
      "rounds": 4,
-     "wall_seconds_per_round": 0.7024169382499963,
+     "wall_seconds_per_round": 0.7286001512500206,
      "linking_success": 0.9807427785419532,
      "mean_correct_track_s": 168.5125,
      "stockouts": 9,
      "pseudonyms_issued": 263,
      "pseudonyms_per_vehicle": 3.8676470588235294,
-     "pm_election_ms": 0.32884074997951984,
-     "rsu_elections_ms": 1.3637212500583473,
+     "pm_election_ms": 0.37185062524258683,
+     "rsu_elections_ms": 1.5887461667413543,
      "messages_per_round": 3378.75,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -602,14 +636,14 @@
     {
      "vehicles": 103,
      "rounds": 4,
-     "wall_seconds_per_round": 1.1850084324999983,
+     "wall_seconds_per_round": 1.2847673252500726,
      "linking_success": 0.9866548042704626,
      "mean_correct_track_s": 180.28947368421052,
      "stockouts": 4,
      "pseudonyms_issued": 390,
      "pseudonyms_per_vehicle": 3.7864077669902914,
-     "pm_election_ms": 0.31932187502548004,
-     "rsu_elections_ms": 1.3118566666605602,
+     "pm_election_ms": 0.3228682501230651,
+     "rsu_elections_ms": 1.3693094161908448,
      "messages_per_round": 5214.75,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -620,14 +654,14 @@
     {
      "vehicles": 77,
      "rounds": 4,
-     "wall_seconds_per_round": 0.8284831082499977,
+     "wall_seconds_per_round": 1.027362227750018,
      "linking_success": 0.9834710743801653,
      "mean_correct_track_s": 178.5977011494253,
      "stockouts": 2,
      "pseudonyms_issued": 297,
      "pseudonyms_per_vehicle": 3.857142857142857,
-     "pm_election_ms": 0.36019687501465114,
-     "rsu_elections_ms": 1.3267870833383693,
+     "pm_election_ms": 0.37729550001586176,
+     "rsu_elections_ms": 1.4578547502802999,
      "messages_per_round": 3927,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -638,14 +672,14 @@
     {
      "vehicles": 103,
      "rounds": 4,
-     "wall_seconds_per_round": 1.1735260102500007,
+     "wall_seconds_per_round": 1.099562442999968,
      "linking_success": 0.9723461195361285,
      "mean_correct_track_s": 174.32456140350877,
      "stockouts": 4,
      "pseudonyms_issued": 393,
      "pseudonyms_per_vehicle": 3.8155339805825244,
-     "pm_election_ms": 0.3632442500105526,
-     "rsu_elections_ms": 1.4103999999690586,
+     "pm_election_ms": 0.38106700026219187,
+     "rsu_elections_ms": 1.5118518332049764,
      "messages_per_round": 5202,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -660,16 +694,16 @@
     "mean_correct_track_s": 175.6211159689472,
     "messages_per_round": 4727.7,
     "pm_blocks": 4.0,
-    "pm_election_ms": 0.42630681249917757,
+    "pm_election_ms": 0.36677940008758014,
     "pseudonyms_issued": 357.5,
     "pseudonyms_per_vehicle": 3.825092921249426,
     "rejected_messages": 0.0,
     "revoked": 0.0,
     "rounds": 4.0,
-    "rsu_elections_ms": 1.4034564750105005,
+    "rsu_elections_ms": 1.403638641575829,
     "stockouts": 5.0,
     "vehicles": 93.5,
-    "wall_seconds_per_round": 1.0375734652000006
+    "wall_seconds_per_round": 1.056928454850015
    },
    "ci": {
     "allotment_proof_bytes": {
@@ -703,9 +737,9 @@
      "n": 10
     },
     "pm_election_ms": {
-     "mean": 0.42630681249917757,
-     "lo": 0.3300663875094756,
-     "hi": 0.6052613500010295,
+     "mean": 0.36677940008758014,
+     "lo": 0.33499072494578286,
+     "hi": 0.40272221256714147,
      "n": 10
     },
     "pseudonyms_issued": {
@@ -739,9 +773,9 @@
      "n": 10
     },
     "rsu_elections_ms": {
-     "mean": 1.4034564750105005,
-     "lo": 1.3495335499987011,
-     "hi": 1.4629141416852083,
+     "mean": 1.403638641575829,
+     "lo": 1.3393653998491573,
+     "hi": 1.467300558347991,
      "n": 10
     },
     "stockouts": {
@@ -757,14 +791,14 @@
      "n": 10
     },
     "wall_seconds_per_round": {
-     "mean": 1.0375734652000006,
-     "lo": 0.9101799693249987,
-     "hi": 1.1380987650999983,
+     "mean": 1.056928454850015,
+     "lo": 0.9484161938000284,
+     "hi": 1.1490954866000038,
      "n": 10
     }
    },
    "verdict_over_seeds": "privacy insufficient",
-   "seconds": 42.83209803099999
+   "seconds": 43.563743133000116
   },
   {
    "scenario": "rural_night",
@@ -787,6 +821,8 @@
     "round_seconds": 60,
     "silent_period": 10,
     "position_noise_m": 3,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.5,
     "adversary_gate_m": 8.0,
@@ -795,6 +831,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -804,7 +846,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 6000,
      "n_rsu": 3,
@@ -819,14 +870,14 @@
    "metrics": {
     "vehicles": 11,
     "rounds": 4,
-    "wall_seconds_per_round": 0.10284420924999438,
+    "wall_seconds_per_round": 0.08075719849989582,
     "linking_success": 0.8441558441558441,
     "mean_correct_track_s": 78.18181818181819,
     "stockouts": 0,
     "pseudonyms_issued": 34,
     "pseudonyms_per_vehicle": 3.090909090909091,
-    "pm_election_ms": 0.30780849999700877,
-    "rsu_elections_ms": 0.7205054166234959,
+    "pm_election_ms": 0.2472030001854364,
+    "rsu_elections_ms": 0.5322717498377946,
     "messages_per_round": 440,
     "rejected_messages": 0,
     "pm_blocks": 4,
@@ -852,14 +903,14 @@
     {
      "vehicles": 11,
      "rounds": 4,
-     "wall_seconds_per_round": 0.10284420924999438,
+     "wall_seconds_per_round": 0.08075719849989582,
      "linking_success": 0.8441558441558441,
      "mean_correct_track_s": 78.18181818181819,
      "stockouts": 0,
      "pseudonyms_issued": 34,
      "pseudonyms_per_vehicle": 3.090909090909091,
-     "pm_election_ms": 0.30780849999700877,
-     "rsu_elections_ms": 0.7205054166234959,
+     "pm_election_ms": 0.2472030001854364,
+     "rsu_elections_ms": 0.5322717498377946,
      "messages_per_round": 440,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -870,14 +921,14 @@
     {
      "vehicles": 9,
      "rounds": 4,
-     "wall_seconds_per_round": 0.08470324924999773,
+     "wall_seconds_per_round": 0.0697735277500442,
      "linking_success": 0.9047619047619048,
      "mean_correct_track_s": 96.0,
      "stockouts": 0,
      "pseudonyms_issued": 28,
      "pseudonyms_per_vehicle": 3.111111111111111,
-     "pm_election_ms": 0.369958249976321,
-     "rsu_elections_ms": 0.701814333344449,
+     "pm_election_ms": 0.27662824970775546,
+     "rsu_elections_ms": 0.581480833072116,
      "messages_per_round": 360,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -888,14 +939,14 @@
     {
      "vehicles": 10,
      "rounds": 4,
-     "wall_seconds_per_round": 0.08897149975000218,
+     "wall_seconds_per_round": 0.07171675924996634,
      "linking_success": 0.8285714285714286,
      "mean_correct_track_s": 76.0,
      "stockouts": 0,
      "pseudonyms_issued": 32,
      "pseudonyms_per_vehicle": 3.2,
-     "pm_election_ms": 0.3270035000326743,
-     "rsu_elections_ms": 0.6738063333292151,
+     "pm_election_ms": 0.25426850004350854,
+     "rsu_elections_ms": 0.5265860835379499,
      "messages_per_round": 400,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -906,14 +957,14 @@
     {
      "vehicles": 6,
      "rounds": 4,
-     "wall_seconds_per_round": 0.06376492524999833,
+     "wall_seconds_per_round": 0.057092118000014125,
      "linking_success": 0.9761904761904762,
      "mean_correct_track_s": 137.14285714285714,
      "stockouts": 0,
      "pseudonyms_issued": 19,
      "pseudonyms_per_vehicle": 3.1666666666666665,
-     "pm_election_ms": 0.3420740000024125,
-     "rsu_elections_ms": 0.7066598333125285,
+     "pm_election_ms": 0.290865750116609,
+     "rsu_elections_ms": 0.7050459164853843,
      "messages_per_round": 240,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -924,14 +975,14 @@
     {
      "vehicles": 19,
      "rounds": 4,
-     "wall_seconds_per_round": 0.16865132300000596,
+     "wall_seconds_per_round": 0.16805561099999977,
      "linking_success": 0.8947368421052632,
      "mean_correct_track_s": 92.12121212121212,
      "stockouts": 0,
      "pseudonyms_issued": 57,
      "pseudonyms_per_vehicle": 3.0,
-     "pm_election_ms": 0.3653620000108049,
-     "rsu_elections_ms": 0.7289895833224591,
+     "pm_election_ms": 0.3232052499697602,
+     "rsu_elections_ms": 0.6814022499384009,
      "messages_per_round": 760,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -942,14 +993,14 @@
     {
      "vehicles": 10,
      "rounds": 4,
-     "wall_seconds_per_round": 0.09569508674999838,
+     "wall_seconds_per_round": 0.09628038425000796,
      "linking_success": 0.9571428571428572,
      "mean_correct_track_s": 123.07692307692308,
      "stockouts": 0,
      "pseudonyms_issued": 32,
      "pseudonyms_per_vehicle": 3.2,
-     "pm_election_ms": 0.33845625000594737,
-     "rsu_elections_ms": 0.7176004166543256,
+     "pm_election_ms": 0.30871599994952703,
+     "rsu_elections_ms": 0.654641916791358,
      "messages_per_round": 400,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -960,14 +1011,14 @@
     {
      "vehicles": 10,
      "rounds": 4,
-     "wall_seconds_per_round": 0.09390661025000213,
+     "wall_seconds_per_round": 0.10838608849996945,
      "linking_success": 0.8676470588235294,
      "mean_correct_track_s": 84.44444444444444,
      "stockouts": 1,
      "pseudonyms_issued": 30,
      "pseudonyms_per_vehicle": 3.0,
-     "pm_election_ms": 0.3774260000142249,
-     "rsu_elections_ms": 0.7630329999888849,
+     "pm_election_ms": 0.3811209999184939,
+     "rsu_elections_ms": 0.7936972499843857,
      "messages_per_round": 390,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -978,14 +1029,14 @@
     {
      "vehicles": 7,
      "rounds": 4,
-     "wall_seconds_per_round": 0.06857104624999977,
+     "wall_seconds_per_round": 0.06789617849995011,
      "linking_success": 0.9183673469387755,
      "mean_correct_track_s": 108.0,
      "stockouts": 0,
      "pseudonyms_issued": 22,
      "pseudonyms_per_vehicle": 3.142857142857143,
-     "pm_election_ms": 0.32794550000403433,
-     "rsu_elections_ms": 0.6923558333179851,
+     "pm_election_ms": 0.3040782499965644,
+     "rsu_elections_ms": 0.7470078335624445,
      "messages_per_round": 280,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -996,14 +1047,14 @@
     {
      "vehicles": 7,
      "rounds": 4,
-     "wall_seconds_per_round": 0.07449662800000567,
+     "wall_seconds_per_round": 0.06085908800002926,
      "linking_success": 0.8571428571428571,
      "mean_correct_track_s": 83.46153846153847,
      "stockouts": 0,
      "pseudonyms_issued": 22,
      "pseudonyms_per_vehicle": 3.142857142857143,
-     "pm_election_ms": 0.3444347500334288,
-     "rsu_elections_ms": 0.6898079166433035,
+     "pm_election_ms": 0.3010145001098863,
+     "rsu_elections_ms": 0.578533249836255,
      "messages_per_round": 280,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -1014,14 +1065,14 @@
     {
      "vehicles": 12,
      "rounds": 4,
-     "wall_seconds_per_round": 0.11812591899999347,
+     "wall_seconds_per_round": 0.11482530349996978,
      "linking_success": 0.9047619047619048,
      "mean_correct_track_s": 96.0,
      "stockouts": 0,
      "pseudonyms_issued": 36,
      "pseudonyms_per_vehicle": 3.0,
-     "pm_election_ms": 0.34618975001876606,
-     "rsu_elections_ms": 0.7047711666861763,
+     "pm_election_ms": 0.3472717502290834,
+     "rsu_elections_ms": 0.781627749878074,
      "messages_per_round": 480,
      "rejected_messages": 0,
      "pm_blocks": 4,
@@ -1036,16 +1087,16 @@
     "mean_correct_track_s": 97.44287934287934,
     "messages_per_round": 403.0,
     "pm_blocks": 4.0,
-    "pm_election_ms": 0.3446658500095623,
+    "pm_election_ms": 0.30343722502266246,
     "pseudonyms_issued": 31.2,
     "pseudonyms_per_vehicle": 3.1054401154401154,
     "rejected_messages": 0.0,
     "revoked": 0.0,
     "rounds": 4.0,
-    "rsu_elections_ms": 0.7099343833222823,
+    "rsu_elections_ms": 0.6582294832924163,
     "stockouts": 0.1,
     "vehicles": 10.1,
-    "wall_seconds_per_round": 0.0959730496749998
+    "wall_seconds_per_round": 0.08956422572498468
    },
    "ci": {
     "allotment_proof_bytes": {
@@ -1079,9 +1130,9 @@
      "n": 10
     },
     "pm_election_ms": {
-     "mean": 0.3446658500095623,
-     "lo": 0.33213502500757386,
-     "hi": 0.3571446000051992,
+     "mean": 0.30343722502266246,
+     "lo": 0.2796453000883048,
+     "hi": 0.327578275016549,
      "n": 10
     },
     "pseudonyms_issued": {
@@ -1115,9 +1166,9 @@
      "n": 10
     },
     "rsu_elections_ms": {
-     "mean": 0.7099343833222823,
-     "lo": 0.696800849998643,
-     "hi": 0.7257832416508829,
+     "mean": 0.6582294832924163,
+     "lo": 0.5970048749266729,
+     "hi": 0.7191454166483406,
      "n": 10
     },
     "stockouts": {
@@ -1133,14 +1184,14 @@
      "n": 10
     },
     "wall_seconds_per_round": {
-     "mean": 0.0959730496749998,
-     "lo": 0.08028094522499885,
-     "hi": 0.11528548405000123,
+     "mean": 0.08956422572498468,
+     "lo": 0.07170789837497296,
+     "hi": 0.1113219673249887,
      "n": 10
     }
    },
    "verdict_over_seeds": "privacy insufficient",
-   "seconds": 4.1521466990000135
+   "seconds": 3.8654295309997906
   },
   {
    "scenario": "cross_pm_roaming",
@@ -1163,6 +1214,8 @@
     "round_seconds": 30,
     "silent_period": 3,
     "position_noise_m": 3,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -1171,6 +1224,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -1180,7 +1239,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 6000,
      "n_rsu": 6,
@@ -1199,12 +1267,12 @@
     "proofs_verified": 33,
     "proofs_unavailable_or_failed": 9,
     "mean_proof_bytes": 1569.3030303030303,
-    "mean_verify_us": 21.319636366776898,
-    "wall_seconds_per_round": 0.3665956757500055,
+    "mean_verify_us": 24.012939361868618,
+    "wall_seconds_per_round": 0.3802660740000192,
     "chains_valid": true,
     "linking_success": 0.9809644670050761
    },
-   "verdict": "42 crossings, 33 proofs verified (1569 B, 21 us each); 9 vehicles crossed before their allotment was anchored and fall back to the ledger",
+   "verdict": "42 crossings, 33 proofs verified (1569 B, 24 us each); 9 vehicles crossed before their allotment was anchored and fall back to the ledger",
    "extra": {},
    "seeds": [
     1,
@@ -1226,8 +1294,8 @@
      "proofs_verified": 33,
      "proofs_unavailable_or_failed": 9,
      "mean_proof_bytes": 1569.3030303030303,
-     "mean_verify_us": 21.319636366776898,
-     "wall_seconds_per_round": 0.3665956757500055,
+     "mean_verify_us": 24.012939361868618,
+     "wall_seconds_per_round": 0.3802660740000192,
      "chains_valid": true,
      "linking_success": 0.9809644670050761
     },
@@ -1238,8 +1306,8 @@
      "proofs_verified": 42,
      "proofs_unavailable_or_failed": 12,
      "mean_proof_bytes": 1483.857142857143,
-     "mean_verify_us": 23.72595238447112,
-     "wall_seconds_per_round": 0.4869449262500041,
+     "mean_verify_us": 20.60250002008009,
+     "wall_seconds_per_round": 0.42396198624999215,
      "chains_valid": true,
      "linking_success": 0.9799043062200957
     },
@@ -1250,8 +1318,8 @@
      "proofs_verified": 58,
      "proofs_unavailable_or_failed": 18,
      "mean_proof_bytes": 1517.396551724138,
-     "mean_verify_us": 20.197068959626858,
-     "wall_seconds_per_round": 0.540219589000003,
+     "mean_verify_us": 22.887724142116173,
+     "wall_seconds_per_round": 0.536557316750077,
      "chains_valid": true,
      "linking_success": 0.9642857142857143
     },
@@ -1262,8 +1330,8 @@
      "proofs_verified": 44,
      "proofs_unavailable_or_failed": 15,
      "mean_proof_bytes": 1519.159090909091,
-     "mean_verify_us": 22.983022727306558,
-     "wall_seconds_per_round": 0.501092919499996,
+     "mean_verify_us": 19.410500013608807,
+     "wall_seconds_per_round": 0.4580223992500123,
      "chains_valid": true,
      "linking_success": 0.9706439393939394
     },
@@ -1274,8 +1342,8 @@
      "proofs_verified": 45,
      "proofs_unavailable_or_failed": 13,
      "mean_proof_bytes": 1441.4666666666667,
-     "mean_verify_us": 22.547533337223687,
-     "wall_seconds_per_round": 0.5510662359999969,
+     "mean_verify_us": 18.500888856781078,
+     "wall_seconds_per_round": 0.5138745829999607,
      "chains_valid": true,
      "linking_success": 0.9605042016806723
     },
@@ -1286,8 +1354,8 @@
      "proofs_verified": 47,
      "proofs_unavailable_or_failed": 10,
      "mean_proof_bytes": 1450.9787234042553,
-     "mean_verify_us": 21.85495744842751,
-     "wall_seconds_per_round": 0.5209570547499993,
+     "mean_verify_us": 20.724276597088355,
+     "wall_seconds_per_round": 0.46263531775002775,
      "chains_valid": true,
      "linking_success": 0.9657657657657658
     },
@@ -1298,8 +1366,8 @@
      "proofs_verified": 35,
      "proofs_unavailable_or_failed": 9,
      "mean_proof_bytes": 1445.6857142857143,
-     "mean_verify_us": 22.061228568353336,
-     "wall_seconds_per_round": 0.3474883220000038,
+     "mean_verify_us": 19.335657114944684,
+     "wall_seconds_per_round": 0.33674446275006176,
      "chains_valid": true,
      "linking_success": 0.978523489932886
     },
@@ -1310,8 +1378,8 @@
      "proofs_verified": 41,
      "proofs_unavailable_or_failed": 19,
      "mean_proof_bytes": 1566.0731707317073,
-     "mean_verify_us": 18.399658537551968,
-     "wall_seconds_per_round": 0.4816912004999949,
+     "mean_verify_us": 22.07475609993264,
+     "wall_seconds_per_round": 0.5415529244999107,
      "chains_valid": true,
      "linking_success": 0.974267968056788
     },
@@ -1322,8 +1390,8 @@
      "proofs_verified": 29,
      "proofs_unavailable_or_failed": 12,
      "mean_proof_bytes": 1441.9655172413793,
-     "mean_verify_us": 25.35651724585854,
-     "wall_seconds_per_round": 0.39573746175000224,
+     "mean_verify_us": 30.67189657579955,
+     "wall_seconds_per_round": 0.41815765775004365,
      "chains_valid": true,
      "linking_success": 0.976303317535545
     },
@@ -1334,8 +1402,8 @@
      "proofs_verified": 33,
      "proofs_unavailable_or_failed": 13,
      "mean_proof_bytes": 1623.3939393939395,
-     "mean_verify_us": 26.187969696724338,
-     "wall_seconds_per_round": 0.5344041122500016,
+     "mean_verify_us": 26.363878753203828,
+     "wall_seconds_per_round": 0.5207644387500068,
      "chains_valid": true,
      "linking_success": 0.9567519858781994
     }
@@ -1343,13 +1411,13 @@
    "mean": {
     "linking_success": 0.9707915155754682,
     "mean_proof_bytes": 1505.9279547517065,
-    "mean_verify_us": 22.46335452723208,
+    "mean_verify_us": 22.458501753542382,
     "pm_crossings": 53.7,
     "proofs_unavailable_or_failed": 13.0,
     "proofs_verified": 40.7,
     "rounds": 4.0,
     "vehicles": 93.5,
-    "wall_seconds_per_round": 0.47261974977500076
+    "wall_seconds_per_round": 0.4592537160750112
    },
    "ci": {
     "linking_success": {
@@ -1365,9 +1433,9 @@
      "n": 10
     },
     "mean_verify_us": {
-     "mean": 22.46335452723208,
-     "lo": 21.113273187139484,
-     "hi": 23.82412094529172,
+     "mean": 22.458501753542382,
+     "lo": 20.49936540204182,
+     "hi": 24.94668081630858,
      "n": 10
     },
     "pm_crossings": {
@@ -1401,14 +1469,14 @@
      "n": 10
     },
     "wall_seconds_per_round": {
-     "mean": 0.47261974977500076,
-     "lo": 0.4253952633750032,
-     "hi": 0.5113523393250006,
+     "mean": 0.4592537160750112,
+     "lo": 0.41819877857501525,
+     "hi": 0.49543423692498434,
      "n": 10
     }
    },
    "verdict_over_seeds": "privacy insufficient",
-   "seconds": 20.94802776900002
+   "seconds": 20.282488149000073
   },
   {
    "scenario": "toll_service_access",
@@ -1431,6 +1499,8 @@
     "round_seconds": 20,
     "silent_period": 0,
     "position_noise_m": 0,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -1439,6 +1509,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -1448,7 +1524,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 4000,
      "n_rsu": 3,
@@ -1467,11 +1552,11 @@
     "rejection_reasons": {
      "revoked-no-pseudonyms": 2
     },
-    "mean_check_us": 142.23661904336964,
+    "mean_check_us": 95.9577936670925,
     "permanent_ids_exposed": 0,
     "revoked_vehicles": 2
    },
-   "verdict": "63 accepted, 2 rejected in 142 us each; 0 permanent identities exposed",
+   "verdict": "63 accepted, 2 rejected in 96 us each; 0 permanent identities exposed",
    "extra": {},
    "seeds": [
     1,
@@ -1493,7 +1578,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 142.23661904336964,
+     "mean_check_us": 95.9577936670925,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1504,7 +1589,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 124.36282857249483,
+     "mean_check_us": 176.6297142759348,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1515,7 +1600,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 122.106901231145,
+     "mean_check_us": 117.11197536593924,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1526,7 +1611,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 111.11564368030517,
+     "mean_check_us": 131.87542528884342,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1537,7 +1622,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 122.6181612931028,
+     "mean_check_us": 135.78263442761983,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1548,7 +1633,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 122.78022988366816,
+     "mean_check_us": 125.25439084212807,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1559,7 +1644,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 119.64639682154095,
+     "mean_check_us": 116.44757141189147,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1570,7 +1655,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 140.6835373143676,
+     "mean_check_us": 127.344940278478,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1581,7 +1666,7 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 115.04489854923636,
+     "mean_check_us": 118.55917392640022,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     },
@@ -1592,14 +1677,14 @@
      "rejection_reasons": {
       "revoked-no-pseudonyms": 2
      },
-     "mean_check_us": 132.95422727049362,
+     "mean_check_us": 115.50485226052842,
      "permanent_ids_exposed": 0,
      "revoked_vehicles": 2
     }
    ],
    "mean": {
     "accepted": 76.8,
-    "mean_check_us": 125.35494436597241,
+    "mean_check_us": 126.04684717448559,
     "permanent_ids_exposed": 0.0,
     "rejected": 2.0,
     "revoked_vehicles": 2.0,
@@ -1613,9 +1698,9 @@
      "n": 10
     },
     "mean_check_us": {
-     "mean": 125.35494436597241,
-     "lo": 119.65592068037377,
-     "hi": 131.78762992412285,
+     "mean": 126.04684717448559,
+     "lo": 114.47553190460181,
+     "hi": 138.3171784171504,
      "n": 10
     },
     "permanent_ids_exposed": {
@@ -1643,7 +1728,7 @@
      "n": 10
     }
    },
-   "seconds": 7.464382554999986
+   "seconds": 7.981297582000025
   },
   {
    "scenario": "incident_revocation",
@@ -1666,6 +1751,8 @@
     "round_seconds": 30,
     "silent_period": 3,
     "position_noise_m": 3,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -1674,6 +1761,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -1683,7 +1776,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 6000,
      "n_rsu": 6,
@@ -1954,7 +2056,7 @@
      "n": 10
     }
    },
-   "seconds": 19.288675232999992
+   "seconds": 20.98456572899977
   },
   {
    "scenario": "city_scale",
@@ -1977,6 +2079,8 @@
     "round_seconds": 30,
     "silent_period": 5,
     "position_noise_m": 3,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -1985,6 +2089,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -1994,7 +2104,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
     "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0,
     "road": {
      "length_m": 20000,
      "n_rsu": 20,
@@ -2009,14 +2128,14 @@
    "metrics": {
     "vehicles": 784,
     "rounds": 3,
-    "wall_seconds_per_round": 3.110997408000003,
+    "wall_seconds_per_round": 3.015672735666764,
     "linking_success": 0.8742028061224489,
     "mean_correct_track_s": 31.644736842105264,
     "stockouts": 1,
     "pseudonyms_issued": 2949,
     "pseudonyms_per_vehicle": 3.7614795918367347,
-    "pm_election_ms": 0.3553114999922021,
-    "rsu_elections_ms": 3.054987333318119,
+    "pm_election_ms": 0.42844799986596627,
+    "rsu_elections_ms": 3.27028393345851,
     "messages_per_round": 11760,
     "rejected_messages": 0,
     "pm_blocks": 3,
@@ -2025,7 +2144,7 @@
     "allotment_proof_bytes": 1507,
     "signatures_per_round": 11760
    },
-   "verdict": "784 vehicles, 3.1 s per 30 s round on one core (11760 signed CAMs/round); PM election 0 ms",
+   "verdict": "784 vehicles, 3.0 s per 30 s round on one core (11760 signed CAMs/round); PM election 0 ms",
    "extra": {},
    "seeds": [
     1,
@@ -2043,14 +2162,14 @@
     {
      "vehicles": 784,
      "rounds": 3,
-     "wall_seconds_per_round": 3.110997408000003,
+     "wall_seconds_per_round": 3.015672735666764,
      "linking_success": 0.8742028061224489,
      "mean_correct_track_s": 31.644736842105264,
      "stockouts": 1,
      "pseudonyms_issued": 2949,
      "pseudonyms_per_vehicle": 3.7614795918367347,
-     "pm_election_ms": 0.3553114999922021,
-     "rsu_elections_ms": 3.054987333318119,
+     "pm_election_ms": 0.42844799986596627,
+     "rsu_elections_ms": 3.27028393345851,
      "messages_per_round": 11760,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2062,14 +2181,14 @@
     {
      "vehicles": 799,
      "rounds": 3,
-     "wall_seconds_per_round": 3.0916709553333326,
+     "wall_seconds_per_round": 2.990275337666693,
      "linking_success": 0.8908262645303173,
      "mean_correct_track_s": 32.50802139037433,
      "stockouts": 9,
      "pseudonyms_issued": 3012,
      "pseudonyms_per_vehicle": 3.769712140175219,
-     "pm_election_ms": 0.36320191666068996,
-     "rsu_elections_ms": 2.793051333276253,
+     "pm_election_ms": 0.3381439166029547,
+     "rsu_elections_ms": 2.5975618668174625,
      "messages_per_round": 11941.666666666666,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2081,14 +2200,14 @@
     {
      "vehicles": 801,
      "rounds": 3,
-     "wall_seconds_per_round": 2.9270607936666693,
+     "wall_seconds_per_round": 3.264917502666625,
      "linking_success": 0.8762291243951927,
      "mean_correct_track_s": 32.11853448275862,
      "stockouts": 1,
      "pseudonyms_issued": 3019,
      "pseudonyms_per_vehicle": 3.7690387016229714,
-     "pm_election_ms": 0.3838844166873893,
-     "rsu_elections_ms": 2.8006286667239997,
+     "pm_election_ms": 0.3386872500262446,
+     "rsu_elections_ms": 2.6525837997420845,
      "messages_per_round": 12013.333333333334,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2100,14 +2219,14 @@
     {
      "vehicles": 859,
      "rounds": 3,
-     "wall_seconds_per_round": 3.275052536333343,
+     "wall_seconds_per_round": 3.405746131666698,
      "linking_success": 0.860302677532014,
      "mean_correct_track_s": 31.851738241308794,
      "stockouts": 0,
      "pseudonyms_issued": 3232,
      "pseudonyms_per_vehicle": 3.762514551804424,
-     "pm_election_ms": 0.4243326666729293,
-     "rsu_elections_ms": 3.4343555333900135,
+     "pm_election_ms": 0.34919016665450425,
+     "rsu_elections_ms": 3.0650364672510477,
      "messages_per_round": 12885,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2119,14 +2238,14 @@
     {
      "vehicles": 764,
      "rounds": 3,
-     "wall_seconds_per_round": 2.794670680333335,
+     "wall_seconds_per_round": 2.8179841103333274,
      "linking_success": 0.8949607329842932,
      "mean_correct_track_s": 33.49142857142857,
      "stockouts": 0,
      "pseudonyms_issued": 2885,
      "pseudonyms_per_vehicle": 3.776178010471204,
-     "pm_election_ms": 0.29660658333341416,
-     "rsu_elections_ms": 2.5266817998992037,
+     "pm_election_ms": 0.3196507500433654,
+     "rsu_elections_ms": 2.5790136668547348,
      "messages_per_round": 11460,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2138,14 +2257,14 @@
     {
      "vehicles": 766,
      "rounds": 3,
-     "wall_seconds_per_round": 2.826851338000002,
+     "wall_seconds_per_round": 3.1825110663333667,
      "linking_success": 0.8907755102040816,
      "mean_correct_track_s": 33.104426787741204,
      "stockouts": 1,
      "pseudonyms_issued": 2885,
      "pseudonyms_per_vehicle": 3.766318537859008,
-     "pm_election_ms": 0.32801774999313693,
-     "rsu_elections_ms": 2.8783097999962592,
+     "pm_election_ms": 0.32755033343316126,
+     "rsu_elections_ms": 2.8970635998727325,
      "messages_per_round": 11485,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2157,14 +2276,14 @@
     {
      "vehicles": 775,
      "rounds": 3,
-     "wall_seconds_per_round": 2.7982519740000007,
+     "wall_seconds_per_round": 2.8943294446667096,
      "linking_success": 0.8709677419354839,
      "mean_correct_track_s": 31.6280353200883,
      "stockouts": 0,
      "pseudonyms_issued": 2923,
      "pseudonyms_per_vehicle": 3.7716129032258063,
-     "pm_election_ms": 0.31665074999409626,
-     "rsu_elections_ms": 2.5778642000318546,
+     "pm_election_ms": 0.32747733340935764,
+     "rsu_elections_ms": 2.9180015333016245,
      "messages_per_round": 11625,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2176,14 +2295,14 @@
     {
      "vehicles": 794,
      "rounds": 3,
-     "wall_seconds_per_round": 3.2494032393333327,
+     "wall_seconds_per_round": 3.0982641513332965,
      "linking_success": 0.8808249370277078,
      "mean_correct_track_s": 32.722772277227726,
      "stockouts": 0,
      "pseudonyms_issued": 2990,
      "pseudonyms_per_vehicle": 3.765743073047859,
-     "pm_election_ms": 0.41157158334688876,
-     "rsu_elections_ms": 3.243971933352441,
+     "pm_election_ms": 0.31410516658070264,
+     "rsu_elections_ms": 2.7080874662109027,
      "messages_per_round": 11910,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2195,14 +2314,14 @@
     {
      "vehicles": 796,
      "rounds": 3,
-     "wall_seconds_per_round": 2.888733707666669,
+     "wall_seconds_per_round": 3.215842878000027,
      "linking_success": 0.8707600502512562,
      "mean_correct_track_s": 31.822580645161292,
      "stockouts": 0,
      "pseudonyms_issued": 2994,
      "pseudonyms_per_vehicle": 3.7613065326633164,
-     "pm_election_ms": 0.3371558333308637,
-     "rsu_elections_ms": 3.2221718666392007,
+     "pm_election_ms": 0.40060483339251124,
+     "rsu_elections_ms": 4.0791996665575425,
      "messages_per_round": 11940,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2214,14 +2333,14 @@
     {
      "vehicles": 801,
      "rounds": 3,
-     "wall_seconds_per_round": 2.840210757666663,
+     "wall_seconds_per_round": 3.248276709000038,
      "linking_success": 0.8760923845193508,
      "mean_correct_track_s": 32.09051724137931,
      "stockouts": 0,
      "pseudonyms_issued": 3023,
      "pseudonyms_per_vehicle": 3.774032459425718,
-     "pm_election_ms": 0.35782724998512094,
-     "rsu_elections_ms": 2.6396177999420916,
+     "pm_election_ms": 0.41921625006580143,
+     "rsu_elections_ms": 3.336923600272712,
      "messages_per_round": 12015,
      "rejected_messages": 0,
      "pm_blocks": 3,
@@ -2237,17 +2356,17 @@
     "mean_correct_track_s": 32.29827917995734,
     "messages_per_round": 11903.5,
     "pm_blocks": 3.0,
-    "pm_election_ms": 0.35745602499967316,
+    "pm_election_ms": 0.3563074000074569,
     "pseudonyms_issued": 2991.2,
     "pseudonyms_per_vehicle": 3.767793650213226,
     "rejected_messages": 0.0,
     "revoked": 0.0,
     "rounds": 3.0,
-    "rsu_elections_ms": 2.9171640266569434,
+    "rsu_elections_ms": 3.0103755600339355,
     "signatures_per_round": 11903.5,
     "stockouts": 1.2,
     "vehicles": 793.9,
-    "wall_seconds_per_round": 2.980290339033335
+    "wall_seconds_per_round": 3.1133820067333544
    },
    "ci": {
     "allotment_proof_bytes": {
@@ -2281,9 +2400,9 @@
      "n": 10
     },
     "pm_election_ms": {
-     "mean": 0.35745602499967316,
-     "lo": 0.33419569999466603,
-     "hi": 0.3810753000038858,
+     "mean": 0.3563074000074569,
+     "lo": 0.3353493500185323,
+     "hi": 0.3842631333175935,
      "n": 10
     },
     "pseudonyms_issued": {
@@ -2317,9 +2436,9 @@
      "n": 10
     },
     "rsu_elections_ms": {
-     "mean": 2.9171640266569434,
-     "lo": 2.7429927799903453,
-     "hi": 3.108058219982771,
+     "mean": 3.0103755600339355,
+     "lo": 2.770990279838467,
+     "hi": 3.3171404731971657,
      "n": 10
     },
     "signatures_per_round": {
@@ -2341,15 +2460,15 @@
      "n": 10
     },
     "wall_seconds_per_round": {
-     "mean": 2.980290339033335,
-     "lo": 2.877222377066668,
-     "hi": 3.0912321595666676,
+     "mean": 3.1133820067333544,
+     "lo": 3.004533725966682,
+     "hi": 3.2200564944666894,
      "n": 10
     }
    },
    "verdict_over_seeds": "privacy insufficient",
-   "seconds": 99.43511375100002
+   "seconds": 103.21657816600009
   }
  ],
- "wall_seconds": 220.49787796299998
+ "wall_seconds": 224.87615558800007
 }

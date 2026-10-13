@@ -1,0 +1,639 @@
+{
+ "experiment": "SUMO_realizations_motorway",
+ "traces": [
+  "/home/user/sumo-scenarios/motorway/motorway_seed1.fcd.xml",
+  "/home/user/sumo-scenarios/motorway/motorway_seed2.fcd.xml",
+  "/home/user/sumo-scenarios/motorway/motorway_seed3.fcd.xml",
+  "/home/user/sumo-scenarios/motorway/motorway_seed4.fcd.xml",
+  "/home/user/sumo-scenarios/motorway/motorway_seed5.fcd.xml"
+ ],
+ "seeds_per_trace": [
+  1,
+  2
+ ],
+ "per_trace": [
+  {
+   "trace": "/home/user/sumo-scenarios/motorway/motorway_seed1.fcd.xml",
+   "trace_info": {
+    "frames": 900,
+    "t_begin": 600.0,
+    "corridor_m": 6000.0,
+    "ring": false,
+    "run_seconds": 120,
+    "full_seconds": 900,
+    "full_vehicles_seen": 2069,
+    "full_vehicles_present_mean": 368.2344444444444,
+    "full_vehicles_present_max": 396,
+    "full_density_per_km": 61.3724074074074,
+    "full_speed_mean_mps": 30.844415544444814,
+    "window_seconds": 120,
+    "window_vehicles_seen": 595,
+    "window_vehicles_present_mean": 369.2083333333333,
+    "window_vehicles_present_max": 379,
+    "window_density_per_km": 61.53472222222222,
+    "window_speed_mean_mps": 31.141448594966707
+   },
+   "attackers_selected": 30,
+   "e1_s2": {
+    "opportunities": {
+     "mean": 7991.0,
+     "lo": 7503.0,
+     "hi": 8479.0,
+     "n": 2
+    },
+    "forged_sent": {
+     "mean": 302.0,
+     "lo": 284.0,
+     "hi": 320.0,
+     "n": 2
+    },
+    "v2v_message_rate": {
+     "mean": 0.9984375,
+     "lo": 0.996875,
+     "hi": 1.0,
+     "n": 2
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7401984999560384,
+     "lo": 0.7328502415458937,
+     "hi": 0.747546758366183,
+     "n": 2
+    },
+    "rsu_rate": {
+     "mean": 0.6622359154929578,
+     "lo": 0.6619718309859155,
+     "hi": 0.6625,
+     "n": 2
+    },
+    "exposure_mean_s": {
+     "mean": 9.640873015873016,
+     "lo": 7.888888888888889,
+     "hi": 11.392857142857142,
+     "n": 2
+    },
+    "exposure_p95_s_pooled": 21.0,
+    "exposure_windows_n": 64,
+    "victims_blamed": {
+     "mean": 102.0,
+     "lo": 96.0,
+     "hi": 108.0,
+     "n": 2
+    },
+    "unique_victims_blamed": {
+     "mean": 19.5,
+     "lo": 17.0,
+     "hi": 22.0,
+     "n": 2
+    },
+    "population_honest": {
+     "mean": 2039.0,
+     "lo": 2039.0,
+     "hi": 2039.0,
+     "n": 2
+    },
+    "population_attackers": {
+     "mean": 30.0,
+     "lo": 30.0,
+     "hi": 30.0,
+     "n": 2
+    },
+    "honest_revoked": {
+     "mean": 18.0,
+     "lo": 16.0,
+     "hi": 20.0,
+     "n": 2
+    },
+    "honest_revoked_share": {
+     "mean": 0.008827856792545365,
+     "lo": 0.00784698381559588,
+     "hi": 0.00980872976949485,
+     "n": 2
+    },
+    "attackers_revoked": {
+     "mean": 1.5,
+     "lo": 1.0,
+     "hi": 2.0,
+     "n": 2
+    },
+    "total_revoked": {
+     "mean": 19.5,
+     "lo": 17.0,
+     "hi": 22.0,
+     "n": 2
+    }
+   },
+   "attack_free_link_rate": {
+    "recycle": 0.928082191780822,
+    "fresh": 0.9298630136986301,
+    "fresh_vgk": 0.9298630136986301,
+    "rekey": 0.928082191780822
+   }
+  },
+  {
+   "trace": "/home/user/sumo-scenarios/motorway/motorway_seed2.fcd.xml",
+   "trace_info": {
+    "frames": 900,
+    "t_begin": 600.0,
+    "corridor_m": 6000.0,
+    "ring": false,
+    "run_seconds": 120,
+    "full_seconds": 900,
+    "full_vehicles_seen": 2081,
+    "full_vehicles_present_mean": 368.9377777777778,
+    "full_vehicles_present_max": 398,
+    "full_density_per_km": 61.48962962962963,
+    "full_speed_mean_mps": 30.851382828781727,
+    "window_seconds": 120,
+    "window_vehicles_seen": 607,
+    "window_vehicles_present_mean": 375.5833333333333,
+    "window_vehicles_present_max": 398,
+    "window_density_per_km": 62.59722222222222,
+    "window_speed_mean_mps": 30.868278455735524
+   },
+   "attackers_selected": 30,
+   "e1_s2": {
+    "opportunities": {
+     "mean": 7169.5,
+     "lo": 6544.0,
+     "hi": 7795.0,
+     "n": 2
+    },
+    "forged_sent": {
+     "mean": 275.5,
+     "lo": 182.0,
+     "hi": 369.0,
+     "n": 2
+    },
+    "v2v_message_rate": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7386559293091767,
+     "lo": 0.7350414907555685,
+     "hi": 0.7422703678627849,
+     "n": 2
+    },
+    "rsu_rate": {
+     "mean": 0.6479496113642456,
+     "lo": 0.6373626373626373,
+     "hi": 0.6585365853658537,
+     "n": 2
+    },
+    "exposure_mean_s": {
+     "mean": 9.924242424242424,
+     "lo": 8.666666666666666,
+     "hi": 11.181818181818182,
+     "n": 2
+    },
+    "exposure_p95_s_pooled": 26.0,
+    "exposure_windows_n": 54,
+    "victims_blamed": {
+     "mean": 96.0,
+     "lo": 66.0,
+     "hi": 126.0,
+     "n": 2
+    },
+    "unique_victims_blamed": {
+     "mean": 18.0,
+     "lo": 12.0,
+     "hi": 24.0,
+     "n": 2
+    },
+    "population_honest": {
+     "mean": 2051.0,
+     "lo": 2051.0,
+     "hi": 2051.0,
+     "n": 2
+    },
+    "population_attackers": {
+     "mean": 30.0,
+     "lo": 30.0,
+     "hi": 30.0,
+     "n": 2
+    },
+    "honest_revoked": {
+     "mean": 17.5,
+     "lo": 12.0,
+     "hi": 23.0,
+     "n": 2
+    },
+    "honest_revoked_share": {
+     "mean": 0.008532423208191127,
+     "lo": 0.005850804485616773,
+     "hi": 0.01121404193076548,
+     "n": 2
+    },
+    "attackers_revoked": {
+     "mean": 0.5,
+     "lo": 0.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "total_revoked": {
+     "mean": 18.0,
+     "lo": 12.0,
+     "hi": 24.0,
+     "n": 2
+    }
+   },
+   "attack_free_link_rate": {
+    "recycle": 0.9056629092860977,
+    "fresh": 0.9060654857756307,
+    "fresh_vgk": 0.9060654857756307,
+    "rekey": 0.9056629092860977
+   }
+  },
+  {
+   "trace": "/home/user/sumo-scenarios/motorway/motorway_seed3.fcd.xml",
+   "trace_info": {
+    "frames": 900,
+    "t_begin": 600.0,
+    "corridor_m": 6000.0,
+    "ring": false,
+    "run_seconds": 120,
+    "full_seconds": 900,
+    "full_vehicles_seen": 2066,
+    "full_vehicles_present_mean": 368.3488888888889,
+    "full_vehicles_present_max": 393,
+    "full_density_per_km": 61.391481481481485,
+    "full_speed_mean_mps": 30.80999846160343,
+    "window_seconds": 120,
+    "window_vehicles_seen": 592,
+    "window_vehicles_present_mean": 369.21666666666664,
+    "window_vehicles_present_max": 382,
+    "window_density_per_km": 61.536111111111104,
+    "window_speed_mean_mps": 30.955504446350382
+   },
+   "attackers_selected": 30,
+   "e1_s2": {
+    "opportunities": {
+     "mean": 7899.5,
+     "lo": 7621.0,
+     "hi": 8178.0,
+     "n": 2
+    },
+    "forged_sent": {
+     "mean": 300.0,
+     "lo": 220.0,
+     "hi": 380.0,
+     "n": 2
+    },
+    "v2v_message_rate": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.8171502095943752,
+     "lo": 0.80488487647841,
+     "hi": 0.8294155427103403,
+     "n": 2
+    },
+    "rsu_rate": {
+     "mean": 0.75311004784689,
+     "lo": 0.7289473684210527,
+     "hi": 0.7772727272727272,
+     "n": 2
+    },
+    "exposure_mean_s": {
+     "mean": 9.718468468468469,
+     "lo": 9.166666666666666,
+     "hi": 10.27027027027027,
+     "n": 2
+    },
+    "exposure_p95_s_pooled": 21.0,
+    "exposure_windows_n": 61,
+    "victims_blamed": {
+     "mean": 76.0,
+     "lo": 49.0,
+     "hi": 103.0,
+     "n": 2
+    },
+    "unique_victims_blamed": {
+     "mean": 15.0,
+     "lo": 10.0,
+     "hi": 20.0,
+     "n": 2
+    },
+    "population_honest": {
+     "mean": 2036.0,
+     "lo": 2036.0,
+     "hi": 2036.0,
+     "n": 2
+    },
+    "population_attackers": {
+     "mean": 30.0,
+     "lo": 30.0,
+     "hi": 30.0,
+     "n": 2
+    },
+    "honest_revoked": {
+     "mean": 14.5,
+     "lo": 10.0,
+     "hi": 19.0,
+     "n": 2
+    },
+    "honest_revoked_share": {
+     "mean": 0.00712180746561886,
+     "lo": 0.004911591355599214,
+     "hi": 0.009332023575638507,
+     "n": 2
+    },
+    "attackers_revoked": {
+     "mean": 0.5,
+     "lo": 0.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "total_revoked": {
+     "mean": 15.0,
+     "lo": 10.0,
+     "hi": 20.0,
+     "n": 2
+    }
+   },
+   "attack_free_link_rate": {
+    "recycle": 0.9165980795610424,
+    "fresh": 0.9209805532730759,
+    "fresh_vgk": 0.9209805532730759,
+    "rekey": 0.9165980795610424
+   }
+  },
+  {
+   "trace": "/home/user/sumo-scenarios/motorway/motorway_seed4.fcd.xml",
+   "trace_info": {
+    "frames": 900,
+    "t_begin": 600.0,
+    "corridor_m": 6000.0,
+    "ring": false,
+    "run_seconds": 120,
+    "full_seconds": 900,
+    "full_vehicles_seen": 2074,
+    "full_vehicles_present_mean": 369.05444444444447,
+    "full_vehicles_present_max": 408,
+    "full_density_per_km": 61.50907407407408,
+    "full_speed_mean_mps": 30.78466606854153,
+    "window_seconds": 120,
+    "window_vehicles_seen": 600,
+    "window_vehicles_present_mean": 371.31666666666666,
+    "window_vehicles_present_max": 397,
+    "window_density_per_km": 61.88611111111111,
+    "window_speed_mean_mps": 30.573153193590375
+   },
+   "attackers_selected": 30,
+   "e1_s2": {
+    "opportunities": {
+     "mean": 6679.0,
+     "lo": 6602.0,
+     "hi": 6756.0,
+     "n": 2
+    },
+    "forged_sent": {
+     "mean": 273.5,
+     "lo": 236.0,
+     "hi": 311.0,
+     "n": 2
+    },
+    "v2v_message_rate": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7347213892812944,
+     "lo": 0.7266859743483658,
+     "hi": 0.742756804214223,
+     "n": 2
+    },
+    "rsu_rate": {
+     "mean": 0.6323232873726088,
+     "lo": 0.6205787781350482,
+     "hi": 0.6440677966101694,
+     "n": 2
+    },
+    "exposure_mean_s": {
+     "mean": 10.00206896551724,
+     "lo": 9.28,
+     "hi": 10.724137931034482,
+     "n": 2
+    },
+    "exposure_p95_s_pooled": 21.0,
+    "exposure_windows_n": 54,
+    "victims_blamed": {
+     "mean": 101.0,
+     "lo": 84.0,
+     "hi": 118.0,
+     "n": 2
+    },
+    "unique_victims_blamed": {
+     "mean": 19.0,
+     "lo": 15.0,
+     "hi": 23.0,
+     "n": 2
+    },
+    "population_honest": {
+     "mean": 2044.0,
+     "lo": 2044.0,
+     "hi": 2044.0,
+     "n": 2
+    },
+    "population_attackers": {
+     "mean": 30.0,
+     "lo": 30.0,
+     "hi": 30.0,
+     "n": 2
+    },
+    "honest_revoked": {
+     "mean": 18.5,
+     "lo": 14.0,
+     "hi": 23.0,
+     "n": 2
+    },
+    "honest_revoked_share": {
+     "mean": 0.009050880626223091,
+     "lo": 0.00684931506849315,
+     "hi": 0.011252446183953033,
+     "n": 2
+    },
+    "attackers_revoked": {
+     "mean": 0.5,
+     "lo": 0.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "total_revoked": {
+     "mean": 19.0,
+     "lo": 15.0,
+     "hi": 23.0,
+     "n": 2
+    }
+   },
+   "attack_free_link_rate": {
+    "recycle": 0.9164387308533917,
+    "fresh": 0.9183365358221246,
+    "fresh_vgk": 0.922836145890038,
+    "rekey": 0.9164387308533917
+   }
+  },
+  {
+   "trace": "/home/user/sumo-scenarios/motorway/motorway_seed5.fcd.xml",
+   "trace_info": {
+    "frames": 900,
+    "t_begin": 600.0,
+    "corridor_m": 6000.0,
+    "ring": false,
+    "run_seconds": 120,
+    "full_seconds": 900,
+    "full_vehicles_seen": 2062,
+    "full_vehicles_present_mean": 370.4611111111111,
+    "full_vehicles_present_max": 395,
+    "full_density_per_km": 61.74351851851852,
+    "full_speed_mean_mps": 30.63037052922034,
+    "window_seconds": 120,
+    "window_vehicles_seen": 588,
+    "window_vehicles_present_mean": 374.71666666666664,
+    "window_vehicles_present_max": 390,
+    "window_density_per_km": 62.452777777777776,
+    "window_speed_mean_mps": 30.828083663212205
+   },
+   "attackers_selected": 29,
+   "e1_s2": {
+    "opportunities": {
+     "mean": 6807.0,
+     "lo": 5446.0,
+     "hi": 8168.0,
+     "n": 2
+    },
+    "forged_sent": {
+     "mean": 241.5,
+     "lo": 190.0,
+     "hi": 293.0,
+     "n": 2
+    },
+    "v2v_message_rate": {
+     "mean": 1.0,
+     "lo": 1.0,
+     "hi": 1.0,
+     "n": 2
+    },
+    "v2v_receiver_rate": {
+     "mean": 0.7275637595765989,
+     "lo": 0.7049291938997821,
+     "hi": 0.7501983252534156,
+     "n": 2
+    },
+    "rsu_rate": {
+     "mean": 0.6615681695706843,
+     "lo": 0.6473684210526316,
+     "hi": 0.6757679180887372,
+     "n": 2
+    },
+    "exposure_mean_s": {
+     "mean": 10.820833333333333,
+     "lo": 9.766666666666667,
+     "hi": 11.875,
+     "n": 2
+    },
+    "exposure_p95_s_pooled": 21.0,
+    "exposure_windows_n": 46,
+    "victims_blamed": {
+     "mean": 81.0,
+     "lo": 67.0,
+     "hi": 95.0,
+     "n": 2
+    },
+    "unique_victims_blamed": {
+     "mean": 13.5,
+     "lo": 10.0,
+     "hi": 17.0,
+     "n": 2
+    },
+    "population_honest": {
+     "mean": 2033.0,
+     "lo": 2033.0,
+     "hi": 2033.0,
+     "n": 2
+    },
+    "population_attackers": {
+     "mean": 29.0,
+     "lo": 29.0,
+     "hi": 29.0,
+     "n": 2
+    },
+    "honest_revoked": {
+     "mean": 13.5,
+     "lo": 10.0,
+     "hi": 17.0,
+     "n": 2
+    },
+    "honest_revoked_share": {
+     "mean": 0.006640432857845549,
+     "lo": 0.004918839153959666,
+     "hi": 0.008362026561731432,
+     "n": 2
+    },
+    "attackers_revoked": {
+     "mean": 0.0,
+     "lo": 0.0,
+     "hi": 0.0,
+     "n": 2
+    },
+    "total_revoked": {
+     "mean": 13.5,
+     "lo": 10.0,
+     "hi": 17.0,
+     "n": 2
+    }
+   },
+   "attack_free_link_rate": {
+    "recycle": 0.9086356253383866,
+    "fresh": 0.9096922246220303,
+    "fresh_vgk": 0.9116778523489932,
+    "rekey": 0.9086356253383866
+   }
+  }
+ ],
+ "attack_free_link_rate_across_realizations": {
+  "recycle": {
+   "mean": 0.9150835073639481,
+   "lo": 0.9084444865515444,
+   "hi": 0.921896056048379,
+   "n": 5
+  },
+  "fresh": {
+   "mean": 0.9169875626382983,
+   "lo": 0.9097738470443997,
+   "hi": 0.9240523637981993,
+   "n": 5
+  },
+  "fresh_vgk": {
+   "mean": 0.9182846101972736,
+   "lo": 0.9105420911131847,
+   "hi": 0.9252757744900825,
+   "n": 5
+  },
+  "rekey": {
+   "mean": 0.9150835073639481,
+   "lo": 0.9084444865515444,
+   "hi": 0.921896056048379,
+   "n": 5
+  }
+ },
+ "s2_receiver_rate_across_realizations": {
+  "mean": 0.7516579575434967,
+  "lo": 0.7318583373994162,
+  "hi": 0.7852741036040917,
+  "n": 5
+ },
+ "s2_honest_revoked_across_realizations": {
+  "mean": 16.4,
+  "lo": 14.5,
+  "hi": 18.1,
+  "n": 5
+ }
+}

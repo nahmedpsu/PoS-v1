@@ -21,7 +21,7 @@
      "own proof for a seed of own choosing": false
     }
    },
-   "seconds": 0.003059092000057717
+   "seconds": 0.004458382999999344
   },
   {
    "name": "sortition threshold tampering",
@@ -42,7 +42,7 @@
     },
     "honest_block_accepted": true
    },
-   "seconds": 0.0037462679999862303
+   "seconds": 0.005487794999993412
   },
   {
    "name": "seed grinding",
@@ -54,20 +54,20 @@
    "metrics": {
     "fair_share": 0.1,
     "share": {
-     "block_hash/budget=1": 0.09,
-     "block_hash/budget=4": 0.14333333333333334,
-     "block_hash/budget=16": 0.15666666666666668,
-     "block_hash/budget=64": 0.36333333333333334,
-     "chained_vrf/budget=1": 0.11,
-     "chained_vrf/budget=4": 0.11,
-     "chained_vrf/budget=16": 0.11,
-     "chained_vrf/budget=64": 0.11
+     "block_hash/budget=1": 0.11,
+     "block_hash/budget=4": 0.14,
+     "block_hash/budget=16": 0.19666666666666666,
+     "block_hash/budget=64": 0.44,
+     "chained_vrf/budget=1": 0.1,
+     "chained_vrf/budget=4": 0.1,
+     "chained_vrf/budget=16": 0.1,
+     "chained_vrf/budget=64": 0.1
     },
-    "worst_share_block_hash_seed": 0.36333333333333334,
-    "worst_share_chained_seed": 0.11,
+    "worst_share_block_hash_seed": 0.44,
+    "worst_share_chained_seed": 0.1,
     "rounds": 300
    },
-   "seconds": 4.909172149999904
+   "seconds": 4.696778223999999
   },
   {
    "name": "multi-key seed choice",
@@ -103,7 +103,7 @@
     },
     "max_gain_over_naive": 0.0
    },
-   "seconds": 10.239479632999974
+   "seconds": 9.457221332999993
   },
   {
    "name": "block withholding (selfish winner)",
@@ -141,7 +141,7 @@
      }
     }
    },
-   "seconds": 0.038980331999937334
+   "seconds": 0.03535893199999407
   },
   {
    "name": "equivocation (two blocks, one proof)",
@@ -156,7 +156,7 @@
      "PM-1"
     ]
    },
-   "seconds": 0.03273380099994938
+   "seconds": 0.06666106199999433
   },
   {
    "name": "proof replay",
@@ -168,7 +168,7 @@
    "metrics": {
     "replayed_block_accepted": false
    },
-   "seconds": 0.04872624099994027
+   "seconds": 0.07148081900000136
   },
   {
    "name": "election server denial of service",
@@ -201,7 +201,7 @@
      }
     }
    },
-   "seconds": 0.0003025099999831582
+   "seconds": 0.0005089719999915587
   },
   {
    "name": "Sybil election keys",
@@ -214,7 +214,7 @@
     "sybil_keys": 50,
     "blocks_accepted": 0
    },
-   "seconds": 0.0488478719998966
+   "seconds": 0.07144280500000377
   },
   {
    "name": "network partition",
@@ -228,7 +228,7 @@
     "wasted_blocks": 10,
     "share_kept_from_side_a": 0.2
    },
-   "seconds": 8.169499983523565e-05
+   "seconds": 9.144000000560482e-05
   },
   {
    "name": "pseudonym replay (internal tricking adversary)",
@@ -243,7 +243,7 @@
     "honest_revoked": 0,
     "flagged": 2
    },
-   "seconds": 0.08458670999993956
+   "seconds": 0.09951986200000817
   },
   {
    "name": "pseudonym cloning",
@@ -257,7 +257,7 @@
     "clone_far_away": "pseudonym-cloned",
     "clone_other_sender": "pseudonym-held-by-another-vehicle"
    },
-   "seconds": 0.021936902999868835
+   "seconds": 0.02395186399999716
   },
   {
    "name": "forged pseudonym / forged PKI package",
@@ -271,7 +271,7 @@
     "forged_package_accepted_by_pm": false,
     "rsu": "RSU-1.1"
    },
-   "seconds": 0.021312880000095902
+   "seconds": 0.021371131000009314
   },
   {
    "name": "fake-vehicle pseudonym flood",
@@ -294,7 +294,7 @@
      "stockouts": 0
     }
    },
-   "seconds": 0.0661050260000593
+   "seconds": 0.06625570500000322
   },
   {
    "name": "revoked vehicle keeps transmitting",
@@ -309,7 +309,7 @@
     "messages_accepted": 0,
     "new_sets_after_revocation": false
    },
-   "seconds": 0.0857548639999095
+   "seconds": 0.08705001100000231
   },
   {
    "name": "compromised RSU rewrites its chain",
@@ -322,7 +322,7 @@
     "rsu_chain_valid_locally_after_rewrite": false,
     "detected_from_pm_level": true
    },
-   "seconds": 0.07486030600011873
+   "seconds": 0.06961415399999282
   },
   {
    "name": "curious RSU reads the ledger",
@@ -335,7 +335,7 @@
     "transactions": 6,
     "opened_by_rsu": 0
    },
-   "seconds": 0.048991611000019475
+   "seconds": 0.04128838399999779
   },
   {
    "name": "location tracking across pseudonym changes",
@@ -349,12 +349,12 @@
     "dense_sync_10s_silence": 0.4772727272727273,
     "dense_unsync_10s_silence": 0.6153198653198653
    },
-   "seconds": 1.5690247109998836
+   "seconds": 1.3093128670000027
   }
  ],
  "summary": {
   "defended": 14,
   "mitigated": 4
  },
- "wall_seconds": 17.297736000999976
+ "wall_seconds": 16.127898622000004
 }

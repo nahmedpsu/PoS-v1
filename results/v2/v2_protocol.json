@@ -12,50 +12,66 @@
       "signatures": 321,
       "keygens": 317,
       "bytes": 111000,
-      "verifications": 0
+      "verifications": 0,
+      "encryptions": 2,
+      "decryptions": 0
      },
      "pm": {
       "signatures": 20,
       "keygens": 0,
       "bytes": 0,
-      "verifications": 0
+      "verifications": 254,
+      "encryptions": 20,
+      "decryptions": 2
      },
      "rsu": {
-      "signatures": 0,
+      "signatures": 66,
       "keygens": 0,
       "bytes": 0,
-      "verifications": 6742
+      "verifications": 6742,
+      "encryptions": 66,
+      "decryptions": 0
      },
      "vehicles": {
       "signatures": 6741,
       "keygens": 0,
       "bytes": 3872226,
-      "verifications": 0
+      "verifications": 0,
+      "encryptions": 0,
+      "decryptions": 0
      },
      "setup": {
       "pki": {
        "signatures": 321,
        "keygens": 317,
        "bytes": 111000,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 2,
+       "decryptions": 0
       },
       "pm": {
        "signatures": 0,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 254,
+       "encryptions": 0,
+       "decryptions": 2
       },
       "rsu": {
-       "signatures": 0,
+       "signatures": 6,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 6,
+       "decryptions": 0
       },
       "vehicles": {
        "signatures": 0,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 0,
+       "decryptions": 0
       }
      },
      "steady_state": {
@@ -63,34 +79,101 @@
        "signatures": 0,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 0,
+       "decryptions": 0
       },
       "pm": {
        "signatures": 20,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 20,
+       "decryptions": 0
       },
       "rsu": {
-       "signatures": 0,
+       "signatures": 60,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 6742
+       "verifications": 6742,
+       "encryptions": 60,
+       "decryptions": 0
       },
       "vehicles": {
        "signatures": 6741,
        "keygens": 0,
        "bytes": 3872226,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 0,
+       "decryptions": 0
       }
      },
+     "cost_model": {
+      "sign": 5e-05,
+      "verify": 0.0002,
+      "keygen": 0.0001,
+      "encrypt": 0.0003,
+      "decrypt": 0.0003,
+      "source": "assumed",
+      "note": "modelled: counted cryptographic operations x per-operation coefficients"
+     },
+     "cpu_range_x0.5_x2_per_1000_veh_h": {
+      "pki": [
+       0.0,
+       0.0
+      ],
+      "pm": [
+       1.2923076923076922,
+       5.169230769230769
+      ],
+      "rsu": [
+       252.81230769230768,
+       1011.2492307692307
+      ]
+     },
      "pki_cpu_s_per_1000_veh_h": 0.0,
-     "pm_cpu_s_per_1000_veh_h": 0.3692307692307692,
-     "rsu_cpu_s_per_1000_veh_h": 497.8707692307692,
+     "pm_cpu_s_per_1000_veh_h": 2.5846153846153843,
+     "rsu_cpu_s_per_1000_veh_h": 505.62461538461537,
      "vehicle_keygens_per_vehicle_per_round": 0.0,
      "bytes_per_vehicle_per_round": 11914.541538461537,
      "sim_seconds": 150.0,
      "n_vehicles": 65.0
+    },
+    "retained_valid": [
+     {
+      "t": 30.0,
+      "valid": 2,
+      "retained": 2
+     },
+     {
+      "t": 60.0,
+      "valid": 4,
+      "retained": 4
+     },
+     {
+      "t": 90.0,
+      "valid": 4,
+      "retained": 4
+     },
+     {
+      "t": 120.0,
+      "valid": 4,
+      "retained": 4
+     },
+     {
+      "t": 150.0,
+      "valid": 4,
+      "retained": 4
+     }
+    ],
+    "revocation_timing": {
+     "VEH-00060-e8c2d219": {
+      "first_replay": 1700000040.0,
+      "first_report": 1700000040.0,
+      "revoked": 1700000060.0,
+      "detection_s": 0.0,
+      "decision_s": 20.0
+     }
     },
     "revoked_persistence": {
      "VEH-00060-e8c2d219": {
@@ -103,10 +186,16 @@
      "tracker": {
       "link_rate": 0.9632516703786191,
       "precision": 0.9196240479662939,
+      "pair_recall": 0.5858366883452049,
+      "purity": 0.9460020768431984,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.8915384615384615,
       "changes": 898,
       "pairs": 6171,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker"
       ]
@@ -114,10 +203,16 @@
      "rsu": {
       "link_rate": 0.155902004454343,
       "precision": 1.0,
+      "pair_recall": 0.06131929389903995,
+      "purity": 1.0,
       "identity_rate": 0.5846153846153846,
+      "correct_identity_seconds": 0.1806853582554517,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.21256410256410257,
       "changes": 898,
       "pairs": 594,
+      "beacon_seconds": 6741.0,
       "entities": [
        "rsu"
       ]
@@ -125,10 +220,16 @@
      "pm": {
       "link_rate": 0.534521158129176,
       "precision": 1.0,
+      "pair_recall": 0.38618767420253947,
+      "purity": 1.0,
       "identity_rate": 0.8923076923076924,
+      "correct_identity_seconds": 0.557632398753894,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.5666666666666667,
       "changes": 898,
       "pairs": 3741,
+      "beacon_seconds": 6741.0,
       "entities": [
        "pm"
       ]
@@ -136,21 +237,33 @@
      "cloud": {
       "link_rate": 0.7149220489977728,
       "precision": 1.0,
+      "pair_recall": 0.09941158253329205,
+      "purity": 1.0,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.2053846153846154,
       "changes": 898,
       "pairs": 963,
+      "beacon_seconds": 6741.0,
       "entities": [
        "cloud"
       ]
      },
      "pki": {
       "link_rate": 0.0,
-      "precision": 1.0,
+      "precision": null,
+      "pair_recall": 0.0,
+      "purity": 1.0,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0010384215991692627,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.06846153846153846,
       "changes": 898,
       "pairs": 0,
+      "beacon_seconds": 6741.0,
       "entities": [
        "pki"
       ]
@@ -158,10 +271,16 @@
      "tracker+rsu": {
       "link_rate": 0.967706013363029,
       "precision": 0.8935763633691018,
+      "pair_recall": 0.6275420666873129,
+      "purity": 0.9428868120456906,
       "identity_rate": 0.5846153846153846,
+      "correct_identity_seconds": 0.4195223260643821,
+      "wrong_identity_seconds": 0.03946002076843198,
+      "ambiguous_identity_seconds": 0.03115264797507788,
       "trajectory_coverage": 0.908974358974359,
       "changes": 898,
       "pairs": 6803,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "rsu"
@@ -170,10 +289,16 @@
      "tracker+pm": {
       "link_rate": 0.9855233853006682,
       "precision": 0.7698483496877788,
+      "pair_recall": 0.8017962217404769,
+      "purity": 0.8909657320872274,
       "identity_rate": 0.8923076923076924,
+      "correct_identity_seconds": 0.6895119418483905,
+      "wrong_identity_seconds": 0.023883696780893044,
+      "ambiguous_identity_seconds": 0.14641744548286603,
       "trajectory_coverage": 0.963076923076923,
       "changes": 898,
       "pairs": 10089,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "pm"
@@ -182,10 +307,16 @@
      "tracker+cloud": {
       "link_rate": 0.9866369710467706,
       "precision": 0.8073286052009456,
+      "pair_recall": 0.6345617838340043,
+      "purity": 0.8940809968847352,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.9346153846153846,
       "changes": 898,
       "pairs": 7614,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "cloud"
@@ -194,10 +325,16 @@
      "tracker+pki": {
       "link_rate": 0.9632516703786191,
       "precision": 0.9196240479662939,
+      "pair_recall": 0.5858366883452049,
+      "purity": 0.9460020768431984,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.01557632398753894,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.8915384615384615,
       "changes": 898,
       "pairs": 6171,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "pki"
@@ -206,10 +343,16 @@
      "all": {
       "link_rate": 0.9966592427616926,
       "precision": 0.7066772655007949,
+      "pair_recall": 0.8259523072158563,
+      "purity": 0.8473520249221184,
       "identity_rate": 0.8923076923076924,
+      "correct_identity_seconds": 0.6261682242990654,
+      "wrong_identity_seconds": 0.024922118380062305,
+      "ambiguous_identity_seconds": 0.22429906542056074,
       "trajectory_coverage": 0.9815384615384616,
       "changes": 898,
       "pairs": 11322,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "rsu",
@@ -222,6 +365,10 @@
    },
    "stockouts": 3,
    "departed_returns": 0,
+   "departed_lost": 0,
+   "attacker_vehicle_seconds": 0,
+   "vehicle_seconds": 9750,
+   "achieved_attack_share": 0.0,
    "tracking": {
     "beacons": 6741,
     "pseudonym_changes": 898,
@@ -240,7 +387,7 @@
     "enabled": true,
     "tamper_detected_on_clean_chains": false,
     "proof_bytes": 1433,
-    "proof_verify_seconds": 1.3225960001364002e-05,
+    "proof_verify_seconds": 9.053240000866936e-06,
     "rsu_blocks_anchored": {
      "PM-1": 11,
      "PM-2": 11
@@ -275,6 +422,8 @@
     "round_seconds": 30,
     "silent_period": 3.0,
     "position_noise_m": 3.0,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -283,6 +432,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -292,7 +447,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
-    "insider_forgery": false
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
+    "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0
    },
    "rounds": [
     {
@@ -304,12 +468,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.00033476350006367284,
-     "rsu_consensus_cpu": 0.002409302999770565,
+     "pm_consensus_cpu": 0.00031186300020635827,
+     "rsu_consensus_cpu": 0.0012945556674518834,
      "pm_winner": "PM-1",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.3063567070000772
+     "wall_seconds": 0.2823631290002595
     },
     {
      "round": 2,
@@ -320,12 +484,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.0003643185001465099,
-     "rsu_consensus_cpu": 0.0013247489999533477,
+     "pm_consensus_cpu": 0.00024023050013965985,
+     "rsu_consensus_cpu": 0.0010861853332547375,
      "pm_winner": "PM-1",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.2902836550001666
+     "wall_seconds": 0.30774957799985714
     },
     {
      "round": 3,
@@ -336,12 +500,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.00036469899998792243,
-     "rsu_consensus_cpu": 0.001233289999769719,
+     "pm_consensus_cpu": 0.0002792205000332615,
+     "rsu_consensus_cpu": 0.0011383433326651964,
      "pm_winner": "PM-1",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.34953994400007105
+     "wall_seconds": 0.26634001499996884
     },
     {
      "round": 4,
@@ -352,12 +516,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.0003657934997818302,
-     "rsu_consensus_cpu": 0.0013272569996540065,
+     "pm_consensus_cpu": 0.00034755200044855883,
+     "rsu_consensus_cpu": 0.0013314920001903374,
      "pm_winner": "PM-2",
      "pm_miners": 0,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.2768962370000736
+     "wall_seconds": 0.2935560760001863
     },
     {
      "round": 5,
@@ -368,12 +532,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.00045426600001974293,
-     "rsu_consensus_cpu": 0.001401675333378686,
+     "pm_consensus_cpu": 0.0002459294998971018,
+     "rsu_consensus_cpu": 0.0010249623330006823,
      "pm_winner": "PM-2",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.3020955629999662
+     "wall_seconds": 0.3016619360000732
     }
    ],
    "pm_chain_blocks": 6,
@@ -390,6 +554,14 @@
     "pids_held_by_more_than_one_vehicle": 251,
     "vehicles": 65,
     "revoked_vehicles": 1,
+    "population": {
+     "vehicles": 65,
+     "honest": 64,
+     "attackers": 1,
+     "revoked_total": 1,
+     "revoked_honest": 0,
+     "revoked_attackers": 1
+    },
     "flagged_messages": 1,
     "pki_accesses": 66
    },
@@ -398,13 +570,14 @@
      "vehicle": "VEH-00060-e8c2d219",
      "pid": "PID-9dedc69806ea",
      "rsu": "RSU-1.3",
-     "reason": "pseudonym-held-by-another-vehicle"
+     "reason": "pseudonym-held-by-another-vehicle",
+     "t": 1700000040.0
     }
    ],
-   "total_wall_seconds": 1.5954278010001417,
+   "total_wall_seconds": 1.509844191999946,
    "vehicles": 65,
-   "mean_pm_consensus_cpu": 0.00037676809999993567,
-   "mean_rsu_consensus_cpu": 0.0015392548665052648,
+   "mean_pm_consensus_cpu": 0.00028495910014498805,
+   "mean_rsu_consensus_cpu": 0.0011751077333125675,
    "all_pm_blocks_verify": true
   },
   "pop": {
@@ -417,50 +590,66 @@
       "signatures": 321,
       "keygens": 317,
       "bytes": 110969,
-      "verifications": 0
+      "verifications": 0,
+      "encryptions": 2,
+      "decryptions": 0
      },
      "pm": {
       "signatures": 20,
       "keygens": 0,
       "bytes": 0,
-      "verifications": 0
+      "verifications": 254,
+      "encryptions": 20,
+      "decryptions": 2
      },
      "rsu": {
-      "signatures": 0,
+      "signatures": 66,
       "keygens": 0,
       "bytes": 0,
-      "verifications": 6742
+      "verifications": 6742,
+      "encryptions": 66,
+      "decryptions": 0
      },
      "vehicles": {
       "signatures": 6741,
       "keygens": 0,
       "bytes": 3871290,
-      "verifications": 0
+      "verifications": 0,
+      "encryptions": 0,
+      "decryptions": 0
      },
      "setup": {
       "pki": {
        "signatures": 321,
        "keygens": 317,
        "bytes": 110969,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 2,
+       "decryptions": 0
       },
       "pm": {
        "signatures": 0,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 254,
+       "encryptions": 0,
+       "decryptions": 2
       },
       "rsu": {
-       "signatures": 0,
+       "signatures": 6,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 6,
+       "decryptions": 0
       },
       "vehicles": {
        "signatures": 0,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 0,
+       "decryptions": 0
       }
      },
      "steady_state": {
@@ -468,34 +657,101 @@
        "signatures": 0,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 0,
+       "decryptions": 0
       },
       "pm": {
        "signatures": 20,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 20,
+       "decryptions": 0
       },
       "rsu": {
-       "signatures": 0,
+       "signatures": 60,
        "keygens": 0,
        "bytes": 0,
-       "verifications": 6742
+       "verifications": 6742,
+       "encryptions": 60,
+       "decryptions": 0
       },
       "vehicles": {
        "signatures": 6741,
        "keygens": 0,
        "bytes": 3871290,
-       "verifications": 0
+       "verifications": 0,
+       "encryptions": 0,
+       "decryptions": 0
       }
      },
+     "cost_model": {
+      "sign": 5e-05,
+      "verify": 0.0002,
+      "keygen": 0.0001,
+      "encrypt": 0.0003,
+      "decrypt": 0.0003,
+      "source": "assumed",
+      "note": "modelled: counted cryptographic operations x per-operation coefficients"
+     },
+     "cpu_range_x0.5_x2_per_1000_veh_h": {
+      "pki": [
+       0.0,
+       0.0
+      ],
+      "pm": [
+       1.2923076923076922,
+       5.169230769230769
+      ],
+      "rsu": [
+       252.81230769230768,
+       1011.2492307692307
+      ]
+     },
      "pki_cpu_s_per_1000_veh_h": 0.0,
-     "pm_cpu_s_per_1000_veh_h": 0.3692307692307692,
-     "rsu_cpu_s_per_1000_veh_h": 497.8707692307692,
+     "pm_cpu_s_per_1000_veh_h": 2.5846153846153843,
+     "rsu_cpu_s_per_1000_veh_h": 505.62461538461537,
      "vehicle_keygens_per_vehicle_per_round": 0.0,
      "bytes_per_vehicle_per_round": 11911.66153846154,
      "sim_seconds": 150.0,
      "n_vehicles": 65.0
+    },
+    "retained_valid": [
+     {
+      "t": 30.0,
+      "valid": 2,
+      "retained": 2
+     },
+     {
+      "t": 60.0,
+      "valid": 4,
+      "retained": 4
+     },
+     {
+      "t": 90.0,
+      "valid": 4,
+      "retained": 4
+     },
+     {
+      "t": 120.0,
+      "valid": 4,
+      "retained": 4
+     },
+     {
+      "t": 150.0,
+      "valid": 4,
+      "retained": 4
+     }
+    ],
+    "revocation_timing": {
+     "VEH-00060-e8c2d219": {
+      "first_replay": 1700000040.0,
+      "first_report": 1700000040.0,
+      "revoked": 1700000060.0,
+      "detection_s": 0.0,
+      "decision_s": 20.0
+     }
     },
     "revoked_persistence": {
      "VEH-00060-e8c2d219": {
@@ -508,10 +764,16 @@
      "tracker": {
       "link_rate": 0.9610244988864143,
       "precision": 0.9389741052284347,
+      "pair_recall": 0.5876948487663879,
+      "purity": 0.9574247144340602,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.8915384615384615,
       "changes": 898,
       "pairs": 6063,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker"
       ]
@@ -519,10 +781,16 @@
      "rsu": {
       "link_rate": 0.155902004454343,
       "precision": 1.0,
+      "pair_recall": 0.06131929389903995,
+      "purity": 1.0,
       "identity_rate": 0.5846153846153846,
+      "correct_identity_seconds": 0.1806853582554517,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.21256410256410257,
       "changes": 898,
       "pairs": 594,
+      "beacon_seconds": 6741.0,
       "entities": [
        "rsu"
       ]
@@ -530,10 +798,16 @@
      "pm": {
       "link_rate": 0.534521158129176,
       "precision": 1.0,
+      "pair_recall": 0.38618767420253947,
+      "purity": 1.0,
       "identity_rate": 0.8923076923076924,
+      "correct_identity_seconds": 0.557632398753894,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.5666666666666667,
       "changes": 898,
       "pairs": 3741,
+      "beacon_seconds": 6741.0,
       "entities": [
        "pm"
       ]
@@ -541,21 +815,33 @@
      "cloud": {
       "link_rate": 0.7149220489977728,
       "precision": 1.0,
+      "pair_recall": 0.09941158253329205,
+      "purity": 1.0,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.2053846153846154,
       "changes": 898,
       "pairs": 963,
+      "beacon_seconds": 6741.0,
       "entities": [
        "cloud"
       ]
      },
      "pki": {
       "link_rate": 0.0,
-      "precision": 1.0,
+      "precision": null,
+      "pair_recall": 0.0,
+      "purity": 1.0,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0010384215991692627,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.06846153846153846,
       "changes": 898,
       "pairs": 0,
+      "beacon_seconds": 6741.0,
       "entities": [
        "pki"
       ]
@@ -563,10 +849,16 @@
      "tracker+rsu": {
       "link_rate": 0.965478841870824,
       "precision": 0.9161667666466706,
+      "pair_recall": 0.6306390007226179,
+      "purity": 0.9543094496365524,
       "identity_rate": 0.5846153846153846,
+      "correct_identity_seconds": 0.4195223260643821,
+      "wrong_identity_seconds": 0.017653167185877467,
+      "ambiguous_identity_seconds": 0.03115264797507788,
       "trajectory_coverage": 0.908974358974359,
       "changes": 898,
       "pairs": 6668,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "rsu"
@@ -575,10 +867,16 @@
      "tracker+pm": {
       "link_rate": 0.9855233853006682,
       "precision": 0.8064516129032258,
+      "pair_recall": 0.8129451842675751,
+      "purity": 0.9117341640706127,
       "identity_rate": 0.8923076923076924,
+      "correct_identity_seconds": 0.7331256490134995,
+      "wrong_identity_seconds": 0.01142263759086189,
+      "ambiguous_identity_seconds": 0.11526479750778816,
       "trajectory_coverage": 0.9692307692307692,
       "changes": 898,
       "pairs": 9765,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "pm"
@@ -587,10 +885,16 @@
      "tracker+cloud": {
       "link_rate": 0.9855233853006682,
       "precision": 0.8288834951456311,
+      "pair_recall": 0.6345617838340043,
+      "purity": 0.9127725856697819,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.0,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.9346153846153846,
       "changes": 898,
       "pairs": 7416,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "cloud"
@@ -599,10 +903,16 @@
      "tracker+pki": {
       "link_rate": 0.9610244988864143,
       "precision": 0.9389741052284347,
+      "pair_recall": 0.5876948487663879,
+      "purity": 0.9574247144340602,
       "identity_rate": 0.0,
+      "correct_identity_seconds": 0.0,
+      "wrong_identity_seconds": 0.01557632398753894,
+      "ambiguous_identity_seconds": 0.0,
       "trajectory_coverage": 0.8915384615384615,
       "changes": 898,
       "pairs": 6063,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "pki"
@@ -611,10 +921,16 @@
      "all": {
       "link_rate": 0.9977728285077951,
       "precision": 0.7218649517684887,
+      "pair_recall": 0.8343140291111799,
+      "purity": 0.8753894080996885,
       "identity_rate": 0.8923076923076924,
+      "correct_identity_seconds": 0.6978193146417445,
+      "wrong_identity_seconds": 0.009345794392523364,
+      "ambiguous_identity_seconds": 0.17757009345794392,
       "trajectory_coverage": 0.9876923076923076,
       "changes": 898,
       "pairs": 11196,
+      "beacon_seconds": 6741.0,
       "entities": [
        "tracker",
        "rsu",
@@ -627,6 +943,10 @@
    },
    "stockouts": 3,
    "departed_returns": 0,
+   "departed_lost": 0,
+   "attacker_vehicle_seconds": 0,
+   "vehicle_seconds": 9750,
+   "achieved_attack_share": 0.0,
    "tracking": {
     "beacons": 6741,
     "pseudonym_changes": 898,
@@ -645,7 +965,7 @@
     "enabled": true,
     "tamper_detected_on_clean_chains": false,
     "proof_bytes": 1227,
-    "proof_verify_seconds": 2.1185339996918628e-05,
+    "proof_verify_seconds": 9.655059993747273e-06,
     "rsu_blocks_anchored": {
      "PM-1": 11,
      "PM-2": 11
@@ -680,6 +1000,8 @@
     "round_seconds": 30,
     "silent_period": 3.0,
     "position_noise_m": 3.0,
+    "gps_noise_m": 0.0,
+    "gps_noise_corr": 0.9,
     "forecast_alpha": 0.5,
     "safety_stock": 0.25,
     "adversary_gate_m": 8.0,
@@ -688,6 +1010,12 @@
     "v2v": false,
     "v2v_range_m": 300.0,
     "v2v_plausibility": false,
+    "v2v_detectors": [
+     "ssc"
+    ],
+    "v2v_allowance_m": 25.0,
+    "v2v_kin_tolerance_m": 10.0,
+    "v2v_loss": 0.0,
     "former_holders": 0,
     "former_holder_strategy": "S1",
     "ghost_offset_m": 40.0,
@@ -697,7 +1025,16 @@
     "shuffle_before_upload": false,
     "revocation_reports": 1,
     "revocation_distinct_rsus": 1,
-    "insider_forgery": false
+    "rsu_history": "shared",
+    "report_processing": "round",
+    "report_delay_s": 1.0,
+    "malicious_replay": "per_round",
+    "departed_return_prob": 1.0,
+    "departed_return_delay_rounds": 0,
+    "insider_forgery": false,
+    "insider_strategy": "offset",
+    "insider_forgeries_per_round": 1,
+    "insider_near_m": 10.0
    },
    "rounds": [
     {
@@ -709,12 +1046,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.11005503400007001,
-     "rsu_consensus_cpu": 0.4003077440001107,
+     "pm_consensus_cpu": 0.11007377499969152,
+     "rsu_consensus_cpu": 0.4003143989997625,
      "pm_winner": "PM-2",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.358785067999861
+     "wall_seconds": 0.31466129899990847
     },
     {
      "round": 2,
@@ -725,12 +1062,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.020064173000055235,
-     "rsu_consensus_cpu": 0.5202474369998709,
+     "pm_consensus_cpu": 0.020052773999868805,
+     "rsu_consensus_cpu": 0.520217476999751,
      "pm_winner": "PM-1",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.3032020159998865
+     "wall_seconds": 0.28735117399992305
     },
     {
      "round": 3,
@@ -741,12 +1078,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.17005675800002792,
-     "rsu_consensus_cpu": 0.5502323080000224,
+     "pm_consensus_cpu": 0.17008769000032772,
+     "rsu_consensus_cpu": 0.5503063939998356,
      "pm_winner": "PM-2",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.2862154560000363
+     "wall_seconds": 0.2426949609998701
     },
     {
      "round": 4,
@@ -757,12 +1094,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.1900783360001151,
-     "rsu_consensus_cpu": 0.1303994609999154,
+     "pm_consensus_cpu": 0.19005105300033392,
+     "rsu_consensus_cpu": 0.13023597999916092,
      "pm_winner": "PM-1",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.3048930500001461
+     "wall_seconds": 0.3007296889995814
     },
     {
      "round": 5,
@@ -773,12 +1110,12 @@
      "rsu_blocks": 4,
      "rsu_txs": 12,
      "pm_block_txs": 4,
-     "pm_consensus_cpu": 0.16005370899998525,
-     "rsu_consensus_cpu": 0.3202482559998498,
+     "pm_consensus_cpu": 0.16005430900000647,
+     "rsu_consensus_cpu": 0.3202428789998703,
      "pm_winner": "PM-1",
      "pm_miners": 1,
      "reassigned_to_previous_holder": 0,
-     "wall_seconds": 0.31051277300002766
+     "wall_seconds": 0.2689352589995906
     }
    ],
    "pm_chain_blocks": 6,
@@ -795,6 +1132,14 @@
     "pids_held_by_more_than_one_vehicle": 250,
     "vehicles": 65,
     "revoked_vehicles": 1,
+    "population": {
+     "vehicles": 65,
+     "honest": 64,
+     "attackers": 1,
+     "revoked_total": 1,
+     "revoked_honest": 0,
+     "revoked_attackers": 1
+    },
     "flagged_messages": 1,
     "pki_accesses": 66
    },
@@ -803,13 +1148,14 @@
      "vehicle": "VEH-00060-e8c2d219",
      "pid": "PID-3646f59cd100",
      "rsu": "RSU-1.3",
-     "reason": "pseudonym-held-by-another-vehicle"
+     "reason": "pseudonym-held-by-another-vehicle",
+     "t": 1700000040.0
     }
    ],
-   "total_wall_seconds": 1.6081087679999655,
+   "total_wall_seconds": 1.4622753209996517,
    "vehicles": 65,
-   "mean_pm_consensus_cpu": 0.1300616020000507,
-   "mean_rsu_consensus_cpu": 0.3842870411999538,
+   "mean_pm_consensus_cpu": 0.1300639202000457,
+   "mean_rsu_consensus_cpu": 0.38426342579967604,
    "all_pm_blocks_verify": true
   }
  }

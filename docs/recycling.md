@@ -183,3 +183,48 @@ also removes the insiders' access to keys (E3b). Mdee et al.'s Fig. 4 reports an
 innocent vehicle revoked after a swap, caused by revocation-list timing. Their
 remedy, a non-swappable pseudonym for revocation, does not cover misbehaviour
 signed under a swapped pseudonym that appears in safety messages.
+
+## Scope after the external review of v3.4.0 (version 3.5.0)
+
+An external review of the v3.4.0 repository (R01 to R25) is answered item by item
+in [review_response.md](review_response.md). What the model does and does not
+establish, stated once here:
+
+* **Adversary observation and radios (R05 to R07).** The former holder (A2) and
+  the insider forger (E3b) act on simulator truth: the current holder of a
+  pseudonym, its exact position, its silent period, the current holder
+  certificate. The insider transmits from the position it claims, so a remote
+  PM, PKI or cloud insider is given a radio wherever it wants one. All entities
+  forge in the same run. These are upper bounds on the attacker, labelled as
+  such; an observation-limited attacker with placed transmitters is not modelled.
+* **Detection (R08 to R11).** Version 3.5.0 adds the options the review asks for,
+  each with a default that reproduces the runs in the results, and none of them is
+  swept in this version's results: sensor error on the position a vehicle measures
+  and signs (`gps_noise_m`, AR(1) correlated with `gps_noise_corr`), a range check
+  and a kinematic check beside the speed bound (`v2v_detectors`), the tolerance
+  (`v2v_allowance_m`, `v2v_kin_tolerance_m`) and per-reception loss (`v2v_loss`),
+  a local clone-check history per RSU (`rsu_history="local"`), continuous report
+  processing with a delivery delay (`report_processing="continuous"`,
+  `report_delay_s`) and a genuine misbehaver that replays every second
+  (`malicious_replay="per_second"`). The results therefore still rest on one
+  speed bound (60 m/s plus 25 m) at noise-free signed positions, a clone-check
+  history shared by all RSUs (so a multi-RSU quorum is not a set of independent
+  witnesses), and reports handled at 30 s round boundaries with the misbehaver
+  replaying once per round while a former holder signs every second, so revocation
+  latencies in E1r mix policy with batching and workload. Benign false positives
+  under sensor noise are not measured.
+* **Fresh issuance is a matched ablation (R19).** `fresh` and `fresh_vgk` keep the
+  rest of the infrastructure so that only issuance changes. They are not an
+  SCMS-style system (no butterfly keys, linkage values, batch pre-loading or
+  their availability, storage and network trade-offs).
+* **Re-keying assumes an honest issuer (R20).** A new vehicle key stops an old
+  holder's key from signing for the new holder only if the holder-bound
+  certificate is issued honestly. A malicious PM can certify a key it controls;
+  the simulation has no authenticated enrolment of the new key (no proof of
+  possession bound to the vehicle's credential), no grace period, and no rule for
+  overlapping transfers. The pseudonym's PKI certificate still expires; zero PKI
+  renewals in a 120 s run is not a lifetime figure (E1x counts renewals over 600 s).
+* **Exploratory analyses (R24).** The pre-registered plan covered E1 to E6 and the
+  outcome cases above. E1x, E2x, E1r, E3b, the SUMO runs, the attack-free privacy
+  comparison and the equivalence margin (one point of link rate, set in 3.5.0
+  after the earlier results were known) were added later and are exploratory.

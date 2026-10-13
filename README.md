@@ -59,17 +59,21 @@ src/pop_sim/
     v2v.py           vehicle-to-vehicle receivers (certificate + signature, no ledger)
     recycling_attacks.py  former-holder adversary (S1 remote shadow, S2 ghost, S3 gap filler)
     insider.py       insider linker: RSU / PM / cloud / PKI / tracker evidence, alone and colluding
-    metrics.py       study metrics, bootstrap CI, paired Wilcoxon
+    metrics.py       study metrics, bootstrap CI, paired Wilcoxon and equivalence (TOST), cost calibration
+    sizes.py         standards-based CAM size model (IEEE 1609.2 / ETSI TS 103 097)
     usecases.py      7 deployment scenarios with operator-facing metrics
   experiments.py     v1: Figures 7-14, scalability, end-to-end protocol runs, security scenarios
   experiments_v2.py  v2: the seven experiments of docs/pop_v2.md
   experiments_recycling.py  E1-E6 of the pseudonym recycling study (docs/recycling.md)
+  experiments_sumo.py       E1 and E4 on SUMO traces, return policies, traffic realizations
   plots.py, plots_v2.py
   cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
-tests/               89 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
+tests/               103 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
 results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
 config/benchmark.json  example configuration for `pop-sim bench`
-Dockerfile           reproducible environment (python:3.12-slim + requirements)
+Dockerfile           reproducible environment (python:3.11-slim + requirements.lock)
+requirements.lock    pinned versions of every dependency
+scripts/             make_sumo_traces.sh (regenerate and checksum the traces), reproduce.sh (every result)
 docs/paper_mapping.md  section-by-section mapping from the manuscript to the code, and the deviations
 docs/pop_v2.md         what v2 changes, why, and how each change is measured
 docs/attacks_and_usecases.md  the attack table and the scenario table
@@ -80,7 +84,7 @@ docs/attacks_and_usecases.md  the attack table and the scenario table
 ```bash
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # 83 tests
+pytest -q                                   # 103 tests
 PYTHONPATH=src python -m pop_sim demo       # trace three shuffle rounds (v1)
 PYTHONPATH=src python -m pop_sim demo --mobility --consensus popv2   # v2: vehicles drive, VRF election
 PYTHONPATH=src python -m pop_sim run --quick     # v1 experiments, small budgets (~15 s)
@@ -93,6 +97,8 @@ PYTHONPATH=src python -m pop_sim usecases [--quick]  # 7 deployment scenarios
 PYTHONPATH=src python -m pop_sim recycling [--quick] [--seeds 1,2,3]  # the recycling study, E1-E6
 PYTHONPATH=src python -m pop_sim recycling --long --sensitivity         # add E1x/E2x (600 s) and E1r (revocation rule)
 PYTHONPATH=src python -m pop_sim recycling-sumo --trace t.xml --corridor config/sumo/motorway.corridor.json --name motorway
+PYTHONPATH=src python -m pop_sim recycling --only E1,E3b      # selected experiments only
+scripts/reproduce.sh                                           # every result in results/ and figures/
 ```
 
 `pip install -e .` installs the `pop-sim` command so the `PYTHONPATH=src` prefix is not needed.
@@ -147,7 +153,7 @@ Every shuffle round (`run_round`) then does:
 The consensus is pluggable (`pop`, `poet`, `pow2`, `pokw`) so the same protocol run
 can be compared across algorithms.
 
-## Pseudonym recycling study (versions 3.0.0 to 3.3.0)
+## Pseudonym recycling study (versions 3.0.0 to 3.5.0)
 
 The manuscript's central mechanism is *recycling*: used pseudonyms are shuffled
 through the privacy-manager cloud and handed to other vehicles, so that the PKI is
@@ -156,26 +162,43 @@ it. It adds vehicle-to-vehicle receivers (the receivers a real forgery has to
 fool), a former-holder adversary that keeps the keys of every pseudonym it held,
 ledger-based attribution at RSUs, four alternative issuance modes with authority
 load counted at every entity, and an insider linker for RSU, PM, cloud and PKI.
-Design, threat model, metrics and the pre-registered outcome cases are in
-[docs/recycling.md](docs/recycling.md); measured results in
-[docs/recycling_results.md](docs/recycling_results.md).
+Design, threat model, metrics, the pre-registered outcome cases and the scope after
+the external review are in [docs/recycling.md](docs/recycling.md); measured results
+in [docs/recycling_results.md](docs/recycling_results.md); the item-by-item response
+to the external review of 3.4.0 in [docs/review_response.md](docs/review_response.md).
 
-The answer, over ten seeds: recycling gives identical privacy against an eavesdropper,
-lets a former holder forge messages that every vehicle accepts (and that get the
-innocent current holder revoked), and wins only on PKI load, which the safe form of
-recycling hands to the privacy managers instead. It also leaves vehicle signing keys
-in the hands of the PKI, the privacy managers, the RSUs and the cloud, each of which
-can sign as a vehicle (E3b); only vehicle-generated keys (fresh_vgk, rekey) keep
-them out. Fresh issuance with vehicle-generated keys dominates it. Version 3.2.0 adds the checks a reviewer asks for: the wrongful
-revocations under stricter revocation rules (E1r), exact paired tests, and E1 and E4
-rerun on two SUMO scenarios (the LuST Luxembourg motorway at the morning peak and a
-netgenerate motorway), where the picture is the same as on the synthetic ring.
+The answer, over ten seeds, on a synthetic ring, two SUMO motorway scenarios and
+five traffic realizations of one of them:
+
+* **Privacy against an eavesdropper is equivalent** to fresh issuance, within ±1
+  point of link rate without attackers (recycle is 0.2 to 0.4 points less linkable).
+* **A former holder forges messages that vehicles accept** (75 to 100 % of receivers
+  in range, by strategy) and the ledger turns them into revocations of innocent
+  vehicles: 35 % of the honest vehicles in two minutes with 5 % former holders on
+  the ring, 18 % of those seen on the SUMO motorways. A stricter revocation rule only
+  delays it (E1r).
+* **Revocation does not reach vehicles** before the certificates expire.
+* **Recycling wins only on PKI load** (fresh issuance costs the PKI 27 CPU-seconds
+  per 1,000 vehicle-hours with measured software costs, 17 with vehicle-generated
+  keys), and the safe form of recycling (`rekey`) hands that load to the privacy
+  managers, at 12 to 47 % more bytes per message.
+* **The infrastructure holds vehicle signing keys** under recycle, fresh and window
+  issuance (PKI, PMs, RSUs, cloud), and each can sign as a vehicle undetected (E3b);
+  only vehicle-generated keys (fresh_vgk, rekey) keep them out.
+
+Fresh issuance with vehicle-generated keys dominates it. Version 3.5.0 answers an
+external review of 3.4.0: disjoint honest and attacker counts, not-applicable cells
+instead of 0 % or 100 %, immutable retained credentials (which makes short
+certificate lifetimes matter over 600 s), attack-free privacy with equivalence tests,
+identity attribution per driven second, measured CPU costs, a standards-based size
+model, SUMO attackers drawn from the simulated window, and pinned reproduction.
 
 ## Results at a glance
 
 Full tables and figures: [v1 reproduction](docs/v1_results.md),
 [v2 results](docs/v2_results.md), [attack bench and scenarios](docs/attack_and_scenario_results.md).
 All numbers come from `results/` and `results/v2/` as produced by the commands above.
+Which command and result file produce each figure: [docs/figure_map.md](docs/figure_map.md).
 
 * **The manuscript reproduces.** PoW 2 grows linearly with transactions and 16x per
   leading zero; Proof of Pseudonym (PoP) costs no puzzle and its block time stays

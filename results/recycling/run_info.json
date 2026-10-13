@@ -15,11 +15,42 @@
   "rounds": 4,
   "quick": false
  },
- "wall_seconds": 772.4558230929999,
+ "wall_seconds": 5329.962047376,
  "E6_changed": {
   "revoked vehicle keeps transmitting": [
    "defended",
    "vulnerable"
   ]
+ },
+ "calibration": {
+  "op_costs_s": {
+   "sign": 3.978209999999649e-05,
+   "verify": 8.611887399999318e-05,
+   "keygen": 1.848942800000941e-05,
+   "encrypt": 9.66860280000077e-05,
+   "decrypt": 9.968135399999767e-05
+  },
+  "source": "measured",
+  "environment": {
+   "machine": "x86_64",
+   "processor": "x86_64",
+   "python": "3.11.15",
+   "system": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+   "cryptography": "49.0.0",
+   "samples": 500
+  }
+ },
+ "version": "3.4.0",
+ "commit": "891d9139f330bbcd712b64665e9529a4a5912001",
+ "worktree_dirty": true,
+ "argv": [
+  "recycling",
+  "--only-long",
+  "--long",
+  "--sensitivity"
+ ],
+ "signing": {
+  "deterministic_available": true,
+  "randomized_fallbacks": 0
  }
 }
