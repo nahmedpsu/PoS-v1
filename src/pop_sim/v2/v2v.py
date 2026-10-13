@@ -146,9 +146,14 @@ class V2VLayer:
                 return False, "certificate-pid-mismatch"
             if now > cred["expiry"]:
                 return False, "certificate-expired"
-            pki_hex = crypto.pk_to_hex(self.pki_pk)
+            issuer_hex = crypto.pk_to_hex(self.pki_pk)
+            chain = cred.get("issuer_chain")
+            if chain is not None:                     # fresh_pm: a PM signed it; check the PM's PKI certificate
+                if not self._pm_cert_ok(chain):
+                    return False, "pm-certificate-invalid"
+                issuer_hex = chain["pm_pk"]
             data = json.dumps({"pid": cred["pid"], "pk": cred["pk"], "expiry": cred["expiry"]}, sort_keys=True).encode()
-            if not self._verify_sig(pki_hex, data, cred["cert"]):
+            if not self._verify_sig(issuer_hex, data, cred["cert"]):
                 return False, "certificate-invalid"
             sign_pk = cred["pk"]
             if self.mode == "holder":

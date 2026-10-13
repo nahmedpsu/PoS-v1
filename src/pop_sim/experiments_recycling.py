@@ -12,9 +12,15 @@ import time
 from dataclasses import asdict
 
 from . import clock
-from .shuffle import ISSUANCE_MODES, ITSConfig, ITSSimulation
+from .shuffle import FRESH_MODES, ISSUANCE_MODES, ITSConfig, ITSSimulation
 from .v2 import attacks as atk
-from .v2.metrics import bootstrap_ci, paired_equivalence, pooled_percentile, wilcoxon_signed_rank
+from .v2.metrics import (
+    bootstrap_ci,
+    clustered_bootstrap_mean,
+    paired_equivalence,
+    pooled_percentile,
+    wilcoxon_signed_rank,
+)
 from .v2.mobility import RoadConfig
 
 DEFAULT_SEEDS = tuple(range(1, 11))
@@ -48,6 +54,10 @@ def _base(density: float, seed: int, **kw) -> ITSConfig:
 def _run(cfg: ITSConfig, rounds: int) -> dict:
     sim = ITSSimulation(cfg)
     sim.run(rounds)
+    return _run_from(sim, cfg)
+
+
+def _run_from(sim: ITSSimulation, cfg: ITSConfig) -> dict:
     s = sim.summary()
     r = s["recycling"]
     pop = s["linkability"]["population"]
@@ -58,6 +68,7 @@ def _run(cfg: ITSConfig, rounds: int) -> dict:
            "tracking": s["tracking"], "v2v": r["v2v"], "load": r["load"], "insider": r.get("insider"),
            "forgery": r.get("forgery"), "revoked_persistence": r.get("revoked_persistence"),
            "retained_valid": r.get("retained_valid"), "reports": r.get("reports"), "retention": r.get("retention"),
+           "quarantine": r.get("quarantine"),
            "rejected_messages": sum(x["rejected_messages"] for x in s["rounds"])}
     return out
 
@@ -70,12 +81,12 @@ def seed_record(r: dict) -> dict:
     t = r.get("tracking") or {}
     rec = {"seed": r.get("seed"), "population": r.get("population"), "stockouts": r.get("stockouts")}
     if f:
-        rec["forgery"] = {k: f.get(k) for k in ("key_checks", "valid_key_seconds", "eligible", "sent",
-                                                 "accepted_v2v", "receivers_total", "receivers_accepting",
-                                                 "accepted_rsu")}
+        rec["forgery"] = {k: f.get(k) for k in ("key_checks", "held_by_self", "retired_skips", "expired_key_seconds",
+                                                 "valid_key_seconds", "eligible", "sent", "accepted_v2v",
+                                                 "receivers_total", "receivers_accepting", "accepted_rsu")}
         ex = f.get("exposure") or {}
         rec["forgery"]["exposure_segments"] = ex.get("segments", [])
-        rec["forgery"]["exposure_cumulative_per_holding_s"] = (ex.get("cumulative_per_holding") or {}).get("values", [])
+        rec["forgery"]["exposure_holdings"] = ex.get("holdings", [])
     rv = r.get("retained_valid") or []
     rec["retained_valid_end"] = rv[-1] if rv else None
     rec["retention"] = r.get("retention")
@@ -107,27 +118,35 @@ def _forgery_fields(rows: list[dict]) -> dict:
     raw key checks, valid-key seconds, eligible seconds (valid key and the
     strategy's condition).  Exposure is given per contiguous window and per
     holding (cumulative); both p95s are pooled over all seeds."""
-    seg = [x["seconds"] for r in rows
-           for x in (((r.get("forgery") or {}).get("exposure") or {}).get("segments") or [])]
-    cens = sum(x["censored"] for r in rows
-               for x in (((r.get("forgery") or {}).get("exposure") or {}).get("segments") or []))
-    cum = [x for r in rows
-           for x in ((((r.get("forgery") or {}).get("exposure") or {}).get("cumulative_per_holding") or {})
-                     .get("values") or [])]
+    def _ex(r):
+        return (r.get("forgery") or {}).get("exposure") or {}
+    segs = [_ex(r).get("segments") or [] for r in rows]
+    hold = [_ex(r).get("holdings") or [] for r in rows]
+    span = [[x["span_s"] for x in g] for g in segs]
+    complete = [[x["span_s"] for x in g if not x["truncated"]] for g in segs]
+    acc = [[x["accepted_s"] for x in g] for g in segs]
+    cum = [[x["span_s"] for x in g] for g in hold]
+    pool = [v for g in span for v in g]
     return {"key_checks": _agg(rows, ["forgery", "key_checks"]),
+            "held_by_self": _agg(rows, ["forgery", "held_by_self"]),
+            "retired_skips": _agg(rows, ["forgery", "retired_skips"]),
+            "expired_key_seconds": _agg(rows, ["forgery", "expired_key_seconds"]),
             "valid_key_seconds": _agg(rows, ["forgery", "valid_key_seconds"]),
             "eligible": _agg(rows, ["forgery", "eligible"]),
             "forged_sent": _agg(rows, ["forgery", "sent"]),
             "v2v_message_rate": _agg(rows, ["forgery", "v2v_message_rate"]),
             "v2v_receiver_rate": _agg(rows, ["forgery", "v2v_receiver_rate"]),
             "rsu_rate": _agg(rows, ["forgery", "rsu_rate"]),
-            "exposure_contiguous_mean_s": _agg(rows, ["forgery", "exposure", "contiguous", "mean"]),
-            "exposure_contiguous_p95_s_pooled": pooled_percentile(seg, 0.95),
-            "exposure_contiguous_n": len(seg),
-            "exposure_contiguous_censored": cens,
-            "exposure_cumulative_mean_s": _agg(rows, ["forgery", "exposure", "cumulative_per_holding", "mean"]),
-            "exposure_cumulative_p95_s_pooled": pooled_percentile(cum, 0.95),
-            "exposure_holdings_n": len(cum),
+            # exposure (H03): means pool every window (each weighs the same) with a bootstrap over seeds
+            "exposure_span_mean_s": clustered_bootstrap_mean(span),
+            "exposure_span_p95_s_pooled": pooled_percentile(pool, 0.95),
+            "exposure_accepted_mean_s": clustered_bootstrap_mean(acc),
+            "exposure_windows_n": len(pool),
+            "exposure_windows_truncated": sum(x["truncated"] for g in segs for x in g),
+            "exposure_complete_span_mean_s": clustered_bootstrap_mean(complete),
+            "exposure_cumulative_mean_s": clustered_bootstrap_mean(cum),
+            "exposure_cumulative_p95_s_pooled": pooled_percentile([v for g in cum for v in g], 0.95),
+            "exposure_holdings_n": sum(len(g) for g in cum),
             **_report_fields(rows), **_retention_fields(rows)}
 
 
@@ -322,6 +341,136 @@ def exp_e3b_insider_forgery(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float
             "forgeries_per_round": forgeries_per_round, "strategies": list(strategies), "cells": results}
 
 
+def exp_e3b_isolated(seeds=DEFAULT_SEEDS, rounds: int = 4, density: float = 10, modes=("recycle", "fresh", "window"),
+                     strategies=("offset", "near", "silent"), forgeries_per_round: int = 10) -> dict:
+    """E3b with one compromised entity per run (round-3 review): each row is what
+    that entity achieves alone, with no other insider's forgeries changing the
+    plausibility state or the revocations it meets.  Modes where no
+    infrastructure entity holds a key (fresh_vgk, fresh_pm, rekey) are left out."""
+    results = []
+    for mode in modes:
+        for strat in strategies:
+            for ent in INSIDER_ENTITIES:
+                per = []
+                for seed in seeds:
+                    cfg = _base(density, seed, issuance=mode, v2v_plausibility=True, pseudonym_lifetime=900.0,
+                                insider_forgery=True, insider_strategy=strat,
+                                insider_forgeries_per_round=forgeries_per_round, insider_active=(ent,))
+                    sim = ITSSimulation(cfg)
+                    sim.run(rounds)
+                    per.append({**sim.summary()["recycling"]["insider_forgery"][ent], "seed": seed})
+                sent = [x for x in per if x["sent"]]
+                results.append({"mode": mode, "strategy": strat, "entity": ent, "seeds": len(per), "isolated": True,
+                                "key_share": bootstrap_ci([x["key_share"] for x in per]),
+                                "forgeries_sent": bootstrap_ci([float(x["sent"]) for x in per]),
+                                "receiver_rate": bootstrap_ci([x["receiver_rate"] for x in sent]),
+                                "message_rate": bootstrap_ci([x["message_rate"] for x in sent]),
+                                "rsu_rate": bootstrap_ci([x["rsu_rate"] for x in sent]),
+                                "blame_rate": bootstrap_ci([x["blame_rate"] for x in sent]),
+                                "per_seed": per})
+    return {"experiment": "E3b_isolated", "rounds": rounds, "density": density,
+            "forgeries_per_round": forgeries_per_round, "cells": results}
+
+
+# ------------------------------------------------- E1q: quarantine the label instead
+def exp_e1_quarantine(seeds=DEFAULT_SEEDS, rounds: int = 4, long_rounds: int = 20, strategies=("S1", "S2"),
+                      density: float = 10, share: float = 0.05, lifetime: float = 900.0) -> dict:
+    """The attribution policy is what turns a clone into a victim: the E1 core
+    cell under PoP's response (revoke the vehicle the ledger names) and under a
+    quarantine response (withdraw the reported pseudonym, revoke nobody), same
+    seeds and traffic."""
+    results = []
+    for st in strategies:
+        for response in ("revoke_holder", "quarantine_pseudonym"):
+            for label, n_rounds in (("short", rounds), ("long", long_rounds)):
+                rows = []
+                for seed in seeds:
+                    est = int(2 * density * 5)
+                    cfg = _base(density, seed, issuance="recycle", former_holders=_attackers(est, share),
+                                former_holder_strategy=st, v2v_plausibility=True, pseudonym_lifetime=lifetime,
+                                misbehaviour_response=response)
+                    sim = ITSSimulation(cfg)
+                    sim.run(n_rounds)
+                    r = _run_from(sim, cfg)
+                    rows.append(r)
+                q = [r.get("quarantine") or {} for r in rows]
+                results.append({"strategy": st, "response": response, "horizon": label, "sim_seconds": n_rounds * 30,
+                                "seeds": len(rows), **_forgery_fields(rows), **_revocation_fields(rows),
+                                "labels_quarantined": bootstrap_ci([float(x.get("labels", 0)) for x in q]),
+                                "honest_vehicles_losing_a_label": bootstrap_ci(
+                                    [float(x.get("honest_vehicles_affected", 0)) for x in q]),
+                                "stockouts": _agg(rows, ["stockouts"]),
+                                "per_seed": [{**seed_record(r), "quarantine": r.get("quarantine")} for r in rows]})
+    return {"experiment": "E1q_quarantine", "rounds": rounds, "long_rounds": long_rounds, "cells": results}
+
+
+# ------------------------------------------------- E1s: detection-side sensitivity
+SENSITIVITY_VARIANTS = (
+    ("published default", {}),
+    ("local RSU histories", {"rsu_history": "local"}),
+    ("continuous processing, 1 s delay", {"report_processing": "continuous", "report_delay_s": 1.0}),
+    ("local histories + continuous processing", {"rsu_history": "local", "report_processing": "continuous",
+                                                 "report_delay_s": 1.0}),
+    ("10 % message loss", {"v2v_loss": 0.1}),
+    ("clone allowance 10 m", {"clone_allowance_m": 10.0, "v2v_allowance_m": 10.0}),
+    ("clone allowance 50 m", {"clone_allowance_m": 50.0, "v2v_allowance_m": 50.0}),
+    ("signed-position error 3 m", {"gps_noise_m": 3.0}),
+    ("signed-position error 10 m", {"gps_noise_m": 10.0}),
+)
+
+
+def exp_e1_sensitivity(seeds=DEFAULT_SEEDS, rounds: int = 4, strategies=("S1", "S2"), density: float = 10,
+                       share: float = 0.05, lifetime: float = 900.0, variants=SENSITIVITY_VARIANTS) -> dict:
+    """Round-3 review H04: the E1 core cell under each detection-side variant,
+    paired over the same seeds (same traffic), each with its own attempt
+    denominators.  Per variant also: an attack-free control (no attackers; any
+    honest report or revocation is a false positive of the detector under that
+    variant) and the genuine misbehaver with a workload matched to the
+    forger's (it replays every second, oracle attribution): time to its
+    revocation.  These are conditional variants, not a validation."""
+    results = []
+    for name, over in variants:
+        cell = {"variant": name, "overrides": over}
+        for st in strategies:
+            rows = []
+            for seed in seeds:
+                est = int(2 * density * 5)
+                cfg = _base(density, seed, issuance="recycle", former_holders=_attackers(est, share),
+                            former_holder_strategy=st, v2v_plausibility=True, pseudonym_lifetime=lifetime, **over)
+                rows.append(_run(cfg, rounds))
+            cell[st] = {"seeds": len(rows), **_forgery_fields(rows), **_revocation_fields(rows),
+                        "per_seed": [seed_record(r) for r in rows]}
+        rows = [_run(_base(density, seed, issuance="recycle", v2v_plausibility=True, pseudonym_lifetime=lifetime,
+                           **over), rounds) for seed in seeds]
+        cell["attack_free"] = {"seeds": len(rows), **_revocation_fields(rows), **_report_fields(rows),
+                               "honest_rejected_implausible_v2v": _agg(rows, ["v2v", "honest_rejected_implausible"]),
+                               "honest_received_v2v": _agg(rows, ["v2v", "honest_received"]),
+                               "per_seed": [seed_record(r) for r in rows]}
+        mb = []
+        for seed in seeds:
+            cfg = _base(density, seed, issuance="recycle", malicious_vehicles=1, revoked_keep_transmitting=True,
+                        pseudonym_lifetime=lifetime, attribution="oracle", malicious_replay="per_second", **over)
+            sim = ITSSimulation(cfg)
+            sim.run(rounds)
+            rep = sim.recycling_report()
+            t0 = clock.now() - rounds * 30
+            timing = rep.get("revocation_timing") or {}
+            mb.append({"seed": seed, "revoked": len(timing),
+                       "seconds_to_revocation": min((x["revoked"] - t0 for x in timing.values()), default=None),
+                       "first_replay_to_report_s": min((x["detection_s"] for x in timing.values()
+                                                        if x.get("detection_s") is not None), default=None),
+                       "report_to_revocation_s": min((x["decision_s"] for x in timing.values()
+                                                      if x.get("decision_s") is not None), default=None)})
+        cell["misbehaver_matched"] = {
+            "revoked_within_horizon": bootstrap_ci([float(x["revoked"]) for x in mb]),
+            "seconds_to_revocation": bootstrap_ci([x["seconds_to_revocation"] for x in mb]),
+            "first_replay_to_report_s": bootstrap_ci([x["first_replay_to_report_s"] for x in mb]),
+            "report_to_revocation_s": bootstrap_ci([x["report_to_revocation_s"] for x in mb]),
+            "per_seed": mb}
+        results.append(cell)
+    return {"experiment": "E1s_sensitivity", "rounds": rounds, "strategies": list(strategies), "cells": results}
+
+
 # ------------------------------------------------------------------ E4
 EQUIVALENCE_MARGIN = 0.01   # tracker link rate: one point, set in 3.5.0 after the earlier results (review R12)
 
@@ -366,8 +515,8 @@ def exp_e4_modes(seeds=DEFAULT_SEEDS, rounds: int = 4, densities=(10, 40), modes
                     "insider_pm_link_rate": _agg(rows, ["insider", "pm", "link_rate"]),
                     # fresh modes never upload to the cloud: that channel does not exist there (review R23)
                     "insider_cloud_link_rate": (_agg(rows, ["insider", "cloud", "link_rate"])
-                                                if mode not in ("fresh", "fresh_vgk") else _agg([], [])),
-                    "insider_cloud_channel": "absent" if mode in ("fresh", "fresh_vgk") else "uploads",
+                                                if mode not in FRESH_MODES else _agg([], [])),
+                    "insider_cloud_channel": "absent" if mode in FRESH_MODES else "uploads",
                     "pki_cpu_s_per_1000_veh_h": _agg(rows, ["load", "pki_cpu_s_per_1000_veh_h"]),
                     "pm_cpu_s_per_1000_veh_h": _agg(rows, ["load", "pm_cpu_s_per_1000_veh_h"]),
                     # where the CPU goes, per entity and operation (review G10)
