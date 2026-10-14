@@ -52,16 +52,23 @@ class ForgeryStats:
     receivers_accepting: int = 0
     accepted_rsu: int = 0
     accepted_times: dict = field(default_factory=dict)   # (pid, holder or None) -> times a forgery was accepted (V2V)
-    # denominators, from the widest to the narrowest (review G08)
+    # denominators, from the widest to the narrowest (review G08, H01):
+    # key_checks = held_by_self + retired_skips + expired_key_seconds + valid_key_seconds,
+    # eligible <= valid_key_seconds, sent <= eligible
     key_checks: int = 0              # every retained key examined, every second
-    valid_key_seconds: int = 0       # ... whose retained certificate had not expired (key no longer held by self)
+    held_by_self: int = 0            # ... that the attacker currently holds itself
+    retired_skips: int = 0           # ... retired labels (fresh modes: the label is never used again)
+    expired_key_seconds: int = 0     # ... whose retained certificate has expired: never sent
+    valid_key_seconds: int = 0       # ... unexpired and not held by the attacker
     eligible: int = 0                # ... and the strategy's condition held (S1/S2: another vehicle transmitting
                                      #     under the pseudonym; S3: nobody holding it)
 
     def to_dict(self) -> dict:
         return {"sent": self.sent, "accepted_v2v": self.accepted_v2v, "receivers_total": self.receivers_total,
                 "receivers_accepting": self.receivers_accepting, "accepted_rsu": self.accepted_rsu,
-                "key_checks": self.key_checks, "valid_key_seconds": self.valid_key_seconds,
+                "key_checks": self.key_checks, "held_by_self": self.held_by_self,
+                "retired_skips": self.retired_skips, "expired_key_seconds": self.expired_key_seconds,
+                "valid_key_seconds": self.valid_key_seconds,
                 "eligible": self.eligible, "holdings_with_accepted_forgeries": len(self.accepted_times)}
 
 
@@ -76,42 +83,71 @@ def forged_acceptance(stats: ForgeryStats) -> dict:
 
 
 def exposure_windows(accepted_times: dict, gap: float = 2.0, horizon_end: float | None = None) -> dict:
-    """Exposure to accepted forgeries, per holding (review G03).
+    """Exposure to accepted forgeries, per holding (review G03, H03).
 
     ``accepted_times`` maps a holding (pseudonym, holder) to the times a forged
-    message under it was accepted by at least one receiver.  A *contiguous
-    window* is a run of accepted seconds with no gap above ``gap`` seconds; a
-    holding may have several.  The *cumulative* exposure of a holding is the
-    sum of its windows.  A window that reaches ``horizon_end`` is right-censored
-    (the run ended, not the exposure).  Means and pooled 95th percentiles are
-    given for both endpoints, with the counts behind them."""
+    message under it was accepted by at least one receiver.  A *window* is a
+    run of accepted seconds in which no two consecutive acceptances are more
+    than ``gap`` seconds apart; a holding may have several.  Two durations are
+    kept per window: ``span_s``, first to last accepted second inclusive, which
+    counts tolerated gaps of up to ``gap`` seconds, and ``accepted_s``, the
+    number of distinct seconds with an accepted forgery.  A window whose last
+    acceptance is within ``gap`` of ``horizon_end`` is ``truncated``: the run
+    ended, not the exposure, so its span is a lower bound on its natural
+    duration.  The *cumulative* exposure of a holding sums its windows."""
     segments, cumulative = [], []
     for key, times in accepted_times.items():
-        ts = sorted(times)
+        ts = sorted(set(times))
         if not ts:
             continue
-        total = 0.0
+        pid, holder = key if isinstance(key, tuple) else (key, None)
+        span_total = acc_total = 0.0
         start = prev = ts[0]
+        n = 1
         for t in ts[1:] + [None]:
             if t is None or t - prev > gap:
-                length = prev - start + 1.0
-                censored = horizon_end is not None and prev >= horizon_end - gap
-                segments.append({"start": start, "end": prev, "seconds": length, "censored": censored})
-                total += length
+                truncated = horizon_end is not None and prev >= horizon_end - gap
+                segments.append({"pid": pid, "holder": holder, "start": start, "end": prev,
+                                 "span_s": prev - start + 1.0, "accepted_s": float(n), "truncated": truncated})
+                span_total += prev - start + 1.0
+                acc_total += n
                 if t is None:
                     break
-                start = t
+                start, n = t, 0
+            n += 1
             prev = t
-        cumulative.append(total)
+        cumulative.append({"pid": pid, "holder": holder, "span_s": span_total, "accepted_s": acc_total})
 
     def _summ(vals):
         return {"mean": statistics.mean(vals) if vals else None, "p95": pooled_percentile(vals, 0.95),
-                "n": len(vals), "values": sorted(vals)}
+                "n": len(vals)}
 
-    contiguous = [s["seconds"] for s in segments]
-    return {"contiguous": {**_summ(contiguous), "censored": sum(s["censored"] for s in segments)},
-            "cumulative_per_holding": _summ(cumulative),
-            "segments": segments}
+    spans = [x["span_s"] for x in segments]
+    return {"contiguous": {**_summ(spans), "truncated": sum(x["truncated"] for x in segments)},
+            "contiguous_accepted_s": _summ([x["accepted_s"] for x in segments]),
+            "contiguous_complete": _summ([x["span_s"] for x in segments if not x["truncated"]]),
+            "cumulative_per_holding": _summ([c["span_s"] for c in cumulative]),
+            "segments": segments, "holdings": cumulative}
+
+
+def clustered_bootstrap_mean(groups: list[list[float]], resamples: int = 2000, seed: int = 0) -> dict:
+    """Mean of all values pooled over groups (each value weighs the same), with
+    a 95 % bootstrap interval that resamples whole groups (seeds), since values
+    from one seed share its traffic (review H03)."""
+    groups = [list(g) for g in groups if g is not None]
+    pooled = [v for g in groups for v in g]
+    if not pooled:
+        return {"mean": None, "lo": None, "hi": None, "n": 0, "clusters": len(groups), "weighting": "per window"}
+    rng = random.Random(seed)
+    means = []
+    for _ in range(resamples):
+        pick = [v for g in rng.choices(groups, k=len(groups)) for v in g]
+        if pick:
+            means.append(statistics.mean(pick))
+    means.sort()
+    return {"mean": statistics.mean(pooled), "lo": means[int(0.025 * len(means))],
+            "hi": means[min(len(means) - 1, int(0.975 * len(means)))], "n": len(pooled),
+            "clusters": len(groups), "weighting": "per window, bootstrap over seeds"}
 
 
 def pooled_percentile(values: list[float], q: float) -> float | None:

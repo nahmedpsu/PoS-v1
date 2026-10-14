@@ -8,6 +8,7 @@ twice: at initial registration and on revocation.
 
 from __future__ import annotations
 
+import bisect
 import json
 import math
 import random
@@ -34,6 +35,7 @@ class Pseudonym:
     issuer_pk: str
     holder_cert: dict | None = None   # rekey / window modes: PM-signed (pid, pk, window) for the holder
     cert_pk: str | None = None        # the key the PKI certificate covers (differs from keys under rekey)
+    issuer_chain: dict | None = None  # fresh_pm: the certificate is signed by a PM, whose PKI certificate rides along
 
     @property
     def certified_pk(self) -> str:
@@ -69,7 +71,14 @@ class Pseudonym:
              "issuer_pk": self.issuer_pk}
         if self.holder_cert is not None:
             d["holder"] = dict(self.holder_cert)
+        if self.issuer_chain is not None:
+            d["issuer_chain"] = dict(self.issuer_chain)
         return d
+
+
+def credential_version(p: "Pseudonym") -> tuple:
+    """A credential version: the label with the key and expiry it was held with (review H08)."""
+    return (p.pid, p.keys.pk_hex, p.expiry)
 
 
 def snapshot(p: "Pseudonym") -> "Pseudonym":
@@ -279,8 +288,41 @@ class PseudonymLedger:
         self.ring_length: float | None = None                  # road length when positions wrap around
         self.holder_cert: dict[str, dict] = {}                 # pid -> current holder-bound certificate (rekey/window)
         self.epoch: dict[str, int] = {}                        # pid -> number of allotments so far
+        self.allowance_m: float = 25.0                         # clone check: metres allowed beyond max speed x time
+        # ownership over time (review H02): pid -> [(t, holder or None, public key)], each entry
+        # owning (t, next t], the convention of the receivers' holder windows (t_start, t_end]
+        self.owner_log: dict[str, list[tuple[float, str | None, str | None]]] = {}
+
+    def _log_owner(self, pid: str, vehicle_id: str | None, pk_hex: str | None) -> None:
+        t = clock.now()
+        log = self.owner_log.setdefault(pid, [])
+        if log and log[-1][0] == t:
+            log[-1] = (t, vehicle_id, pk_hex)              # several transitions at one instant: the last wins
+        else:
+            log.append((t, vehicle_id, pk_hex))
+
+    def owner_at(self, pid: str, t: float) -> tuple[str | None, str | None]:
+        """(holder, public key) of ``pid`` at time ``t``: the latest entry that
+        began strictly before ``t``.  At a handoff instant the outgoing holder
+        still owns the label; from the next instant the incoming one does."""
+        log = self.owner_log.get(pid)
+        if not log or t <= log[0][0]:
+            # no history, or a timestamp before the label's first allotment (not on the
+            # simulation clock, e.g. a hand-built message): the current state decides
+            return self.holder.get(pid), self.pk.get(pid)
+        i = bisect.bisect_left(log, (t,)) - 1          # last entry that began strictly before t
+        return log[i][1], log[i][2]
+
+    def bind_key(self, pid: str, pk_hex: str) -> None:
+        """The holder's key changed at allotment (rekey: a key the vehicle just
+        generated); the ownership log carries it from the allotment on."""
+        self.pk[pid] = pk_hex
+        log = self.owner_log.get(pid)
+        if log and log[-1][1] is not None:
+            log[-1] = (log[-1][0], log[-1][1], pk_hex)
 
     def allot(self, p: "Pseudonym", vehicle_id: str) -> None:
+        self._log_owner(p.pid, vehicle_id, p.keys.pk_hex)
         self.holder[p.pid] = vehicle_id
         self.pk[p.pid] = p.keys.pk_hex
         self.used.discard(p.pid)
@@ -296,10 +338,16 @@ class PseudonymLedger:
         return vehicle_id in self.past_holders.get(pid, ())
 
     def mark_used(self, pid: str) -> None:
+        if pid in self.retired:
+            return                                     # a quarantined label stays withdrawn
+        if pid in self.holder:
+            self._log_owner(pid, None, None)
         self.holder.pop(pid, None)
         self.used.add(pid)
 
     def retire(self, pid: str) -> None:
+        if pid in self.holder:
+            self._log_owner(pid, None, None)
         self.holder.pop(pid, None)
         self.used.discard(pid)
         self.retired.add(pid)
@@ -312,28 +360,32 @@ class PseudonymLedger:
         ``last_seen`` is the observation history the clone check uses: the
         ledger's shared one by default, or an RSU's own (review R10)."""
         hist = self.last_seen if last_seen is None else last_seen
-        if pid in self.retired:
-            return False, "retired-pseudonym"
-        if pid in self.used:
-            return False, "reuse-of-returned-pseudonym"
-        holder = self.holder.get(pid)
+        holder, pk_hex = self.owner_at(pid, msg.timestamp)   # ownership at the message's own time (H02)
         if holder is None:
+            if pid in self.retired:
+                return False, "retired-pseudonym"
+            if pid in self.used:
+                return False, "reuse-of-returned-pseudonym"
             return False, "unknown-pseudonym"
         if holder != vehicle_id:
             return False, "pseudonym-held-by-another-vehicle"
-        if not msg.signature or not crypto.verify(crypto.pk_from_hex(self.pk[pid]), msg.body(),
+        if not msg.signature or not crypto.verify(crypto.pk_from_hex(pk_hex), msg.body(),
                                                   bytes.fromhex(msg.signature)):
             return False, "bad-signature"
-        # Clone check: one pseudonym cannot be in two places at once.
+        # Clone check: one pseudonym cannot be in two places at once.  Entries carry the
+        # label's allotment epoch, so an RSU's own history of a previous holding does not
+        # count against the next holder (the shared history is cleared at allotment).
         last = hist.get(pid)
+        if last is not None and len(last) > 2 and last[2] != self.epoch.get(pid, 0):
+            last = None
         if last is not None:
             dt = max(1e-6, msg.timestamp - last[1])
             dx = abs(msg.position[0] - last[0])
             if self.ring_length:
                 dx = min(dx, self.ring_length - dx)
-            if dx > self.MAX_SPEED * dt + 25.0:
+            if dx > self.MAX_SPEED * dt + self.allowance_m:
                 return False, "pseudonym-cloned"
-        hist[pid] = (msg.position[0], msg.timestamp)
+        hist[pid] = (msg.position[0], msg.timestamp, self.epoch.get(pid, 0))
         return True, "ok"
 
 
@@ -355,6 +407,7 @@ class Vehicle:
         self.revoked = False
         self.kept_keys: list[Pseudonym] = []           # a dishonest OBU keeps every credential it held
         self.former_holder = False                     # recycling study: acts as the A2 adversary
+        self.held_versions: set = set()                # (label, key, expiry) of every credential held (H08)
         self.current: Pseudonym | None = None          # mobility mode: pseudonym in use for beacons
         self.changes = 0
         self.load = Load()
@@ -404,6 +457,7 @@ class Vehicle:
         if self.current is not None:
             self.used.append(self.current)
             self.history.append(self.current.pid)
+            self.held_versions.add(credential_version(self.current))
             self._keep(self.current)
             self.current = None
         if self.pseudonyms:
@@ -566,7 +620,7 @@ class RSU:
         self.observed.append(msg)
         self.load.verifications += 1
         if self.attribution == "ledger" or vehicle is None:
-            holder = self.ledger.holder.get(msg.pid)
+            holder = self.ledger.owner_at(msg.pid, msg.timestamp)[0]
             ok, reason = self.ledger.check(msg.pid, holder or "", msg, self.local_history)
             if not ok:
                 self.flagged.append((msg.pid, reason))
@@ -586,6 +640,8 @@ class RSU:
         n = 0
         for v in self.vehicles:
             for p in v.return_used():
+                if p.pid in self.ledger.retired:
+                    continue                           # a quarantined label is not recycled
                 status = {"position": v.position, "speed": v.speed, "direction": v.direction}
                 self.used.append((p, status))
                 self.ledger.mark_used(p.pid)
@@ -727,6 +783,21 @@ class PrivacyManager:
         self.misbehaviour_reports.append(rep)
         if self.report_hook is not None:
             self.report_hook(rep)
+
+    def certify(self, public_keys: list, lifetime: float) -> list[Pseudonym]:
+        """Delegated fresh issuance (fresh_pm, the M07 control): fresh labels for
+        vehicle-generated public keys, certified by this PM instead of the PKI.
+        The PM's own PKI certificate travels with each pseudonym certificate."""
+        out = []
+        chain = {"pm": self.pm_id, "pm_pk": self.keys.pk_hex, "pm_cert": self.pm_cert}
+        for pk in public_keys:
+            pid = f"PID-{self.rng.getrandbits(48):012x}"
+            p = Pseudonym(pid, KeyPair(None, pk), "", clock.now() + lifetime, self.keys.pk_hex,
+                          issuer_chain=dict(chain))
+            p.cert = crypto.sign(self.keys.sk, p.credential_bytes()).hex()
+            self.load.signatures += 1
+            out.append(p)
+        return out
 
     def sign_holder_cert(self, pid: str, pk_hex: str, t_start: float, t_end: float) -> dict:
         """Holder-bound certificate (rekey / window modes): binds ``pid`` to

@@ -50,10 +50,13 @@ Identity nodes are *holdings*: a recycled pid is a different node for every hold
 | `attribution="ledger"` | The RSU attributes a message to the ledger's current holder of its pseudonym, as a real RSU must; a report names that holder. Unsigned or wrongly signed messages are dropped without a report. |
 | `v2v=True` | Vehicle-to-vehicle receivers within `v2v_range_m` verify certificate and signature only (`v2/v2v.py`); `v2v_plausibility=True` adds the local two-places-at-once rule. Cryptographic checks are cached per message. |
 | `former_holders=k`, `former_holder_strategy` | A2 adversaries: S1 remote shadow, S2 co-located ghost (claims a position `ghost_offset_m` from the victim while physically in range), S3 gap filler (between holders). |
-| `issuance` | `recycle` (the manuscript), `fresh` (PKI issues new sets every round, used sets retired), `fresh_vgk` (vehicle-generated keys, PKI only signs), `rekey` (recycled pid, fresh vehicle key, PM-signed holder-bound certificate), `window` (ablation: holder certificate, key unchanged). |
+| `issuance` | `recycle` (the manuscript), `fresh` (PKI issues new sets every round, used sets retired), `fresh_vgk` (vehicle-generated keys, PKI only signs), `fresh_pm` (as fresh_vgk, but a PM signs the certificate and attaches its own PKI certificate, which receivers check; 3.7.0), `rekey` (recycled pid, fresh vehicle key, PM-signed holder-bound certificate), `window` (ablation: holder certificate, key unchanged). |
 | `pseudonym_lifetime` | Certificate lifetime; recycled certificates near expiry are renewed by PKI and counted as its work. |
 | `revoked_keep_transmitting=True` | A revoked vehicle keeps beaconing under the pseudonyms it holds. |
 | `shuffle_before_upload=True` | The one-line fix for the cloud-order leak. |
+| `misbehaviour_response` | `revoke_holder` (default: the PM revokes the vehicle the report names) or `quarantine_pseudonym` (3.7.0: the reported label is withdrawn from circulation and nobody is revoked). |
+| `insider_active` | Which insider entities forge in E3b (default all four; E3bi runs one at a time). |
+| `clone_allowance_m` | The RSU clone check's position allowance (default 25 m; swept in E1s). |
 
 Receivers in `rekey` and `window` modes require a holder-bound certificate
 (`pid, pk, [t_start, t_end]`, PM-signed, PM certified by PKI) whose window contains
@@ -72,6 +75,9 @@ the current time, and verify the message under the certificate's key.
 | E6 bench re-check | all | the 18-attack bench under oracle vs ledger attribution | outcome changes |
 | E1x / E2x (`--long`) | RQ1, RQ2 | 600 s horizon, certificate lifetime | as E1 and E2, with renewals |
 | E1r (`--sensitivity`) | RQ1 | revocation rule (k reports from m RSUs), strategy, horizon | honest vehicles revoked, wrongful reports, misbehaver's time to revocation |
+| E1s (`--sensitivity`, 3.7.0) | RQ1 | nine detection-side variants on the E1 seeds, S1 and S2, attack-free control, matched misbehaver | honest vehicles revoked, attempts, benign rejections, time to revoke the misbehaver |
+| E1q (`--sensitivity`, 3.7.0) | RQ1 | revoke the holder vs quarantine the pseudonym, S1 and S2, 120 s and 600 s | honest vehicles revoked, labels withdrawn, vehicles losing a label, stock-outs |
+| E3bi (3.7.0) | RQ3 | one insider entity forging at a time | as E3b |
 | SUMO (`recycling-sumo`) | RQ1, RQ4 | scenario (LuST motorway, netgenerate motorway) | E1 core cell and E4 on a real trace |
 
 Every cell reports the mean with a 95 % bootstrap confidence interval over seeds
@@ -203,10 +209,15 @@ establish, stated once here:
   * The former holder stops forging once it is itself revoked, although E2
     shows that retained credentials stay acceptable to vehicles after
     revocation; a persistent attacker is not modelled.
+  * Since 3.7.0 the former holder sends nothing under a credential whose
+    certificate has expired (the expiry is printed in the certificate it kept),
+    and each of its key checks is counted in one bucket: held by itself,
+    retired, expired, or valid.
   * The insider forger (E3b) transmits from the position it claims, so a
     remote PM, PKI or cloud insider is given a radio wherever it wants one;
-    all four entities forge in the same run (no per-entity isolation); its
-    forged CAMs are not fed to the outside tracker (the former holder's are).
+    E3b has all four entities forge in the same run, E3bi (3.7.0) one at a
+    time; its forged CAMs are not fed to the outside tracker (the former
+    holder's are).
   * The eavesdropper hears every honest CAM and every former-holder CAM, not
     the insiders'.
 * **Detection (R08 to R11).** Version 3.5.0 adds the options the review asks for,
@@ -218,17 +229,26 @@ establish, stated once here:
   a local clone-check history per RSU (`rsu_history="local"`), continuous report
   processing with a delivery delay (`report_processing="continuous"`,
   `report_delay_s`) and a genuine misbehaver that replays every second
-  (`malicious_replay="per_second"`). The results therefore still rest on one
-  speed bound (60 m/s plus 25 m) at noise-free signed positions, a clone-check
-  history shared by all RSUs (so a multi-RSU quorum is not a set of independent
-  witnesses), and reports handled at 30 s round boundaries with the misbehaver
-  replaying once per round while a former holder signs every second, so revocation
-  latencies in E1r mix policy with batching and workload. Benign false positives
-  under sensor noise are not measured.
+  (`malicious_replay="per_second"`). Version 3.7.0 sweeps them for the E1 core
+  cell (E1s, with the RSU clone allowance `clone_allowance_m` added): local
+  histories and continuous processing move S1's wrongful revocations from 43.4
+  to 12.7 of 91.5 honest vehicles in two minutes; loss, the 10 m allowance and
+  signed-position error leave them unchanged; an attack-free control revokes
+  nobody in any variant and measures the benign rejections at receivers
+  (0.13 %). E1r, E2, E4 and the SUMO runs keep the defaults (one speed bound,
+  a shared clone-check history, so a multi-RSU quorum is not a set of
+  independent witnesses, and round-end report processing), so their revocation
+  latencies still mix policy with batching.
+* **Response to a report (3.7.0).** Revoking the vehicle the ledger names is the
+  manuscript's rule; quarantining the pseudonym is evaluated beside it (E1q). It
+  removes the wrongful revocations but withdraws labels from honest holders and
+  leaves forgeries accepted at receivers.
 * **Fresh issuance is a matched ablation (R19).** `fresh` and `fresh_vgk` keep the
   rest of the infrastructure so that only issuance changes. They are not an
   SCMS-style system (no butterfly keys, linkage values, batch pre-loading or
-  their availability, storage and network trade-offs).
+  their availability, storage and network trade-offs). `fresh_pm` (3.7.0) is a
+  delegated control of the same kind: it trusts the PMs to certify only keys
+  vehicles generated, and the PKI's revocation of a PM is not modelled.
 * **Re-keying assumes an honest issuer (R20).** A new vehicle key stops an old
   holder's key from signing for the new holder only if the holder-bound
   certificate is issued honestly. A malicious PM can certify a key it controls;
@@ -239,4 +259,5 @@ establish, stated once here:
 * **Exploratory analyses (R24).** The pre-registered plan covered E1 to E6 and the
   outcome cases above. E1x, E2x, E1r, E3b, the SUMO runs, the attack-free privacy
   comparison and the equivalence margin (one point of link rate, set in 3.5.0
-  after the earlier results were known) were added later and are exploratory.
+  after the earlier results were known) were added later and are exploratory, as
+  are E1s, E1q, E3bi and `fresh_pm` (3.7.0).

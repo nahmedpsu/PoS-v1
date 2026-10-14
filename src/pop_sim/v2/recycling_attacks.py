@@ -58,11 +58,16 @@ class FormerHolderAdversary:
         holder = ledger.holder.get(p.pid)
         own = attacker.vehicle_id
         if holder == own:
+            st.held_by_self += 1
             return None                                   # it still legitimately holds p
         if p.pid in ledger.retired:
+            st.retired_skips += 1
             return None                                   # fresh modes: the pseudonym is never used again
-        valid = p.expiry >= now
-        st.valid_key_seconds += valid                     # the retained certificate is still unexpired
+        if p.expiry < now:
+            st.expired_key_seconds += 1                   # the expiry is in the certificate it kept (H01):
+            return None                                   # nothing is sent under an expired credential
+        valid = True
+        st.valid_key_seconds += 1
         claimed_x = attacker_x
         victim = None
         if self.strategy == "S3":

@@ -60,6 +60,10 @@ def test_attackers_retain_every_credential_they_held(mode):
     sim.run(4)
     ret = sim.recycling_report()["retention"]
     assert ret["retained_distinct"] == ret["held_distinct"] > 0
+    # versions (H08): label, key and expiry.  Allocation never returns a label to a vehicle that
+    # held it, so here one label is one version; the test pins that, and retention by version
+    assert ret["held_versions"] == ret["held_distinct"]
+    assert ret["retained_versions"] == ret["held_versions"]
     for v in sim.vehicles:
         if v.former_holder:
             assert {k.pid for k in v.kept_keys} == set(v.history)
@@ -68,12 +72,15 @@ def test_attackers_retain_every_credential_they_held(mode):
 # G03 -------------------------------------------------------------------------
 def test_separated_episodes_are_separate_windows():
     e = exposure_windows({("p", "A"): [0, 1, 100, 101]})
-    assert e["contiguous"]["n"] == 2 and e["contiguous"]["values"] == [2.0, 2.0]
-    assert e["cumulative_per_holding"]["values"] == [4.0]
+    assert e["contiguous"]["n"] == 2 and [x["span_s"] for x in e["segments"]] == [2.0, 2.0]
+    assert [h["span_s"] for h in e["holdings"]] == [4.0]
+    assert all(x["pid"] == "p" and x["holder"] == "A" for x in e["segments"])      # identifiers kept (H03)
     e = exposure_windows({("p", "A"): [0, 1], ("p", "B"): [2, 3]})        # same pid, two holdings
     assert e["cumulative_per_holding"]["n"] == 2
     e = exposure_windows({("p", "A"): [117, 118, 119, 120]}, horizon_end=120)
-    assert e["contiguous"]["censored"] == 1
+    assert e["contiguous"]["truncated"] == 1 and e["contiguous_complete"]["n"] == 0
+    e = exposure_windows({("p", "A"): [0, 2]})                            # a tolerated 1 s gap
+    assert e["segments"][0]["span_s"] == 3.0 and e["segments"][0]["accepted_s"] == 2.0
 
 
 # G04 -------------------------------------------------------------------------
@@ -104,6 +111,60 @@ def test_no_handoff_instant_has_two_valid_holders():
     assert v2v.verify(msg(new, hc_new, later), later)[0]                    # only the new holder from here on
 
 
+def test_real_handoff_ledger_window_and_key_agree():
+    """An actual rekey transfer (review H02): at the handoff instant the ledger,
+    the receivers' holder window and the verifying key all name the outgoing
+    holder; from the next instant all three name the incoming one."""
+    sim = ITSSimulation(_cfg(issuance="rekey"))
+    held: dict = {}                                                          # pid -> [(vehicle, bound copy)]
+    real_bind = sim._bind_holders
+
+    def record(rsu, pm):
+        real_bind(rsu, pm)
+        for v in rsu.vehicles:
+            for p in v.pseudonyms:
+                held.setdefault(p.pid, []).append((v.vehicle_id, p))
+
+    sim._bind_holders = record
+    sim.run(4)
+    moved = [(pid, h[i], h[i + 1]) for pid, h in held.items() for i in range(len(h) - 1)
+             if h[i][0] != h[i + 1][0] and h[i + 1][1].holder_cert["t_start"] == h[i][1].holder_cert["t_end"]]
+    assert moved                                                             # a label passed straight to a new holder
+    pid, (vid0, p0), (vid1, p1) = moved[0]
+    v0 = next(v for v in sim.vehicles if v.vehicle_id == vid0)
+    v1 = next(v for v in sim.vehicles if v.vehicle_id == vid1)
+    t_b = p0.holder_cert["t_end"]                                           # the windows meet at the boundary
+    ledger, v2v = sim.ledger, sim.v2v
+
+    def msg(p, t):
+        m = SafetyMessage(pid, (10.0, 0.0), 20.0, 1.0, t)
+        m.signature = crypto.sign(p.keys.sk, m.body()).hex()
+        m.cred = p.cert_wire()
+        return m
+
+    later = t_b + 0.001
+    assert ledger.owner_at(pid, t_b) == (v0.vehicle_id, p0.keys.pk_hex)      # outgoing holder owns the instant
+    assert ledger.owner_at(pid, later) == (v1.vehicle_id, p1.keys.pk_hex)
+    assert v2v.verify(msg(p0, t_b), t_b)[0]
+    assert ledger.check(pid, v0.vehicle_id, msg(p0, t_b), {})[0]
+    assert not v2v.verify(msg(p1, t_b), t_b)[0]                             # incoming holder not yet valid
+    assert not ledger.check(pid, v1.vehicle_id, msg(p1, t_b), {})[0]
+    assert not v2v.verify(msg(p0, later), later)[0]                          # outgoing holder no longer valid
+    assert ledger.check(pid, v0.vehicle_id, msg(p0, later), {}) == (False, "pseudonym-held-by-another-vehicle")
+    assert v2v.verify(msg(p1, later), later)[0]
+    assert ledger.check(pid, v1.vehicle_id, msg(p1, later), {})[0]
+
+
+@pytest.mark.parametrize("mode", ["recycle", "rekey", "window", "fresh_vgk"])
+def test_honest_messages_pass_the_rsu_check_in_every_mode(mode):
+    """Attack-free: the time-aware ledger check (H02) accepts every honest
+    message, with the key bound at allotment (rekey) included."""
+    sim = ITSSimulation(_cfg(issuance=mode))
+    sim.run(3)
+    flagged = [reason for r in sim.rsus for _, reason in r.flagged]
+    assert flagged == [] and not any(v.revoked for v in sim.vehicles)
+
+
 # G06 -------------------------------------------------------------------------
 def test_equivalence_tests_the_mean_it_reports():
     assert t_cdf(2.262157, 9) == pytest.approx(0.975, abs=1e-5)
@@ -119,13 +180,31 @@ def test_equivalence_tests_the_mean_it_reports():
 
 
 # G08 -------------------------------------------------------------------------
-def test_opportunity_tiers_are_nested_and_expiry_counts():
-    sim = ITSSimulation(_cfg(issuance="recycle", former_holders=5, former_holder_strategy="S3",
+@pytest.mark.parametrize("mode,strategy", [("recycle", "S1"), ("recycle", "S3"), ("fresh_vgk", "S2")])
+def test_opportunity_tiers_are_nested_against_sent_events(mode, strategy):
+    """Every check lands in exactly one bucket and nothing is sent outside the
+    eligible seconds, checked against the messages actually sent (review H01)."""
+    sim = ITSSimulation(_cfg(issuance=mode, former_holders=5, former_holder_strategy=strategy,
                              pseudonym_lifetime=60.0))
+    sent_expired = []
+    real = sim.former.record
+
+    def spy(fm, acc, rx, rsu_ok, now):
+        sender = next(v for v in sim.vehicles if v.index == fm.attacker_vid)
+        p = next(k for k in sender.kept_keys if k.pid == fm.msg.pid)
+        sent_expired.append(p.expiry < now)
+        return real(fm, acc, rx, rsu_ok, now)
+
+    sim.former.record = spy
     sim.run(4)
     f = sim.recycling_report()["forgery"]
-    assert f["key_checks"] >= f["valid_key_seconds"] >= f["eligible"] > 0
-    assert f["valid_key_seconds"] < f["key_checks"]                         # 60 s certificates expire inside 120 s
+    assert f["key_checks"] == f["held_by_self"] + f["retired_skips"] + f["expired_key_seconds"] + f["valid_key_seconds"]
+    assert f["valid_key_seconds"] >= f["eligible"] >= f["sent"] == len(sent_expired)
+    assert not any(sent_expired)                                            # nothing sent under an expired certificate
+    if mode == "recycle":
+        assert f["expired_key_seconds"] > 0                                  # 60 s certificates expire inside 120 s
+    else:
+        assert f["retired_skips"] > 0 and f["sent"] == 0                     # fresh labels are never reused
 
 
 # G10 -------------------------------------------------------------------------
@@ -153,3 +232,73 @@ def test_sumo_share_is_over_the_window(tmp_path):
     if pop["honest"]:
         assert pop["revoked_honest_share"] == pytest.approx(pop["revoked_honest"] / pop["honest"])
     assert pop["revoked_honest_share_of_trace"] == pytest.approx(pop["revoked_honest"] / pop["honest_in_trace"])
+
+
+# Round 3 additions -------------------------------------------------------------
+def test_delegated_fresh_labels_are_pm_signed_and_checked():
+    """fresh_pm (the delegated control): fresh labels for vehicle keys, signed by
+    a PM whose PKI certificate rides along; receivers check that chain."""
+    sim = ITSSimulation(_cfg(issuance="fresh_pm"))
+    sim.run(2)
+    assert sim.load_report()["steady_state"]["pki"]["signatures"] == 0
+    assert sim.recycling_report()["v2v"]["honest_rejected_implausible"] == 0
+    assert sim.recycling_report()["v2v"]["accepted"] == sim.recycling_report()["v2v"]["received"] > 0
+    p = next(p for v in sim.vehicles for p in v.pseudonyms)
+    m = SafetyMessage(p.pid, (10.0, 0.0), 20.0, 1.0, clock.now())
+    m.signature = crypto.sign(p.keys.sk, m.body()).hex()
+    m.cred = p.cert_wire()
+    assert sim.v2v.verify(m, clock.now())[0]
+    bad = dict(m.cred)
+    bad["issuer_chain"] = {**bad["issuer_chain"], "pm_cert": bad["issuer_chain"]["pm_cert"][::-1]}
+    m.cred = bad
+    assert sim.v2v.verify(m, clock.now()) == (False, "pm-certificate-invalid")
+
+
+def test_one_insider_at_a_time():
+    sim = ITSSimulation(_cfg(issuance="recycle", insider_forgery=True, insider_active=("pm",)))
+    sim.run(2)
+    assert set(sim.recycling_report()["insider_forgery"]) == {"pm"}
+
+
+def test_quarantine_withdraws_labels_and_revokes_nobody():
+    sim = ITSSimulation(_cfg(issuance="recycle", former_holders=5, former_holder_strategy="S1",
+                             misbehaviour_response="quarantine_pseudonym"))
+    sim.run(4)
+    r = sim.recycling_report()
+    assert not any(v.revoked for v in sim.vehicles)
+    q = r["quarantine"]
+    assert q["labels"] > 0 and q["labels"] == len(sim.quarantines)
+    assert all(x["pid"] in sim.ledger.retired for x in sim.quarantines)
+    held = {p.pid for v in sim.vehicles for p in v.pseudonyms}
+    assert not held & {x["pid"] for x in sim.quarantines if x["t"] < clock.now() - 30}   # never handed out again
+
+
+def test_provenance_archives_untracked_and_dirty_source(tmp_path, monkeypatch):
+    import subprocess
+
+    from pop_sim import cli
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "a.py").write_text("x = 1\n")
+    for cmd in (["init", "-q"], ["add", "."], ["-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "c"]):
+        subprocess.run(["git", *cmd], check=True)
+    clean = cli._capture_provenance()
+    assert clean["source_dirty"] is False and clean["source_snapshot"] is None
+    (tmp_path / "src" / "a.py").write_text("x = 2\n")
+    (tmp_path / "src" / "b.py").write_text("y = 3\n")                        # untracked source counts too
+    dirty = cli._capture_provenance()
+    assert dirty["source_dirty"] is True and dirty["untracked_source_files"] == ["src/b.py"]
+    snap = __import__("json").loads((tmp_path / dirty["source_snapshot"]).read_text())
+    assert "x = 2" in snap["diff"] and snap["untracked"]["src/b.py"] == "y = 3\n"
+
+
+@pytest.mark.parametrize("history", ["shared", "local"])
+def test_attack_free_runs_revoke_nobody(history):
+    """No attackers, no revocations: an RSU's own clone history of a previous
+    holding must not count against the label's next holder (found by the
+    round-3 attack-free control under local histories)."""
+    for seed in (1, 2):
+        sim = ITSSimulation(_cfg(issuance="recycle", seed=seed, road=RoadConfig(density_per_km=10, seed=seed),
+                                 rsu_history=history))
+        sim.run(4)
+        assert not any(v.revoked for v in sim.vehicles)

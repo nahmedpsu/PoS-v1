@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from .plots import C_POET, C_POW, C_POW1, C_REF, _save  # noqa: E402
 
 C_V2 = "#2A7F62"
-MODE_COLORS = {"recycle": C_REF, "fresh": C_POW, "fresh_vgk": C_POW1, "rekey": C_V2, "window": C_POET}
+MODE_COLORS = {"recycle": C_REF, "fresh": C_POW, "fresh_vgk": C_POW1, "fresh_pm": "#8c6d31", "rekey": C_V2, "window": C_POET}
 
 
 def _v(d, k: str = "mean") -> float:
@@ -52,7 +52,7 @@ def fig_e1(res: dict, path: Path) -> Path:
             if not sub:
                 continue
             x = [c["lifetime"] for c in sub]
-            _ci(axes[0], x, sub, "exposure_contiguous_mean_s", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
+            _ci(axes[0], x, sub, "exposure_span_mean_s", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
             _ci(axes[1], x, sub, "v2v_receiver_rate", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
             _ci(axes[2], x, sub, "reports_naming_honest", color=color, linestyle=ls, label=f"{st}, plausibility {'on' if pl else 'off'}")
     for ax, t, yl in zip(axes, ("Contiguous exposure window", "Forged messages accepted by V2V receivers", "Reports naming honest vehicles (all routes)"),
@@ -74,7 +74,7 @@ def fig_e1x(res: dict, path: Path) -> Path:
         if not sub:
             continue
         x = [c["lifetime"] for c in sub]
-        _ci(axes[0], x, sub, "exposure_contiguous_mean_s", color=color, label=st)
+        _ci(axes[0], x, sub, "exposure_span_mean_s", color=color, label=st)
         _ci(axes[1], x, sub, "v2v_receiver_rate", color=color, label=st)
         _ci(axes[2], x, sub, "pki_renewals", color=color, label=st)
     for ax, t in zip(axes, ("Contiguous exposure window (s)", "Forged messages accepted by V2V receivers",

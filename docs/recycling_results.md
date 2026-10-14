@@ -1,11 +1,12 @@
 # Pseudonym recycling study: results
 
 Back to the [README](../README.md). Design, pre-registered outcome cases and the
-scope of the model in [recycling.md](recycling.md); the responses to the two external
-reviews in [review_response.md](review_response.md) (v3.4.0, R01 to R25) and
-[review_response_round2.md](review_response_round2.md) (v3.5.0, G01 to G10). All
+scope of the model in [recycling.md](recycling.md); the responses to the external
+reviews in [review_response.md](review_response.md) (v3.4.0, R01 to R25),
+[review_response_round2.md](review_response_round2.md) (v3.5.0, G01 to G10) and
+[review_response_round3.md](review_response_round3.md) (v3.6.0, H01 to H08). All
 numbers below come from `results/recycling/*.json`, produced by `pop-sim recycling`
-at version 3.6.0 with ten seeds per cell and four rounds of 30 s (two PMs, six RSUs,
+at version 3.7.0 with ten seeds per cell and four rounds of 30 s (two PMs, six RSUs,
 5 km ring road, three pseudonyms per vehicle, 3 s silence after each change, 3 m
 observer noise, ledger attribution, vehicle-to-vehicle receivers within 300 m). Every
 cell is the mean over seeds with a 95 % bootstrap confidence interval; every result
@@ -20,9 +21,33 @@ holder's position), S3 only while the ledger names nobody. The rates are therefo
 conditional model results, not feasible attack rates and not formal upper bounds; a
 former holder that broadcasts its keys blind, or decides from what it hears, has a
 different schedule and is not modelled. The former holder also stops once it is
-itself revoked. See [recycling.md](recycling.md#scope-after-the-external-review-of-v340-version-350).
+itself revoked, and it never sends under a credential whose certificate has expired
+(it can read the expiry in the certificate it kept). The detection side is the
+published default unless a section says otherwise; E1s shows how far the headline
+moves under other detection settings. The results are a conditional mechanism study
+of one architecture. See [recycling.md](recycling.md#scope-after-the-external-review-of-v340-version-350).
 
-What changed against 3.5.0 (the follow-up review, G01 to G10):
+What changed against 3.6.0 (the round-three review, H01 to H08):
+
+* **No attempt under an expired credential (H01).** Every check of a retained key
+  falls in exactly one bucket (held by the attacker itself, a retired label, an
+  expired certificate, or valid) and every message sent is an eligible, valid
+  attempt. Within 120 s nothing changes; over 600 s with 300 s certificates the
+  lifetime now shows as fewer attempts, and it removes a confound: the RSU's ledger
+  check ignores expiry, so expired forgeries had added wrongful revocations (E1x).
+* **The ledger knows who held a label when (H02).** The RSU judges a message against
+  the holder and key at the message's own time, with the outgoing holder owning the
+  handoff instant, as the holder windows do. No published number moved.
+* **Exposure means pool every window (H03)**, with a bootstrap over seeds; accepted
+  seconds are reported beside gap-tolerant spans, and windows cut off by the end of
+  the run are marked truncated, with a mean over the completed ones.
+* **New: detection-side sensitivity (E1s, H04), quarantine instead of revocation
+  (E1q), one insider at a time (E3bi), and a delegated fresh-label control
+  (`fresh_pm` in E4).**
+* Results files record provenance captured when their command started and archive
+  any source difference (H06); credential versions are counted (H08).
+
+Earlier changes (3.6.0, the follow-up review G01 to G10):
 
 * **Every misbehaviour report is counted (G01).** Reports pass through one point and
   carry the route that raised them: a forged message, or a vehicle's own beacon (an
@@ -56,18 +81,24 @@ they held, and sign under those pseudonyms after recycling. Ten vehicles per km,
 91.5 honest vehicles and 5 attackers per run, 900 s certificates. The five attackers
 hold 56 to 60 distinct credentials per run and keep all of them.
 
-| Strategy | Eligible seconds / forgeries sent | Receivers that accept (plausibility off / on) | RSU accepts | Contiguous exposure window, mean / pooled p95 | Reports naming honest vehicles: by forged messages + by their own beacons | Honest vehicles reported = revoked | Attackers revoked |
+| Strategy | Eligible seconds / forgeries sent | Receivers that accept (plausibility off / on) | RSU accepts | Exposure window: mean span (95 % CI over seeds) / pooled p95; windows truncated | Reports naming honest vehicles: by forged messages + by their own beacons | Honest vehicles reported = revoked | Attackers revoked |
 |---|---|---|---|---|---|---|---|
-| S1 remote shadow | 1,006 / 1,006 | 100 % / 96.0 % | 70 % | 7.0 s / 7 s (cumulative per holding 21 s) | 294 + 183 = 477 | 43.4 of 91.5 (48 %) | 1.5 of 5 |
-| S2 co-located ghost | 1,420 / 169 | 100 % / 77.5 % | 67 % | 6.0 s / 7 s (12.7 s) | 54 + 0 | 8.5 (9.6 %) | 0.2 |
-| S3 gap filler | 651 / 651 | 100 % / 99.6 % | 0 % | 36.8 s / 60 s (38.2 s) | 0 | 0 | 0 |
+| S1 remote shadow | 1,006 / 1,006 | 100 % / 96.0 % | 70 % | 7.0 s / 7 s; 173 of 1,437 | 294 + 183 = 477 | 43.4 of 91.5 (48 %) | 1.5 of 5 |
+| S2 co-located ghost | 1,420 / 169 | 100 % / 77.5 % | 67 % | 6.0 s (5.7 to 6.3) / 7 s; 41 of 279 | 54 + 0 | 8.5 (9.6 %) | 0.2 |
+| S3 gap filler | 651 / 651 | 100 % / 99.6 % | 0 % | 36.4 s (34.3 to 38.7) / 60 s; 100 of 174 | 0 | 0 | 0 |
+
+The exposure mean weighs every window the same and its interval resamples seeds. A
+window's span runs from its first to its last accepted second, tolerating gaps of up
+to 2 s; here the spans equal the accepted seconds. A window that reaches the end of
+the run is truncated, its span a lower bound: S3's completed windows average 33.2 s.
 
 Opportunities, from the widest denominator to the narrowest (S1): 2,895 key checks
-(every retained key, every second), 2,340 seconds with a key the attacker no longer
-holds and whose certificate is valid, 1,006 of them eligible (another vehicle
-transmitting under the pseudonym). S2 sends only when within radio range of the
-holder (169 of 1,420 eligible seconds). S3's eligible seconds are those with a valid
-key and nobody holding the pseudonym.
+(every retained key, every second), of which the attacker itself held the label in
+555 and 2,340 were valid (unexpired, not held by the attacker; no retired labels or
+expired certificates within 120 s); 1,006 of them eligible (another vehicle
+transmitting under the pseudonym), and every eligible second is sent. S2 sends only
+when within radio range of the holder (169 of 1,420 eligible seconds). S3's eligible
+seconds are those with a valid key and nobody holding the pseudonym.
 
 * Vehicle-to-vehicle receivers accept every forgery: they check the certificate and
   the signature, and the former holder has both. The local plausibility rule removes
@@ -83,9 +114,9 @@ key and nobody holding the pseudonym.
   schedule leaves no beacon route. 3.5.0's "14 innocent vehicles reported, 31.8
   revoked" came from counting only the forged-message route and from the credential
   the attacker dropped every round.
-* S1's contiguous exposure window is exactly the holder's active slot: 7 s (a 10 s
-  slot minus the 3 s silence), three slots per holding. S3's windows run between
-  holders and are censored at the end of the run in 100 of 174 cases.
+* S1's exposure window is exactly the holder's active slot: 7 s (a 10 s slot minus the
+  3 s silence), three slots per holding. S3's windows run between holders, and 100 of
+  174 are truncated by the end of the run, so 36.4 s understates their natural length.
 * Certificate lifetime (300, 900, 3600 s) does not change any of this within 120 s;
   E1x below runs 600 s.
 * Density from 2 to 80 vehicles per km leaves the receiver rates where they are (S1
@@ -135,6 +166,67 @@ latencies mix the rule with batching and workload. The failure is in the
 attribution, not in the threshold.
 
 ![E1r](../figures/recycling/E1r.png)
+
+## E1s. How far the headline moves with the detection side (H04)
+
+`pop-sim recycling --only E1s` reruns the E1 core cell (S1 and S2, 5 % former
+holders, 900 s certificates, 120 s) on the same ten seeds under nine detection-side
+variants, each with its own attempt denominators. Per variant it also runs an
+attack-free control (no attackers: any honest revocation is a false positive) and a
+genuine misbehaver whose workload matches the forger's (it replays every second;
+oracle attribution).
+
+| Variant | S1: honest revoked of 91.5 (forgeries sent) | S2: honest revoked (sent) | Attack-free: honest revoked; honest receptions rejected as implausible | Genuine misbehaver revoked after |
+|---|---|---|---|---|
+| Published default (shared history, round-end processing) | 43.4 (1,006) | 8.5 (169) | 0; 0.13 % | 60 s |
+| Local RSU histories | 13.2 (1,334) | 7.7 (169) | 0; 0.13 % | 60 s |
+| Continuous processing, 1 s report delay | 42.9 (398) | 8.5 (89) | 0; 0.13 % | 35 s |
+| Local histories and continuous processing | 12.7 (1,160) | 7.5 (96) | 0; 0.13 % | 35 s |
+| 10 % message loss | 43.4 (1,006) | 8.5 (169) | 0; 0.12 % | 60 s |
+| Clone allowance 10 m | 43.4 (1,006) | 8.5 (169) | 0; 0.14 % | 60 s |
+| Clone allowance 50 m | 43.3 (1,008) | 0 (185) | 0; 0.11 % | 60 s |
+| Signed-position error 3 m | 43.4 (1,006) | 8.5 (169) | 0; 0.13 % | 60 s |
+| Signed-position error 10 m | 43.4 (1,006) | 8.3 (166) | 0; 0.13 % | 60 s |
+
+* The headline is a range, not a point: S1 at 5 % former holders gets 13 to 43 of
+  91.5 honest vehicles revoked in two minutes depending on the detection setup (14 to
+  48 % of the honest vehicles, by the per-seed share).
+* Local RSU histories make the difference. With one shared history, the forger's
+  message anywhere sets the label's last-seen position for every RSU; with a history
+  per RSU, an RSU compares a message only with what it saw itself, and far fewer
+  honest holders look cloned. The forger also lasts longer and sends more.
+* Continuous processing leaves S1's wrongful revocations where they are but cuts the
+  time to revoke: the forger has sent 398 messages instead of 1,006 by the time the
+  victims are revoked, and the matched misbehaver is revoked at 35 s instead of 60 s
+  (20 s from its first replay to the first report, then 1 s to the decision instead
+  of the wait for the round's end).
+* A 50 m clone allowance hides S2 completely (its ghost claims a position 40 m from
+  the holder) and leaves S1 unchanged. Message loss and signed-position error up to
+  10 m do not move the revocations.
+* No variant revokes an honest vehicle without attackers. Receivers reject about
+  0.13 % of honest receptions as implausible: a recycled label reappearing on its new
+  holder far from where its previous holder was last heard. Receivers cannot tell a
+  re-allotment from a clone.
+
+## E1q. Quarantine the pseudonym instead of revoking the holder
+
+PoP's response to a clone report is to revoke the vehicle the ledger names. E1q
+replaces it, on the same seeds and traffic, with a quarantine: the reported pseudonym
+is withdrawn (RSUs reject it and it is never handed out again) and nobody is revoked.
+S1 and S2 at 5 % former holders, 900 s certificates.
+
+| Strategy, horizon | Honest vehicles revoked: revoke the holder / quarantine | Labels quarantined | Honest vehicles losing a pseudonym | Allotment stock-outs per run (revoke / quarantine) | Receivers accepting the forgery (quarantine) |
+|---|---|---|---|---|---|
+| S1, 120 s | 43.4 / 0 | 40.9 | 32.3 | 0.6 / 10.4 | 96 % |
+| S1, 600 s | 90.5 / 0 | 208 | 80.9 | 0.6 / 224 | 96 % |
+| S2, 120 s | 8.5 / 0 | 9.2 | 8.2 | 0.9 / 2.3 | 77 % |
+| S2, 600 s | 71.2 / 0 | 152.5 | 69.4 | 1.3 / 192 | 77 % |
+
+* The attribution policy, not the clone, is what turns a clone into a victim:
+  withdrawing the label instead of the vehicle leaves no honest vehicle revoked.
+* The cost moves elsewhere. Honest holders lose the quarantined labels, the pool
+  shrinks (stock-outs rise to about 200 per run over ten minutes), and receivers,
+  which never see the ledger, keep accepting the forgeries at the same rates.
 
 ## E2. Revocation does not reach other vehicles (RQ2)
 
@@ -245,9 +337,12 @@ can be attempted and the rates are not applicable.)
   vehicle. At 40 m a third of receivers accept and the RSU reports the innocent
   holder for 70 % of the forgeries; within 25 m of the holder, or during its silent
   period, every receiver and the RSU accept and nobody is reported.
-* With vehicle-generated keys (fresh_vgk, rekey) no infrastructure entity ever holds
-  a key in use, checked over every entity's full custody record. `PKI.certify` takes
-  public keys only.
+* With vehicle-generated keys (fresh_vgk, fresh_pm, rekey) no infrastructure entity
+  ever holds a key in use, checked over every entity's full custody record.
+  `PKI.certify` and `PrivacyManager.certify` take public keys only.
+* One insider at a time (E3bi, `insider_active`): each entity forging alone gives the
+  same rates as the joint run within about 3 points on every row, so each row is what
+  that one compromised entity achieves.
 
 ![E3b](../figures/recycling/E3b.png)
 
@@ -257,25 +352,27 @@ Attacker strategy S2 (5 % former holders), plausibility on, 900 s certificates, 
 paired seeds, ten and forty vehicles per km. Privacy is measured twice: attack-free
 (the same traffic with no former holders, identical pseudonym changes in every mode),
 and with the former holders' forged messages on the air, which the eavesdropper
-hears like any other message.
+hears like any other message. `fresh_pm` is the delegated control: fresh labels and
+vehicle-generated keys like fresh_vgk, but certificates signed by a PM, whose own PKI
+certificate rides along and is checked by receivers.
 
-| Axis | recycle | fresh | fresh_vgk | rekey | window |
-|---|---|---|---|---|---|
-| Tracker link rate, attack-free, 10 / 40 veh/km | 0.962 / 0.899 | 0.966 / 0.902 | 0.965 / 0.903 | 0.962 / 0.899 | 0.962 / 0.899 |
-| Tracker link rate, forgeries on the air, 10 / 40 | 0.958 / 0.871 | 0.966 / 0.902 | 0.965 / 0.903 | 0.957 / 0.869 | 0.958 / 0.871 |
-| Forged messages sent / accepted by receivers, 10 / 40 | 169 / 168; 724 / 724 | no holder to impersonate | no holder to impersonate | 185 / 0; 694 / 0 | 169 / 168; 724 / 724 |
-| Honest vehicles revoked, 10 / 40 | 8.5 / 35.9 | 0 | 0 | 0 | 8.5 / 35.9 |
-| PM insider link rate | 0.49 | 0.49 | 0.49 | 0.49 | 0.49 |
-| Cloud insider link rate (upload order kept) | 0.73 | no cloud channel | no cloud channel | 0.73 | 0.73 |
-| PKI signatures per run, 10 / 40 | 0 | 1,164 / 4,697 | 1,158 / 4,688 | 0 | 0 |
-| PM signatures per run, 10 / 40 | 16 | 8 | 8 | 1,170 / 4,703 | 1,127 / 4,519 |
-| PKI CPU-s per 1,000 veh-h | 0 | 22.8 | 13.8 | 0 | 0 |
-| PM CPU-s per 1,000 veh-h | 0.2 to 0.9 | 36.5 to 37.3 | 0.1 to 0.4 | 14.0 to 14.7 | 13.5 to 14.1 |
-| Vehicle key generations per vehicle per round | 0 | 0 | 3 | 3 | 0 |
-| Bytes per vehicle per round (simulator count) | 11.8 k | 12.0 k | 12.1 k | 23.9 k | 23.5 k |
-| Bytes per CAM, standards model, certificate in every message | 277 | 277 | 277 | 407 (1.47×) | 407 (1.47×) |
-| Bytes per CAM, certificate in 1 of 10 messages | 167 | 167 | 167 | 187 (1.12×) | 187 (1.12×) |
-| Stock-outs per run, 10 / 40 | 0.9 / 0.3 | 1.3 / 0.6 | 0 | 1.5 / 0.6 | 0.9 / 0.3 |
+| Axis | recycle | fresh | fresh_vgk | fresh_pm | rekey | window |
+|---|---|---|---|---|---|---|
+| Tracker link rate, attack-free, 10 / 40 veh/km | 0.962 / 0.899 | 0.966 / 0.902 | 0.965 / 0.903 | 0.965 / 0.903 | 0.962 / 0.899 | 0.962 / 0.899 |
+| Tracker link rate, forgeries on the air, 10 / 40 | 0.958 / 0.871 | 0.966 / 0.902 | 0.965 / 0.903 | 0.965 / 0.903 | 0.957 / 0.869 | 0.958 / 0.871 |
+| Forged messages sent / accepted by receivers, 10 / 40 | 169 / 168; 724 / 724 | no holder to impersonate | no holder to impersonate | no holder to impersonate | 185 / 0; 694 / 0 | 169 / 168; 724 / 724 |
+| Honest vehicles revoked, 10 / 40 | 8.5 / 35.9 | 0 | 0 | 0 | 0 | 8.5 / 35.9 |
+| PM insider link rate | 0.49 | 0.49 | 0.49 | 0.49 | 0.49 | 0.49 |
+| Cloud insider link rate (upload order kept) | 0.73 | no cloud channel | no cloud channel | no cloud channel | 0.73 | 0.73 |
+| PKI signatures per run, 10 / 40 | 0 | 1,164 / 4,697 | 1,158 / 4,688 | 0 | 0 | 0 |
+| PM signatures per run, 10 / 40 | 16 | 8 | 8 | 1,166 / 4,696 | 1,170 / 4,703 | 1,127 / 4,519 |
+| PKI CPU-s per 1,000 veh-h | 0 | 36.6 | 23.4 | 0 | 0 | 0 |
+| PM CPU-s per 1,000 veh-h | 0.2 to 0.9 | 57.9 to 58.7 | 0.1 to 0.4 | 23.5 to 23.9 | 23.6 to 24.3 | 22.7 to 23.4 |
+| Vehicle key generations per vehicle per round | 0 | 0 | 3 | 3 | 3 | 0 |
+| Bytes per vehicle per round (simulator count) | 11.8 k | 12.0 k | 12.1 k | 17.7 k | 23.9 k | 23.5 k |
+| Bytes per CAM, standards model, certificate in every message | 277 | 277 | 277 | not modelled | 407 (1.47×) | 407 (1.47×) |
+| Bytes per CAM, certificate in 1 of 10 messages | 167 | 167 | 167 | not modelled | 187 (1.12×) | 187 (1.12×) |
+| Stock-outs per run, 10 / 40 | 0.9 / 0.3 | 1.3 / 0.6 | 0 | 0 | 1.5 / 0.6 | 0.9 / 0.3 |
 
 **Where the CPU goes (G10).** Modelled CPU-seconds per 1,000 vehicle-hours at ten
 vehicles per km, by entity and operation, from `cpu_by_operation_per_1000_veh_h` in
@@ -283,22 +380,22 @@ vehicles per km, by entity and operation, from `cpu_by_operation_per_1000_veh_h`
 
 | Mode | PKI | PMs | each mode's RSUs |
 |---|---|---|---|
-| fresh | sign 13.9, key generation 8.5, encrypt 0.4 | verify 36.5, decrypt 0.35, encrypt 0.3, sign 0.1 | verify 253, encrypt 2.1, sign 0.6 |
-| fresh_vgk | sign 13.8 | encrypt 0.3, sign 0.1 | verify 254, encrypt 2.1, sign 0.6 |
-| rekey | 0 | sign 14.0, encrypt 0.7 | verify 259, encrypt 2.1, sign 0.6 |
+| fresh | sign 23.6, key generation 12.8, encrypt 0.3 | verify 57.8, decrypt 0.45, encrypt 0.3, sign 0.2 | verify 401, encrypt 1.7, sign 1.0 |
+| fresh_vgk | sign 23.4 | encrypt 0.3, sign 0.2 | verify 402, encrypt 1.7, sign 1.0 |
+| fresh_pm | 0 | sign 23.6, encrypt 0.3 | verify 402, encrypt 1.7, sign 1.0 |
+| rekey | 0 | sign 23.7, encrypt 0.6 | verify 411, encrypt 1.7, sign 1.0 |
 
 Under fresh issuance 98 % of the PMs' cost is verifying the certificate of every
 pseudonym in the PKI's package (seed 1: 899 verifications against 8 decryptions of
-49 KB packages);
-decryption is about 1 %. 3.5.0 attributed it to decryption, which was wrong. The ECIES
-cost has a per-byte term, calibrated at 120 bytes and at a 64 KB package-sized
-payload: about 0.3 ns per byte for encryption, so a whole package adds microseconds.
-The RSUs' cost, verifying every safety message they hear, is about seven times the
-PMs' and the same in every mode. The coefficients behind these
-figures are stored in each result file under `calibration` (for this E4 run: sign
-0.038 ms, verify 0.10 ms, key generation 0.024 ms, ECIES 0.13 ms plus the per-byte
-term; `cryptography` 49.0.0, Python 3.11), and the per-entity totals carry a ×0.5 to
-×2 range. They are a software estimate of the cryptography only, not a deployment
+49 KB packages); decryption is about 1 %. The ECIES cost has a per-byte term,
+calibrated at 120 bytes and at a 64 KB package-sized payload, so a whole package adds
+microseconds. The RSUs' cost, verifying every safety message they hear, is the same
+in every mode and seven times the PMs' under fresh issuance. Each run measures its own
+coefficients, stored in the result file under `calibration`, so absolute CPU-seconds
+differ between files and between versions with the load of the machine; the ratios
+between modes do not. For this E4 run: sign 0.065 ms, verify 0.16 ms, key generation
+0.036 ms, ECIES 0.11 ms plus the per-byte term (`cryptography` 49.0.0, Python 3.11);
+the per-entity totals carry a ×0.5 to ×2 range. They are a software estimate of the cryptography only, not a deployment
 cost (no database, replication or network service).
 
 **Sizes.** The simulator counts the holder certificate in full on every message, so
@@ -337,15 +434,19 @@ Reading it against the pre-registered cases:
    fresh and fresh_vgk the former holder's retained credentials stay valid (E2 shows
    receivers accept them until expiry), but none is held by another vehicle, so there
    is nobody to impersonate or get revoked.
-3. **The PKI load of fresh issuance is 23 CPU-seconds per 1,000 vehicles per hour**
-   with the coefficients measured for this run (14 with vehicle-generated keys),
+3. **The PKI load of fresh issuance is 37 CPU-seconds per 1,000 vehicles per hour**
+   with the coefficients measured for this run (23 with vehicle-generated keys, 0
+   with PM-signed fresh labels, which put the same 23 on the PMs),
    against the pre-registered threshold of one. Recycling's steady-state PKI cost
    inside the horizon is zero because no certificate came up for renewal; at the
    lifetime scale it is one signature per circulating pseudonym per lifetime.
 4. **Safe recycling is fresh issuance with the signing moved to the PMs.** `rekey`
-   costs the PMs 14 CPU-s per 1,000 vehicle-hours, about fresh_vgk's PKI cost, the
+   costs the PMs 24 CPU-s per 1,000 vehicle-hours, the same as fresh_pm, the
+   delegated fresh-label control, and fresh_vgk's PKI cost; it has the
    same three key generations per vehicle per round, and 1.12 to 1.47 times the bytes
-   per message.
+   per message. The delegated control shows the label adds nothing: fresh_pm moves
+   the same signing load to the PMs with fresh labels and no former holder to
+   impersonate.
 
 So the outcome is case 2 with case 3 as the headline: recycling earns its place only
 as a load shift, and in exchange it breaks accountability (E1: the ledger blames the
@@ -376,7 +477,11 @@ key; `fresh_vgk` issues fresh pseudonyms with vehicle-generated keys.
   windows do not overlap. With the half-open windows of 3.6.0 the outgoing holder
   owns the handoff instant and the incoming holder every later one, so no instant has
   two valid holders; `tests/test_review2.py` checks the old certificate, the new
-  public certificate with the old key, and both sides of the boundary.
+  public certificate with the old key, and both sides of the boundary, in an actual
+  rekey transfer and with the ledger's ownership at the message's time (3.7.0, H02).
+  Every E5 cell is unchanged by that ledger change. The rekey rows remain sampled
+  attack outcomes, not exhaustive boundary tests: S1 acts on the beacons the holder
+  emits, and an incoming holder is silent at first.
 
 ![E5](../figures/recycling/E5.png)
 
@@ -404,18 +509,23 @@ ties on privacy, and costs accountability.
   the tracker; a side effect of the attack.
 * **Security**: under the modelled (simulator-conditioned) schedules, a former holder
   forges accepted messages under every strategy, and ledger attribution turns those
-  forgeries into revocations of innocent vehicles: 48 % of the honest vehicles in two
-  minutes under S1 at 5 % attackers, 99 % in ten minutes; a stricter revocation rule
-  only delays them. Under fresh issuance a retained credential belongs to nobody
-  else, so there is no one to impersonate or frame. Both hold on SUMO traces.
+  forgeries into revocations of innocent vehicles: under S1 at 5 % attackers, 14 to
+  48 % of the honest vehicles in two minutes depending on the detection side (48 % with
+  the published shared history and round-end processing, 14 % with a history per RSU
+  and continuous processing; E1s), and 99 % in ten minutes with the published setup
+  (92 % under the strictest revocation rule tested); a stricter rule only delays them, and
+  quarantining the label instead of revoking its holder removes them at the cost of
+  withdrawn labels (E1q). Under fresh issuance a retained credential belongs to
+  nobody else, so there is no one to impersonate or frame. Both hold on SUMO traces.
 * **Revocation**: unenforceable at vehicles until the certificates expire, under
   recycle and fresh issuance alike (E2); only holder-bound credentials (rekey) end it
   at the round boundary.
-* **Authority load**: the only axis recycling wins. Fresh issuance costs the PKI 23
-  CPU-seconds per 1,000 vehicle-hours with this run's coefficients, and its PMs 37 for
-  verifying the certificates they receive (14 and almost nothing with
+* **Authority load**: the only axis recycling wins. Fresh issuance costs the PKI 37
+  CPU-seconds per 1,000 vehicle-hours with this run's coefficients, and its PMs 58 for
+  verifying the certificates they receive (23 and almost nothing with
   vehicle-generated keys). The safe form of recycling (`rekey`) moves the signing to
-  the PMs, at 12 to 47 % more bytes per message.
+  the PMs, at 12 to 47 % more bytes per message; so does the delegated fresh-label
+  control (`fresh_pm`), without a recycled label.
 * **Insider exposure**: linking is the same in every mode (a PM names 84 % of its
   vehicles and attributes half of their observed beacon-seconds; the cloud's upload
   order leaks 73 % of changes until the PM shuffles). Forging is not: under recycle,
@@ -429,28 +539,32 @@ ties on privacy, and costs accountability.
 `pop-sim recycling --long` reruns E1 (plausibility on, 5 % attackers, 10 veh/km) and
 E2 over 600 s, twenty rounds, so that 300 s certificates expire and are renewed
 inside the run (739 PKI renewals per run at that lifetime; none at 900 or 3,600 s).
-The five attackers hold and keep 124 (S1) to 298 (S3) credentials by the end.
+The five attackers hold and keep 124 (S1) to 298 (S3) credentials by the end. They
+never send under an expired certificate (3.7.0, H01).
 
-| Strategy | Receivers accepting the forgery, lifetime 300 / 900 or 3,600 s | Valid-key seconds / key checks, 300 / 900 s | Contiguous exposure, mean / pooled p95 (300 s; 900 s) | Honest vehicles reported = revoked (of 91.5) | Attackers revoked (of 5) |
+| Strategy | Forgeries sent, lifetime 300 / 900 or 3,600 s | Receivers accepting, 300 / 900 s | Key checks: expired / valid, 300 s | Honest vehicles reported = revoked (of 91.5), 300 / 900 s | Exposure window, mean span / pooled p95 (900 s) |
 |---|---|---|---|---|---|
-| S1 remote shadow | 87.1 % / 96.3 % | 57 % / 95 % | 7 s / 7 s; 7 s / 7 s | 90.5 (99 %) | 4.1 |
-| S2 co-located ghost | 53.5 % / 77.0 % | 55 % / 96 % | 6.1 s / 7 s; 6.1 s / 7 s | 71.2 (79 %) | 3.4 |
-| S3 gap filler | 49.0 % / 97.4 % | 48 % / 97 % | 37 s / 60 s; 39 s / 90 s | 0 | 0 |
+| S1 remote shadow | 2,003 / 2,157 | 96 % / 96 % | 11,733 / 15,150 | 84.2 / 90.5 | 7 s / 7 s |
+| S2 co-located ghost | 1,193 / 1,535 | 77 % / 77 % | 26,424 / 30,375 | 58.4 / 71.2 | 6.1 s / 7 s |
+| S3 gap filler | 9,453 / 19,014 | 99 % / 97 % | 43,014 / 42,030 | 0 / 0 | 38.6 s / 90 s (467 truncated) |
 
 * The retained copy is frozen when the credential leaves the attacker, so a 300 s
-  lifetime expires part of what it holds: valid-key seconds fall to about half of the
-  key checks, and receivers reject the expired certificates (2,500 to 111,000
-  expired-certificate rejections per run). Acceptance falls for every strategy, by
-  half for S2 and S3.
-* The revocations do not change with the lifetime: the RSU's ledger check does not
-  look at the certificate, so S1 gets 99 % of the honest vehicles revoked over 600 s
-  whatever the lifetime.
+  lifetime expires much of what it holds (42 to 49 % of the key checks). The lifetime
+  shows as fewer attempts, half as many for S3, while each attempt is accepted as
+  often as at longer lifetimes. Version 3.6.0 let expired attempts through and so
+  reported lower acceptance instead; the review's correction to the opportunity
+  hierarchy (H01) moves the effect to where it belongs.
+* It also removes a confound. The RSU's ledger check does not look at the
+  certificate's expiry, so the expired forgeries 3.6.0 sent were still turned into
+  reports. Without them S1 revokes 84.2 honest vehicles over 600 s at 300 s
+  certificates (3.6.0: 90.5) and S2 58.4 (3.6.0: 71.2). A shorter lifetime does
+  limit the damage, through the number of credentials still valid, not through the
+  RSU.
 * The renewed certificate is public (it rides in every message of the current
   holder) and certifies the key the former holder still has, so a former holder that
   copies it off the air is re-armed at every renewal. That attacker is not modelled;
-  the 300 s acceptance is what an attacker without that step keeps, not a
-  mitigation. Only a renewal bound to a key the former holder does not have ends its
-  access, which is `rekey`.
+  only a renewal bound to a key the former holder does not have ends its access,
+  which is `rekey`.
 * E2x: a revoked vehicle is believed until its certificates expire, 240 s at 300 s
   certificates and the remaining 540 s at 900 or 3,600 s, under recycle, fresh and
   fresh_vgk; under rekey not at all.
@@ -496,15 +610,17 @@ E4:
 | Scenario, mode | Tracker link rate, attack-free / forgeries on the air | Forged messages accepted | Honest vehicles revoked | PKI CPU-s per 1,000 veh-h | PM CPU-s per 1,000 veh-h | Bytes per vehicle per round (simulator) | Allotment stock-outs per run |
 |---|---|---|---|---|---|---|---|
 | LuST, recycle | 0.949 / 0.947 | 98 | 4.5 | 0 | 0.3 | 10.7 k | 3 |
-| LuST, fresh | 0.950 / 0.950 | no holder to impersonate | 0 | 20.0 | 32.4 | 10.8 k | 2 |
-| LuST, fresh_vgk | 0.951 / 0.951 | no holder to impersonate | 0 | 12.6 | 0.2 | 10.8 k | 0 |
+| LuST, fresh | 0.950 / 0.950 | no holder to impersonate | 0 | 21.3 | 36.0 | 10.8 k | 2 |
+| LuST, fresh_vgk | 0.951 / 0.951 | no holder to impersonate | 0 | 12.6 | 0.1 | 10.8 k | 0 |
+| LuST, fresh_pm | 0.951 / 0.951 | no holder to impersonate | 0 | 0 | 12.8 | 16.0 k | 0 |
 | LuST, rekey | 0.949 / 0.946 | 0 | 0 | 0 | 12.9 | 21.7 k | 3 |
-| LuST, window | 0.949 / 0.947 | 98 | 4.5 | 0 | 12.9 | 21.7 k | 3 |
-| Motorway, recycle | 0.916 / 0.904 | 369 | 20.7 | 0 | 0.3 | 10.5 k | 2.1 |
-| Motorway, fresh | 0.920 / 0.920 | no holder to impersonate | 0 | 28.2 | 48.6 | 10.6 k | 2 |
-| Motorway, fresh_vgk | 0.920 / 0.920 | no holder to impersonate | 0 | 17.3 | 0.1 | 10.6 k | 0 |
-| Motorway, rekey | 0.916 / 0.904 | 0 | 0 | 0 | 17.5 | 21.5 k | 4 |
-| Motorway, window | 0.916 / 0.904 | 369 | 20.7 | 0 | 17.2 | 21.3 k | 2.1 |
+| LuST, window | 0.949 / 0.947 | 98 | 4.5 | 0 | 12.8 | 21.7 k | 3 |
+| Motorway, recycle | 0.916 / 0.904 | 369 | 20.7 | 0 | 0.2 | 10.5 k | 2.1 |
+| Motorway, fresh | 0.920 / 0.920 | no holder to impersonate | 0 | 26.2 | 41.7 | 10.6 k | 2 |
+| Motorway, fresh_vgk | 0.920 / 0.920 | no holder to impersonate | 0 | 15.9 | 0.1 | 10.6 k | 0 |
+| Motorway, fresh_pm | 0.920 / 0.920 | no holder to impersonate | 0 | 0 | 16.0 | 15.8 k | 0 |
+| Motorway, rekey | 0.916 / 0.904 | 0 | 0 | 0 | 16.0 | 21.5 k | 4 |
+| Motorway, window | 0.916 / 0.904 | 369 | 20.7 | 0 | 15.7 | 21.3 k | 2.1 |
 
 * The picture is the ring's. S1 gets 22 to 24 % of the honest vehicles seen in the
   window revoked in two minutes; fresh, fresh_vgk and rekey have no accepted
@@ -513,6 +629,12 @@ E4:
   0.16 points, 90 % interval 0.01 to 0.32; motorway 0.32 points, 0.20 to 0.44, in
   fresh's favour). With forgeries on the air the motorway gap is 1.6 points (1.2 to
   2.0), not equivalent.
+* `fresh_pm` moves fresh_vgk's signing from the PKI to the PMs (13 and 16 CPU-s per
+  1,000 vehicle-hours at the PMs, none at the PKI), with fresh_vgk's privacy (attack-free
+  equivalent to recycle within ±1 point on both traces) and, in the simulator's count,
+  about half again as many bytes per vehicle for the chained certificate. The CPU
+  figures are this run's calibration (3.6.0's runs measured somewhat dearer
+  signatures; the ratios between modes are unchanged).
 
 **Departed vehicles.** A vehicle that leaves the corridor holds unused pseudonyms.
 The default returns them through its last RSU at once; `pop-sim recycling-sumo
@@ -551,14 +673,21 @@ In short:
   holder's position); a blind or observation-limited former holder is not modelled,
   nor one that keeps forging after its own revocation or copies renewed certificates
   off the air. The insiders transmit from the position they claim and forge in the
-  same run; their forged CAMs are not fed to the eavesdropper (the former holder's
-  are).
+  same run (E3bi runs each alone); their forged CAMs are not fed to the eavesdropper
+  (the former holder's are). A former holder sends nothing under a certificate whose
+  expiry, printed in the certificate it kept, has passed.
 * E1 to E6 use 120 s horizons; E1x and E2x (600 s) cover expiry and renewal.
 * Ring road without intersections and a strong but not optimal tracker; both bias the
   privacy numbers in the same direction for every mode.
 * Two SUMO scenarios, both motorways, plus five realizations of one; the road model is
   one-dimensional.
-* The detection options of 3.5.0 (sensor noise on signed positions, more detectors,
-  loss, per-RSU histories, continuous report processing) are not swept.
+* The detection side is swept in E1s for the E1 core cell on the ring only (local
+  histories, continuous processing, loss, clone allowance, signed-position error); the
+  headline is a range, 13 to 43 honest vehicles revoked in two minutes, not one value.
+  E1r, E2 and the SUMO runs use the default detection settings.
+* Quarantine (E1q) is evaluated as an alternative response for S1 and S2 only; it is
+  not combined with E1s's variants or the stricter E1r rule.
+* `fresh_pm` trusts the PMs with certification; a PM that certifies keys it should not
+  is outside the model, as is the PKI's revocation of a PM.
 * CPU costs are software measurements of the cryptography on one machine; message
   sizes come from a standards-based model, not a byte-exact encoder.

@@ -58,15 +58,29 @@
   ]
  },
  "provenance": {
-  "version": "3.6.0",
-  "commit": "d54adf61ba3d3843b6d27485c3bdab75221515ce",
+  "version": "3.7.0",
+  "commit": "2ff94e9f040e339cfeb64225e7fedd4b863c9133",
   "source_dirty": false,
-  "source_diff_sha256": null,
+  "untracked_source_files": [],
+  "source_snapshot_sha256": null,
+  "source_snapshot": null,
+  "source_paths": [
+   "src",
+   "config",
+   "scripts",
+   "pyproject.toml",
+   "requirements.lock",
+   "requirements.txt",
+   "requirements-dev.txt",
+   "requirements-sumo.lock",
+   "Dockerfile"
+  ],
   "argv": [
    "recycling",
    "--only",
-   "E2,E3,E3b,E5,E6"
+   "E2,E3,E3b,E5,E6,E3bi"
   ],
+  "provenance_capture": "command start",
   "signing": {
    "deterministic_available": true,
    "randomized_fallbacks": 0
@@ -74,13 +88,13 @@
  },
  "calibration": {
   "op_costs_s": {
-   "sign": 5.6635402000210886e-05,
-   "verify": 0.0001375097000000096,
-   "keygen": 1.9610997999734537e-05,
-   "encrypt": 0.00016344824797086984,
-   "decrypt": 0.00017498526000008497,
-   "encrypt_per_byte": 4.768835758841239e-10,
-   "decrypt_per_byte": 0.0
+   "sign": 7.630853999989995e-05,
+   "verify": 0.00017644406799990976,
+   "keygen": 3.6580945999958204e-05,
+   "encrypt": 0.00012576137399992148,
+   "decrypt": 0.00011141617396934089,
+   "encrypt_per_byte": 0.0,
+   "decrypt_per_byte": 7.647002568166859e-10
   },
   "source": "measured",
   "environment": {

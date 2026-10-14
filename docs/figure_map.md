@@ -9,6 +9,16 @@ coefficients and the environment they were measured in); `run_info.json` only
 describes the last run (review G09). One entry point runs everything:
 `scripts/reproduce.sh`.
 
+From 3.7.0 (review H06) provenance is captured when the command starts and says
+so (`provenance_capture: "command start"`; 3.6.0 files without that field
+recorded the commit when they were written). The source inventory covers `src`,
+`config`, `scripts`, `pyproject.toml`, the `requirements*` pins and the
+`Dockerfile`, untracked files included; when it differs from the commit, the
+difference (tracked diff plus untracked files in full) is archived as
+`results/provenance/<sha256>.json`, named by the `source_snapshot_sha256` the
+result records. SUMO result files record the content hash of each trace they
+read (`traces`, the same hash as `config/sumo/CONTENT_SHA256SUMS`).
+
 Scientific values are deterministic for a given seed and source; wall-clock
 timings, the cost calibration and the provenance metadata are not, and are
 excluded from any comparison of outputs.
@@ -58,6 +68,7 @@ excluded from any comparison of outputs.
 | `figures/recycling/summary.png` | `E4.json` (`privacy_attack_free`, `cells`) | `plots_recycling.fig_summary` | any `recycling` run |
 | `figures/recycling/SUMO_<name>.png` | `results/recycling/SUMO_<name>.json` | `plots_recycling.fig_sumo` | `recycling-sumo --name <name>` |
 | (tables only) | `results/recycling/SUMO_returns_motorway.json`, `SUMO_realizations_motorway.json` | none | `recycling-sumo --returns`, several `--trace` |
+| (tables only) | `results/recycling/E1s.json`, `E1q.json`, `E3bi.json` (3.7.0) | none | `recycling --only E1s`, `--only E1q`, `--only E3bi` |
 
 Rates drawn as gaps are cells with no attempts (not applicable), never zeros.
 Per-seed numerators and denominators sit under `per_seed` in every recycling

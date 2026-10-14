@@ -501,10 +501,23 @@
   }
  ],
  "provenance": {
-  "version": "3.6.0",
-  "commit": "2cd710b7915dbe4d39d61d8d917d043b6dfc3730",
+  "version": "3.7.0",
+  "commit": "181eeb2dd8e355463d413adfab5d6460b1a797db",
   "source_dirty": false,
-  "source_diff_sha256": null,
+  "untracked_source_files": [],
+  "source_snapshot_sha256": null,
+  "source_snapshot": null,
+  "source_paths": [
+   "src",
+   "config",
+   "scripts",
+   "pyproject.toml",
+   "requirements.lock",
+   "requirements.txt",
+   "requirements-dev.txt",
+   "requirements-sumo.lock",
+   "Dockerfile"
+  ],
   "argv": [
    "recycling-sumo",
    "--returns",
@@ -515,6 +528,10 @@
    "--name",
    "motorway"
   ],
+  "provenance_capture": "command start",
+  "traces": {
+   "motorway.fcd.xml": "e8925b3681cf08c8e855921aae05cbe75675975b214eaf6cb5de09539b36261d"
+  },
   "signing": {
    "deterministic_available": true,
    "randomized_fallbacks": 0
@@ -522,13 +539,13 @@
  },
  "calibration": {
   "op_costs_s": {
-   "sign": 3.3754011998098576e-05,
-   "verify": 0.00010980569800085504,
-   "keygen": 2.0203595999191747e-05,
-   "encrypt": 0.0001509030140005052,
-   "decrypt": 0.0001419118774848571,
+   "sign": 4.043966999961412e-05,
+   "verify": 0.00010253506200024276,
+   "keygen": 2.511258199956501e-05,
+   "encrypt": 0.0001455145919971983,
+   "decrypt": 0.00011376414110280222,
    "encrypt_per_byte": 0.0,
-   "decrypt_per_byte": 1.2220955162796114e-11
+   "decrypt_per_byte": 9.720747220386654e-11
   },
   "source": "measured",
   "environment": {

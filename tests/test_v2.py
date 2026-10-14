@@ -48,7 +48,11 @@ def test_popv2_election_and_proof(vrf_keys):
     assert res.winner_value == min(res.values[m] for m in (res.miners or res.values))
     w = next(n for n in nodes if n.node_id == res.winner)
     proof = res.proof(w, pi)
-    assert verify_popv2_proof(proof, "ab" * 32, 3, res.winner, certified_pk=w.pk.to_hex())
+    # With random keys every node is above the threshold one time in 64; such a
+    # fallback block verifies only against the whole certified key set.
+    certified = {n.node_id: n.pk.to_hex() for n in nodes}
+    assert verify_popv2_proof(proof, "ab" * 32, 3, res.winner, certified_pk=w.pk.to_hex(),
+                              certified_pks=certified)
     assert not verify_popv2_proof(proof, "ab" * 32, 4, res.winner)          # wrong chain position
     assert not verify_popv2_proof(proof, "cd" * 32, 3, res.winner)          # wrong parent
     assert not verify_popv2_proof(proof, "ab" * 32, 3, "N-other")           # wrong miner

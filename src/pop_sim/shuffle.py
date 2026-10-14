@@ -30,6 +30,7 @@ from .entities import (
     PseudonymLedger,
     SafetyMessage,
     Vehicle,
+    credential_version,
 )
 from .v2.anchoring import (
     anchors_to_proof,
@@ -61,7 +62,9 @@ def set_op_costs(costs: OpCosts) -> None:
     DEFAULT_OP_COSTS[0] = costs
 
 CONSENSUS_KINDS = ("pop", "poet", "pow2", "pokw", "popv2")
-ISSUANCE_MODES = ("recycle", "fresh", "fresh_vgk", "rekey", "window")
+ISSUANCE_MODES = ("recycle", "fresh", "fresh_vgk", "fresh_pm", "rekey", "window")
+VEHICLE_KEY_MODES = ("fresh_vgk", "fresh_pm")       # vehicles make their own key pairs
+FRESH_MODES = ("fresh", "fresh_vgk", "fresh_pm")     # a label is used once, then retired
 
 
 @dataclass
@@ -109,6 +112,7 @@ class ITSConfig:
     shuffle_before_upload: bool = False  # PM shuffles used sets before uploading (cloud-order leak fix)
     revocation_reports: int = 1          # clone reports against a vehicle before the PM asks the PKI to revoke it
     revocation_distinct_rsus: int = 1    # ... and from at least this many different RSUs
+    clone_allowance_m: float = 25.0      # RSU clone check: distance allowed beyond 60 m/s x elapsed time (H04)
     rsu_history: str = "shared"          # clone-check history: "shared" ledger state or "local" per RSU (review R10)
     report_processing: str = "round"     # "round": PM acts at round ends; "continuous": every second (review R11)
     report_delay_s: float = 1.0          # continuous: seconds for a report to reach the PM
@@ -120,6 +124,9 @@ class ITSConfig:
                                          # same-second tolerance; "silent": during the holder's silent period
     insider_forgeries_per_round: int = 1 # per entity; "offset"/"near" spread them evenly over the round
     insider_near_m: float = 10.0
+    insider_active: tuple = ("pki", "pm", "rsu", "cloud")  # entities that forge; one at a time isolates it
+    misbehaviour_response: str = "revoke_holder"   # on a clone report: revoke the named holder (PoP), or
+                                                   # "quarantine_pseudonym": withdraw the label and revoke nobody
 
     def __post_init__(self):
         if self.consensus not in CONSENSUS_KINDS:
@@ -136,6 +143,8 @@ class ITSConfig:
             raise ValueError("malicious_replay must be 'per_round' or 'per_second'")
         if self.former_holder_strategy not in STRATEGIES:
             raise ValueError(f"former_holder_strategy must be one of {STRATEGIES}")
+        if self.misbehaviour_response not in ("revoke_holder", "quarantine_pseudonym"):
+            raise ValueError("misbehaviour_response must be 'revoke_holder' or 'quarantine_pseudonym'")
         if self.insider_strategy not in ("offset", "near", "silent"):
             raise ValueError("insider_strategy must be 'offset', 'near' or 'silent'")
         if self.revocation_reports < 1 or self.revocation_distinct_rsus < 1:
@@ -214,6 +223,7 @@ class ITSSimulation:
         self.manufacturer = Manufacturer(self.pki)
         self.cloud = PMCloud(self.rng)
         self.ledger = PseudonymLedger()                      # shared blockchain view
+        self.ledger.allowance_m = cfg.clone_allowance_m
         self.pms: list[PrivacyManager] = []
         self.rsus: list[RSU] = []
         self.vehicles: list[Vehicle] = []
@@ -246,6 +256,7 @@ class ITSSimulation:
         self.departed_returns = 0                            # pseudonyms returned by vehicles that left the corridor
         self.retained_valid: list[tuple[float, int, int]] = []   # (time, unexpired retained credentials, retained)
         self.report_events: list[dict] = []                  # every misbehaviour report with its route (G01)
+        self.quarantines: list[dict] = []                    # misbehaviour_response="quarantine_pseudonym"
         self._route: tuple[str, str | None] = ("other", None)
         self.departed_lost = 0                               # pseudonyms that never came back from departed vehicles
         self._pending_returns: list[tuple[int, object, list]] = []   # (due round, rsu, pseudonyms)
@@ -330,7 +341,7 @@ class ITSSimulation:
         # Alg. 4 steps 4-6: PKI generates the pseudonym sets and broadcasts them
         # to the PMs, encrypted with the PM's public key and signed by PKI.
         for pm in self.pms:
-            if cfg.issuance == "fresh_vgk":
+            if cfg.issuance in VEHICLE_KEY_MODES:
                 continue                                      # vehicles make their own keys at distribution
             ps = self.pki.generate_pseudonyms(pm.demand(cfg.pseudonyms_per_vehicle))
             ct, sig = self.pki.package_for_pm(pm.keys.pk, ps)
@@ -531,8 +542,8 @@ class ITSSimulation:
             blocks += 1
             txs_total += n
             for rsu in pm.rsus:
-                if self.cfg.issuance == "fresh_vgk":
-                    self._distribute_vehicle_generated(rsu, per_vehicle)
+                if self.cfg.issuance in VEHICLE_KEY_MODES:
+                    self._distribute_vehicle_generated(rsu, per_vehicle, pm)
                 else:
                     rsu.distribute(per_vehicle, avoid_previous=self.cfg.avoid_previous_holder,
                                    pki=self.pki if self.cfg.verify_vehicle_certs else None)
@@ -554,9 +565,10 @@ class ITSSimulation:
         node for every holder, so linking metrics are about holdings."""
         return f"{pid}#{self.ledger.epoch.get(pid, 0)}"
 
-    def _distribute_vehicle_generated(self, rsu, per_vehicle: int) -> None:
+    def _distribute_vehicle_generated(self, rsu, per_vehicle: int, pm=None) -> None:
         """fresh_vgk: each vehicle makes its own key pairs and PKI signs the
-        certificates (SCMS style); the private key never leaves the vehicle."""
+        certificates (SCMS style); the private key never leaves the vehicle.
+        fresh_pm: the same, with the RSU's PM signing instead of the PKI."""
         for v in rsu.vehicles:
             if v.revoked:
                 continue
@@ -567,7 +579,10 @@ class ITSSimulation:
                 continue
             keys = [crypto.generate_keypair() for _ in range(per_vehicle)]
             v.load.keygens += per_vehicle
-            ps = self.pki.certify([k.pk for k in keys])       # only the public keys leave the vehicle
+            if self.cfg.issuance == "fresh_pm":
+                ps = pm.certify([k.pk for k in keys], self.pki.lifetime)
+            else:
+                ps = self.pki.certify([k.pk for k in keys])   # only the public keys leave the vehicle
             for p, k in zip(ps, keys):
                 p.keys = k
             v.receive_pseudonyms(ps)
@@ -593,7 +608,7 @@ class ITSSimulation:
                 hc = pm.sign_holder_cert(p.pid, keys.pk_hex, now, t_end)
                 copy = Pseudonym(p.pid, keys, p.cert, p.expiry, p.issuer_pk, hc, p.cert_pk or p.certified_pk)
                 bound.append(copy)
-                self.ledger.pk[p.pid] = keys.pk_hex
+                self.ledger.bind_key(p.pid, keys.pk_hex)      # ownership log too (review H02)
                 self.ledger.holder_cert[p.pid] = hc
             v.pseudonyms = bound
 
@@ -655,7 +670,7 @@ class ITSSimulation:
         pm_by_id = {pm.pm_id: pm for pm in self.pms}
         txs = []
         relocated: dict = {}
-        if self.cfg.issuance in ("fresh", "fresh_vgk"):
+        if self.cfg.issuance in FRESH_MODES:
             for pm in self.pms:
                 pm.collect_from_rsus()
                 for p, _ in pm.collected:
@@ -808,6 +823,7 @@ class ITSSimulation:
                 continue
             v.used.append(v.current)
             v.history.append(v.current.pid)
+            v.held_versions.add(credential_version(v.current))
             v._keep(v.current)                        # the last credential of the round leaves too (G02)
             v.current = None
         return messages, rejected
@@ -815,8 +831,9 @@ class ITSSimulation:
     def _insider_entities(self) -> dict:
         """One instance of each infrastructure entity, as in E3: the PKI, the
         first PM, the first RSU and the cloud, with the private keys each has held."""
-        return {"pki": self.pki.key_custody, "pm": self.pms[0].key_custody,
-                "rsu": self.rsus[0].key_custody, "cloud": self.cloud.key_custody}
+        every = {"pki": self.pki.key_custody, "pm": self.pms[0].key_custody,
+                 "rsu": self.rsus[0].key_custody, "cloud": self.cloud.key_custody}
+        return {k: v for k, v in every.items() if k in self.cfg.insider_active}
 
     def _insider_step(self, by_vid: dict, positions: dict, now: float, step: int, silent_until: dict) -> int:
         """E3b, the A3 adversary with a key.  Once per round (last second) each
@@ -945,6 +962,14 @@ class ITSSimulation:
                 v = next(v for v in self.vehicles if v.vehicle_id == rep["vehicle"])
                 self.report_tally.setdefault(v.vehicle_id, []).append(rep)
                 self.first_report_at.setdefault(v.vehicle_id, rep.get("t"))
+                if self.cfg.misbehaviour_response == "quarantine_pseudonym":
+                    # the label is withdrawn everywhere the ledger reaches; nobody is revoked
+                    if rep["pid"] not in self.ledger.retired:
+                        self.ledger.retire(rep["pid"])
+                        self.quarantines.append({"pid": rep["pid"], "named": v.vehicle_id,
+                                                 "named_attacker": v.former_holder or v.malicious,
+                                                 "t": clock.now()})
+                    continue
                 if not v.revoked and self._revocation_due(v.vehicle_id):
                     self.pki.revoke(v.credential.cert)
                     v.revoked = True
@@ -1068,15 +1093,22 @@ class ITSSimulation:
                               "exposure": exposure_windows(st.accepted_times, horizon_end=clock.now()),
                               "by_strategy": self.former.by_strategy, "strategy": self.cfg.former_holder_strategy}
         out["reports"] = self.report_summary()
+        if self.cfg.misbehaviour_response == "quarantine_pseudonym":
+            q = self.quarantines
+            out["quarantine"] = {"labels": len(q),
+                                 "labels_naming_honest": sum(not x["named_attacker"] for x in q),
+                                 "honest_vehicles_affected": len({x["named"] for x in q if not x["named_attacker"]})}
         out["retained_valid"] = [{"t": t, "valid": a, "retained": n} for t, a, n in self.retained_valid]
         held = {}
         for v in self.vehicles:
             if v.former_holder or v.malicious:
                 held[v.vehicle_id] = {"held_distinct": len(set(v.history)),
-                                      "retained_distinct": len({k.pid for k in v.kept_keys})}
+                                      "retained_distinct": len({k.pid for k in v.kept_keys}),
+                                      "held_versions": len(v.held_versions),
+                                      "retained_versions": len({credential_version(k) for k in v.kept_keys})}
         out["retention"] = {"attackers": len(held),
-                            "held_distinct": sum(h["held_distinct"] for h in held.values()),
-                            "retained_distinct": sum(h["retained_distinct"] for h in held.values())}
+                            **{k: sum(h[k] for h in held.values())
+                               for k in ("held_distinct", "retained_distinct", "held_versions", "retained_versions")}}
         # revocation latency decomposed (review R11): misbehaviour -> first report -> decision
         out["revocation_timing"] = {
             vid: {"first_replay": self.first_replay_at.get(vid), "first_report": self.first_report_at.get(vid),

@@ -181,17 +181,26 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         ("E3b insider forgery", lambda: exr.exp_e3b_insider_forgery(seeds, rounds, modes=("recycle", "fresh_vgk")) if quick else exr.exp_e3b_insider_forgery(seeds, rounds), plots_recycling.fig_e3b, "E3b"),
         ("E4 modes", lambda: exr.exp_e4_modes(seeds, rounds, densities=(10,)) if quick else exr.exp_e4_modes(seeds, rounds), plots_recycling.fig_e4, "E4"),
         ("E5 fix", lambda: exr.exp_e5_fix(seeds, rounds, strategies=("S2", "S3")) if quick else exr.exp_e5_fix(seeds, rounds), plots_recycling.fig_e5, "E5"),
+        ("E3bi insider forgery, one entity at a time",
+         lambda: exr.exp_e3b_isolated(seeds, rounds, modes=("recycle",), strategies=("offset",)) if quick
+         else exr.exp_e3b_isolated(seeds, rounds), None, "E3bi"),
+        ("E1q quarantine the pseudonym instead of revoking the holder",
+         lambda: exr.exp_e1_quarantine(seeds, rounds, long_rounds=4, strategies=("S1",)) if quick
+         else exr.exp_e1_quarantine(seeds, rounds), None, "E1q"),
+        ("E1s detection-side sensitivity",
+         lambda: exr.exp_e1_sensitivity(seeds, rounds, strategies=("S1",), variants=exr.SENSITIVITY_VARIANTS[:2]) if quick
+         else exr.exp_e1_sensitivity(seeds, rounds), None, "E1s"),
     ]
     if args.only_long:
         if not (args.long or args.sensitivity):
             args.long = args.sensitivity = True
-        for key in ("E1", "E2", "E3", "E3b", "E4", "E5", "E6"):
+        for key in ("E1", "E2", "E3", "E3b", "E4", "E5", "E6", "E3bi", "E1q", "E1s"):
             if (out / f"{key}.json").exists():
                 res[key] = json.loads((out / f"{key}.json").read_text())
         steps = []
     if args.only:
         wanted = {k.strip() for k in args.only.split(",")}
-        for key in ("E1", "E2", "E3", "E3b", "E4", "E5", "E6"):
+        for key in ("E1", "E2", "E3", "E3b", "E4", "E5", "E6", "E3bi", "E1q", "E1s"):
             if key not in wanted and (out / f"{key}.json").exists():
                 res[key] = json.loads((out / f"{key}.json").read_text())
         steps = [st for st in steps if st[3] in wanted]
@@ -200,7 +209,8 @@ def cmd_recycling(args: argparse.Namespace) -> int:
         r = fn()
         res[key] = r
         _dump(_stamp(r, calibration), out / f"{key}.json")
-        plot(r, figs / f"{key}.png")
+        if plot is not None:
+            plot(r, figs / f"{key}.png")
     if not args.only_long and (not args.only or "E6" in args.only):
         log("E6 bench re-check (oracle vs ledger attribution)")
         res["E6"] = exr.exp_e6_bench_recheck(quick=quick)
@@ -229,18 +239,24 @@ def cmd_recycling(args: argparse.Namespace) -> int:
     return 0
 
 
-SOURCE_PATHS = ("src", "config", "scripts", "pyproject.toml", "requirements.lock", "requirements.txt")
-
+# everything that can change a result: code, configuration, scripts, dependency
+# pins and the container definition (review H06)
+SOURCE_PATHS = ("src", "config", "scripts", "pyproject.toml", "requirements.lock", "requirements.txt",
+                "requirements-dev.txt", "requirements-sumo.lock", "Dockerfile")
+PROVENANCE_DIR = Path("results/provenance")
 
 _PROVENANCE: dict = {}
 
 
 def _provenance() -> dict:
-    """Source behind a result file (review R24, G09): the commit, whether the
-    source differed from it (results and figures being rewritten do not
-    count), a SHA-256 of that difference so a dirty run is still identified,
-    the version and the command line.  Captured once, when the command
-    starts, so a commit made while a long run is going does not relabel it."""
+    """Source behind a result file (review R24, G09, H06): the commit; whether
+    any tracked or untracked file under ``SOURCE_PATHS`` differed from it; and,
+    when it did, an archived copy of the difference (the diff of tracked files
+    and the full text of untracked ones) under ``results/provenance/`` named by
+    its SHA-256, so the exact source can be rebuilt.  Captured once, when the
+    command starts, so a commit made while a long run is going does not
+    relabel it (``provenance_capture``: "command start"; files written by
+    3.6.0 runs before that change say "file write")."""
     if not _PROVENANCE:
         _PROVENANCE.update(_capture_provenance())
     return {**_PROVENANCE, "signing": _signing()}
@@ -254,15 +270,42 @@ def _signing() -> dict:
 def _capture_provenance() -> dict:
     import hashlib
     import subprocess
+
+    def git(*a) -> bytes:
+        return subprocess.run(["git", *a], capture_output=True, check=False).stdout
+
     try:
-        commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False).stdout.strip()
-        diff = subprocess.run(["git", "diff", "HEAD", "--", *SOURCE_PATHS], capture_output=True, check=False).stdout
-        dirty = bool(diff)
-        diff_sha = hashlib.sha256(diff).hexdigest() if diff else None
+        commit = git("rev-parse", "HEAD").decode().strip()
+        diff = git("diff", "--binary", "HEAD", "--", *SOURCE_PATHS)
+        untracked = [f for f in git("ls-files", "--others", "--exclude-standard", "--", *SOURCE_PATHS)
+                     .decode().splitlines() if f]
     except OSError:
-        commit, dirty, diff_sha = None, None, None
-    return {"version": __version__, "commit": commit or None, "source_dirty": dirty, "source_diff_sha256": diff_sha,
-            "argv": sys.argv[1:], "captured": "at start"}
+        return {"version": __version__, "commit": None, "source_dirty": None, "argv": sys.argv[1:],
+                "provenance_capture": "command start"}
+    archive = None
+    sha = None
+    if diff or untracked:
+        payload = {"commit": commit, "diff": diff.decode("utf-8", "replace"),
+                   "untracked": {f: Path(f).read_text(errors="replace") for f in untracked if Path(f).is_file()}}
+        blob = json.dumps(payload, sort_keys=True).encode()
+        sha = hashlib.sha256(blob).hexdigest()
+        PROVENANCE_DIR.mkdir(parents=True, exist_ok=True)
+        archive = PROVENANCE_DIR / f"{sha}.json"
+        archive.write_bytes(blob)
+        archive = str(archive)
+    return {"version": __version__, "commit": commit or None, "source_dirty": bool(diff or untracked),
+            "untracked_source_files": untracked, "source_snapshot_sha256": sha, "source_snapshot": archive,
+            "source_paths": list(SOURCE_PATHS), "argv": sys.argv[1:], "provenance_capture": "command start"}
+
+
+def trace_content_sha256(path: str) -> str:
+    """SHA-256 of a SUMO trace's content after its header comment, the same
+    hash as ``config/sumo/CONTENT_SHA256SUMS`` (the header holds a timestamp)."""
+    import hashlib
+    text = Path(path).read_bytes()
+    marker = text.find(b"-->")
+    body = text[text.index(b"\n", marker) + 1:] if marker >= 0 else text
+    return hashlib.sha256(body).hexdigest()
 
 
 def _stamp(res: dict, calibration: dict | None) -> dict:
@@ -276,6 +319,7 @@ def _stamp(res: dict, calibration: dict | None) -> dict:
 def cmd_recycling_sumo(args: argparse.Namespace) -> int:
     """E1 and E4 on a SUMO trace (several comma-separated traces: realizations)."""
     _provenance()
+    _PROVENANCE["traces"] = {Path(t).name: trace_content_sha256(t) for t in args.trace.split(",")}
     calibration = exr.calibrate()
     seeds = tuple(int(x) for x in args.seeds.split(",")) if args.seeds else ((1, 2) if args.quick else exr.DEFAULT_SEEDS)
     traces = args.trace.split(",")
@@ -384,7 +428,7 @@ def main(argv: list[str] | None = None) -> int:
     rc.add_argument("--long", action="store_true", help="also run E1x/E2x over a 600 s horizon (certificates expire)")
     rc.add_argument("--sensitivity", action="store_true", help="also run E1r: the revocation rule (k reports from m RSUs)")
     rc.add_argument("--only", default=None,
-                    help="comma-separated subset of E1,E2,E3,E3b,E4,E5,E6 to (re)run; the others are loaded from --out")
+                    help="comma-separated subset of E1,E2,E3,E3b,E4,E5,E6,E3bi,E1q,E1s to (re)run; the others are loaded from --out")
     rc.add_argument("--only-long", action="store_true",
                     help="skip E1-E6 (their results must already exist) and run only --long / --sensitivity (both if neither is set)")
     rc.add_argument("--out", default="results/recycling")
