@@ -68,7 +68,7 @@ src/pop_sim/
   experiments_sumo.py       E1 and E4 on SUMO traces, return policies, traffic realizations
   plots.py, plots_v2.py
   cli.py             `pop-sim run`, `run-v2`, `bench`, `demo`
-tests/               112 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
+tests/               125 tests: crypto, chain integrity, every consensus, protocol invariants, v2, attack bench, scenarios, ECVRF, tracker, recycling study
 results/, figures/   JSON and PNG of the full v1 run; results/v2 and figures/v2 of the full v2 run
 config/benchmark.json  example configuration for `pop-sim bench`
 Dockerfile           reproducible environment (python:3.11-slim + requirements.lock)
@@ -84,7 +84,7 @@ docs/attacks_and_usecases.md  the attack table and the scenario table
 ```bash
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
-pytest -q                                   # 112 tests
+pytest -q                                   # 125 tests
 PYTHONPATH=src python -m pop_sim demo       # trace three shuffle rounds (v1)
 PYTHONPATH=src python -m pop_sim demo --mobility --consensus popv2   # v2: vehicles drive, VRF election
 PYTHONPATH=src python -m pop_sim run --quick     # v1 experiments, small budgets (~15 s)
@@ -153,7 +153,7 @@ Every shuffle round (`run_round`) then does:
 The consensus is pluggable (`pop`, `poet`, `pow2`, `pokw`) so the same protocol run
 can be compared across algorithms.
 
-## Pseudonym recycling study (versions 3.0.0 to 3.6.0)
+## Pseudonym recycling study (versions 3.0.0 to 3.7.0)
 
 The manuscript's central mechanism is *recycling*: used pseudonyms are shuffled
 through the privacy-manager cloud and handed to other vehicles, so that the PKI is
@@ -166,7 +166,8 @@ Design, threat model, metrics, the pre-registered outcome cases and the scope af
 the external review are in [docs/recycling.md](docs/recycling.md); measured results
 in [docs/recycling_results.md](docs/recycling_results.md); the item-by-item responses
 to the external review of 3.4.0 in [docs/review_response.md](docs/review_response.md)
-and to its follow-up on 3.5.0 in [docs/review_response_round2.md](docs/review_response_round2.md).
+to its follow-up on 3.5.0 in [docs/review_response_round2.md](docs/review_response_round2.md),
+and to the third review, of 3.6.0, in [docs/review_response_round3.md](docs/review_response_round3.md).
 
 The answer, over ten seeds, on a synthetic ring, two SUMO motorway scenarios and
 five traffic realizations of one of them:
@@ -175,17 +176,22 @@ five traffic realizations of one of them:
   point of link rate without attackers (recycle is 0.2 to 0.4 points less linkable).
 * **A former holder forges messages that vehicles accept** (75 to 100 % of receivers
   in range, by strategy) and the ledger turns them into revocations of innocent
-  vehicles: 48 % of the honest vehicles in two minutes with 5 % former holders on
-  the ring, 22 to 24 % of those seen on the SUMO motorways. A stricter revocation
-  rule only delays it (E1r). These rates are conditional on an attack schedule that
+  vehicles: 14 to 48 % of the honest vehicles in two minutes with 5 % former holders
+  on the ring, depending on the detection side (48 % with the published shared
+  history, 14 % with a history per RSU and continuous report processing; E1s), and
+  22 to 24 % of those seen on the SUMO motorways. A stricter revocation rule only
+  delays it (E1r); quarantining the pseudonym instead of revoking its holder removes
+  the wrongful revocations at the cost of withdrawn labels (E1q). These rates are conditional on an attack schedule that
   reads simulator state (who holds the pseudonym), not feasible attack rates.
 * **Revocation does not reach vehicles** before the certificates expire, under
   recycle and fresh issuance alike; only holder-bound re-keying ends it.
-* **Recycling wins only on PKI load** (fresh issuance costs the PKI 23 CPU-seconds
-  per 1,000 vehicle-hours with measured software costs, 14 with vehicle-generated
-  keys, and its PMs 37 for verifying the certificates they receive), and the safe
-  form of recycling (`rekey`) hands the signing to the privacy managers, at 12 to
-  47 % more bytes per message.
+* **Recycling wins only on PKI load** (fresh issuance costs the PKI 37 CPU-seconds
+  per 1,000 vehicle-hours with the 3.7.0 run's measured software costs, 23 with
+  vehicle-generated keys, and its PMs 58 for verifying the certificates they
+  receive), and the safe form of recycling (`rekey`) hands the signing to the
+  privacy managers, at 12 to 47 % more bytes per message; so does a delegated
+  fresh-label control (`fresh_pm`: fresh labels, vehicle keys, PM-signed
+  certificates), with no PKI signing and no recycled label.
 * **The infrastructure holds vehicle signing keys** under recycle, fresh and window
   issuance (PKI, PMs, RSUs, cloud), and each can sign as a vehicle undetected (E3b);
   only vehicle-generated keys (fresh_vgk, rekey) keep them out.
@@ -201,6 +207,13 @@ counted, attackers keep every credential they held, exposure is per contiguous
 window, holder windows no longer overlap at a handoff, equivalence is a mean TOST,
 opportunities have honest denominators, CPU is broken down by operation, and every
 result file carries its own provenance and calibration.
+Version 3.7.0 answers the third review: a former holder no longer sends under an
+expired certificate and every key check is counted in exactly one bucket; the RSU
+attributes a message to the holder at its own timestamp; exposure is pooled per
+window with a bootstrap over seeds and truncation marked; the detection side is swept
+(E1s) with an attack-free control; insiders are run one at a time (E3bi); quarantine
+(E1q) and delegated fresh labels (`fresh_pm`) are added; provenance covers untracked
+files and dependency pins and archives any differing source.
 
 ## Results at a glance
 

@@ -7,9 +7,9 @@ status of each in version 3.7.0. The earlier reviews are answered in
 [review_response_round2.md](review_response_round2.md) (G01 to G10); the results are
 in [recycling_results.md](recycling_results.md).
 
-Every experiment was rerun at 3.7.0 from commit `2ff94e9` (results committed after
-it carry no source change; each file records its own provenance, captured when its
-command started). Three experiments are new: E1s (detection-side sensitivity, H04),
+Every experiment was rerun at 3.7.0 from commit `2ff94e9`; each file records its own
+provenance, captured when its command started. The source changed after those runs
+only in the help text of `recycling --only`, which now lists the new experiments. Three experiments are new: E1s (detection-side sensitivity, H04),
 E1q (quarantining the pseudonym instead of revoking the holder) and E3bi (one insider
 at a time). E4 gains a delegated fresh-label control, `fresh_pm`. The suite is 125
 tests.

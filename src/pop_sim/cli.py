@@ -428,7 +428,7 @@ def main(argv: list[str] | None = None) -> int:
     rc.add_argument("--long", action="store_true", help="also run E1x/E2x over a 600 s horizon (certificates expire)")
     rc.add_argument("--sensitivity", action="store_true", help="also run E1r: the revocation rule (k reports from m RSUs)")
     rc.add_argument("--only", default=None,
-                    help="comma-separated subset of E1,E2,E3,E3b,E4,E5,E6 to (re)run; the others are loaded from --out")
+                    help="comma-separated subset of E1,E2,E3,E3b,E4,E5,E6,E3bi,E1q,E1s to (re)run; the others are loaded from --out")
     rc.add_argument("--only-long", action="store_true",
                     help="skip E1-E6 (their results must already exist) and run only --long / --sensitivity (both if neither is set)")
     rc.add_argument("--out", default="results/recycling")

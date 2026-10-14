@@ -1,5 +1,49 @@
 # Changelog
 
+## 3.7.0 - response to the third review of 3.6.0
+
+Every item of the third review (H01 to H08) is answered in
+docs/review_response_round3.md; every experiment was rerun.
+
+Corrections:
+
+* H01: a former holder sends nothing under a credential whose certificate has
+  expired; every key check falls in one bucket (held by self, retired, expired,
+  valid) and sent <= eligible <= valid.  E1 is unchanged; over 600 s with 300 s
+  certificates S1 revokes 84.2 honest vehicles (3.6.0: 90.5) and S2 58.4 (71.2),
+  because expired forgeries had passed the RSU's ledger check.
+* H02: the RSU attributes a message to the holder at the message's own timestamp
+  (`PseudonymLedger.owner_at`, binary search over an ownership log).  Rekey
+  binding now updates that log with the new key.  E5 and the rekey cells are
+  unchanged.
+* H03: exposure is pooled per window with a bootstrap over seeds; each segment
+  keeps its pseudonym and holder; span and accepted seconds are separate;
+  truncated windows are marked and completed windows reported apart.
+* Local RSU clone-check histories no longer carry a previous holding's position
+  into the next allotment (found by the E1s attack-free control).
+
+Added:
+
+* H04, E1s: the E1 core cell under nine detection-side variants on the same
+  seeds, with an attack-free control and a matched misbehaver.  S1 revokes 13 to
+  43 of 91.5 honest vehicles in two minutes depending on the variant.  RSU clone
+  allowance is a parameter (`clone_allowance_m`).
+* E1q: quarantine the reported pseudonym instead of revoking its holder
+  (`misbehaviour_response`).
+* E3bi: one insider entity forging at a time (`insider_active`).
+* `fresh_pm` issuance: fresh labels, vehicle-generated keys, PM-signed
+  certificates with the PM's PKI certificate checked at receivers.
+* H06: provenance covers untracked files, the dependency pins and the
+  Dockerfile, archives any differing source under results/provenance/, says
+  when it was captured, and SUMO results carry trace content hashes.
+* H08: cross-layer tests (sent messages against opportunity buckets, a real
+  handoff against ledger, window and key, honest messages through the RSU check
+  in every mode, attack-free runs revoke nobody, retention per credential
+  version); results/test_log.txt; 125 tests.
+
+Not changed, stated: the attack schedules read simulator state (H05).  The
+manuscript figure generator (H07) is to be added under paper/.
+
 ## 3.6.0 - response to the follow-up review of 3.5.0
 
 Every item of the follow-up review (G01 to G10) is answered in
