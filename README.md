@@ -74,6 +74,7 @@ config/benchmark.json  example configuration for `pop-sim bench`
 Dockerfile           reproducible environment (python:3.11-slim + requirements.lock)
 requirements.lock    pinned versions of every dependency
 scripts/             make_sumo_traces.sh (regenerate and checksum the traces), reproduce.sh (every result)
+paper/               make_figures.py draws the manuscript's data figures from results/recycling (map in paper/README.md)
 docs/paper_mapping.md  section-by-section mapping from the manuscript to the code, and the deviations
 docs/pop_v2.md         what v2 changes, why, and how each change is measured
 docs/attacks_and_usecases.md  the attack table and the scenario table

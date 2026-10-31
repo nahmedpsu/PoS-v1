@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.7.1 - manuscript figure generator (H07)
+
+No change to the simulator, the configurations or any result file.
+
+* paper/make_figures.py draws every data figure printed in the manuscript
+  (Figs. 4 to 6 and the graphical abstract) from results/recycling/*.json with
+  one command from the repository root: `python3 paper/make_figures.py . paper/figs`.
+* paper/README.md maps each manuscript figure to its output file and the
+  result keys it reads; paper/figs/figure_values.json records every value
+  shown in those figures.
+* docs/figure_map.md points to paper/ for the manuscript's figures.
+
 ## 3.7.0 - response to the third review of 3.6.0
 
 Every item of the third review (H01 to H08) is answered in
