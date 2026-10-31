@@ -1,0 +1,597 @@
+{
+ "e1s/S1/10 % message loss/honest_revoked": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "e1s/S1/clone allowance 10 m/honest_revoked": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "e1s/S1/clone allowance 50 m/honest_revoked": {
+  "hi": 46.4,
+  "lo": 40.3,
+  "mean": 43.3
+ },
+ "e1s/S1/continuous processing, 1 s delay/honest_revoked": {
+  "hi": 46.8,
+  "lo": 38.8,
+  "mean": 42.9
+ },
+ "e1s/S1/local RSU histories/honest_revoked": {
+  "hi": 15.0,
+  "lo": 11.5,
+  "mean": 13.2
+ },
+ "e1s/S1/local histories + continuous processing/honest_revoked": {
+  "hi": 15.1,
+  "lo": 10.5,
+  "mean": 12.7
+ },
+ "e1s/S1/published default/honest_revoked": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "e1s/S1/signed-position error 10 m/honest_revoked": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "e1s/S1/signed-position error 3 m/honest_revoked": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "e1s/S2/10 % message loss/honest_revoked": {
+  "hi": 9.9,
+  "lo": 7.1,
+  "mean": 8.5
+ },
+ "e1s/S2/clone allowance 10 m/honest_revoked": {
+  "hi": 9.9,
+  "lo": 7.1,
+  "mean": 8.5
+ },
+ "e1s/S2/clone allowance 50 m/honest_revoked": {
+  "hi": 0.0,
+  "lo": 0.0,
+  "mean": 0.0
+ },
+ "e1s/S2/continuous processing, 1 s delay/honest_revoked": {
+  "hi": 10.0,
+  "lo": 6.7,
+  "mean": 8.5
+ },
+ "e1s/S2/local RSU histories/honest_revoked": {
+  "hi": 9.0,
+  "lo": 6.5,
+  "mean": 7.7
+ },
+ "e1s/S2/local histories + continuous processing/honest_revoked": {
+  "hi": 8.7,
+  "lo": 6.1,
+  "mean": 7.5
+ },
+ "e1s/S2/published default/honest_revoked": {
+  "hi": 9.9,
+  "lo": 7.1,
+  "mean": 8.5
+ },
+ "e1s/S2/signed-position error 10 m/honest_revoked": {
+  "hi": 9.5,
+  "lo": 7.0,
+  "mean": 8.3
+ },
+ "e1s/S2/signed-position error 3 m/honest_revoked": {
+  "hi": 9.9,
+  "lo": 7.1,
+  "mean": 8.5
+ },
+ "e1s/misbehaver/10 % message loss/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e1s/misbehaver/clone allowance 10 m/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e1s/misbehaver/clone allowance 50 m/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e1s/misbehaver/continuous processing, 1 s delay/seconds_to_revocation": {
+  "hi": 35.0,
+  "lo": 35.0,
+  "mean": 35.0
+ },
+ "e1s/misbehaver/local RSU histories/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e1s/misbehaver/local histories + continuous processing/seconds_to_revocation": {
+  "hi": 35.0,
+  "lo": 35.0,
+  "mean": 35.0
+ },
+ "e1s/misbehaver/published default/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e1s/misbehaver/signed-position error 10 m/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e1s/misbehaver/signed-position error 3 m/seconds_to_revocation": {
+  "hi": 60.0,
+  "lo": 60.0,
+  "mean": 60.0
+ },
+ "e5/bytes/0.1": {
+  "recycle": 167.2,
+  "rekey": 187.4
+ },
+ "e5/bytes/1.0": {
+  "recycle": 277.0,
+  "rekey": 407.0
+ },
+ "e5/rekey/S1/forged_sent": {
+  "hi": 1476.0,
+  "lo": 1384.0,
+  "mean": 1428.0
+ },
+ "e5/rekey/S1/forged_v2v_accepted": {
+  "hi": 0.0,
+  "lo": 0.0,
+  "mean": 0.0
+ },
+ "e5/rekey/S2/forged_sent": {
+  "hi": 212.0,
+  "lo": 160.0,
+  "mean": 185.0
+ },
+ "e5/rekey/S2/forged_v2v_accepted": {
+  "hi": 0.0,
+  "lo": 0.0,
+  "mean": 0.0
+ },
+ "e5/rekey/S3/forged_sent": {
+  "hi": 708.0,
+  "lo": 588.0,
+  "mean": 651.0
+ },
+ "e5/rekey/S3/forged_v2v_accepted": {
+  "hi": 0.0,
+  "lo": 0.0,
+  "mean": 0.0
+ },
+ "e5/window/S1/forged_sent": {
+  "hi": 1082.0,
+  "lo": 930.0,
+  "mean": 1006.0
+ },
+ "e5/window/S1/forged_v2v_accepted": {
+  "hi": 1082.0,
+  "lo": 930.0,
+  "mean": 1006.0
+ },
+ "e5/window/S2/forged_sent": {
+  "hi": 191.0,
+  "lo": 144.0,
+  "mean": 169.0
+ },
+ "e5/window/S2/forged_v2v_accepted": {
+  "hi": 191.0,
+  "lo": 144.0,
+  "mean": 169.0
+ },
+ "e5/window/S3/forged_sent": {
+  "hi": 708.0,
+  "lo": 588.0,
+  "mean": 651.0
+ },
+ "e5/window/S3/forged_v2v_accepted": {
+  "hi": 0.0,
+  "lo": 0.0,
+  "mean": 0.0
+ },
+ "fig4_e1/S1/honest_named_by_beacon_reports": {
+  "hi": 28.6,
+  "lo": 22.7,
+  "mean": 25.5
+ },
+ "fig4_e1/S1/honest_named_by_forgery_reports": {
+  "hi": 22.8,
+  "lo": 17.0,
+  "mean": 19.7
+ },
+ "fig4_e1/S1/honest_reported": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "fig4_e1/S1/honest_revoked": {
+  "hi": 46.5,
+  "lo": 40.4,
+  "mean": 43.4
+ },
+ "fig4_e1/S1/population_honest": {
+  "hi": 99.6,
+  "lo": 81.2,
+  "mean": 91.5
+ },
+ "fig4_e1/S1/reports_beacon_naming_honest": {
+  "hi": 207.2,
+  "lo": 161.0,
+  "mean": 182.7
+ },
+ "fig4_e1/S1/reports_forgery_naming_honest": {
+  "hi": 341.6,
+  "lo": 252.3,
+  "mean": 293.8
+ },
+ "fig4_e1/S1/rsu_rate": {
+  "hi": 0.728,
+  "lo": 0.6661,
+  "mean": 0.6962
+ },
+ "fig4_e1/S1/v2v_receiver_rate": {
+  "hi": 0.9669,
+  "lo": 0.9526,
+  "mean": 0.96
+ },
+ "fig4_e1/S2/rsu_rate": {
+  "hi": 0.6981,
+  "lo": 0.6461,
+  "mean": 0.6742
+ },
+ "fig4_e1/S2/v2v_receiver_rate": {
+  "hi": 0.7972,
+  "lo": 0.7557,
+  "mean": 0.7755
+ },
+ "fig4_e1/S3/rsu_rate": {
+  "hi": 0.0,
+  "lo": 0.0,
+  "mean": 0.0
+ },
+ "fig4_e1/S3/v2v_receiver_rate": {
+  "hi": 0.9975,
+  "lo": 0.9934,
+  "mean": 0.9956
+ },
+ "fig5_e1x/E2x/300/seconds_to_last_accepted": {
+  "hi": 240.0,
+  "lo": 240.0,
+  "mean": 240.0
+ },
+ "fig5_e1x/E2x/3600/seconds_to_last_accepted": {
+  "hi": 540.0,
+  "lo": 540.0,
+  "mean": 540.0
+ },
+ "fig5_e1x/E2x/900/seconds_to_last_accepted": {
+  "hi": 540.0,
+  "lo": 540.0,
+  "mean": 540.0
+ },
+ "fig5_e1x/S1/300/forged_sent": {
+  "hi": 2178.0,
+  "lo": 1774.0,
+  "mean": 2003.0
+ },
+ "fig5_e1x/S1/300/honest_revoked": {
+  "hi": 91.6,
+  "lo": 74.8,
+  "mean": 84.2
+ },
+ "fig5_e1x/S1/300/v2v_receiver_rate": {
+  "hi": 0.9665,
+  "lo": 0.9581,
+  "mean": 0.9624
+ },
+ "fig5_e1x/S1/3600/forged_sent": {
+  "hi": 2356.0,
+  "lo": 1903.0,
+  "mean": 2157.0
+ },
+ "fig5_e1x/S1/3600/honest_revoked": {
+  "hi": 98.4,
+  "lo": 80.5,
+  "mean": 90.5
+ },
+ "fig5_e1x/S1/3600/v2v_receiver_rate": {
+  "hi": 0.9673,
+  "lo": 0.9587,
+  "mean": 0.963
+ },
+ "fig5_e1x/S1/900/forged_sent": {
+  "hi": 2356.0,
+  "lo": 1903.0,
+  "mean": 2157.0
+ },
+ "fig5_e1x/S1/900/honest_revoked": {
+  "hi": 98.4,
+  "lo": 80.5,
+  "mean": 90.5
+ },
+ "fig5_e1x/S1/900/v2v_receiver_rate": {
+  "hi": 0.9673,
+  "lo": 0.9587,
+  "mean": 0.963
+ },
+ "fig5_e1x/S2/300/forged_sent": {
+  "hi": 1317.0,
+  "lo": 1074.0,
+  "mean": 1193.0
+ },
+ "fig5_e1x/S2/300/honest_revoked": {
+  "hi": 63.1,
+  "lo": 53.8,
+  "mean": 58.4
+ },
+ "fig5_e1x/S2/300/v2v_receiver_rate": {
+  "hi": 0.7805,
+  "lo": 0.7622,
+  "mean": 0.7717
+ },
+ "fig5_e1x/S2/3600/forged_sent": {
+  "hi": 1698.0,
+  "lo": 1370.0,
+  "mean": 1535.0
+ },
+ "fig5_e1x/S2/3600/honest_revoked": {
+  "hi": 77.8,
+  "lo": 64.4,
+  "mean": 71.2
+ },
+ "fig5_e1x/S2/3600/v2v_receiver_rate": {
+  "hi": 0.7803,
+  "lo": 0.7587,
+  "mean": 0.7695
+ },
+ "fig5_e1x/S2/900/forged_sent": {
+  "hi": 1698.0,
+  "lo": 1370.0,
+  "mean": 1535.0
+ },
+ "fig5_e1x/S2/900/honest_revoked": {
+  "hi": 77.8,
+  "lo": 64.4,
+  "mean": 71.2
+ },
+ "fig5_e1x/S2/900/v2v_receiver_rate": {
+  "hi": 0.7803,
+  "lo": 0.7587,
+  "mean": 0.7695
+ },
+ "fig5_e1x/S3/300/forged_sent": {
+  "hi": 9666.0,
+  "lo": 9252.0,
+  "mean": 9453.0
+ },
+ "fig5_e1x/S3/300/v2v_receiver_rate": {
+  "hi": 0.9917,
+  "lo": 0.985,
+  "mean": 0.9886
+ },
+ "fig5_e1x/S3/3600/forged_sent": {
+  "hi": 19365.0,
+  "lo": 18723.0,
+  "mean": 19014.0
+ },
+ "fig5_e1x/S3/3600/v2v_receiver_rate": {
+  "hi": 0.9795,
+  "lo": 0.9682,
+  "mean": 0.9738
+ },
+ "fig5_e1x/S3/900/forged_sent": {
+  "hi": 19365.0,
+  "lo": 18723.0,
+  "mean": 19014.0
+ },
+ "fig5_e1x/S3/900/v2v_receiver_rate": {
+  "hi": 0.9795,
+  "lo": 0.9682,
+  "mean": 0.9738
+ },
+ "fig6_e4/LuST/fresh/cpu_common": {
+  "pki": 35.8,
+  "pm": 57.0
+ },
+ "fig6_e4/LuST/fresh_pm/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.4
+ },
+ "fig6_e4/LuST/fresh_vgk/cpu_common": {
+  "pki": 23.3,
+  "pm": 0.1
+ },
+ "fig6_e4/LuST/recycle-fresh": {
+  "ci90": [
+   -0.32,
+   -0.01
+  ],
+  "equivalent": true,
+  "mean": -0.16
+ },
+ "fig6_e4/LuST/recycle-fresh_pm": {
+  "ci90": [
+   -0.45,
+   0.03
+  ],
+  "equivalent": true,
+  "mean": -0.21
+ },
+ "fig6_e4/LuST/recycle-fresh_vgk": {
+  "ci90": [
+   -0.45,
+   0.03
+  ],
+  "equivalent": true,
+  "mean": -0.21
+ },
+ "fig6_e4/LuST/recycle/cpu_common": {
+  "pki": 0.0,
+  "pm": 0.3
+ },
+ "fig6_e4/LuST/rekey/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.5
+ },
+ "fig6_e4/LuST/window/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.4
+ },
+ "fig6_e4/motor- way/fresh/cpu_common": {
+  "pki": 36.7,
+  "pm": 58.4
+ },
+ "fig6_e4/motor- way/fresh_pm/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.6
+ },
+ "fig6_e4/motor- way/fresh_vgk/cpu_common": {
+  "pki": 23.5,
+  "pm": 0.1
+ },
+ "fig6_e4/motor- way/recycle-fresh": {
+  "ci90": [
+   -0.44,
+   -0.2
+  ],
+  "equivalent": true,
+  "mean": -0.32
+ },
+ "fig6_e4/motor- way/recycle-fresh_pm": {
+  "ci90": [
+   -0.57,
+   -0.05
+  ],
+  "equivalent": true,
+  "mean": -0.31
+ },
+ "fig6_e4/motor- way/recycle-fresh_vgk": {
+  "ci90": [
+   -0.57,
+   -0.05
+  ],
+  "equivalent": true,
+  "mean": -0.31
+ },
+ "fig6_e4/motor- way/recycle/cpu_common": {
+  "pki": 0.0,
+  "pm": 0.2
+ },
+ "fig6_e4/motor- way/rekey/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.7
+ },
+ "fig6_e4/motor- way/window/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.2
+ },
+ "fig6_e4/ring 10/fresh/cpu_common": {
+  "pki": 36.6,
+  "pm": 58.7
+ },
+ "fig6_e4/ring 10/fresh_pm/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.9
+ },
+ "fig6_e4/ring 10/fresh_vgk/cpu_common": {
+  "pki": 23.4,
+  "pm": 0.4
+ },
+ "fig6_e4/ring 10/recycle-fresh": {
+  "ci90": [
+   -0.48,
+   -0.2
+  ],
+  "equivalent": true,
+  "mean": -0.34
+ },
+ "fig6_e4/ring 10/recycle-fresh_pm": {
+  "ci90": [
+   -0.5,
+   -0.12
+  ],
+  "equivalent": true,
+  "mean": -0.31
+ },
+ "fig6_e4/ring 10/recycle-fresh_vgk": {
+  "ci90": [
+   -0.5,
+   -0.12
+  ],
+  "equivalent": true,
+  "mean": -0.31
+ },
+ "fig6_e4/ring 10/recycle/cpu_common": {
+  "pki": 0.0,
+  "pm": 0.9
+ },
+ "fig6_e4/ring 10/rekey/cpu_common": {
+  "pki": 0.0,
+  "pm": 24.2
+ },
+ "fig6_e4/ring 10/window/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.4
+ },
+ "fig6_e4/ring 40/fresh/cpu_common": {
+  "pki": 36.4,
+  "pm": 57.9
+ },
+ "fig6_e4/ring 40/fresh_pm/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.5
+ },
+ "fig6_e4/ring 40/fresh_vgk/cpu_common": {
+  "pki": 23.4,
+  "pm": 0.1
+ },
+ "fig6_e4/ring 40/recycle-fresh": {
+  "ci90": [
+   -0.38,
+   -0.2
+  ],
+  "equivalent": true,
+  "mean": -0.29
+ },
+ "fig6_e4/ring 40/recycle-fresh_pm": {
+  "ci90": [
+   -0.54,
+   -0.23
+  ],
+  "equivalent": true,
+  "mean": -0.38
+ },
+ "fig6_e4/ring 40/recycle-fresh_vgk": {
+  "ci90": [
+   -0.54,
+   -0.23
+  ],
+  "equivalent": true,
+  "mean": -0.38
+ },
+ "fig6_e4/ring 40/recycle/cpu_common": {
+  "pki": 0.0,
+  "pm": 0.2
+ },
+ "fig6_e4/ring 40/rekey/cpu_common": {
+  "pki": 0.0,
+  "pm": 23.6
+ },
+ "fig6_e4/ring 40/window/cpu_common": {
+  "pki": 0.0,
+  "pm": 22.7
+ }
+}

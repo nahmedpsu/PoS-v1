@@ -76,10 +76,17 @@ result cell.
 
 ## Repository figures and manuscript figures
 
-The figures above are the repository's own; the manuscript's figures are laid
-out separately and the manuscript source is not part of this repository. The
-repository now draws the two layouts the follow-up review compared directly:
-the strategy bars of honest vehicles reported and revoked (first panel of
-`E1.png`) and the identity-attribution split (`E3_attribution.png`). Any other
-manuscript figure must be drawn from the result fields named in the
-manuscript's caption; a figure-number map belongs with the manuscript source.
+The figures above are the repository's own. The data figures printed in the
+manuscript (Figs. 4 to 6 and the graphical abstract) are drawn by
+`paper/make_figures.py` from the same result files, with one command from the
+repository root:
+
+    python3 paper/make_figures.py . paper/figs
+
+`paper/README.md` maps each manuscript figure to its output file and to the
+result keys it reads, and `paper/figs/figure_values.json` records every value
+shown in those figures. Figures 1 to 3 of the manuscript are diagrams and use
+no data. The repository also draws the two layouts the follow-up review
+compared directly: the strategy bars of honest vehicles reported and revoked
+(first panel of `E1.png`) and the identity-attribution split
+(`E3_attribution.png`).
